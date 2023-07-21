@@ -11,10 +11,10 @@ export function Footer({}) {
         />
         <div>
           <p>Tatenda Chinyamakobvu</p>
-          <p className="text-sm text-zinc-600">typescriptdev@gmail.com</p>
+          <p className="text-sm text-zinc-500">typescriptdev@gmail.com</p>
         </div>
       </div>
-      <button className="px-4 py-2 rounded-xl font-semibold text-red-500 bg-red-50">
+      <button className="px-4 py-2 rounded-xl  text-red-500 bg-red-50">
         Sign Out
       </button>
     </div>

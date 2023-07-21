@@ -16,20 +16,20 @@ export default function NewTaskForm() {
       />
       <div className="flex justify-between items-center mt-2">
         <div className="flex gap-5 items-center">
-          <button className="font-semibold">
+          <button className="">
             <BriefcaseIcon className="w-5 h-5" />
           </button>
-          <button className="font-semibold">
+          <button className="">
             <UserCircleIcon className="w-5 h-5" />
           </button>
-          <button className="font-semibold">
+          <button className="">
             <CalendarDaysIcon className="w-5 h-5" />
           </button>
-          <button className="font-semibold">
+          <button className="">
             <ClockIcon className="w-5 h-5" />
           </button>
         </div>
-        <button className="px-2 py-1 text-sm rounded-lg flex gap-2 items-center font-semibold text-white bg-blue-600">
+        <button className="px-2 py-1 text-sm rounded-lg flex gap-2 items-center  text-white bg-blue-600">
           <PlayIcon className="w-5 h-5" />
           Start Timer
         </button>

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "build:static": "next build && next out",
-    "build:extension": "next build && next out && cd out && mv _next next && grep -rl '_next' | xargs sed -i 's|/_next|/next|g'"
+    "build:extension": "next build && next export && cd out && mv _next next && grep -rl '_next' | xargs sed -i 's|/_next|/next|g'"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.15",

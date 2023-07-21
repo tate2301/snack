@@ -2,15 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
-
 /*
     Chrome Extension: Use max-width and max-height
 */
 
 html,
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "SF Pro Rounded", sans-serif;
+  font-weight: 500;
 }
 
 /*
@@ -19,4 +18,9 @@ body {
 
 #app-container {
   max-width: 480px;
+  width: 480px;
+}
+
+svg {
+  @apply stroke-2;
 }

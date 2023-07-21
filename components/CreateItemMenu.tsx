@@ -4,9 +4,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 export default function CreateItemMenu() {
   return (
     <Popover>
-      <Popover.Button
-        className={"py-1 text-blue-600 font-semibold flex items-center gap-2"}
-      >
+      <Popover.Button className={"py-1 text-blue-600  flex items-center gap-2"}>
         <p className="p-1 bg-blue-600 text-white rounded-full">
           <PlusIcon className="w-4 h-4" />
         </p>
@@ -17,14 +15,11 @@ export default function CreateItemMenu() {
           "p-2 max-w-fit text-left rounded-xl min-w-[180px] bg-white shadow-2xl flex flex-col"
         }
       >
-        <button className="py-2 px-4 text-left rounded-lg font-semibold text-zinc-800 hover:bg-zinc-50">
-          New Task
+        <button className="py-2 px-4 text-left rounded-lg  text-zinc-800 hover:bg-zinc-50">
+          Task
         </button>
-        <button className="py-2 px-4 text-left rounded-lg font-semibold text-zinc-800 hover:bg-zinc-50">
-          New Project
-        </button>
-        <button className="py-2 px-4 text-left rounded-lg font-semibold text-zinc-800 hover:bg-zinc-50">
-          New Client
+        <button className="py-2 px-4 text-left rounded-lg  text-zinc-800 hover:bg-zinc-50">
+          Timed Task
         </button>
       </Popover.Panel>
     </Popover>
