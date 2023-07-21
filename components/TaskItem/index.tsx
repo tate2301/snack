@@ -11,6 +11,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { timeDifference } from "../../lib/time";
 
 export default function TaskItem({ id }) {
   const [isShowing, setIsShowing] = useState(false);
@@ -50,7 +51,12 @@ export default function TaskItem({ id }) {
             </p>
             <button className="text-sm mt-1 font-bold">
               <span className="flex items-center gap-2 text-orange-500">
-                <ClockIcon className="w-4 h-4" />1 hour before
+                <ClockIcon className="w-4 h-4" />
+                {timeDifference(
+                  new Date("2023-07-21T12:00:00.000Z"),
+                  new Date()
+                )}{" "}
+                before
               </span>
             </button>
           </div>
@@ -68,14 +74,14 @@ export default function TaskItem({ id }) {
             </button>
             <Link href={`/task/${id}`} className="items-start flex">
               <button className="transition-all duration-200">
-                <InformationCircleIcon className="w-4 h-4" />
+                <InformationCircleIcon className="w-5 h-5" />
               </button>
             </Link>
           </div>
         </div>
-        <motion.div layout className="mt-2 flex gap-4">
+        <motion.div layout>
           {isExpanded && (
-            <>
+            <div className="mt-2 flex gap-4">
               <button
                 onClick={toggle}
                 className="text-sm font-bold flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2"
@@ -86,12 +92,12 @@ export default function TaskItem({ id }) {
                 <RectangleStackIcon className="w-4 h-4" />
                 Personal Website
               </button>
-            </>
+            </div>
           )}
         </motion.div>
-        <motion.div layout className="mt-2 flex flex-col">
+        <motion.div layout>
           {isShowing && isExpanded && (
-            <>
+            <div className="mt-2 flex flex-col">
               <div className="flex gap-4 items-center group">
                 <input
                   type="checkbox"
@@ -110,7 +116,7 @@ export default function TaskItem({ id }) {
                   Go to the bank and get a new card
                 </p>
               </div>
-            </>
+            </div>
           )}
         </motion.div>
       </div>

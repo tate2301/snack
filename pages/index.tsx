@@ -23,7 +23,7 @@ export default function Page() {
     <main className="h-full w-full flex flex-col justify-between">
       <div className="flex-1 overflow-y-auto">
         <div className="p-4">
-          <motion.div layout className="flex flex-col mt-2 gap-4">
+          <motion.div layout className="flex flex-col mt-2">
             <TaskItem id={1} />
             <TaskItem id={2} />
             <TaskItem id={3} />
