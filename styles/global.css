@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+/*
+    Chrome Extension: Use max-width and max-height
+*/
+
+html,
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/*
+    Chrome Extension: Use min-width and min-height
+*/
+
+#app-container {
+  max-width: 480px;
+}
