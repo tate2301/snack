@@ -29,10 +29,18 @@ export default function TaskItem({ id }) {
         <div className="w-full flex border-b pb-2 justify-between items-start gap-4">
           <div className="flex flex-col flex-1 max-w-sm">
             <p className="flex gap-2 font-bold">
-              <span className="text-red-500 mr-2">!!!</span>
-              Configure Domain Name for the idea factory company
+              <span className="text-red-500">!!!</span>
+              <span contentEditable>
+                {" "}
+                Configure Domain Name for the idea factory company
+              </span>
             </p>
-            <p className="text-sm text-zinc-400 mt-2 line-clamp-2">
+            <p
+              contentEditable
+              className={`text-sm text-zinc-400 mt-2 ${
+                isExpanded ? "line-clamp-6" : "line-clamp-2"
+              }`}
+            >
               Its crucial to get this done as soon as possible, we rely on it to
               get more funding. Which we can agree we critically need
             </p>

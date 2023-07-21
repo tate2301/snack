@@ -84,3 +84,8 @@ body {
 svg {
   @apply stroke-2;
 }
+
+p,
+span {
+  @apply outline-none;
+}
