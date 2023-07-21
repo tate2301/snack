@@ -6,10 +6,70 @@
     Chrome Extension: Use max-width and max-height
 */
 
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/subset-SFRounded-Regular.eot?) format("embedded-opentype"),
+    url(/fonts/subset-SFRounded-Regular.woff2) format("woff2"),
+    url(/fonts/subset-SFRounded-Regular.woff) format("woff");
+  font-family: SFRounded;
+}
+
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 500;
+  src: url(/fonts/subset-SFRounded-Medium.eot?) format("embedded-opentype"),
+    url(/fonts/subset-SFRounded-Medium.woff2) format("woff2"),
+    url(/fonts/subset-SFRounded-Medium.woff) format("woff");
+  font-family: SFRounded;
+}
+
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 600;
+  src: url(/fonts/subset-SFRounded-Semibold.eot?) format("embedded-opentype"),
+    url(/fonts/subset-SFRounded-Semibold.woff2) format("woff2"),
+    url(/fonts/subset-SFRounded-Semibold.woff) format("woff");
+  font-family: SFRounded;
+}
+
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+  src: url(/fonts/subset-SFRounded-Bold.eot?) format("embedded-opentype"),
+    url(/fonts/subset-SFRounded-Bold.woff2) format("woff2"),
+    url(/fonts/subset-SFRounded-Bold.woff) format("woff");
+  font-family: SFRounded;
+}
+
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 800;
+  src: url(/fonts/subset-SFRounded-Heavy.eot?) format("embedded-opentype"),
+    url(/fonts/subset-SFRounded-Heavy.woff2) format("woff2"),
+    url(/fonts/subset-SFRounded-Heavy.woff) format("woff");
+  font-family: SFRounded;
+}
+
+@font-face {
+  font-display: auto;
+  font-style: normal;
+  font-weight: 800;
+  src: url(/fonts/SF-Mono-Regular.eot?) format("embedded-opentype"),
+    url(/fonts/SF-Mono-Regular.woff2) format("woff2"),
+    url(/fonts/SF-Mono-Regular.woff) format("woff");
+  font-family: SFMono;
+}
+
 html,
 body {
-  font-family: "SF Pro Rounded", sans-serif;
-  font-weight: 500;
+  font-family: "SFRounded", sans-serif;
+  font-weight: 700;
 }
 
 /*
