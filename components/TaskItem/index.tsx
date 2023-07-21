@@ -19,7 +19,7 @@ export default function TaskItem({ id }) {
       <div className="w-full">
         <div className="w-full flex border-b pb-2 justify-between items-start gap-4">
           <div className="flex flex-col flex-1 max-w-sm">
-            <p className="flex gap-2">
+            <p className="flex gap-2 font-bold">
               <span className="text-red-500 mr-2">!!!</span>
               Configure Domain Name for the idea factory company
             </p>
@@ -27,11 +27,11 @@ export default function TaskItem({ id }) {
               Its crucial to get this done as soon as possible, we rely on it to
               get more funding. Which we can agree we critically need
             </p>
-            <p className="text-sm mt-1">
+            <p className="text-sm mt-1 font-bold">
               <span className="mr-2">28/7/2023 12:00 PM</span>
               <span className="text-blue-600">Due in 2 days</span>
             </p>
-            <button className="text-sm mt-1">
+            <button className="text-sm mt-1 font-bold">
               <span className="flex items-center gap-2 text-orange-500">
                 <ClockIcon className="w-4 h-4" />1 hour before
               </span>
@@ -46,10 +46,10 @@ export default function TaskItem({ id }) {
           </div>
         </div>
         <div className="mt-2 flex gap-4">
-          <button className="text-sm flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2">
+          <button className="text-sm font-bold flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2">
             <ListBulletIcon className="w-4 h-4" />3 Tasks
           </button>
-          <button className="text-sm flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2">
+          <button className="text-sm flex font-bold gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2">
             <RectangleStackIcon className="w-4 h-4" />
             Personal Website
           </button>
@@ -60,7 +60,7 @@ export default function TaskItem({ id }) {
               type="checkbox"
               className="w-4 h-4 rounded-xl border-blue-500 checked:bg-blue-600 checked:border-transparent"
             />
-            <p className="line-clamp-1 py-2 group-checked:text-zinc-400 border-b w-full text-sm">
+            <p className="line-clamp-1 py-2 group-checked:text-zinc-400 text-zinc-600 border-b w-full text-sm">
               Update nameservers for domain
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function TaskItem({ id }) {
               type="checkbox"
               className="w-4 h-4 rounded-xl border-blue-500 checked:bg-blue-600 checked:border-transparent"
             />
-            <p className="line-clamp-1 py-2 border-b w-full text-sm">
+            <p className="line-clamp-1 py-2 border-b w-full text-sm text-zinc-600">
               Go to the bank and get a new card
             </p>
           </div>

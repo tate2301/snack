@@ -91,7 +91,7 @@ function TaskHeader({}) {
         <input type="checkbox" className="w-4 h-4 rounded-xl mt-1" />
         <div className="w-full flex pb-2 justify-between items-start gap-8">
           <div className="flex flex-col flex-1 max-w-sm">
-            <p className="flex gap-2">
+            <p className="flex gap-2 font-bold">
               <span className="text-red-500 mr-2">!!!</span>
               Configure Domain Name for the idea factory company
             </p>
