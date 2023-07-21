@@ -12,7 +12,7 @@ export default function Task() {
   return (
     <main className="h-full w-full flex flex-col justify-between overflow-y-auto">
       <div className="bg-zinc-50">
-        <div className="p-4">
+        <div className="px-4 py-2">
           <BackButton />
         </div>
         <TaskHeader />
