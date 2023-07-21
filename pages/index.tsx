@@ -21,27 +21,6 @@ export default function Page() {
   return (
     <main className="h-full w-full flex flex-col justify-between">
       <div className="flex-1 overflow-y-auto">
-        <div className="w-full border-b border-zinc-200">
-          <div className="p-4 flex justify-between items-center">
-            <div>
-              <p className="text-xl  text-zinc-800 lowercase">
-                {new Date().toLocaleTimeString("en-US", {
-                  hour12: true,
-                  timeStyle: "short",
-                })}
-              </p>
-              <p className="text-sm text-zinc-500">
-                {new Date().toDateString()}
-              </p>
-            </div>
-            <img
-              src="https://www.typescriptdev.xyz/assets/avatar.jpg"
-              alt="Next.js Logo"
-              className="h-8 w-8 mr-4 rounded-full"
-            />
-          </div>
-        </div>
-
         <div className="p-4">
           <div className="flex flex-col mt-2 gap-4">
             <TaskItem id={1} />

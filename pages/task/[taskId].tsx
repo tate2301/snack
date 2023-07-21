@@ -18,24 +18,12 @@ export default function Task() {
         <TaskHeader />
       </div>
       <div className="flex flex-col gap-4 flex-1 mt-4">
-        <div className="flex justify-between items-start w-full p-4">
-          <div className="flex-shrink-0 flex flex-col gap-2 items-start">
-            <button className="px-2 py-2 rounded-xl bg-zinc-50 flex items-center gap-2 border text-sm">
-              <ClockIcon className="w-4 h-4" />
-              Pomodoro - 25m
+        <div className="items-center flex w-full justify-center gap-8">
+          <p className="text-3xl">00:00:00</p>
+          <div className="flex gap-4 items-center">
+            <button className="flex gap-4 items-center text-white bg-purple-600 p-2 rounded-full opacity-0 md:opacity-100 transition-all duration-200">
+              <PlayIcon className="w-4 h-4" />
             </button>
-            <button className="px-2 py-2 rounded-xl bg-zinc-50 flex gap-2 items-center border text-sm">
-              <BoltIcon className="w-4 h-4" />
-              Blitz
-            </button>
-          </div>
-          <div className="items-center flex w-full justify-end gap-8">
-            <p className="text-3xl">00:00:00</p>
-            <div className="flex gap-4 items-center">
-              <button className="flex gap-4 items-center text-white bg-blue-600 p-2 rounded-full opacity-0 md:opacity-100 transition-all duration-200">
-                <PlayIcon className="w-4 h-4" />
-              </button>
-            </div>
           </div>
         </div>
         <div className="p-4">
