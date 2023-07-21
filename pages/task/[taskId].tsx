@@ -20,13 +20,13 @@ export default function Task() {
       <div className="flex flex-col gap-4 flex-1 mt-4">
         <div className="flex justify-between items-start w-full p-4">
           <div className="flex-shrink-0 flex flex-col gap-2 items-start">
-            <button className="px-2 py-2 rounded-xl bg-zinc-50 pr-8 flex items-center gap-2 border text-sm">
+            <button className="px-2 py-2 rounded-xl bg-zinc-50 flex items-center gap-2 border text-sm">
               <ClockIcon className="w-4 h-4" />
               Pomodoro - 25m
             </button>
-            <button className="px-2 py-2 rounded-xl bg-zinc-50 flex gap-2 pr-8 items-center border text-sm">
+            <button className="px-2 py-2 rounded-xl bg-zinc-50 flex gap-2 items-center border text-sm">
               <BoltIcon className="w-4 h-4" />
-              Continous
+              Blitz
             </button>
           </div>
           <div className="items-center flex w-full justify-end gap-8">

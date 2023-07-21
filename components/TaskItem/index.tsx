@@ -38,9 +38,6 @@ export default function TaskItem({ id }) {
             </button>
           </div>
           <div className="flex-shrink-0 flex gap-4 items-center">
-            <button className=" text-zinc-500 opacity-0 md:opacity-100 transition-all duration-200">
-              <ExclamationCircleIcon className="w-5 h-5" />
-            </button>
             <Link href={`/task/${id}`} className="items-start flex">
               <button className=" text-blue-600 opacity-0 md:opacity-100 transition-all duration-200">
                 <ChevronRightIcon className="w-5 h-5" />
