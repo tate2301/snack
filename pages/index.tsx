@@ -7,11 +7,14 @@ import {
   CalendarDaysIcon,
   ChevronRightIcon,
   ClockIcon,
+  ExclamationCircleIcon,
+  ListBulletIcon,
   PlayIcon,
   PlusIcon,
+  RectangleStackIcon,
   Square3Stack3DIcon,
   UserCircleIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/outline";
 
 export default function Page() {
   return (
@@ -39,7 +42,7 @@ export default function Page() {
         </div>
         <div className="p-4">
           <div className="flex justify-between items-baseline">
-            <p className="text-sm text-zinc-600">Projects</p>
+            <p className="font-semibold">Projects</p>
             <button className="text-sm text-blue-600 font-semibold">
               See All
             </button>
@@ -63,6 +66,69 @@ export default function Page() {
               href="https://www.typescriptlang.org"
               icon="https://ui-avatars.com/api/?name=Javascript+CSS"
             />
+          </div>
+        </div>
+        <div className="p-4">
+          <div className="flex justify-between items-baseline">
+            <p className="font-semibold">Tasks</p>
+            <button className="text-sm text-blue-600 font-semibold">
+              See All
+            </button>
+          </div>
+          <div className="flex flex-col mt-4 gap-2">
+            <div className="py-2 rounded-xl flex justify-between items-start">
+              <div className="flex gap-4 items-start">
+                <input
+                  className="rounded-xl w-4 h-4 mt-1 border-blue-500 checked:bg-blue-600 checked:border-transparent"
+                  type="checkbox"
+                />
+                <div className="flex flex-col">
+                  <p className="font-semibold">Create a new project</p>
+                  <p className="text-sm text-zinc-600">Next.js</p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 flex gap-2 items-center">
+                <button className="text-sm font-semibold text-zinc-600">
+                  00:00:00
+                </button>
+                <button className="font-semibold text-blue-600">
+                  <ExclamationCircleIcon className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
+            <div className="py-2 rounded-xl flex justify-between items-start">
+              <div className="flex gap-4 items-start">
+                <input
+                  className="rounded-xl w-4 h-4 mt-1 border-blue-500 checked:bg-blue-600 checked:border-transparent"
+                  type="checkbox"
+                />
+                <div className="flex flex-col">
+                  <p className="font-semibold">
+                    <span className="text-red-500 mr-2">!!!</span>
+                    Create a new project
+                  </p>
+                  <p className="text-sm text-zinc-600">Next.js</p>
+                  <p className="text-sm">
+                    <span className="mr-2">28/7/2023 12:00 PM</span>
+                    <span className="text-blue-600">Due in 2 days</span>
+                  </p>
+                  <div className="mt-4 flex gap-4">
+                    <button className="text-sm flex gap-2 items-center font-semibold text-zinc-600 rounded-lg bg-zinc-100 py-1 px-2">
+                      <ListBulletIcon className="w-4 h-4" />3 Tasks
+                    </button>
+                    <button className="text-sm flex gap-2 items-center font-semibold text-zinc-600 rounded-lg bg-zinc-100 py-1 px-2">
+                      <RectangleStackIcon className="w-4 h-4" />
+                      Personal Website
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-shrink-0 flex gap-2 items-center">
+                <button className="font-semibold text-blue-600">
+                  <ExclamationCircleIcon className="w-6 h-6" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
