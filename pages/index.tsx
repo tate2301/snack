@@ -40,41 +40,8 @@ export default function Page() {
             />
           </div>
         </div>
+
         <div className="p-4">
-          <div className="flex justify-between items-baseline">
-            <p className="font-semibold">Projects</p>
-            <button className="text-sm text-blue-600 font-semibold">
-              See All
-            </button>
-          </div>
-          <div className="flex flex-col mt-4 rounded-xl ">
-            <HomeCard
-              title="Next.js"
-              description="The React Framework for Production"
-              href="https://nextjs.org"
-              icon="https://ui-avatars.com/api/?name=John+Doe"
-            />
-            <HomeCard
-              title="Tailwind CSS"
-              description="Rapidly build modern websites without ever leaving your HTML."
-              href="https://tailwindcss.com"
-              icon="https://ui-avatars.com/api/?name=Tailwind+CSS"
-            />
-            <HomeCard
-              title="TypeScript"
-              description="TypeScript extends JavaScript by adding types."
-              href="https://www.typescriptlang.org"
-              icon="https://ui-avatars.com/api/?name=Javascript+CSS"
-            />
-          </div>
-        </div>
-        <div className="p-4">
-          <div className="flex justify-between items-baseline">
-            <p className="font-semibold">Tasks</p>
-            <button className="text-sm text-blue-600 font-semibold">
-              See All
-            </button>
-          </div>
           <div className="flex flex-col mt-4 gap-2">
             <div className="py-2 rounded-xl flex justify-between items-start">
               <div className="flex gap-4 items-start">
@@ -96,7 +63,7 @@ export default function Page() {
                 </button>
               </div>
             </div>
-            <div className="py-2 rounded-xl flex justify-between items-start">
+            <div className="py-2 rounded-xl group flex justify-between items-start">
               <div className="flex gap-4 items-start">
                 <input
                   className="rounded-xl w-4 h-4 mt-1 border-blue-500 checked:bg-blue-600 checked:border-transparent"
@@ -121,10 +88,30 @@ export default function Page() {
                       Personal Website
                     </button>
                   </div>
+                  <div className="mt-4 flex flex-col">
+                    <div className="flex gap-4 items-center">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded-xl border-blue-500 checked:bg-blue-600 checked:border-transparent"
+                      />
+                      <p className="line-clamp-1 py-2 border-b w-full text-sm">
+                        Update nameservers for domain
+                      </p>
+                    </div>
+                    <div className="flex gap-4 items-center">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded-xl border-blue-500 checked:bg-blue-600 checked:border-transparent"
+                      />
+                      <p className="line-clamp-1 py-2 border-b w-full text-sm">
+                        Go to the bank and get a new card
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="flex-shrink-0 flex gap-2 items-center">
-                <button className="font-semibold text-blue-600">
+                <button className="font-semibold text-blue-600 hidden group-hover:flex transition-all duration-200">
                   <ExclamationCircleIcon className="w-6 h-6" />
                 </button>
               </div>
