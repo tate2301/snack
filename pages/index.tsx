@@ -17,6 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 import TaskItem from "../components/TaskItem";
 import { motion } from "framer-motion";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 export default function Page() {
   return (
@@ -42,6 +43,14 @@ export default function Page() {
           <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
             <p className="text-xl font-bold">23</p>
             <p className="text-sm">Fri</p>
+          </div>
+          <div className="px-4 flex flex-col gap-2">
+            <button>
+              <CalendarDaysIcon className="w-5 h-5" />
+            </button>
+            <button>
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
           </div>
         </div>
         <div className="p-4">
