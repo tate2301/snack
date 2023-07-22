@@ -23,10 +23,7 @@ export default function TaskItem({ id }) {
   const expand = () => setIsExpanded(!isExpanded);
   return (
     <div className="py-2 rounded-xl group flex gap-4 items-start w-full">
-      <input
-        className="rounded-xl w-4 h-4 mt-1 border-blue-500 checked:bg-blue-600 checked:border-transparent"
-        type="checkbox"
-      />
+      <input className="rounded-xl mt-1" type="checkbox" />
 
       <AnimatePresence>
         <div className="w-full">

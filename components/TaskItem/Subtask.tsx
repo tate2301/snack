@@ -14,12 +14,7 @@ export default function Subtask({}) {
 
   return (
     <div className="flex gap-4 items-center group">
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={check}
-        className="w-4 h-4 rounded-xl border-blue-500 checked:bg-blue-600 checked:border-transparent"
-      />
+      <input type="checkbox" checked={checked} onChange={check} />
       <motion.p
         variants={taskTextVariants}
         animate={checked ? "checked" : "unchecked"}

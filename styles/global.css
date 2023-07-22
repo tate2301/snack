@@ -89,3 +89,7 @@ p,
 span {
   @apply outline-none;
 }
+
+input[type="checkbox"] {
+  @apply h-4 w-4 rounded-xl accent-green-600 font-bold stroke-2;
+}
