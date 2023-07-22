@@ -28,14 +28,35 @@ export default function TaskItem({ id }) {
 
       <div className="w-full">
         <div className="w-full flex border-b pb-2 justify-between items-start gap-4">
-          <div className="flex flex-col flex-1 max-w-sm">
-            <p className="flex gap-2 font-bold">
-              <span className="text-red-500">!!!</span>
-              <span contentEditable>
-                {" "}
-                Configure Domain Name for the idea factory company
-              </span>
-            </p>
+          <div className="flex flex-col flex-1">
+            <div className="flex justify-between items-start">
+              <p className="flex gap-2 font-bold">
+                <span className="text-red-500">!!!</span>
+                <span contentEditable>
+                  {" "}
+                  Configure Domain Name for the idea factory company
+                </span>
+              </p>
+              <div className="flex-shrink-0 flex gap-4 items-center">
+                <button
+                  onClick={expand}
+                  className="flex items-center gap-2 transition-all duration-200"
+                >
+                  3{" "}
+                  {isExpanded ? (
+                    <ChevronDownIcon className="w-4 h-4" />
+                  ) : (
+                    <ChevronRightIcon className="w-4 h-4" />
+                  )}
+                </button>
+                <Link href={`/task/${id}`} className="items-start flex">
+                  <button className="transition-all duration-200">
+                    <InformationCircleIcon className="w-5 h-5" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+
             <p
               contentEditable
               className={`text-sm text-zinc-400 mt-2 ${
@@ -59,24 +80,6 @@ export default function TaskItem({ id }) {
                 before
               </span>
             </button>
-          </div>
-          <div className="flex-shrink-0 flex gap-4 items-center">
-            <button
-              onClick={expand}
-              className="flex items-center gap-2 transition-all duration-200"
-            >
-              3{" "}
-              {isExpanded ? (
-                <ChevronDownIcon className="w-4 h-4" />
-              ) : (
-                <ChevronRightIcon className="w-4 h-4" />
-              )}
-            </button>
-            <Link href={`/task/${id}`} className="items-start flex">
-              <button className="transition-all duration-200">
-                <InformationCircleIcon className="w-5 h-5" />
-              </button>
-            </Link>
           </div>
         </div>
         <motion.div layout>
