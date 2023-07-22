@@ -44,14 +44,14 @@ export default function Page() {
             <p className="text-sm">Fri</p>
           </div>
         </div>
-        <div className="px-4">
+        <div className="p-4">
           <button className="flex gap-4 items-center text-blue-600 font-bold">
             <PlusIcon className="w-4 h-4" />
             <p>Add a Funky Task</p>
           </button>
         </div>
         <div className="p-4">
-          <motion.div layout className="flex flex-col mt-2">
+          <motion.div layout className="flex flex-col">
             <TaskItem id={1} />
             <TaskItem id={2} />
             <TaskItem id={3} />
