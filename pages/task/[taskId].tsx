@@ -11,24 +11,30 @@ import { useRouter } from "next/router";
 export default function Task() {
   return (
     <main className="h-full w-full flex flex-col justify-between overflow-y-auto">
-      <div className="bg-zinc-50">
+      <div>
         <div className="px-4 py-2">
           <BackButton />
         </div>
         <TaskHeader />
       </div>
       <div className="flex flex-col gap-4 flex-1 mt-4">
-        <div className="items-center flex w-full justify-center gap-8">
-          <p className="text-3xl">00:00:00</p>
-          <div className="flex gap-4 items-center">
-            <button className="flex gap-4 items-center text-white bg-purple-600 p-2 rounded-full opacity-0 md:opacity-100 transition-all duration-200">
-              <PlayIcon className="w-4 h-4" />
-            </button>
+        <div className="py-4 grid grid-cols-2 gap-8">
+          <div className="bg-zinc-50 p-4 rounded-xl">
+            <div>
+              <div className="flex gap-4 items-center">
+                <button className="flex gap-4 items-center text-white bg-purple-600 p-2 rounded-full opacity-0 md:opacity-100 transition-all duration-200">
+                  <PlayIcon className="w-4 h-4" />
+                </button>
+              </div>
+              <p className="text-xl font-bold mt-2">00:00:00</p>
+            </div>
+            <p className="text-sm text-zinc-500 mt-4">00:00:00 total</p>
           </div>
+          <div className="items-center flex w-full justify-center gap-8"></div>
         </div>
-        <div className="p-4">
+        <div className="p-4 rounded-xl bg-zinc-50">
           <div className="flex justify-between items-baseline text-sm">
-            <p className="text-zinc-400">Subtasks Queue</p>
+            <p>Subtasks Queue</p>
           </div>
           <div className="mt-2 flex flex-col gap-2">
             <div className="items-start flex gap-4">
