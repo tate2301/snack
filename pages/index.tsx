@@ -47,7 +47,7 @@ export default function Page() {
         <div className="px-4">
           <button className="flex gap-4 items-center text-blue-600 font-bold">
             <PlusIcon className="w-4 h-4" />
-            <p>Add New Task</p>
+            <p>Add a Funky Task</p>
           </button>
         </div>
         <div className="p-4">
