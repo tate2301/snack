@@ -40,7 +40,7 @@ export default function Page() {
             <p className="text-xl font-bold">23</p>
             <p className="text-sm">Fri</p>
           </div>
-          <div className="px-4 flex flex-col  justify-between">
+          <div className="px-4 flex flex-col justify-between h-full">
             <button className="p-2 rounded bg-zinc-50">
               <CalendarDaysIcon className="w-4 h-4" />
             </button>
