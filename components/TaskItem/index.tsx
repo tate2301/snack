@@ -66,9 +66,9 @@ export default function TaskItem({ id }) {
               Its crucial to get this done as soon as possible, we rely on it to
               get more funding. Which we can agree we critically need
             </p>
-            <p className="text-sm mt-1 font-bold">
+            <p className="text-sm text-zinc-600 mt-1 font-bold">
               <span className="mr-2">28/7/2023 12:00 PM</span>
-              <span className="text-blue-600">Due in 2 days</span>
+              <span className="">Due in 2 days</span>
             </p>
             <button className="text-sm mt-1 font-bold">
               <span className="flex items-center gap-2 text-orange-500">
