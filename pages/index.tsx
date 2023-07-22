@@ -22,12 +22,8 @@ import { ChevronUpIcon } from "@heroicons/react/20/solid";
 export default function Page() {
   return (
     <main className="h-full w-full flex flex-col justify-between">
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto max-w-full">
         <div className="flex gap-2 items-center p-4">
-          <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
-            <p className="text-xl font-bold">19</p>
-            <p className="text-sm">Mon</p>
-          </div>
           <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
             <p className="text-xl font-bold">20</p>
             <p className="text-sm">Tue</p>
@@ -44,12 +40,12 @@ export default function Page() {
             <p className="text-xl font-bold">23</p>
             <p className="text-sm">Fri</p>
           </div>
-          <div className="px-4 flex flex-col gap-2">
-            <button>
-              <CalendarDaysIcon className="w-5 h-5" />
+          <div className="px-4 flex flex-col  justify-between">
+            <button className="p-2 rounded bg-zinc-50">
+              <CalendarDaysIcon className="w-4 h-4" />
             </button>
-            <button>
-              <ChevronRightIcon className="w-5 h-5" />
+            <button className="p-2 rounded bg-zinc-50">
+              <ChevronRightIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
