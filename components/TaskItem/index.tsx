@@ -1,4 +1,4 @@
-import { ClockIcon, ListBulletIcon, RectangleStackIcon } from '@heroicons/react/24/outline';
+import { ArchiveBoxIcon, ClockIcon, ListBulletIcon, RectangleStackIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
@@ -7,6 +7,12 @@ import Subtask from './Subtask';
 import useToggle from '../../lib/hooks/useToggle';
 import clsx from 'clsx';
 
+const useWhileHover = () => {
+	const [isHovering, toggleHovering] = useToggle(false);
+	const hover = () => toggleHovering();
+	return { isHovering, hover };
+};
+
 export default function TaskItem({ id }) {
 	const [isComplete, toggleComplete] = useToggle(false);
 	const [isShowing, setIsShowing] = useState(false);
@@ -14,8 +20,10 @@ export default function TaskItem({ id }) {
 
 	const [isExpanded, setIsExpanded] = useState(false);
 	const expand = () => setIsExpanded(!isExpanded);
+	const { isHovering, hover } = useWhileHover();
 	return (
-		<div className='py-2 rounded-xl group flex gap-2 items-start w-full'>
+		<div onMouseEnter={hover} onMouseLeave={hover}
+				 className='py-2 rounded-xl group flex gap-2 items-start w-full group'>
 			<input
 				checked={isComplete}
 				className='rounded-xl mt-1'
@@ -25,7 +33,8 @@ export default function TaskItem({ id }) {
 
 			<AnimatePresence>
 				<div className='w-full'>
-					<div className='w-full flex border-b pb-2 justify-between items-start gap-4'>
+					<div className='w-full flex border-b pb-2 justify-between items-start gap-4 relative'>
+
 						<div className='flex flex-col flex-1'>
 							<div className='flex gap-1 justify-between items-start'>
 
@@ -64,16 +73,38 @@ export default function TaskItem({ id }) {
 											<span className='mr-2'>28/7/2023 12:00 PM</span>
 											<span className=''>Due in 2 days</span>
 										</p>
-										<button className='text-sm mt-1 font-bold'>
-                      <span className='flex items-center gap-2 text-orange-500'>
-                        <ClockIcon className='w-4 h-4' />
-												{timeDifference(
-													new Date('2023-07-21T12:00:00.000Z'),
-													new Date(),
-												)}{' '}
-												before
-                      </span>
-										</button>
+										<AnimatePresence>
+											{isHovering && (
+												<motion.div
+													initial={{ opacity: 1, height: 0 }}
+													animate={{ opacity: 1, height: 'auto' }}
+													exit={{ opacity: 0, height: 0 }}
+													transition={{ ease: 'linear', delay: 0.001 }}
+
+													className={`flex gap-2 items-center mt-1 justify-between`}>
+													<button className='text-sm mt-1 font-bold'>
+												<span className='flex items-center gap-2 text-orange-500'>
+													<ClockIcon className='w-4 h-4' />
+													{timeDifference(
+														new Date('2023-07-21T12:00:00.000Z'),
+														new Date(),
+													)}{' '}
+													before
+												</span>
+													</button>
+													<div className={`flex gap-2 items-center`}>
+														<button className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 right-0'}
+																		onClick={expand}>
+															<ArchiveBoxIcon className={'w-4 h-4'} />
+														</button>
+														<button className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 right-0'}
+																		onClick={expand}>
+															<TrashIcon className={'w-4 h-4'} />
+														</button>
+													</div>
+												</motion.div>
+											)}
+										</AnimatePresence>
 									</>
 								)}
 							</motion.div>

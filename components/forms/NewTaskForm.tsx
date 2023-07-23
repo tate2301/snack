@@ -1,39 +1,25 @@
-import {
-  BriefcaseIcon,
-  CalendarDaysIcon,
-  ClockIcon,
-  PlayIcon,
-  UserCircleIcon,
-} from "@heroicons/react/20/solid";
+import { PlayIcon } from '@heroicons/react/20/solid';
+import { motion } from 'framer-motion';
+import useToggle from '../../lib/hooks/useToggle';
+import TaskItem from '../TaskItem';
 
 export default function NewTaskForm() {
-  return (
-    <div className="p-4 group">
-      <input
-        type="text"
-        className="w-full border border-zinc-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-        placeholder="What are you working on?"
-      />
-      <div className="flex justify-between items-center mt-2">
-        <div className="flex gap-5 items-center">
-          <button className="">
-            <BriefcaseIcon className="w-5 h-5" />
-          </button>
-          <button className="">
-            <UserCircleIcon className="w-5 h-5" />
-          </button>
-          <button className="">
-            <CalendarDaysIcon className="w-5 h-5" />
-          </button>
-          <button className="">
-            <ClockIcon className="w-5 h-5" />
-          </button>
-        </div>
-        <button className="px-2 py-1 text-sm rounded-lg flex gap-2 items-center  text-white bg-blue-600">
-          <PlayIcon className="w-5 h-5" />
-          Start Timer
-        </button>
-      </div>
-    </div>
-  );
+	const [isExpanded, toggle] = useToggle(false);
+	return (
+		<motion.div>
+			{
+				!isExpanded && <motion.div initial={{ opacity: 0 }}
+																	 animate={{ opacity: 1 }}
+																	 exit={{ opacity: 0 }}>
+					<button
+						onClick={toggle}
+						className='flex gap-2 items-center py-2 rounded-lg'>
+						<PlayIcon className='w-4 h-4' />
+						<p>Start a new task</p>
+					</button>
+				</motion.div>
+			}
+			{isExpanded && <TaskItem id={0} />}
+		</motion.div>
+	);
 }
