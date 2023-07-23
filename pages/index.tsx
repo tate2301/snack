@@ -23,7 +23,11 @@ const generateDeltaDays = (delta: number): Array<{ date: number, day: string, is
 	return days;
 };
 
-const DateItem = ({ date, day, isActive }) => {
+const DateItem = ({ date, day, isActive }: {
+	date: number,
+	day: string,
+	isActive?: boolean,
+}) => {
 	const ref = useRef(null);
 	useEffect(() => {
 		if (isActive && ref.current) {
