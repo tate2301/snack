@@ -30,8 +30,7 @@ export abstract class AbstractTask implements TrackerTask {
 		timer: Timer | null,
 		project: string,
 		website?: string,
-		parentTask?: TrackerTask | null
-
+		parentTask?: TrackerTask | null,
 	) {
 		this.id = id;
 		this.isShowing = isShowing;
@@ -50,15 +49,25 @@ export abstract class AbstractTask implements TrackerTask {
 	}
 
 	abstract markComplete(): void;
+
 	abstract markIncomplete(): void;
+
 	abstract addSubtask(subtask: TrackerTask): void;
+
 	abstract removeSubtask(subtaskId: string): void;
+
 	abstract updateSubtask(subtaskId: string, updatedSubtask: TrackerTask): void;
+
 	abstract assignPerson(person: Person): void;
+
 	abstract unassignPerson(personId: string): void;
+
 	abstract addTag(tag: string): void;
+
 	abstract removeTag(tag: string): void;
+
 	abstract startTimer(): void;
+
 	abstract stopTimer(): void;
 
 	getTaskHierarchy(): string {
