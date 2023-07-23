@@ -18,36 +18,57 @@ import {
 import TaskItem from "../components/TaskItem";
 import { motion } from "framer-motion";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
+import {useEffect, useRef} from "react";
+
+const generateDeltaDays = (delta: number): Array<{date: number, day: string, isActive?: boolean}> => {
+    // return delta days before today + today + delta days after today
+    const today = new Date();
+    const days = [];
+    for (let i = -delta; i <= delta; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() + i);
+        days.push({
+            date: date.getDate(),
+            day: date.toLocaleString('default', { weekday: 'short' }),
+            isActive: i === 0
+        });
+    }
+    return days;
+}
+
+const DateItem = ({ date, day, isActive }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (isActive && ref.current) {
+      // scroll parent to position this element in the center x-axis
+      const el = ref.current;
+        const parent = el.parentElement;
+        const parentRect = parent.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const scrollLeft = elRect.left - parentRect.left - (parentRect.width - elRect.width) / 2;
+        parent.scrollTo({left: scrollLeft, behavior: "smooth"});
+    }
+  }, [isActive]);
+
+    return(
+        <div ref={ref} className={clsx(["p-4 py-2 flex items-center border flex-col gap-1 rounded-lg text-center relative", !isActive && "text-zinc-500", isActive && "bg-zinc-950 text-white shadow border-none"])}>
+          <div className={"h-2 w-2 rounded-full bg-orange-500 absolute top-1 right-1"} />
+          <p className="text-xl font-bold">{date}</p>
+            <p className="text-sm">{day}</p>
+        </div>
+    )
+}
 
 export default function Page() {
   return (
     <main className="h-full w-full flex flex-col justify-between">
-      <div className="flex-1 overflow-y-auto max-w-full">
-        <div className="flex gap-2 items-center p-4">
-          <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
-            <p className="text-xl font-bold">20</p>
-            <p className="text-sm">Tue</p>
-          </div>
-          <div className="p-4 py-2 shadow flex items-center flex-col gap-1 rounded-xl text-center bg-zinc-950 text-white">
-            <p className="text-xl font-bold">21</p>
-            <p className="text-sm">Wed</p>
-          </div>
-          <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
-            <p className="text-xl font-bold">22</p>
-            <p className="text-sm">Thu</p>
-          </div>
-          <div className="p-4 py-2 flex items-center border flex-col gap-1 rounded-xl text-centers">
-            <p className="text-xl font-bold">23</p>
-            <p className="text-sm">Fri</p>
-          </div>
-          <div className="px-4 flex flex-col justify-between h-full gap-1">
-            <button className="p-2 rounded bg-zinc-100">
-              <CalendarDaysIcon className="w-4 h-4" />
-            </button>
-            <button className="p-2 rounded bg-zinc-100">
-              <ChevronRightIcon className="w-4 h-4" />
-            </button>
-          </div>
+      <div className="flex-1 max-w-full">
+        <div className="flex gap-2 items-center p-4 overflow-x-hidden snap-mandatory snap-center">
+          {
+            generateDeltaDays(4).map((day, i) => (
+                <DateItem key={i} {...day} />))
+          }
         </div>
         <div className="p-4">
           <button className="flex gap-4 items-center text-blue-600 font-bold">
@@ -62,9 +83,6 @@ export default function Page() {
             <TaskItem id={3} />
           </motion.div>
         </div>
-      </div>
-      <div className="p-4">
-        <CreateItemMenu />
       </div>
     </main>
   );

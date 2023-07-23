@@ -82,7 +82,7 @@ body {
 }
 
 svg {
-  @apply stroke-2;
+  stroke-width: 2px;
 }
 
 p,
@@ -91,5 +91,13 @@ span {
 }
 
 input[type="checkbox"] {
-  @apply h-4 w-4 rounded-xl accent-green-600 font-bold stroke-2;
+  @apply h-4 w-4 font-bold stroke-2 border-2 border-zinc-200;
+}
+
+input[type="checkbox"]:checked {
+  @apply ring-2 ring-blue-600 ring-offset-2;
+}
+
+button {
+  @apply p-1 font-bold;
 }
