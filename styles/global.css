@@ -91,11 +91,15 @@ span {
 }
 
 input[type="checkbox"] {
-    @apply h-4 w-4 font-bold stroke-2 border-2 border-zinc-200 rounded;
+    @apply outline-0 h-4 w-4 ring-0 ring-offset-2 dark:ring-offset-zinc-600 ring-offset-zinc-200 font-bold stroke-2 border-0 border-zinc-200 rounded dark:bg-zinc-800 bg-zinc-50 ;
+}
+
+input[type="checkbox"]:focus {
+    @apply outline-0 ring-0;
 }
 
 input[type="checkbox"]:checked {
-    @apply ring-2 ring-blue-600 ring-offset-2;
+    @apply outline-0 ring-0 ring-offset-2 dark:accent-blue-600 accent-blue-600 dark:bg-blue-600 border-0 ring-offset-blue-600 dark:ring-offset-blue-600;
 }
 
 button {

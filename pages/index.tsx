@@ -4,7 +4,7 @@ import { ChevronRightIcon, Square3Stack3DIcon } from '@heroicons/react/24/outlin
 import TaskItem from '../components/TaskItem';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import NewTaskForm from '../components/forms/NewTaskForm';
 
 const generateDeltaDays = (delta: number): Array<{ date: number, day: string, isActive?: boolean }> => {
@@ -63,8 +63,31 @@ export default function Page() {
 				</div>
 				<NewTaskForm />
 				<div className='px-2'>
-					<motion.div layout className='flex flex-col'>
-						<TaskItem id={1} />
+					<motion.div layout className='flex flex-col mb-4'>
+						<div className={'mb-2'}>
+							<SectionHeading>
+								In Focus
+							</SectionHeading>
+						</div>
+						<div className={'p-2 rounded bg-zinc-900 rounded-xl dark'}>
+							<TaskItem id={2} inFocus />
+						</div>
+					</motion.div>
+					<motion.div layout className='flex flex-col mb-4'>
+						<div className={'mb-2'}>
+							<SectionHeading>
+								Awaiting next action
+							</SectionHeading>
+						</div>
+						<TaskItem id={2} />
+						<TaskItem id={3} />
+					</motion.div>
+					<motion.div layout className='flex flex-col mb-4'>
+						<div className={'mb-2'}>
+							<SectionHeading>
+								Now or maybe later?
+							</SectionHeading>
+						</div>
 						<TaskItem id={2} />
 						<TaskItem id={3} />
 					</motion.div>
@@ -73,6 +96,13 @@ export default function Page() {
 		</main>
 	);
 }
+
+const SectionHeading = (props: { children: ReactNode }) => (
+	<h2
+		className={'uppercase text-zinc-500 text-sm before:min-w-1/4 after:min-w-1/4 before:flex-1 after:flex-1 gap-4 before:border-zinc-200 after:border-zinc-200 before:border-b flex w-full justify-between after:border-b items-center'}>
+		{props.children}
+	</h2>
+);
 
 const HomeCard = ({ title, description, href, icon }) => {
 	return (

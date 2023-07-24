@@ -13,7 +13,7 @@ const useWhileHover = () => {
 	return { isHovering, hover };
 };
 
-export default function TaskItem({ id }) {
+export default function TaskItem({ id, inFocus }) {
 	const [isComplete, toggleComplete] = useToggle(false);
 	const [isShowing, setIsShowing] = useState(false);
 	const toggle = () => setIsShowing(!isShowing);
@@ -22,140 +22,157 @@ export default function TaskItem({ id }) {
 	const expand = () => setIsExpanded(!isExpanded);
 	const { isHovering, hover } = useWhileHover();
 	return (
-		<div onMouseEnter={hover} onMouseLeave={hover}
-				 className='py-2 rounded-xl group flex gap-2 items-start w-full group'>
-			<input
-				checked={isComplete}
-				className='rounded-xl mt-1'
-				type='checkbox'
-				onChange={toggleComplete}
-			/>
+		<div>
+			{inFocus &&
+				<button
+					className='text-sm flex font-bold gap-2 items-center text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-300 border border-zinc-800 shadow py-1 px-2'>
+					<RectangleStackIcon className='w-4 h-4' />
+					Personal Website
+				</button>
+			}
 
-			<AnimatePresence>
-				<div className='w-full'>
-					<div className='w-full flex border-b pb-2 justify-between items-start gap-4 relative'>
+			<div onMouseEnter={hover} onMouseLeave={hover}
+					 className='py-2 rounded-xl group flex gap-2 items-start w-full group dark:text-white'>
+				<input
+					checked={isComplete}
+					className='rounded-xl mt-1'
+					type='checkbox'
+					onChange={toggleComplete}
+				/>
 
-						<div className='flex flex-col flex-1'>
-							<div className='flex gap-1 justify-between items-start'>
+				<AnimatePresence>
+					<div className='w-full'>
+						<div className='w-full flex justify-between items-start gap-4 relative'>
 
-								<p className={clsx(
-									'font-bold transition-all inline',
-									isComplete ? 'line-through text-zinc-400 line-clamp-1' : 'font-bold',
-								)}>
-									<button
-										onClick={expand}
-										className='flex items-center gap-2 transition-all duration-200 inline-flex'
-									>
-										<motion.span initial={{ transform: 'none' }}
-																 animate={{ transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
-											<ChevronDownIcon className='w-4 h-4' />
-										</motion.span>
-									</button>
-									<span contentEditable>
+							<div className='flex flex-col flex-1'>
+								<div className='flex gap-1 justify-between items-start'>
+
+									<p className={clsx(
+										'font-bold transition-all inline',
+										isComplete ? 'line-through dark:text-zinc-300 text-zinc-400 line-clamp-1' : 'font-bold',
+									)}>
+										<button
+											onClick={expand}
+											className='flex items-center gap-2 transition-all duration-200 inline-flex'
+										>
+											<motion.span initial={{ transform: 'none' }}
+																	 animate={{ transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
+												<ChevronDownIcon className='w-4 h-4' />
+											</motion.span>
+										</button>
+										<span contentEditable>
                     Configure Domain Name for the idea factory company
                   </span>
-								</p>
+									</p>
+								</div>
+								<motion.div>
+									{(!isComplete || isExpanded) && (
+										<>
+											{isExpanded && <p
+												contentEditable
+												className={`text-sm text-zinc-400 dark:text-zinc-300 mt-2 ${
+													isExpanded ? 'line-clamp-6' : 'line-clamp-2'
+												}`}
+											>
+												Its crucial to get this done as soon as possible, we rely
+												on it to get more funding. Which we can agree we
+												critically need
+											</p>}
+											<p className='text-sm dark:text-zinc-500 text-zinc-600 mt-1 font-bold'>
+												<span className='mr-2'>28/7/2023 12:00 PM</span>
+												{isExpanded && <span className=''>Due in 2 days</span>}
+											</p>
+											<AnimatePresence>
+												{isHovering && (
+													<motion.div
+														initial={{ opacity: 1, height: 0 }}
+														animate={{ opacity: 1, height: 'auto' }}
+														exit={{ opacity: 0, height: 0 }}
+														transition={{ ease: 'linear', delay: 0.001 }}
+
+														className={`flex gap-2 items-center mt-1 justify-between`}>
+														<button className='text-sm mt-1 font-bold'>
+														<span className='flex items-center gap-2 text-orange-500 dark:text-orange-300'>
+															<ClockIcon className='w-4 h-4' />
+															{timeDifference(
+																new Date('2023-07-21T12:00:00.000Z'),
+																new Date(),
+															)}{' '}
+															before
+														</span>
+														</button>
+														<div className={`flex gap-2 items-center`}>
+															<button
+																className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'}
+																onClick={expand}>
+																<ArchiveBoxIcon className={'w-4 h-4'} />
+															</button>
+															<button
+																className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'}
+																onClick={expand}>
+																<TrashIcon className={'w-4 h-4'} />
+															</button>
+														</div>
+													</motion.div>
+												)}
+											</AnimatePresence>
+										</>
+									)}
+								</motion.div>
 							</div>
-							<motion.div layout>
-								{(!isComplete || isExpanded) && (
-									<>
-										<p
-											contentEditable
-											className={`text-sm text-zinc-400 mt-2 ${
-												isExpanded ? 'line-clamp-6' : 'line-clamp-2'
-											}`}
-										>
-											Its crucial to get this done as soon as possible, we rely
-											on it to get more funding. Which we can agree we
-											critically need
-										</p>
-										<p className='text-sm text-zinc-600 mt-1 font-bold'>
-											<span className='mr-2'>28/7/2023 12:00 PM</span>
-											<span className=''>Due in 2 days</span>
-										</p>
-										<AnimatePresence>
-											{isHovering && (
-												<motion.div
-													initial={{ opacity: 1, height: 0 }}
-													animate={{ opacity: 1, height: 'auto' }}
-													exit={{ opacity: 0, height: 0 }}
-													transition={{ ease: 'linear', delay: 0.001 }}
-
-													className={`flex gap-2 items-center mt-1 justify-between`}>
-													<button className='text-sm mt-1 font-bold'>
-												<span className='flex items-center gap-2 text-orange-500'>
-													<ClockIcon className='w-4 h-4' />
-													{timeDifference(
-														new Date('2023-07-21T12:00:00.000Z'),
-														new Date(),
-													)}{' '}
-													before
-												</span>
-													</button>
-													<div className={`flex gap-2 items-center`}>
-														<button className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 right-0'}
-																		onClick={expand}>
-															<ArchiveBoxIcon className={'w-4 h-4'} />
-														</button>
-														<button className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 right-0'}
-																		onClick={expand}>
-															<TrashIcon className={'w-4 h-4'} />
-														</button>
-													</div>
-												</motion.div>
-											)}
-										</AnimatePresence>
-									</>
-								)}
-							</motion.div>
 						</div>
-					</div>
-					<motion.div layout>
-						{isExpanded && (
-							<motion.div
-								exit={{ height: 0, opacity: 0 }}
-								initial={{ height: 0, opacity: 0 }}
-								animate={{ height: 'auto', opacity: 1 }}
-								className='mt-2 flex gap-4'
-							>
-								<button
-									onClick={toggle}
-									className='text-sm font-bold flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2'
+						<motion.div layout>
+							{isExpanded && (
+								<motion.div
+									exit={{ height: 0, opacity: 0 }}
+									initial={{ height: 0, opacity: 0 }}
+									animate={{ height: 'auto', opacity: 1 }}
+									className='mt-2 flex gap-4'
 								>
-									<ListBulletIcon className='w-4 h-4' />3 Tasks
-								</button>
-								<button
-									className='text-sm flex font-bold gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 py-1 px-2'>
-									<RectangleStackIcon className='w-4 h-4' />
-									Personal Website
-								</button>
-							</motion.div>
-						)}
-					</motion.div>
-					<motion.div layout>
-						{isShowing && isExpanded && (
-							<motion.div
-								exit={{ height: 0, opacity: 0 }}
-								initial={{ height: 0, opacity: 0 }}
-								animate={{ height: 'auto', opacity: 1 }}
-								className='mt-2 flex flex-col'
-							>
-								<Subtask />
+									<button
+										onClick={toggle}
+										className='text-sm font-bold flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 py-1 px-2'
+									>
+										<ListBulletIcon className='w-4 h-4' />3 Tasks
+									</button>
+									{!inFocus && <button
+										className='text-sm flex font-bold gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 py-1 px-2'>
+										<RectangleStackIcon className='w-4 h-4' />
+										Personal Website
+									</button>}
+								</motion.div>
+							)}
+						</motion.div>
+						<motion.div layout>
+							{((isShowing && isExpanded) || inFocus) && (
+								<motion.div
+									exit={{ height: 0, opacity: 0 }}
+									initial={{ height: 0, opacity: 0 }}
+									animate={{ height: 'auto', opacity: 1 }}
+									className='mt-2 flex flex-col'
+								>
+									<Subtask />
 
-								<Subtask />
+									{isShowing && (
+										<>
+											<Subtask />
 
-								<Subtask />
+											<Subtask />
 
-								<Subtask />
+											<Subtask />
 
-								<Subtask />
+											<Subtask />
 
-								<Subtask />
-							</motion.div>
-						)}
-					</motion.div>
-				</div>
-			</AnimatePresence>
+											<Subtask />
+										</>
+									)}
+								</motion.div>
+							)}
+						</motion.div>
+					</div>
+				</AnimatePresence>
+			</div>
+
 		</div>
 	);
 }
