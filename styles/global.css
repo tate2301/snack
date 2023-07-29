@@ -2,74 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('./scrollbar.css');
+@import url('./utils.css');
+
 /*
     Chrome Extension: Use max-width and max-height
 */
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 400;
-    src: url(/fonts/subset-SFRounded-Regular.eot?) format("embedded-opentype"),
-    url(/fonts/subset-SFRounded-Regular.woff2) format("woff2"),
-    url(/fonts/subset-SFRounded-Regular.woff) format("woff");
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(/fonts/subset-SFRounded-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Regular.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Regular.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 500;
-    src: url(/fonts/subset-SFRounded-Medium.eot?) format("embedded-opentype"),
-    url(/fonts/subset-SFRounded-Medium.woff2) format("woff2"),
-    url(/fonts/subset-SFRounded-Medium.woff) format("woff");
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 500;
+	src: url(/fonts/subset-SFRounded-Medium.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Medium.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Medium.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 600;
-    src: url(/fonts/subset-SFRounded-Semibold.eot?) format("embedded-opentype"),
-    url(/fonts/subset-SFRounded-Semibold.woff2) format("woff2"),
-    url(/fonts/subset-SFRounded-Semibold.woff) format("woff");
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 600;
+	src: url(/fonts/subset-SFRounded-Semibold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Semibold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Semibold.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 700;
-    src: url(/fonts/subset-SFRounded-Bold.eot?) format("embedded-opentype"),
-    url(/fonts/subset-SFRounded-Bold.woff2) format("woff2"),
-    url(/fonts/subset-SFRounded-Bold.woff) format("woff");
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 700;
+	src: url(/fonts/subset-SFRounded-Bold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Bold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Bold.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 800;
-    src: url(/fonts/subset-SFRounded-Heavy.eot?) format("embedded-opentype"),
-    url(/fonts/subset-SFRounded-Heavy.woff2) format("woff2"),
-    url(/fonts/subset-SFRounded-Heavy.woff) format("woff");
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/subset-SFRounded-Heavy.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Heavy.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Heavy.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 800;
-    src: url(/fonts/SF-Mono-Regular.eot?) format("embedded-opentype"),
-    url(/fonts/SF-Mono-Regular.woff2) format("woff2"),
-    url(/fonts/SF-Mono-Regular.woff) format("woff");
-    font-family: SFMono;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/SF-Mono-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/SF-Mono-Regular.woff2) format('woff2'),
+		url(/fonts/SF-Mono-Regular.woff) format('woff');
+	font-family: SFMono;
 }
 
 html,
 body {
-    font-family: "SFRounded", sans-serif;
-    font-weight: 600;
+	font-family: 'Inter', sans-serif;
+	font-size: 14px;
 }
 
 /*
@@ -77,31 +80,38 @@ body {
 */
 
 #app-container {
-    max-width: 480px;
-    width: 100%;
+	width: 100%;
 }
 
 svg {
-    stroke-width: 2px;
+	stroke-width: 2px;
 }
 
 p,
 span {
-    @apply outline-none;
+	@apply outline-none;
 }
 
-input[type="checkbox"] {
-    @apply outline-0 h-4 w-4 ring-0 ring-offset-2 dark:ring-offset-zinc-600 ring-offset-zinc-200 font-bold stroke-2 border-0 border-zinc-200 rounded dark:bg-zinc-800 bg-zinc-50 ;
+input[type='checkbox'] {
+	@apply w-4 h-4 font-semibold border-0 rounded stroke-2 outline-0 ring-0 ring-offset-2 dark:ring-offset-zinc-600 ring-offset-zinc-200 border-zinc-200 dark:bg-zinc-800 bg-zinc-50;
 }
 
-input[type="checkbox"]:focus {
-    @apply outline-0 ring-0;
+input[type='checkbox']:focus {
+	@apply outline-0 ring-0;
 }
 
-input[type="checkbox"]:checked {
-    @apply outline-0 ring-0 ring-offset-2 dark:accent-blue-600 accent-blue-600 dark:bg-blue-600 border-0 ring-offset-blue-600 dark:ring-offset-blue-600;
+input[type='checkbox']:checked {
+	@apply border-0 outline-0 ring-0 ring-offset-2 dark:accent-blue-600 accent-blue-600 dark:bg-blue-600 ring-offset-blue-600 dark:ring-offset-blue-600;
 }
 
 button {
-    @apply p-1 font-bold;
+	@apply flex items-center gap-2 p-1 font-semibold text-zinc-600;
+}
+
+.grid-day {
+	@apply grid-cols-[24];
+}
+
+.uppercase {
+	@apply font-mono;
 }

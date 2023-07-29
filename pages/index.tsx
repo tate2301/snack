@@ -1,13 +1,16 @@
 'use client';
 
-import { ChevronRightIcon, Square3Stack3DIcon } from '@heroicons/react/24/outline';
 import TaskItem from '../components/TaskItem';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { ReactNode, useEffect, useRef } from 'react';
-import NewTaskForm from '../components/forms/NewTaskForm';
+import CalendarLayout from '../layouts/CalendarLayout';
+import FocusPeriod from '../components/focus/Focus';
+import FocusTaskItem from '../components/TaskItem/FocusTaskItem';
 
-const generateDeltaDays = (delta: number): Array<{ date: number, day: string, isActive?: boolean }> => {
+const generateDeltaDays = (
+	delta: number,
+): Array<{ date: number; day: string; isActive?: boolean }> => {
 	// return delta days before today + today + delta days after today
 	const today = new Date();
 	const days = [];
@@ -23,10 +26,14 @@ const generateDeltaDays = (delta: number): Array<{ date: number, day: string, is
 	return days;
 };
 
-const DateItem = ({ date, day, isActive }: {
-	date: number,
-	day: string,
-	isActive?: boolean,
+const DateItem = ({
+	date,
+	day,
+	isActive,
+}: {
+	date: number;
+	day: string;
+	isActive?: boolean;
 }) => {
 	const ref = useRef(null);
 	useEffect(() => {
@@ -36,84 +43,55 @@ const DateItem = ({ date, day, isActive }: {
 			const parent = el.parentElement;
 			const parentRect = parent.getBoundingClientRect();
 			const elRect = el.getBoundingClientRect();
-			const scrollLeft = elRect.left - parentRect.left - (parentRect.width - elRect.width) / 2;
+			const scrollLeft =
+				elRect.left - parentRect.left - (parentRect.width - elRect.width) / 2;
 			parent.scrollTo({ left: scrollLeft, behavior: 'smooth' });
 		}
 	}, [isActive]);
 
 	return (
-		<div ref={ref}
-				 className={clsx(['p-4 py-2 flex items-center border flex-col gap-1 rounded-lg text-center relative', !isActive && 'text-zinc-500', isActive && 'bg-zinc-950 text-white shadow border-none'])}>
-			<div className={'h-2 w-2 rounded-full bg-orange-500 absolute top-1 right-1'} />
-			<p className='text-xl font-bold'>{date}</p>
-			<p className='text-sm'>{day}</p>
+		<div
+			ref={ref}
+			className={clsx([
+				'p-4 py-2 flex items-center border flex-col gap-1 rounded-lg text-center relative',
+				!isActive && 'text-zinc-500',
+				isActive && 'bg-zinc-950 text-white shadow border-none',
+			])}>
+			<div
+				className={'h-2 w-2 rounded-full bg-orange-500 absolute top-1 right-1'}
+			/>
+			<p className="text-xl font-semibold">{date}</p>
+			<p className="text-sm">{day}</p>
 		</div>
 	);
 };
 
 export default function Page() {
 	return (
-		<main className='h-full w-full flex flex-col justify-between'>
-			<div className='flex-1 max-w-full'>
-				<div className='flex gap-2 items-center p-4 overflow-x-hidden snap-mandatory snap-center'>
-					{
-						generateDeltaDays(4).map((day, i) => (
-							<DateItem key={i} {...day} />))
-					}
-				</div>
-				<NewTaskForm />
-				<div className='px-2'>
-					<motion.div layout className='flex flex-col mb-4'>
-						<div className={'mb-2'}>
-							<SectionHeading>
-								In Focus
-							</SectionHeading>
+		<CalendarLayout>
+			<main className="flex flex-col justify-between w-full h-full">
+				<div className="flex-1 max-w-full w-[32rem]">
+					<motion.div
+						layout
+						className="flex flex-col mb-8">
+						<div className={'rounded-xl'}>
+							<FocusTaskItem
+								id={2}
+								inFocus
+							/>
 						</div>
-						<div className={'p-2 rounded bg-zinc-900 rounded-xl dark'}>
-							<TaskItem id={2} inFocus />
-						</div>
-					</motion.div>
-					<motion.div layout className='flex flex-col mb-4'>
-						<div className={'mb-2'}>
-							<SectionHeading>
-								Awaiting next action
-							</SectionHeading>
-						</div>
-						<TaskItem id={2} />
-						<TaskItem id={3} />
-					</motion.div>
-					<motion.div layout className='flex flex-col mb-4'>
-						<div className={'mb-2'}>
-							<SectionHeading>
-								Now or maybe later?
-							</SectionHeading>
-						</div>
-						<TaskItem id={2} />
-						<TaskItem id={3} />
 					</motion.div>
 				</div>
-			</div>
-		</main>
+			</main>
+		</CalendarLayout>
 	);
 }
 
 const SectionHeading = (props: { children: ReactNode }) => (
 	<h2
-		className={'uppercase text-zinc-500 text-sm before:min-w-1/4 after:min-w-1/4 before:flex-1 after:flex-1 gap-4 before:border-zinc-200 after:border-zinc-200 before:border-b flex w-full justify-between after:border-b items-center'}>
+		className={
+			'uppercase text-zinc-500 text-sm before:min-w-1/4 after:min-w-1/4 before:flex-1 after:flex-1 gap-4 before:border-zinc-200 after:border-zinc-200 before:border-b flex w-full justify-between after:border-b items-center'
+		}>
 		{props.children}
 	</h2>
 );
-
-const HomeCard = ({ title, description, href, icon }) => {
-	return (
-		<div className='group items-center flex justify-between  gap-4'>
-			<p className='p-1 bg-orange-600 text-white rounded-lg'>
-				<Square3Stack3DIcon className='w-4 h-4' />
-			</p>
-			<div className='flex items-center py-2 gap-4 w-full justify-between border-b'>
-				<p>{title}</p>
-				<ChevronRightIcon className='w-5 h-5 text-zinc-500 group-hover:text-blue-600' />
-			</div>
-		</div>
-	);
-};

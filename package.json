@@ -1,33 +1,37 @@
 {
-  "name": "tracker",
-  "version": "0.1.0",
-  "description": "Fancy Next.js app",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "build:static": "next build && next out",
-    "build:extension": "next build && next export && cd out && mv _next next && grep -rl '_next' | xargs sed -i 's|/_next|/next|g'"
-  },
-  "dependencies": {
-    "@headlessui/react": "^1.7.15",
-    "@heroicons/react": "^2.0.18",
-    "@react-buddy/ide-toolbox": "^2.4.0",
-    "@tailwindcss/forms": "^0.5.4",
-    "clsx": "^2.0.0",
-    "framer-motion": "^10.13.0",
-    "next": "^13.4.11",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.1.1",
-    "redux": "^4.2.1"
-  },
-  "devDependencies": {
-    "@types/node": "20.4.2",
-    "@types/react": "18.2.15",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.26",
-    "tailwindcss": "^3.3.3",
-    "typescript": "5.1.6"
-  }
+	"name": "tracker",
+	"version": "0.1.0",
+	"description": "Fancy Next.js app",
+	"scripts": {
+		"build": "next build",
+		"build:static": "next build && next out",
+		"build:extension": "next build && next export && cd out && mv _next next && grep -rl '_next' | xargs sed -i 's|/_next|/next|g'",
+		"start": "electron .",
+		"dev": "concurrently \"yarn start\" \"yarn next\""
+	},
+	"dependencies": {
+		"@headlessui/react": "^1.7.15",
+		"@heroicons/react": "^2.0.18",
+		"@react-buddy/ide-toolbox": "^2.4.0",
+		"@svgr/webpack": "^8.0.1",
+		"@tailwindcss/forms": "^0.5.4",
+		"clsx": "^2.0.0",
+		"framer-motion": "^10.13.0",
+		"next": "^13.4.11",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-redux": "^8.1.1",
+		"redux": "^4.2.1"
+	},
+	"devDependencies": {
+		"@types/node": "20.4.2",
+		"@types/react": "18.2.15",
+		"autoprefixer": "^10.4.14",
+		"concurrently": "^8.2.0",
+		"electron": "^25.3.2",
+		"electron-is-dev": "^2.0.0",
+		"postcss": "^8.4.26",
+		"tailwindcss": "^3.3.3",
+		"typescript": "5.1.6"
+	}
 }

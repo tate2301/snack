@@ -1,4 +1,10 @@
-import { ArchiveBoxIcon, ClockIcon, ListBulletIcon, RectangleStackIcon, TrashIcon } from '@heroicons/react/24/outline';
+import {
+	ArchiveBoxIcon,
+	ClockIcon,
+	ListBulletIcon,
+	RectangleStackIcon,
+	TrashIcon,
+} from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
@@ -10,10 +16,17 @@ import clsx from 'clsx';
 const useWhileHover = () => {
 	const [isHovering, toggleHovering] = useToggle(false);
 	const hover = () => toggleHovering();
+
 	return { isHovering, hover };
 };
 
-export default function TaskItem({ id, inFocus }) {
+export default function TaskItem({
+	id,
+	inFocus,
+}: {
+	id: number;
+	inFocus?: boolean;
+}) {
 	const [isComplete, toggleComplete] = useToggle(false);
 	const [isShowing, setIsShowing] = useState(false);
 	const toggle = () => setIsShowing(!isShowing);
@@ -22,157 +35,142 @@ export default function TaskItem({ id, inFocus }) {
 	const expand = () => setIsExpanded(!isExpanded);
 	const { isHovering, hover } = useWhileHover();
 	return (
-		<div>
-			{inFocus &&
-				<button
-					className='text-sm flex font-bold gap-2 items-center text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-300 border border-zinc-800 shadow py-1 px-2'>
-					<RectangleStackIcon className='w-4 h-4' />
+		<div className="px-4 py-1 transition-all rounded-lg hover:bg-zinc-50 dark:bg-transparent">
+			{inFocus && (
+				<button className="flex items-center gap-2 px-2 py-1 mb-2 text-sm font-semibold border rounded-lg shadow text-zinc-500 bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-300 border-zinc-800">
+					<RectangleStackIcon className="w-4 h-4" />
 					Personal Website
 				</button>
-			}
+			)}
 
-			<div onMouseEnter={hover} onMouseLeave={hover}
-					 className='py-2 rounded-xl group flex gap-2 items-start w-full group dark:text-white'>
+			<div
+				onMouseEnter={hover}
+				onMouseLeave={hover}
+				className="flex items-start w-full gap-4 py-1 rounded-xl group dark:text-white">
 				<input
 					checked={isComplete}
-					className='rounded-xl mt-1'
-					type='checkbox'
+					className="mt-1 rounded-xl"
+					type="checkbox"
 					onChange={toggleComplete}
 				/>
-
 				<AnimatePresence>
-					<div className='w-full'>
-						<div className='w-full flex justify-between items-start gap-4 relative'>
-
-							<div className='flex flex-col flex-1'>
-								<div className='flex gap-1 justify-between items-start'>
-
-									<p className={clsx(
-										'font-bold transition-all inline',
-										isComplete ? 'line-through dark:text-zinc-300 text-zinc-400 line-clamp-1' : 'font-bold',
+					<div className="w-full">
+						<div className="flex flex-col flex-1 w-full">
+							<div
+								onClick={expand}
+								className="flex items-start justify-between w-full gap-2 cursor-pointer">
+								<p
+									className={clsx(
+										'transition-all inline w-full',
+										isComplete
+											? 'line-through dark:text-zinc-300 text-zinc-400 line-clamp-1'
+											: '',
 									)}>
-										<button
-											onClick={expand}
-											className='flex items-center gap-2 transition-all duration-200 inline-flex'
-										>
-											<motion.span initial={{ transform: 'none' }}
-																	 animate={{ transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
-												<ChevronDownIcon className='w-4 h-4' />
-											</motion.span>
-										</button>
-										<span contentEditable>
-                    Configure Domain Name for the idea factory company
-                  </span>
-									</p>
-								</div>
-								<motion.div>
-									{(!isComplete || isExpanded) && (
-										<>
-											{isExpanded && <p
-												contentEditable
-												className={`text-sm text-zinc-400 dark:text-zinc-300 mt-2 ${
-													isExpanded ? 'line-clamp-6' : 'line-clamp-2'
-												}`}
-											>
-												Its crucial to get this done as soon as possible, we rely
-												on it to get more funding. Which we can agree we
-												critically need
-											</p>}
-											<p className='text-sm dark:text-zinc-500 text-zinc-600 mt-1 font-bold'>
-												<span className='mr-2'>28/7/2023 12:00 PM</span>
-												{isExpanded && <span className=''>Due in 2 days</span>}
-											</p>
-											<AnimatePresence>
-												{isHovering && (
-													<motion.div
-														initial={{ opacity: 1, height: 0 }}
-														animate={{ opacity: 1, height: 'auto' }}
-														exit={{ opacity: 0, height: 0 }}
-														transition={{ ease: 'linear', delay: 0.001 }}
-
-														className={`flex gap-2 items-center mt-1 justify-between`}>
-														<button className='text-sm mt-1 font-bold'>
-														<span className='flex items-center gap-2 text-orange-500 dark:text-orange-300'>
-															<ClockIcon className='w-4 h-4' />
-															{timeDifference(
-																new Date('2023-07-21T12:00:00.000Z'),
-																new Date(),
-															)}{' '}
-															before
-														</span>
-														</button>
-														<div className={`flex gap-2 items-center`}>
-															<button
-																className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'}
-																onClick={expand}>
-																<ArchiveBoxIcon className={'w-4 h-4'} />
-															</button>
-															<button
-																className={'p-2 rounded-lg bg-zinc-50 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'}
-																onClick={expand}>
-																<TrashIcon className={'w-4 h-4'} />
-															</button>
-														</div>
-													</motion.div>
-												)}
-											</AnimatePresence>
-										</>
-									)}
-								</motion.div>
+									<span className="w-full">Configure web fonts</span>
+								</p>
 							</div>
+							<AnimatePresence>
+								{(!isComplete || isExpanded) && (
+									<motion.div
+										initial={{ opacity: 1, height: 0 }}
+										animate={{ opacity: 1, height: 'auto' }}
+										exit={{ opacity: 0, height: 0 }}
+										transition={{ ease: 'linear' }}>
+										<>
+											{isExpanded && (
+												<p
+													contentEditable
+													className={`text-zinc-500 dark:text-zinc-300 mt-2 ${
+														isExpanded ? 'line-clamp-6' : 'line-clamp-2'
+													}`}>
+													Its crucial to get this done as soon as possible, we
+													rely on it to get more funding.
+												</p>
+											)}
+
+											{isExpanded && (
+												<motion.div
+													className={`flex gap-2 items-center mt-1 justify-between`}>
+													<p className="mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
+														<span className="mr-2 text-orange-500">
+															28/7/2023 12:00 PM
+														</span>
+													</p>
+													<div className={`flex gap-2 items-center`}>
+														<button
+															className={
+																'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+															}
+															onClick={expand}>
+															<ArchiveBoxIcon className={'w-4 h-4'} />
+														</button>
+														<button
+															className={
+																'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+															}
+															onClick={expand}>
+															<TrashIcon className={'w-4 h-4'} />
+														</button>
+													</div>
+												</motion.div>
+											)}
+										</>
+									</motion.div>
+								)}
+							</AnimatePresence>
 						</div>
-						<motion.div layout>
+						<motion.div
+							exit={{ height: 0, opacity: 0 }}
+							initial={{ height: 0, opacity: 0 }}
+							animate={{ height: 'auto', opacity: 1 }}>
 							{isExpanded && (
 								<motion.div
 									exit={{ height: 0, opacity: 0 }}
 									initial={{ height: 0, opacity: 0 }}
 									animate={{ height: 'auto', opacity: 1 }}
-									className='mt-2 flex gap-4'
-								>
+									className="flex gap-4 mt-2">
 									<button
 										onClick={toggle}
-										className='text-sm font-bold flex gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 py-1 px-2'
-									>
-										<ListBulletIcon className='w-4 h-4' />3 Tasks
+										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-600 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
+										<ListBulletIcon className="w-4 h-4" />3 Tasks
 									</button>
-									{!inFocus && <button
-										className='text-sm flex font-bold gap-2 items-center  text-zinc-500 rounded-lg bg-zinc-100 dark:bg-zinc-800 dark:text-zinc-300 py-1 px-2'>
-										<RectangleStackIcon className='w-4 h-4' />
-										Personal Website
-									</button>}
-								</motion.div>
-							)}
-						</motion.div>
-						<motion.div layout>
-							{((isShowing && isExpanded) || inFocus) && (
-								<motion.div
-									exit={{ height: 0, opacity: 0 }}
-									initial={{ height: 0, opacity: 0 }}
-									animate={{ height: 'auto', opacity: 1 }}
-									className='mt-2 flex flex-col'
-								>
-									<Subtask />
-
-									{isShowing && (
-										<>
-											<Subtask />
-
-											<Subtask />
-
-											<Subtask />
-
-											<Subtask />
-
-											<Subtask />
-										</>
+									{!inFocus && (
+										<button className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-600 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
+											<RectangleStackIcon className="w-4 h-4" />
+											Personal Website
+										</button>
 									)}
 								</motion.div>
 							)}
+							<AnimatePresence>
+								{((isShowing && isExpanded) || inFocus) && (
+									<motion.div
+										exit={{ height: 0, opacity: 0 }}
+										initial={{ height: 0, opacity: 0 }}
+										animate={{ height: 'auto', opacity: 1 }}
+										className="flex flex-col mt-2">
+										<Subtask />
+
+										{isShowing && (
+											<>
+												<Subtask />
+
+												<Subtask />
+
+												<Subtask />
+
+												<Subtask />
+
+												<Subtask />
+											</>
+										)}
+									</motion.div>
+								)}
+							</AnimatePresence>
 						</motion.div>
 					</div>
 				</AnimatePresence>
 			</div>
-
 		</div>
 	);
 }
