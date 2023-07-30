@@ -61,12 +61,12 @@ export default function WeekView() {
 		const blockHeight = remToPx(4);
 
 		const gridHeight = calendarHeight - containerNav.current.offsetHeight;
-		const currentMinute = currentTime.getHours() * 60;
-		setTimePosition(
-			(currentMinute / 1440) * gridHeight +
-				containerOffset.current.offsetHeight * 0.5,
-		);
+		const currentMinute =
+			currentTime.getHours() * 60 + currentTime.getMinutes();
+		setTimePosition((currentMinute / 1440) * gridHeight);
 	}, [currentTime]);
+
+	console.log({ timePosition, currentTime });
 
 	return (
 		<div className="flex flex-col w-full h-full">
