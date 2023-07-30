@@ -60,12 +60,12 @@ export default function WeekView() {
 		const calendarHeight = container.current.scrollHeight;
 		const blockHeight = remToPx(4);
 
-		const gridHeight =
-			calendarHeight -
-			containerNav.current.offsetHeight -
-			containerOffset.current.offsetHeight;
+		const gridHeight = calendarHeight - containerNav.current.offsetHeight;
 		const currentMinute = currentTime.getHours() * 60;
-		setTimePosition((currentMinute / 1380) * gridHeight + blockHeight / 2);
+		setTimePosition(
+			(currentMinute / 1440) * gridHeight +
+				containerOffset.current.offsetHeight * 0.5,
+		);
 	}, [currentTime]);
 
 	return (
@@ -108,7 +108,7 @@ export default function WeekView() {
 							<p className="flex items-center flex-shrink-0 w-full  after:w-auto after:flex-1 after:h-0.5 after:bg-purple-600 text-purple-600">
 								<span className="p-1 pr-2 text-xs font-semibold uppercase bg-white rounded">
 									{Intl.DateTimeFormat('en-US', {
-										hour: 'numeric',
+										hour: '2-digit',
 										minute: 'numeric',
 									}).format(new Date())}
 								</span>
@@ -127,7 +127,7 @@ export default function WeekView() {
 								{timeIntervals.map((time, idx) => (
 									<>
 										<div key={`time-${idx}`}>
-											<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
+											<div className="sticky left-0 z-20 -mt-2.5 -ml-16 w-20 pr-6 text-right text-xs leading-5 text-gray-400">
 												{currentTime.getHours() === time.getHours()
 													? currentTime.getMinutes() > 15 &&
 													  format(time, 'hh:mm')
