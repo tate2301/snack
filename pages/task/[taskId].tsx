@@ -104,7 +104,7 @@ function TaskHeader({}) {
 							<span className="text-blue-600">Due in 2 days</span>
 						</p>
 						<button className="text-sm mt-1">
-							<span className="flex items-center gap-2 text-orange-500">
+							<span className="flex items-center gap-2 text-blue-500">
 								<ClockIcon className="w-4 h-4" />1 hour before
 							</span>
 						</button>

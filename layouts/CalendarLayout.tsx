@@ -11,7 +11,15 @@ import {
 import { PlusIcon } from '@heroicons/react/24/outline';
 import TaskItem from '../components/TaskItem';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import { ClockIcon, PlayIcon } from '@heroicons/react/24/solid';
+import {
+	ClockIcon,
+	CloudIcon,
+	Cog6ToothIcon,
+	PlayIcon,
+} from '@heroicons/react/24/solid';
+import WeekView from '../components/calendar/WeekView';
+import DayView from '../components/calendar/DayView';
+import CalendarPreview from '../components/calendar/CalendarPreview';
 
 export default function CalendarLayout(props) {
 	return (
@@ -23,16 +31,26 @@ export default function CalendarLayout(props) {
 				className={
 					'w-96 overflow-y-auto h-screen bg-white z-10 flex-grow-0 flex gap-1 divide-x'
 				}>
-				<div className="flex flex-col flex-shrink-0 gap-4 p-2 pt-8">
-					<button className="p-1 text-white bg-orange-600 rounded-lg">
-						<QueueListIcon className="w-6 h-6" />
-					</button>
-					<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
-						<EnvelopeIcon className="w-6 h-6" />
-					</button>
+				<div className="sticky flex flex-col justify-between flex-shrink-0 h-screen gap-4 p-2 pt-8">
+					<div className="flex flex-col gap-4">
+						<button className="p-1 text-white bg-blue-600 rounded-lg">
+							<QueueListIcon className="w-6 h-6" />
+						</button>
+						<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
+							<EnvelopeIcon className="w-6 h-6" />
+						</button>
+					</div>
+					<div className="flex flex-col gap-4">
+						<button className="p-1 rounded-lg text-zinc-400 hover:bg-zinc-100">
+							<Cog6ToothIcon className="w-6 h-6" />
+						</button>
+						<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
+							<CloudIcon className="w-6 h-6" />
+						</button>
+					</div>
 				</div>
-				<div className="flex-1">
-					<div className="sticky top-0 z-30 flex items-center justify-between h-12 px-4 bg-inherit">
+				<div className="flex-1 overflow-y-auto">
+					<div className="sticky top-0 z-30 flex items-center justify-between h-12 px-4 bg-white bg-inherit">
 						<div className="flex gap-2">
 							<button className="px-2 py-1 font-semibold rounded hover:bg-zinc-50">
 								Pending
@@ -44,6 +62,9 @@ export default function CalendarLayout(props) {
 						<button className="p-2 rounded-xl hover:bg-zinc-100">
 							<PlusIcon className={'w-5 h-5'} />
 						</button>
+					</div>
+					<div className="px-4 py-2">
+						<CalendarPreview />
 					</div>
 					<div className="p-2">
 						<button className="inline-flex items-center w-full gap-4 px-4 py-2 font-mono text-sm font-semibold uppercase hover:bg-zinc-50 text-zinc-500">
@@ -192,40 +213,41 @@ export default function CalendarLayout(props) {
 							<div className="flex gap-1">
 								<button
 									className={
-										'border shadow-sm text-sm bg-white rounded-lg px-3 py-1'
+										'text-sm bg-white hover:bg-zinc-100 rounded-lg px-3 py-1'
 									}>
 									<ChevronLeftIcon className="w-4 h-4" />
 								</button>
 								<button
 									className={
-										'border shadow-sm text-sm bg-white rounded-lg px-3 py-1'
+										' text-sm bg-white hover:bg-zinc-100 rounded-lg px-3 py-1'
 									}>
 									Today
 								</button>
 								<button
 									className={
-										'border shadow-sm text-sm bg-white rounded-lg px-3 py-1'
+										'text-sm bg-white hover:bg-zinc-100 rounded-lg px-3 py-1'
 									}>
 									<ChevronRightIcon className="w-4 h-4" />
 								</button>
 							</div>
-							<button
-								className={
-									'border shadow-sm text-sm bg-white rounded-lg px-3 py-1'
-								}>
-								1 Hour <ChevronDownIcon className={'w-4 h-4'} />
-							</button>
-							<button
-								className={
-									'border shadow-sm text-sm bg-white rounded-lg px-3 py-1'
-								}>
-								Display <AdjustmentsHorizontalIcon className={'w-4 h-4'} />
-							</button>
+							<div className="flex p-1 overflow-hidden bg-zinc-100 rounded-xl group">
+								<button
+									className={
+										'text-sm bg-white drop-shadow rounded-lg  font-bold px-3 py-1'
+									}>
+									Day
+								</button>
+								<button className={'text-sm px-3 rounded-lg py-1'}>Week</button>
+
+								<button className={'text-sm px-3 rounded-lg py-1'}>
+									Month
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<DaysPreview />
+				<WeekView />
 			</div>
 			<div className={'w-auto overflow-y-auto h-screen bg-white z-10'}>
 				<div className="sticky top-0 z-30 flex items-center justify-between h-12 px-4 border-b bg-inherit">
@@ -261,12 +283,15 @@ const DaysPreview = () => {
 		<div
 			ref={ref}
 			className={clsx('flex-1 flex w-full overflow-x-auto h-full')}>
-			{new Array(cols).fill(0).map((_, idx) => (
-				<DayPreview
-					key={idx}
-					day={idx}
-				/>
-			))}
+			<DayView />
+
+			{false &&
+				new Array(cols).fill(0).map((_, idx) => (
+					<DayPreview
+						key={idx}
+						day={idx}
+					/>
+				))}
 		</div>
 	);
 };

@@ -92,7 +92,7 @@ export default function TaskItem({
 												<motion.div
 													className={`flex gap-2 items-center mt-1 justify-between`}>
 													<p className="mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
-														<span className="mr-2 text-orange-500">
+														<span className="mr-2 text-blue-500">
 															28/7/2023 12:00 PM
 														</span>
 													</p>
@@ -134,12 +134,6 @@ export default function TaskItem({
 										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-600 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
 										<ListBulletIcon className="w-4 h-4" />3 Tasks
 									</button>
-									{!inFocus && (
-										<button className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-600 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
-											<RectangleStackIcon className="w-4 h-4" />
-											Personal Website
-										</button>
-									)}
 								</motion.div>
 							)}
 							<AnimatePresence>
@@ -148,7 +142,7 @@ export default function TaskItem({
 										exit={{ height: 0, opacity: 0 }}
 										initial={{ height: 0, opacity: 0 }}
 										animate={{ height: 'auto', opacity: 1 }}
-										className="flex flex-col mt-2">
+										className="flex flex-col mt-2 @container">
 										<Subtask />
 
 										{isShowing && (

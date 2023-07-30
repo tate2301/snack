@@ -1,6 +1,7 @@
 import {
 	ArchiveBoxIcon,
 	ArrowPathIcon,
+	ClipboardIcon,
 	ClockIcon,
 	Square3Stack3DIcon,
 	TrashIcon,
@@ -16,6 +17,7 @@ import {
 	CalendarDaysIcon,
 	ListBulletIcon,
 	PlusIcon,
+	VideoCameraIcon,
 } from '@heroicons/react/24/solid';
 import FocusPeriod from '../focus/Focus';
 
@@ -143,7 +145,6 @@ export default function FocusTaskItem({
 					</div>
 				</div>
 			</div>
-
 			<div className="px-4 py-4 mt-4">
 				<FocusPeriod />
 				<div className="flex flex-col mt-2">
