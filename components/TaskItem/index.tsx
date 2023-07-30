@@ -92,7 +92,7 @@ export default function TaskItem({
 												<motion.div
 													className={`flex gap-2 items-center mt-1 justify-between`}>
 													<p className="mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
-														<span className="mr-2 text-blue-500">
+														<span className="mr-2 text-purple-500">
 															28/7/2023 12:00 PM
 														</span>
 													</p>

@@ -38,8 +38,8 @@ export default function Task() {
 					</div>
 					<div className="mt-2 flex flex-col gap-2">
 						<div className="items-start flex gap-4">
-							<div className="w-4 h-4 mt-3 p-0.5 border-2 border-blue-600 rounded">
-								<div className="animate-pulse h-full rounded w-full bg-blue-600" />
+							<div className="w-4 h-4 mt-3 p-0.5 border-2 border-purple-600 rounded">
+								<div className="animate-pulse h-full rounded w-full bg-purple-600" />
 							</div>
 							<div className="flex-1 items-start py-2 flex justify-between border-b">
 								<p className="text-sm">Fix the issue with loading fonts</p>
@@ -69,7 +69,7 @@ export default function Task() {
 							</div>
 						</div>
 					</div>
-					<button className="flex text-blue-600 text-sm items-center gap-2 mt-2">
+					<button className="flex text-purple-600 text-sm items-center gap-2 mt-2">
 						<span className="p-2 rounded-full">
 							<PlusIcon className="w-4 h-4" />
 						</span>
@@ -101,10 +101,10 @@ function TaskHeader({}) {
 						</p>
 						<p className="text-sm mt-1">
 							<span className="mr-2">28/7/2023 12:00 PM</span>
-							<span className="text-blue-600">Due in 2 days</span>
+							<span className="text-purple-600">Due in 2 days</span>
 						</p>
 						<button className="text-sm mt-1">
-							<span className="flex items-center gap-2 text-blue-500">
+							<span className="flex items-center gap-2 text-purple-500">
 								<ClockIcon className="w-4 h-4" />1 hour before
 							</span>
 						</button>

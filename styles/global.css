@@ -97,15 +97,17 @@ span {
 }
 
 input[type='checkbox'] {
-	@apply w-4 h-4 font-semibold border-0 rounded-full stroke-2 outline-0 ring-0 ring-offset-2 dark:ring-offset-zinc-600 ring-offset-zinc-200 border-zinc-200 dark:bg-zinc-800 bg-zinc-50;
+	@apply w-4 h-4 font-semibold border-0 rounded-full stroke-2 outline-0 ring-0 ring-offset-2 dark:ring-offset-zinc-600 ring-offset-zinc-200 border-zinc-200 dark:bg-zinc-800 bg-zinc-50 accent-blue-600;
 }
 
 input[type='checkbox']:focus {
-	@apply outline-0 ring-0;
+	@apply outline-0 ring-0 accent-blue-600;
 }
 
-input[type='checkbox']:checked {
-	@apply border-0 outline-0 ring-0 ring-offset-2 dark:accent-blue-600 accent-blue-600 dark:bg-blue-600 ring-offset-blue-600 dark:ring-offset-blue-600;
+input[type='checkbox']:checked,
+input[type='checkbox']:focus,
+input[type='checkbox']:active {
+	@apply border-0 outline-0 ring-0 ring-offset-2 dark:accent-blue-600 accent-blue-600 ring-offset-blue-600 dark:ring-offset-blue-600;
 }
 
 button {

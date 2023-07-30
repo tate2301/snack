@@ -33,7 +33,7 @@ export default function CalendarLayout(props) {
 				}>
 				<div className="sticky flex flex-col justify-between flex-shrink-0 h-screen gap-4 p-2 pt-8">
 					<div className="flex flex-col gap-4">
-						<button className="p-1 text-white bg-blue-600 rounded-lg">
+						<button className="p-1 text-white bg-purple-600 rounded-lg">
 							<QueueListIcon className="w-6 h-6" />
 						</button>
 						<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
@@ -165,7 +165,7 @@ export default function CalendarLayout(props) {
 					'flex-1 flex flex-col justify-between h-screen bg-zinc-50 border-zinc-200 w-full overflow-clip'
 				}>
 				<nav className="flex items-center justify-between flex-shrink-0 w-full h-12 p-2 bg-white border-b">
-					<p className="p-0.5 px-3 rounded-lg bg-blue-50 text-blue-600 text-sm font-semibold uppercase">
+					<p className="p-0.5 px-3 rounded-lg bg-purple-50 text-purple-600 text-sm font-semibold uppercase">
 						DEV
 					</p>
 					<div className="flex">

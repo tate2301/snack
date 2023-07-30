@@ -8,7 +8,13 @@ import {
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import useCalendarDates from '../../lib/hooks/useCalendarDates';
-import { format, isEqual, startOfToday } from 'date-fns';
+import {
+	eachHourOfInterval,
+	endOfToday,
+	format,
+	isEqual,
+	startOfToday,
+} from 'date-fns';
 import clsx from 'clsx';
 import useCurrentTime from '../../lib/hooks/useCurrentTime';
 
@@ -25,20 +31,42 @@ export default function WeekView() {
 	const containerOffset = useRef(null);
 	const [timePosition, setTimePosition] = useState(0);
 
+	const timeIntervals = eachHourOfInterval(
+		{
+			start: startOfToday(),
+			end: endOfToday(),
+		},
+		{
+			step: 1,
+		},
+	);
+
+	const remToPx = (rem) => {
+		return (
+			rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
+		);
+	};
+
 	useEffect(() => {
 		// Set the container scroll position based on the current time.
 		const currentMinute = currentTime.getHours() * 60;
-		container.current.scrollTop =
-			((container.current.scrollHeight -
-				containerNav.current.offsetHeight -
-				containerOffset.current.offsetHeight) *
-				currentMinute) /
-			1440;
+		const blockHeight = remToPx(4);
 
-		setTimePosition(
-			container.current.scrollTop + containerOffset.current.offsetHeight,
-		);
+		container.current.scrollTop =
+			(currentMinute / 1380) * 2688 - 2 * blockHeight;
 	}, []);
+
+	useEffect(() => {
+		const calendarHeight = container.current.scrollHeight;
+		const blockHeight = remToPx(4);
+
+		const gridHeight =
+			calendarHeight -
+			containerNav.current.offsetHeight -
+			containerOffset.current.offsetHeight;
+		const currentMinute = currentTime.getHours() * 60;
+		setTimePosition((currentMinute / 1380) * gridHeight + blockHeight / 2);
+	}, [currentTime]);
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -65,7 +93,7 @@ export default function WeekView() {
 										className={clsx(
 											'flex items-start justify-center font-semibold p-1 rounded-lg uppercase',
 											isEqual(startOfToday(), day) &&
-												'bg-blue-600 text-white px-2',
+												'bg-purple-600 text-white px-2',
 										)}>
 										{format(day, 'dd')}
 									</span>
@@ -75,9 +103,9 @@ export default function WeekView() {
 					</div>
 					<div className="relative flex flex-auto">
 						<div
-							className="absolute left-0 z-30 w-full gap-2 border-none"
+							className="absolute left-0 z-20 w-full gap-2 border-none"
 							style={{ top: `${timePosition}px` }}>
-							<p className="flex items-center flex-shrink-0 w-full  after:w-auto after:flex-1 after:h-0.5 after:bg-blue-600 text-blue-600">
+							<p className="flex items-center flex-shrink-0 w-full  after:w-auto after:flex-1 after:h-0.5 after:bg-purple-600 text-purple-600">
 								<span className="p-1 pr-2 text-xs font-semibold uppercase bg-white rounded">
 									{Intl.DateTimeFormat('en-US', {
 										hour: 'numeric',
@@ -91,155 +119,24 @@ export default function WeekView() {
 							{/* Horizontal lines */}
 							<div
 								className="grid col-start-1 col-end-2 row-start-1 uppercase divide-y divide-gray-100 "
-								style={{ gridTemplateRows: 'repeat(48, minmax(3.5rem, 1fr))' }}>
+								style={{ gridTemplateRows: 'repeat(48, minmax(4rem, 1fr))' }}>
 								<div
 									ref={containerOffset}
 									className="row-end-1 h-7"></div>
 
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										12:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										01:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										02:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										03:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										04:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										05:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										06:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										07:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										08:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										09:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										10:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										11:00AM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										12:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										01:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										02:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										03:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										04:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										05:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										06:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										07:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										08:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										09PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										10:00PM
-									</div>
-								</div>
-								<div />
-								<div>
-									<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
-										11:00PM
-									</div>
-								</div>
-								<div />
+								{timeIntervals.map((time, idx) => (
+									<>
+										<div key={`time-${idx}`}>
+											<div className="sticky left-0 z-20 -mt-2.5 -ml-14 w-16 pr-4 text-right text-xs leading-5 text-gray-400">
+												{currentTime.getHours() === time.getHours()
+													? currentTime.getMinutes() > 15 &&
+													  format(time, 'hh:mm')
+													: format(time, 'hh:mm')}
+											</div>
+										</div>
+										<div />
+									</>
+								))}
 							</div>
 
 							{/* Vertical lines */}
@@ -265,11 +162,11 @@ export default function WeekView() {
 									style={{ gridRow: '74 / span 12' }}>
 									<a
 										href="#"
-										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-blue-50 hover:bg-blue-100">
-										<p className="order-1 font-semibold text-blue-700">
+										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-purple-50 hover:bg-purple-100">
+										<p className="order-1 font-semibold text-purple-700">
 											Breakfast
 										</p>
-										<p className="text-blue-500 group-hover:text-blue-700">
+										<p className="text-purple-500 group-hover:text-purple-700">
 											<time dateTime="2022-01-12T06:00">6:00 AM</time>
 										</p>
 									</a>

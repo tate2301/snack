@@ -103,7 +103,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 								!isSameMonth(day, today) &&
 								!isToday(day) &&
 								'text-zinc-400',
-							isToday(day) && !isEqual(day, selectedDate) && 'text-blue-600',
+							isToday(day) && !isEqual(day, selectedDate) && 'text-purple-600',
 							dayIdx === 0 && 'rounded-tl-lg',
 							dayIdx === 6 && 'rounded-tr-lg',
 							dayIdx === month.length - 7 && 'rounded-bl-lg',
@@ -120,7 +120,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 							{format(day, 'd')}
 						</time>
 						{isEqual(day, selectedDate) && (
-							<div className="w-1 h-1 mx-auto bg-blue-600 rounded-full"></div>
+							<div className="w-1 h-1 mx-auto bg-purple-600 rounded-full"></div>
 						)}
 					</button>
 				))}

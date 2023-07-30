@@ -57,9 +57,9 @@ const FocusPeriod = () => {
 		<div
 			className={clsx(
 				'border  rounded-xl py-4 px-4 flex flex-col',
-				isRunning ? 'bg-white border-blue-300' : 'bg-zinc-50 border-zinc-100',
+				isRunning ? 'bg-white border-purple-300' : 'bg-zinc-50 border-zinc-100',
 			)}>
-			<div className={'flex gap-2 items-center text-blue-600'}>
+			<div className={'flex gap-2 items-center text-purple-600'}>
 				<ClockIcon className={'w-5 h-5'} />
 				<p className={'font-semibold text-sm'}>Focus Period</p>
 			</div>
@@ -76,7 +76,7 @@ const FocusPeriod = () => {
 						<div
 							className={clsx(
 								'w-2 h-8 rounded-full transition-all duration-300',
-								idx < activeElementCount ? ' bg-blue-600' : 'bg-zinc-200',
+								idx < activeElementCount ? ' bg-purple-600' : 'bg-zinc-200',
 							)}
 							key={idx}
 						/>

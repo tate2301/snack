@@ -58,7 +58,7 @@ const DateItem = ({
 				isActive && 'bg-zinc-950 text-white shadow border-none',
 			])}>
 			<div
-				className={'h-2 w-2 rounded-full bg-blue-500 absolute top-1 right-1'}
+				className={'h-2 w-2 rounded-full bg-purple-500 absolute top-1 right-1'}
 			/>
 			<p className="text-xl font-semibold">{date}</p>
 			<p className="text-sm">{day}</p>
