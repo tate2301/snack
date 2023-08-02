@@ -10,7 +10,7 @@ import { MinusIcon } from '@heroicons/react/20/solid';
 export default function App({ Component, pageProps }) {
 	return (
 		<div
-			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal bg-white rounded-xl text-zinc-800"
+			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base antialiased font-normal bg-white text-zinc-800"
 			id="app-container">
 			<Head>
 				<title>Snack ⏲</title>

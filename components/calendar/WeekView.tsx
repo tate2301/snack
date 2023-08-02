@@ -66,8 +66,6 @@ export default function WeekView() {
 		setTimePosition((currentMinute / 1440) * gridHeight);
 	}, [currentTime]);
 
-	console.log({ timePosition, currentTime });
-
 	return (
 		<div className="flex flex-col w-full h-full">
 			<div

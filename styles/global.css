@@ -71,12 +71,7 @@
 
 html,
 body {
-	font-family: 'Inter', sans-serif;
-	font-size: 14px;
-}
-
-.font-mono {
-	font-family: 'SF Mono', monospace;
+	font-size: 12px;
 }
 
 /*
@@ -120,4 +115,8 @@ button {
 
 .uppercase {
 	@apply font-mono;
+}
+
+nav button:hover {
+	@apply bg-zinc-800;
 }

@@ -44,43 +44,30 @@ export default function FocusTaskItem({
 	const { isHovering, hover } = useWhileHover();
 	return (
 		<div className="transition-all divide-y rounded-lg divide-zinc-100">
-			<div className="pb-4">
-				<div className={`flex gap-2 items-baseline justify-between px-4 py-4`}>
-					<p className="flex gap-1 mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
-						<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
-							<CalendarDaysIcon className="w-4 h-4 text-zinc-400" />
-							28/7/2023
-						</button>
-						<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
-							<ClockIcon className="w-4 h-4 text-zinc-400" />
-							12:00 pm
-						</button>
-					</p>
-					<div className={`flex gap-2 items-center`}>
-						<button
-							className={
-								'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
-							}>
-							<ArchiveBoxIcon className={'w-4 h-4'} />
-						</button>
-						<button
-							className={
-								'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
-							}>
-							<TrashIcon className={'w-4 h-4'} />
-						</button>
-					</div>
-				</div>
-				<div className="px-4">
-					{inFocus && (
-						<div className="flex items-center justify-between w-full gap-2 px-2 py-1 mb-2 border rounded-lg ">
-							<p className="flex items-center font-medium ">
-								<Square3Stack3DIcon className="w-4 h-4 mr-2 text-zinc-400" />
-								Personal Website
-							</p>
-							<ChevronDownIcon className="w-6 h-6" />
-						</div>
-					)}
+			<div className={`flex gap-2 items-baseline justify-between px-4 py-2`}>
+				<p className="flex gap-1 mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
+					<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
+						<CalendarDaysIcon className="w-4 h-4 text-zinc-400" />
+						28/7/2023
+					</button>
+					<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
+						<ClockIcon className="w-4 h-4 text-zinc-400" />
+						12:00 pm
+					</button>
+				</p>
+				<div className={`flex gap-2 items-center`}>
+					<button
+						className={
+							'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+						}>
+						<ArchiveBoxIcon className={'w-4 h-4'} />
+					</button>
+					<button
+						className={
+							'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+						}>
+						<TrashIcon className={'w-4 h-4'} />
+					</button>
 				</div>
 			</div>
 			<div
@@ -107,29 +94,14 @@ export default function FocusTaskItem({
 							<span>Configure web fonts</span>
 						</p>
 					</div>
-					<AnimatePresence>
-						{(!isComplete || isExpanded) && (
-							<motion.div
-								initial={{ opacity: 1, height: 0 }}
-								animate={{ opacity: 1, height: 'auto' }}
-								exit={{ opacity: 0, height: 0 }}
-								transition={{ ease: 'linear' }}>
-								{isExpanded && (
-									<>
-										<p
-											contentEditable
-											className={`text-zinc-500 dark:text-zinc-300 mt-2 ${
-												isExpanded ? 'line-clamp-6' : 'line-clamp-2'
-											}`}>
-											Its crucial to get this done as soon as possible, we rely
-											on it to get more funding.
-										</p>
-									</>
-								)}
-							</motion.div>
-						)}
-					</AnimatePresence>
-					<div className="flex items-start gap-2">
+					<p
+						contentEditable
+						spellCheck={'false'}
+						className={`text-zinc-400 dark:text-zinc-300`}>
+						Its crucial to get this done as soon as possible, we rely on it to
+						get more funding.
+					</p>
+					<div className="flex items-start gap-2 mt-2">
 						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-lg w-fit bg-zinc-100">
 							<BoltIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							00:00:00
