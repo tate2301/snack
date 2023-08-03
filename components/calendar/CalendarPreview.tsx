@@ -50,7 +50,8 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 
 	return (
 		<div className="flex-none hidden w-full md:block">
-			<div className="flex items-center justify-end text-center text-zinc-900">
+			<div className="flex items-baseline justify-between text-center text-zinc-900">
+				<p></p>
 				<div className="flex gap-4">
 					<button
 						type="button"
@@ -119,9 +120,6 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 							)}>
 							{format(day, 'd')}
 						</time>
-						{isEqual(day, selectedDate) && (
-							<div className="w-1 h-1 mx-auto bg-purple-600 rounded-full"></div>
-						)}
 					</button>
 				))}
 			</div>

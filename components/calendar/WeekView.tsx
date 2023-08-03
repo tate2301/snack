@@ -113,7 +113,7 @@ export default function WeekView() {
 							</p>
 						</div>
 						<div className="sticky left-0 z-10 flex-none w-16 bg-white ring-1 ring-gray-100" />
-						<div className="grid flex-auto grid-cols-1 grid-rows-1">
+						<div className="grid flex-auto grid-cols-1 grid-rows-1 pb-8">
 							{/* Horizontal lines */}
 							<div
 								className="grid col-start-1 col-end-2 row-start-1 uppercase divide-y divide-gray-100 "
@@ -135,6 +135,16 @@ export default function WeekView() {
 										<div />
 									</>
 								))}
+								<>
+									<div
+										key={`time-${0}`}
+										className="mb-16">
+										<div className="sticky left-0 z-20 -mt-2.5 -ml-16 w-20 pr-6 text-right text-xs leading-5 text-gray-400">
+											12:00
+										</div>
+									</div>
+									<div />
+								</>
 							</div>
 
 							{/* Vertical lines */}

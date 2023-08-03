@@ -5,9 +5,10 @@
 	-ms-overflow-style: -ms-autohiding-scrollbar;
 	scrollbar-width: none;
 	-moz-scrollbars-none: none;
-	-webkit-scrollbar {
-		display: none;
-	}
+}
+
+.horizontal-scroll:-webkit-scrollbar {
+	display: none;
 }
 
 nav {

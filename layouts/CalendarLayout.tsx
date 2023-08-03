@@ -1,33 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import {
-	AdjustmentsHorizontalIcon,
-	ArrowPathIcon,
-	ArrowsUpDownIcon,
-	ChevronDownIcon,
-	EnvelopeIcon,
-	QueueListIcon,
-} from '@heroicons/react/24/outline';
-import { PlusIcon } from '@heroicons/react/24/outline';
-import TaskItem from '../components/TaskItem';
-import {
-	ChevronLeftIcon,
-	ChevronRightIcon,
-	XMarkIcon,
-} from '@heroicons/react/20/solid';
-import {
-	ClockIcon,
-	CloudIcon,
-	Cog6ToothIcon,
-	PlayIcon,
-} from '@heroicons/react/24/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import WeekView from '../components/calendar/WeekView';
-import DayView from '../components/calendar/DayView';
-import CalendarPreview from '../components/calendar/CalendarPreview';
+import NavigationSidebar from '../components/nav/SidebarNavigation';
 
 export default function CalendarLayout(props) {
 	return (
-		<div className="flex flex-col h-screen overflow-y-hidden pb-12">
+		<div className="flex flex-col h-full overflow-y-hidden ">
 			<nav className="flex items-center justify-between flex-shrink-0 w-full h-12  bg-zinc-950 text-white border-b ">
 				<p className=" px-3 rounded-lg text-sm font-semibold uppercase p-2">
 					DEV
@@ -46,37 +23,9 @@ export default function CalendarLayout(props) {
 			</nav>
 			<div
 				className={
-					'w-full flex flex-1 flex-grow-0 items-start divide-x h-full'
+					'w-full flex flex-1 flex-grow-0 items-start divide-x h-[calc(100vh-3rem)]'
 				}>
-				<div
-					className={
-						'w-96 overflow-y-auto h-full bg-white z-10 flex-grow-0 flex gap-1 divide-x'
-					}>
-					<div className="sticky flex flex-col justify-between flex-shrink-0 h-screen gap-4 p-2 pt-8">
-						<div className="flex flex-col gap-4">
-							<button className="p-1 text-white bg-purple-600 rounded-lg">
-								<QueueListIcon className="w-6 h-6" />
-							</button>
-							<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
-								<EnvelopeIcon className="w-6 h-6" />
-							</button>
-						</div>
-						<div className="flex flex-col gap-4">
-							<button className="p-1 rounded-lg text-zinc-400 hover:bg-zinc-100">
-								<Cog6ToothIcon className="w-6 h-6" />
-							</button>
-							<button className="p-1 rounded hover:bg-zinc-100 text-zinc-400">
-								<CloudIcon className="w-6 h-6" />
-							</button>
-						</div>
-					</div>
-					<div className="flex-1 overflow-y-auto flex flex-col justify-between h-full">
-						<div></div>
-						<div className="p-4">
-							<CalendarPreview />
-						</div>
-					</div>
-				</div>
+				<NavigationSidebar />
 				<div
 					className={
 						'flex-1 flex flex-col justify-between h-full bg-zinc-50 border-zinc-200 w-full overflow-clip'
