@@ -38,11 +38,11 @@ const SidebarContainerPresentation = (
 			transition={{
 				duration: 0.1,
 			}}
-			className="flex-1 overflow-y-auto flex flex-col justify-between h-full gap-4">
+			className="flex-1 overflow-y-auto flex flex-col justify-between h-full">
 			<div className="flex flex-col overflow-y-auto flex-1">
 				<App />
 			</div>
-			<div className="p-4">
+			<div className="p-4 border-t drop-shadow bg-white">
 				<CalendarPreview />
 			</div>
 		</motion.div>

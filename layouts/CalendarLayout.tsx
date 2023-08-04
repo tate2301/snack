@@ -104,7 +104,6 @@ export default function CalendarLayout(props) {
 
 					<WeekView />
 				</div>
-				<ContextSidebar />
 			</div>
 		</div>
 	);

@@ -12,7 +12,7 @@ export default function TaskListSection(props: TaskSection) {
 	const [headerIsExpanded, toggleHeaderIsExpanded] = useToggle(true);
 
 	return (
-		<div>
+		<div className="mb-1">
 			<TaskSectionHeader
 				title={props.title}
 				isExpanded={headerIsExpanded}
@@ -61,8 +61,8 @@ export function TaskSectionHeader({
 	return (
 		<div
 			onClick={toggle}
-			className="flex w-full justify-between items-center hover:bg-zinc-50 pr-2 py-0.5 cursor-pointer">
-			<button className="inline-flex items-center w-full gap-4 px-4 py-2 font-mono text-sm font-semibold uppercase flex-1 text-zinc-500">
+			className="flex w-full justify-between items-center hover:bg-zinc-200 bg-zinc-100 rounded-lg pr-2 py-0.5 cursor-pointer">
+			<button className="inline-flex items-center flex-1 w-full gap-4 px-4 py-2 font-mono text-sm font-semibold uppercase text-zinc-500">
 				{isExpanded ? (
 					<ChevronDownIcon className="w-4 h-4" />
 				) : (
