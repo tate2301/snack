@@ -39,10 +39,6 @@ export default function TaskListSection(props: TaskSection) {
 					}}
 					className="flex flex-col gap-1">
 					<TaskListItem title="Design new App icon to replace eletron logo" />
-					<TaskListItem title="Design new App icon to replace eletron logo" />
-					<TaskListItem title="Design new App icon to replace eletron logo" />
-					<TaskListItem title="Design new App icon to replace eletron logo" />
-					<TaskListItem title="Design new App icon to replace eletron logo" />
 				</motion.div>
 			)}
 		</div>

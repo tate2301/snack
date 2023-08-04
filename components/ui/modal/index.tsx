@@ -50,7 +50,19 @@ export default function Modal({
 						</div>
 					)}
 
-					<div className="px-8 pt-8 mb-4">{children}</div>
+					<motion.div
+						initial={{
+							height: 0,
+						}}
+						animate={{
+							height: 'auto',
+						}}
+						exit={{
+							height: 0,
+						}}
+						className="px-8 pt-8 mb-4">
+						{children}
+					</motion.div>
 					{actionCenter && (
 						<div className="p-8 bg-stone-100">{actionCenter}</div>
 					)}
