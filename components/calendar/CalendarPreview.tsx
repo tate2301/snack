@@ -50,8 +50,10 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 
 	return (
 		<div className="flex-none hidden w-full md:block">
-			<div className="flex items-baseline justify-between text-center text-zinc-900">
-				<p></p>
+			<div className="flex items-baseline justify-between text-center text-zinc-900 px-6">
+				<p className="text-xl font-semibold text-zinc-900">
+					{format(firstDayOfCurrentMonth, 'MMMM yyyy')}
+				</p>
 				<div className="flex gap-4">
 					<button
 						type="button"

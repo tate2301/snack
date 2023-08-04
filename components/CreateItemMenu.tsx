@@ -4,9 +4,8 @@ import { PlusIcon } from '@heroicons/react/20/solid';
 export default function CreateItemMenu() {
 	return (
 		<Popover>
-			<Popover.Button
-				className={'py-1 text-purple-600  flex items-center gap-2'}>
-				<p className="p-1 bg-purple-600 text-white rounded-full">
+			<Popover.Button className={'py-1 text-zinc-900  flex items-center gap-2'}>
+				<p className="p-1 bg-zinc-900 text-white rounded-full">
 					<PlusIcon className="w-4 h-4" />
 				</p>
 				New Item

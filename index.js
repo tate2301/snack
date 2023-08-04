@@ -4,13 +4,14 @@ const path = require('path');
 
 function createWindow() {
 	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
+		width: 1080,
+		height: 720,
 		webPreferences: {
 			nodeIntegration: true,
 		},
 		titleBarStyle: 'hidden',
 		maximizable: true,
+		icon: path.join(__dirname, './public/app-logo.png'),
 	});
 
 	win.loadURL(

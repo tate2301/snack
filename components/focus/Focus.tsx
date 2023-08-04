@@ -54,15 +54,7 @@ const FocusPeriod = () => {
 	);
 
 	return (
-		<div
-			className={clsx(
-				'border  rounded-xl py-4 px-4 flex flex-col',
-				isRunning ? 'bg-white border-purple-300' : 'bg-zinc-50 border-zinc-100',
-			)}>
-			<div className={'flex gap-2 items-center text-purple-600'}>
-				<ClockIcon className={'w-5 h-5'} />
-				<p className={'font-semibold text-sm'}>Focus Period</p>
-			</div>
+		<div className="px-2">
 			<div className={'mt-2'}>
 				<div className={'flex items-center py-2 w-full rounded-xl'}>
 					<p className={'text-3xl font-semibold uppercase'}>
@@ -76,7 +68,7 @@ const FocusPeriod = () => {
 						<div
 							className={clsx(
 								'w-2 h-8 rounded-full transition-all duration-300',
-								idx < activeElementCount ? ' bg-purple-600' : 'bg-zinc-200',
+								idx < activeElementCount ? ' bg-zinc-900' : 'bg-zinc-200',
 							)}
 							key={idx}
 						/>
@@ -96,7 +88,7 @@ const FocusPeriod = () => {
 							}}
 							onClick={toggle}
 							className={
-								'py-2 px-4 rounded-xl text-sm flex gap-2 bg-purple-600 text-white'
+								'py-2 px-4 rounded-xl text-sm flex gap-2 bg-zinc-900 text-white'
 							}>
 							<PlayIcon className={'w-5 h-5'} />
 							{remainingTime === initialTime ? 'Start' : 'Continue'}

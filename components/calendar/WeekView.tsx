@@ -91,7 +91,7 @@ export default function WeekView() {
 										className={clsx(
 											'flex items-start justify-center font-semibold p-1 rounded-lg uppercase',
 											isEqual(startOfToday(), day) &&
-												'bg-purple-600 text-white px-2',
+												'bg-zinc-900 text-white px-2',
 										)}>
 										{format(day, 'dd')}
 									</span>
@@ -103,7 +103,7 @@ export default function WeekView() {
 						<div
 							className="absolute left-0 z-20 w-full gap-2 border-none"
 							style={{ top: `${timePosition}px` }}>
-							<p className="flex items-center flex-shrink-0 w-full  after:w-auto after:flex-1 after:h-0.5 after:bg-purple-600 text-purple-600">
+							<p className="flex items-center flex-shrink-0 w-full  after:w-auto after:flex-1 after:h-0.5 after:bg-zinc-900 text-zinc-900">
 								<span className="p-1 pr-2 text-xs font-semibold uppercase bg-white rounded">
 									{Intl.DateTimeFormat('en-US', {
 										hour: '2-digit',
@@ -170,11 +170,11 @@ export default function WeekView() {
 									style={{ gridRow: '74 / span 12' }}>
 									<a
 										href="#"
-										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-purple-50 hover:bg-purple-100">
-										<p className="order-1 font-semibold text-purple-700">
+										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-zinc-50 hover:bg-zinc-100">
+										<p className="order-1 font-semibold text-zinc-700">
 											Breakfast
 										</p>
-										<p className="text-purple-500 group-hover:text-purple-700">
+										<p className="text-zinc-700 group-hover:text-zinc-700">
 											<time dateTime="2022-01-12T06:00">6:00 AM</time>
 										</p>
 									</a>

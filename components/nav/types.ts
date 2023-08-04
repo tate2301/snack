@@ -6,13 +6,7 @@ export type SidebarToggleProps = {
 	expand?: (v: boolean) => void;
 };
 
-export type Tab =
-	| 'inbox'
-	| 'calendar'
-	| 'timers'
-	| 'settings'
-	| 'contacts'
-	| 'tags';
+export type Tab = 'inbox' | 'calendar' | 'timers' | 'settings' | 'contacts';
 
 export type NavItem = {
 	icon: ReactNode;

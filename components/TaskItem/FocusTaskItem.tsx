@@ -45,7 +45,7 @@ export default function FocusTaskItem({
 	return (
 		<div className="transition-all divide-y rounded-lg divide-zinc-100">
 			<div className={`flex gap-2 items-baseline justify-between px-4 py-2`}>
-				<p className="flex gap-1 mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
+				<p className="flex gap-1 mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-900">
 					<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
 						<CalendarDaysIcon className="w-4 h-4 text-zinc-400" />
 						28/7/2023
@@ -58,13 +58,13 @@ export default function FocusTaskItem({
 				<div className={`flex gap-2 items-center`}>
 					<button
 						className={
-							'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+							'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 						}>
 						<ArchiveBoxIcon className={'w-4 h-4'} />
 					</button>
 					<button
 						className={
-							'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+							'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 						}>
 						<TrashIcon className={'w-4 h-4'} />
 					</button>

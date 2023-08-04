@@ -12,31 +12,39 @@ export default function TaskListSection(props: TaskSection) {
 	const [headerIsExpanded, toggleHeaderIsExpanded] = useToggle(true);
 
 	return (
-		<div className="p-2">
+		<div>
 			<TaskSectionHeader
 				title={props.title}
 				isExpanded={headerIsExpanded}
 				toggle={toggleHeaderIsExpanded}
 			/>
-			<motion.div
-				initial={{
-					height: 0,
-					opacity: 0,
-				}}
-				animate={{
-					height: headerIsExpanded ? 'auto' : 0,
-					opacity: headerIsExpanded ? 1 : 0,
-				}}
-				transition={{
-					duration: 0.3,
-				}}
-				className="flex flex-col gap-1">
-				<TaskListItem title="Design new App icon to replace eletron logo" />
-				<TaskListItem title="Design new App icon to replace eletron logo" />
-				<TaskListItem title="Design new App icon to replace eletron logo" />
-				<TaskListItem title="Design new App icon to replace eletron logo" />
-				<TaskListItem title="Design new App icon to replace eletron logo" />
-			</motion.div>
+			{headerIsExpanded && (
+				<motion.div
+					initial={{
+						height: 0,
+						opacity: 0,
+					}}
+					animate={{
+						height: 'auto',
+						opacity: 1,
+						marginBottom: '1rem',
+					}}
+					exit={{
+						height: 0,
+						opacity: 0,
+						marginBottom: 0,
+					}}
+					transition={{
+						duration: 0.1,
+					}}
+					className="flex flex-col gap-1">
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+				</motion.div>
+			)}
 		</div>
 	);
 }
@@ -60,9 +68,11 @@ export function TaskSectionHeader({
 				) : (
 					<ChevronRightIcon className="w-4 h-4" />
 				)}
-				{title}
+				<p className="block text-left">
+					{title} <span className="text-zinc-400">(6/14)</span>
+				</p>
 			</button>
-			<button className="p-1 rounded hover:bg-zinc-100">
+			<button className="p-1 rounded hover:bg-zinc-100 text-zinc-500">
 				<PlusIcon className="w-5 h-5" />
 			</button>
 		</div>

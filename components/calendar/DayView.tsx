@@ -157,11 +157,11 @@ export default function DayView() {
 									style={{ gridRow: '74 / span 12' }}>
 									<a
 										href="#"
-										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-purple-50 hover:bg-purple-100">
-										<p className="order-1 font-semibold text-purple-700">
+										className="absolute flex flex-col p-2 overflow-y-auto text-xs leading-5 rounded-lg group inset-1 bg-zinc-50 hover:bg-zinc-100">
+										<p className="order-1 font-semibold text-zinc-700">
 											Breakfast
 										</p>
-										<p className="text-purple-500 group-hover:text-purple-700">
+										<p className="text-zinc-700 group-hover:text-zinc-700">
 											<time dateTime="2022-01-22T06:00">6:00 AM</time>
 										</p>
 									</a>

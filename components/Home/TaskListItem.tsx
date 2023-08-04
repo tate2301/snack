@@ -22,7 +22,7 @@ export default function TaskListItem({
 				/>
 				<p
 					className={clsx(
-						isChecked ? 'line-through text-zinc-400' : 'text-zinc-600',
+						isChecked ? 'line-through text-zinc-400' : 'text-zinc-900',
 					)}>
 					{title}
 				</p>

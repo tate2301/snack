@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import WeekView from '../components/calendar/WeekView';
 import NavigationSidebar from '../components/nav/SidebarNavigation';
+import ContextSidebar from '../components/ContextSidebar';
 
 export default function CalendarLayout(props) {
 	return (
@@ -26,17 +27,18 @@ export default function CalendarLayout(props) {
 					'w-full flex flex-1 flex-grow-0 items-start divide-x h-[calc(100vh-3rem)]'
 				}>
 				<NavigationSidebar />
+
 				<div
 					className={
 						'flex-1 flex flex-col justify-between h-full bg-zinc-50 border-zinc-200 w-full overflow-clip'
 					}>
 					<div className="bg-white">
-						<div className={'p-2 '}>
-							<h1 className={'font-semibold text-xl'}>
+						<div className={'p-4'}>
+							<h1 className={'font-semibold uppercase text-xl'}>
 								{Intl.DateTimeFormat('en-gb', {
 									month: 'long',
 									year: 'numeric',
-								}).format(new Date())}{' '}
+								}).format(new Date())}
 							</h1>
 						</div>
 						<div
@@ -102,9 +104,7 @@ export default function CalendarLayout(props) {
 
 					<WeekView />
 				</div>
-				<div className={'w-auto overflow-y-auto h-full bg-white z-10'}>
-					{props.children}
-				</div>
+				<ContextSidebar />
 			</div>
 		</div>
 	);

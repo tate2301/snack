@@ -27,7 +27,7 @@ export default function Subtask({}) {
 					'line-clamp-1 dark:border-zinc-800 w-full flex justify-between',
 					checked
 						? 'text-zinc-300 dark:text-zinc-500'
-						: 'dark:text-zinc-400 text-zinc-600 ',
+						: 'dark:text-zinc-400 text-zinc-900 ',
 				)}>
 				<span>Update nameservers for domain</span>
 				<span className="uppercase text-zinc-500 hidden @lg:block">

@@ -3,6 +3,7 @@ import {
 	Cog6ToothIcon,
 	CloudIcon,
 	InboxIcon,
+	ListBulletIcon,
 } from '@heroicons/react/24/outline';
 import TimerIcon from '../../icons/Timer';
 import CalendarIcon from '../../icons/CalendarIcon';
@@ -12,8 +13,9 @@ import ExpandSidebarIcon from '../../icons/ExpandSidebarIcon';
 import { AppNavigation, NavItem, SidebarToggleProps, Tab } from './types';
 import SidebarContainer from './SidebarContainer';
 import { useRouter } from 'next/router';
-import { ReactNode, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
+import TaskList from '../Home/TaskList';
 
 const tabs: NavItem[] = [
 	{
@@ -48,26 +50,26 @@ function SidebarToggle({ isExpanded, toggle }: SidebarToggleProps) {
 }
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
-	console.log(props.activeTab);
 	return (
-		<div className="sticky flex flex-col justify-between flex-shrink-0 gap-4 p-2 h-full ">
+		<div className="sticky flex flex-col justify-between flex-shrink-0 gap-4 h-full ">
 			<div className="flex flex-col gap-4">
-				<SidebarToggle {...props} />
-				{tabs.map((tab: NavItem) => (
-					<NavItem
-						key={tab.value}
-						{...tab}
-						active={props.activeTab === tab.value}
-						callback={props.setActiveTab}
-					/>
-				))}
+				<div className="mb-8 mx-auto">
+					<SidebarToggle {...props} />
+				</div>
+				<div className="p-2 flex flex-col gap-4">
+					{tabs.map((tab: NavItem) => (
+						<NavItem
+							key={tab.value}
+							{...tab}
+							active={props.activeTab === tab.value}
+							callback={props.setActiveTab}
+						/>
+					))}
+				</div>
 			</div>
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 p-2">
 				<button className="p-2 rounded-xl text-zinc-400 hover:bg-zinc-100">
 					<Cog6ToothIcon className="w-6 h-6" />
-				</button>
-				<button className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400">
-					<CloudIcon className="w-6 h-6" />
 				</button>
 			</div>
 		</div>
@@ -92,10 +94,14 @@ export default function NavigationSidebar({}) {
 		[router],
 	);
 
+	useEffect(() => {
+		setActiveTab('inbox');
+	}, []);
+
 	return (
 		<div
 			className={
-				'max-w-[24rem] overflow-y-auto h-full bg-white z-10 flex-grow-0 flex gap-1 divide-x'
+				'min-w-[32rem] overflow-y-auto h-full bg-white z-10 flex-grow-0 flex gap-1 divide-x'
 			}>
 			<SidebarNavigation
 				isExpanded={isExpanded}
@@ -128,7 +134,9 @@ function NavItem(
 			onClick={onClick}
 			className={clsx(
 				'p-2 transition-all rounded-xl',
-				props.active ? 'bg-zinc-900 text-white' : 'hover:bg-stone-100',
+				props.active
+					? 'bg-zinc-900 text-white'
+					: 'hover:bg-stone-100 text-zinc-400',
 			)}>
 			{props.icon}
 		</button>

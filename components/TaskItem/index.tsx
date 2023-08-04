@@ -91,22 +91,22 @@ export default function TaskItem({
 											{isExpanded && (
 												<motion.div
 													className={`flex gap-2 items-center mt-1 justify-between`}>
-													<p className="mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-600">
-														<span className="mr-2 text-purple-500">
+													<p className="mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-900">
+														<span className="mr-2 text-zinc-700">
 															28/7/2023 12:00 PM
 														</span>
 													</p>
 													<div className={`flex gap-2 items-center`}>
 														<button
 															className={
-																'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+																'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 															}
 															onClick={expand}>
 															<ArchiveBoxIcon className={'w-4 h-4'} />
 														</button>
 														<button
 															className={
-																'p-2 rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+																'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 															}
 															onClick={expand}>
 															<TrashIcon className={'w-4 h-4'} />
@@ -131,7 +131,7 @@ export default function TaskItem({
 									className="flex gap-4 mt-2">
 									<button
 										onClick={toggle}
-										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-600 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
+										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-900 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
 										<ListBulletIcon className="w-4 h-4" />3 Tasks
 									</button>
 								</motion.div>

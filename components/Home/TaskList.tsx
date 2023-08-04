@@ -14,9 +14,9 @@ import TaskListSection from './TaskListSection';
 
 export default function TaskList() {
 	return (
-		<div className="p-2">
-			<TaskListSection title={'Today'} />
-			<TaskListSection title={'Awaiting next action'} />
+		<div className="py-2 flex-1">
+			<TaskListSection title={'Work'} />
+			<TaskListSection title={'Personal'} />
 		</div>
 	);
 }
