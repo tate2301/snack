@@ -9,7 +9,7 @@ import { CalendarView } from '../components/calendar/types';
 export default function CalendarLayout(props) {
 	return (
 		<DndContext>
-			<div className="flex flex-col h-full overflow-y-hidden ">
+			<div className="flex flex-col h-screen overflow-y-hidden">
 				<nav className="flex items-center justify-between flex-shrink-0 w-full h-12 text-white border-b bg-zinc-950 ">
 					<p className="p-2 px-3 text-sm font-semibold uppercase rounded-lg ">
 						DEV
@@ -28,7 +28,7 @@ export default function CalendarLayout(props) {
 				</nav>
 				<div
 					className={
-						'w-full flex flex-1 flex-grow-0 items-start divide-x h-[calc(100vh-3rem)]'
+						'w-full flex flex-1 items-start bg-stone-100 h-[calc(100vh-4rem)]'
 					}>
 					<NavigationSidebar />
 					<Calendar view={CalendarView.Week} />

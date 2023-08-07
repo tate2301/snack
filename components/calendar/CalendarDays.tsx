@@ -11,13 +11,10 @@ const CalendarDays = (
 		props.view === CalendarView.Day ? props.selectedDate : startOfToday();
 
 	return (
-		<div
-			className={clsx(
-				'hidden grid-cols-7 -mr-px text-sm leading-6 border-gray-100 divide-gray-100 text-zinc-500 sm:grid ',
-				props.view === CalendarView.Day && 'w-full',
-				props.view === CalendarView.Week && 'divide-x border-r',
-			)}>
-			<div className={clsx('w-24 col-end-1 border-r border-zinc-100')} />
+		<>
+			<div className="flex items-center justify-center">
+				<p className="uppercase">GMT</p>
+			</div>
 			{props.week.map((day, weekIdx) => (
 				<button
 					key={`week-day-${weekIdx}`}
@@ -25,7 +22,6 @@ const CalendarDays = (
 					type="button"
 					className={clsx(
 						'flex flex-col items-center py-2 gap-px text-gray-500 uppercase',
-						weekIdx === 0 && '!border-white',
 					)}>
 					<span>{format(day, 'EEE')}</span>
 					<span
@@ -37,7 +33,7 @@ const CalendarDays = (
 					</span>
 				</button>
 			))}
-		</div>
+		</>
 	);
 };
 
