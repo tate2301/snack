@@ -41,16 +41,24 @@ const useCalendarDates = (today: Date) => {
 		[selectedDate],
 	);
 
-	const selectDay = (day: Date) => {
+	const selectDate = (day: Date) => {
 		setSelectedDate(day);
 	};
 
+	const nextDate = () => {
+		selectDate(add(selectedDate, { days: 1 }));
+	};
+
+	const prevDate = () => {
+		selectDate(add(selectedDate, { days: -1 }));
+	};
+
 	const nextWeek = () => {
-		selectDay(add(selectedDate, { weeks: 1 }));
+		selectDate(add(selectedDate, { weeks: 1 }));
 	};
 
 	const prevWeek = () => {
-		selectDay(add(selectedDate, { weeks: -1 }));
+		selectDate(add(selectedDate, { weeks: -1 }));
 	};
 
 	const nextMonth = () => {
@@ -64,14 +72,16 @@ const useCalendarDates = (today: Date) => {
 	};
 
 	return {
+		selectDate,
+		selectedDate,
+		week,
 		month,
-		nextMonth,
-		prevMonth,
-		selectDay,
+		nextDate,
+		prevDate,
 		nextWeek,
 		prevWeek,
-		week,
-		selectedDate,
+		nextMonth,
+		prevMonth,
 		firstDayOfCurrentMonth,
 	};
 };

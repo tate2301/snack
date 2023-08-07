@@ -1,70 +1,17 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useEffect, useRef, useState } from 'react';
-import {
-	ChevronDownIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
-} from '@heroicons/react/24/solid';
-import { Menu, Transition } from '@headlessui/react';
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
-import useCalendarDates from '../../lib/hooks/useCalendarDates';
-import {
-	eachHourOfInterval,
-	endOfToday,
-	format,
-	isEqual,
-	startOfToday,
-} from 'date-fns';
+import { format, isEqual, startOfToday } from 'date-fns';
 import clsx from 'clsx';
-import useCurrentTime from '../../lib/hooks/useCurrentTime';
+import { WeekCalendarProps } from './types';
+import useCalendarTime from '../../hooks/useCalendarTime';
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(' ');
-}
-
-export default function WeekView() {
-	const { week, nextWeek, prevWeek, selectDay, selectedDate } =
-		useCalendarDates(startOfToday());
-	const currentTime = useCurrentTime();
-	const container = useRef(null);
-	const containerNav = useRef(null);
-	const containerOffset = useRef(null);
-	const [timePosition, setTimePosition] = useState(0);
-
-	const timeIntervals = eachHourOfInterval(
-		{
-			start: startOfToday(),
-			end: endOfToday(),
-		},
-		{
-			step: 1,
-		},
-	);
-
-	const remToPx = (rem) => {
-		return (
-			rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
-		);
-	};
-
-	useEffect(() => {
-		// Set the container scroll position based on the current time.
-		const currentMinute = currentTime.getHours() * 60;
-		const blockHeight = remToPx(4);
-
-		container.current.scrollTop =
-			(currentMinute / 1380) * 2688 - 2 * blockHeight;
-	}, []);
-
-	useEffect(() => {
-		const calendarHeight = container.current.scrollHeight;
-		const blockHeight = remToPx(4);
-
-		const gridHeight = calendarHeight - containerNav.current.offsetHeight;
-		const currentMinute =
-			currentTime.getHours() * 60 + currentTime.getMinutes();
-		setTimePosition((currentMinute / 1440) * gridHeight);
-	}, [currentTime]);
+export default function WeekView(props: WeekCalendarProps) {
+	const {
+		container,
+		containerNav,
+		containerOffset,
+		timeIntervals,
+		timePosition,
+		currentTime,
+	} = useCalendarTime();
 
 	return (
 		<div className="flex flex-col w-full h-full">
@@ -81,7 +28,7 @@ export default function WeekView() {
 
 						<div className="hidden grid-cols-7 -mr-px text-sm leading-6 border-r border-gray-100 divide-x divide-gray-100 text-zinc-500 sm:grid">
 							<div className="w-16 col-end-1" />
-							{week.map((day, weekIdx) => (
+							{props.week.map((day, weekIdx) => (
 								<button
 									key={`week-day-${weekIdx}`}
 									type="button"

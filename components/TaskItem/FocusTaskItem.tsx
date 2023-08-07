@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Subtask from './Subtask';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import {
 	BoltIcon,

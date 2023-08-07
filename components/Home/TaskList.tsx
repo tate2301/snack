@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/20/solid';
 import TaskItem from '../TaskItem';
 import { ReactNode } from 'react';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import TaskListItem from './TaskListItem';
 import TaskListSection from './TaskListSection';

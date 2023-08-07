@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import { motion } from 'framer-motion';
 
 const taskTextVariants = {

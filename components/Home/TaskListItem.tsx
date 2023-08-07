@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 
 export default function TaskListItem({

@@ -38,8 +38,8 @@ const SidebarContainerPresentation = (
 			transition={{
 				duration: 0.1,
 			}}
-			className="flex-1 overflow-y-auto flex flex-col justify-between h-full">
-			<div className="flex flex-col overflow-y-auto flex-1">
+			className="w-[32rem]f lex-1 overflow-y-auto flex flex-col justify-between h-full drop-shadow-sm border-l border-zinc-200 bg-white">
+			<div className="flex flex-col overflow-y-auto flex-1 p-2">
 				<App />
 			</div>
 			<div className="p-4 border-t drop-shadow bg-white">

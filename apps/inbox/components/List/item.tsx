@@ -8,10 +8,16 @@ import {
 	ExclamationTriangleIcon,
 } from '@heroicons/react/20/solid';
 import ExternalLink from '../../../../icons/ExternalLink';
-import useDisclosure from '../../../../lib/hooks/useDisclosure';
+import useDisclosure from '../../../../hooks/useDisclosure';
 import InboxItemModal from '../modals/InboxItemModal';
 import { InboxPresenterItemProps } from './types';
-import { useDraggable } from '@dnd-kit/core';
+import {
+	KeyboardSensor,
+	PointerSensor,
+	useDraggable,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
 
 import { generateUUID } from '../../../../lib/functions';
 
@@ -21,6 +27,7 @@ function InboxListItem({}) {
 
 function InboxListItemController({ id }) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id: 'draggable',
 	});
@@ -30,17 +37,6 @@ function InboxListItemController({ id }) {
 		  }
 		: undefined;
 
-	console.log('InboxListItemController', {
-		id,
-		isOpen,
-		onOpen,
-		onClose,
-		attributes,
-		listeners,
-		setNodeRef,
-		transform,
-		style,
-	});
 	return (
 		<>
 			<InboxItemModal
@@ -63,7 +59,7 @@ function InboxListItemPresenter(props: InboxPresenterItemProps) {
 			style={props.style}
 			{...props.listeners}
 			{...props.attributes}
-			className="flex gap-4 py-2 pl-2 pr-4 cursor-grab hover:bg-zinc-100 rounded-xl group">
+			className="flex gap-4 py-2 pl-2 pr-4 hover:bg-zinc-100 rounded-xl group">
 			<p className="mt-2 ml-1">
 				<button className="p-1 text-white bg-red-600 rounded-lg">
 					<ExclamationTriangleIcon className="w-5 h-5 " />

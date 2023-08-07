@@ -16,7 +16,7 @@ import {
 	startOfWeek,
 } from 'date-fns';
 import { useMemo, useState } from 'react';
-import useCalendarDates from '../../lib/hooks/useCalendarDates';
+import useCalendarDates from '../../hooks/useCalendarDates';
 
 type Day = {
 	date: string;
@@ -43,7 +43,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 		prevMonth,
 		nextMonth,
 		month,
-		selectDay,
+		selectDate,
 		firstDayOfCurrentMonth,
 		selectedDate,
 	} = useCalendarDates(today);
@@ -91,7 +91,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 					<button
 						key={day.toString()}
 						type="button"
-						onClick={() => selectDay(day)}
+						onClick={() => selectDate(day)}
 						className={clsx(
 							'py-1.5 hover:bg-zinc-100 focus:z-10 rounded-xl flex items-center justify-center flex-col gap-1 transition-all',
 							isSameMonth(day, firstDayOfCurrentMonth) ? 'bg-white' : '',

@@ -1,5 +1,8 @@
+import { DndContext } from '@dnd-kit/core';
 import '../styles/global.css';
 import Head from 'next/head';
+import { Provider } from 'react-redux';
+import store from '../redux/store';
 
 export default function App({ Component, pageProps }) {
 	return (
@@ -10,7 +13,11 @@ export default function App({ Component, pageProps }) {
 				<title>Snack ⏲</title>
 			</Head>
 
-			<Component {...pageProps} />
+			<Provider store={store}>
+				<DndContext>
+					<Component {...pageProps} />
+				</DndContext>
+			</Provider>
 		</div>
 	);
 }

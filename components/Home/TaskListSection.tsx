@@ -6,7 +6,8 @@ import {
 import { motion } from 'framer-motion';
 import TaskListItem from './TaskListItem';
 import { TaskSection } from './types';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
+import { DndContext } from '@dnd-kit/core';
 
 export default function TaskListSection(props: TaskSection) {
 	const [headerIsExpanded, toggleHeaderIsExpanded] = useToggle(true);
@@ -38,7 +39,9 @@ export default function TaskListSection(props: TaskSection) {
 						duration: 0.1,
 					}}
 					className="flex flex-col gap-1">
-					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<DndContext>
+						<TaskListItem title="Design new App icon to replace eletron logo" />
+					</DndContext>
 				</motion.div>
 			)}
 		</div>

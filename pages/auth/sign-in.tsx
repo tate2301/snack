@@ -1,12 +1,20 @@
+import Image from 'next/image';
+
 export default function SignIn() {
 	return (
 		<main className="h-full w-full flex justify-center items-center bg-stone-100">
 			<div className="p-8 flex flex-col gap-8 w-[32rem] rounded-xl shadow-sm bg-white">
 				<div>
-					<h2 className="text-xl font-bold text-zinc-950">
+					<Image
+						src={'/app-logo.png'}
+						alt={'Snack Logo'}
+						height={40}
+						width={40}
+					/>
+					<h2 className="text-xl font-bold text-zinc-950 mt-4">
 						Sign in to your account
 					</h2>
-					<p className="mt-1 ">
+					<p className="mt-1">
 						We are currently in closed beta. If you would like to join, please
 						email{' '}
 						<a

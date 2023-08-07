@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import TaskItem from '../TaskItem';
 import { PlusIcon } from '@heroicons/react/24/outline';
 

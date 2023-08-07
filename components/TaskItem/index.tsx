@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { timeDifference } from '../../lib/time';
 import Subtask from './Subtask';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 
 const useWhileHover = () => {

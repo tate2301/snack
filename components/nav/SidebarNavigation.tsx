@@ -8,7 +8,7 @@ import {
 import TimerIcon from '../../icons/Timer';
 import CalendarIcon from '../../icons/CalendarIcon';
 import CollapseSidebarIcon from '../../icons/CollapseSidebarIcon';
-import useToggle from '../../lib/hooks/useToggle';
+import useToggle from '../../hooks/useToggle';
 import ExpandSidebarIcon from '../../icons/ExpandSidebarIcon';
 import { AppNavigation, NavItem, SidebarToggleProps, Tab } from './types';
 import SidebarContainer from './SidebarContainer';
@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import TaskList from '../Home/TaskList';
+import { UserAccount } from '../UserAccount';
 
 const tabs: NavItem[] = [
 	{
@@ -23,16 +24,16 @@ const tabs: NavItem[] = [
 		value: 'inbox',
 		label: 'Inbox',
 	},
-	{
-		icon: <CalendarIcon className="w-6 h-6" />,
-		value: 'calendar',
-		label: 'Calendar',
-	},
-	{
-		icon: <TimerIcon className="w-6 h-6" />,
-		value: 'timers',
-		label: 'Timers',
-	},
+	// {
+	// 	icon: <CalendarIcon className="w-6 h-6" />,
+	// 	value: 'calendar',
+	// 	label: 'Calendar',
+	// },
+	// {
+	// 	icon: <TimerIcon className="w-6 h-6" />,
+	// 	value: 'timers',
+	// 	label: 'Timers',
+	// },
 ];
 
 function SidebarToggle({ isExpanded, toggle }: SidebarToggleProps) {
@@ -51,12 +52,12 @@ function SidebarToggle({ isExpanded, toggle }: SidebarToggleProps) {
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col justify-between flex-shrink-0 gap-4 h-full ">
+		<div className="sticky flex flex-col items-center justify-between flex-shrink-0 h-full gap-4 bg-stone-100">
 			<div className="flex flex-col gap-4">
-				<div className="mb-8 mx-auto">
+				<div className="mx-auto mb-8">
 					<SidebarToggle {...props} />
 				</div>
-				<div className="p-2 flex flex-col gap-4">
+				<div className="flex flex-col gap-4 p-2">
 					{tabs.map((tab: NavItem) => (
 						<NavItem
 							key={tab.value}
@@ -68,9 +69,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 				</div>
 			</div>
 			<div className="flex flex-col gap-4 p-2">
-				<button className="p-2 rounded-xl text-zinc-400 hover:bg-zinc-100">
-					<Cog6ToothIcon className="w-6 h-6" />
-				</button>
+				<UserAccount />
 			</div>
 		</div>
 	);
@@ -99,10 +98,7 @@ export default function NavigationSidebar({}) {
 	}, []);
 
 	return (
-		<div
-			className={
-				'min-w-[32rem] overflow-y-auto h-full bg-white z-10 flex-grow-0 flex gap-1 divide-x'
-			}>
+		<div className={'overflow-y-auto h-full bg-white z-10 flex-grow-0 flex'}>
 			<SidebarNavigation
 				isExpanded={isExpanded}
 				toggle={toggle}

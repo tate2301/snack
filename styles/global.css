@@ -95,17 +95,7 @@ span {
 }
 
 input[type='checkbox'] {
-	@apply w-4 h-4 font-semibold text-orange-600 border-0 rounded stroke-2 outline-0 ring-0 ring-offset-2 dark:ring-offset-zinc-900 ring-offset-zinc-200 border-zinc-200 dark:bg-zinc-800 bg-zinc-50 accent-orange-600;
-}
-
-input[type='checkbox']:focus {
-	@apply outline-0 ring-0 accent-orange-600;
-}
-
-input[type='checkbox']:checked,
-input[type='checkbox']:focus,
-input[type='checkbox']:active {
-	@apply border-0 outline-0 ring-0 ring-offset-2 dark:accent-orange-600 accent-orange-600 ring-offset-orange-600 dark:ring-offset-orange-600;
+	@apply w-4 h-4 font-semibold rounded stroke-2 form-checkbox;
 }
 
 button {
