@@ -1,3 +1,8 @@
+export enum CalendarDefs {
+	TimezoneWidth = 'w-24',
+	BorderColor = 'border-zinc-100',
+}
+
 export enum CalendarView {
 	Day = 'day',
 	Week = 'week',
@@ -13,6 +18,16 @@ export type CalendarProps = {
 	selectedDate: Date;
 };
 
-export type WeekCalendarProps = {
+export type DayCalendarProps = {
 	week: Date[];
 } & CalendarProps;
+
+export type WeekCalendarProps = {
+	week: Date[];
+	daysToDisplay: number;
+} & CalendarProps;
+
+export type CalendarDayTimeProps = {
+	timeIntervals: Date[];
+	currentTime: Date;
+};

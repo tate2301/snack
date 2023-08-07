@@ -69,6 +69,10 @@
 	font-family: SFMono;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 html,
 body {
 	font-size: 12px;

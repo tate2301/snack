@@ -34,8 +34,8 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 
 	return (
 		<div className="bg-white">
-			<div className={'p-4'}>
-				<h1 className={'font-semibold uppercase text-xl'}>
+			<div className={'py-2 mt-4 px-4'}>
+				<h1 className={'font-semibold uppercase text-2xl'}>
 					{Intl.DateTimeFormat('en-gb', {
 						month: 'long',
 						year: 'numeric',

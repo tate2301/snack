@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { CalendarView } from './types';
-import WeekView from './WeekView';
+import WeekView from './views/WeekView';
 import CalendarHeader from './CalendarHeader';
 import { AnimatePresence } from 'framer-motion';
-import DayView from './DayView';
+import DayView from './views/DayView';
 import { startOfToday } from 'date-fns';
 import useCalendarDates from '../../hooks/useCalendarDates';
 
@@ -30,7 +30,7 @@ const Calendar = (props: CalendarProps) => {
 	return (
 		<div
 			className={
-				'flex-1 flex flex-col justify-between h-full bg-zinc-50 border-zinc-200 w-full overflow-clip'
+				'flex-1 flex flex-col justify-between h-full bg-stone-50 border-zinc-200 w-full overflow-clip'
 			}>
 			<CalendarHeader
 				view={calendarView}
@@ -53,11 +53,17 @@ const Calendar = (props: CalendarProps) => {
 				}
 			/>
 			<AnimatePresence>
-				{calendarView === CalendarView.Day && <DayView />}
+				{calendarView === CalendarView.Day && (
+					<DayView
+						week={week}
+						selectedDate={selectedDate}
+					/>
+				)}
 				{calendarView === CalendarView.Week && (
 					<WeekView
 						selectedDate={selectedDate}
 						week={week}
+						daysToDisplay={7}
 					/>
 				)}
 				{calendarView === CalendarView.Month && <div>Not implemented</div>}

@@ -14,3 +14,7 @@
 nav {
 	-webkit-app-region: drag;
 }
+
+#disable-right-border {
+	border-left: none !important;
+}

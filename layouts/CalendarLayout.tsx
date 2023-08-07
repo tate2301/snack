@@ -1,5 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
-import WeekView from '../components/calendar/WeekView';
+import WeekView from '../components/calendar/views/WeekView';
 import NavigationSidebar from '../components/nav/SidebarNavigation';
 import ContextSidebar from '../components/ContextSidebar';
 import { DndContext } from '@dnd-kit/core';

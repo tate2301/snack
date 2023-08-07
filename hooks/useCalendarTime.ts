@@ -7,7 +7,6 @@ const useCalendarTime = () => {
 	const currentTime = useCurrentTime();
 	const container = useRef(null);
 	const containerNav = useRef(null);
-	const containerOffset = useRef(null);
 	const [timePosition, setTimePosition] = useState(0);
 
 	const timeIntervals = eachHourOfInterval(
@@ -31,7 +30,8 @@ const useCalendarTime = () => {
 
 	useEffect(() => {
 		const calendarHeight = container.current.scrollHeight;
-		const gridHeight = calendarHeight - containerNav.current.offsetHeight;
+		const gridHeight =
+			calendarHeight - containerNav.current.offsetHeight + remToPx(4);
 		const currentMinute =
 			currentTime.getHours() * 60 + currentTime.getMinutes();
 		setTimePosition((currentMinute / 1440) * gridHeight);
@@ -40,7 +40,6 @@ const useCalendarTime = () => {
 	return {
 		container,
 		containerNav,
-		containerOffset,
 		timeIntervals,
 		timePosition,
 		currentTime,
