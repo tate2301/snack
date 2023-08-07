@@ -16,6 +16,7 @@ export enum CalendarViewDirection {
 
 export type CalendarProps = {
 	selectedDate: Date;
+	selectDate: (d: Date) => void;
 };
 
 export type DayCalendarProps = {

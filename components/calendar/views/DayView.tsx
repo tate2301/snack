@@ -9,11 +9,12 @@ import { Menu, Transition } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import CalendarHorizontalLines from '../canvas/CalendarHorizontalLines';
 import useCalendarTime from '../../../hooks/useCalendarTime';
-import { format } from 'date-fns';
+import { format, isEqual, startOfToday } from 'date-fns';
 import Timestamp from '../canvas/Timestamp';
 import Timezone from '../canvas/Timezone';
 import CalendarDays from '../CalendarDays';
 import { CalendarView, DayCalendarProps } from '../types';
+import clsx from 'clsx';
 
 const days = [
 	{ date: '2021-12-27' },
@@ -70,12 +71,21 @@ export default function DayView(props: DayCalendarProps) {
 			className="flex flex-col flex-auto overflow-auto">
 			<div
 				ref={containerNav}
-				className="sticky top-0 z-30 flex bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
-				<CalendarDays
-					week={props.week}
-					selectedDate={props.selectedDate}
-					view={CalendarView.Day}
-				/>
+				className="sticky top-0 z-30 flex bg-white ring-1 ring-black ring-opacity-5 sm:pr-8">
+				<div className="w-24 border-r border-zinc-100" />
+				<div className="flex justify-center flex-1 py-2 ">
+					<button className="uppercase">
+						<span>{format(props.selectedDate, 'EEE')}</span>
+						<span
+							className={clsx(
+								'flex items-start justify-center font-semibold p-1 rounded-lg',
+								isEqual(props.selectedDate, startOfToday()) &&
+									'bg-orange-600 text-white px-2',
+							)}>
+							{format(props.selectedDate, 'dd')}
+						</span>
+					</button>
+				</div>
 			</div>
 			<div className="relative flex flex-auto w-full">
 				<Timestamp position={timePosition} />

@@ -15,7 +15,7 @@ const Timezone = (props: { zone: string } & CalendarDayTimeProps) => {
 				'sticky left-0 z-10 flex-none w-24 bg-white border-r border-zinc-100 px-4',
 				'grid col-start-1 col-end-2 row-start-1 uppercase',
 			)}
-			style={{ gridTemplateRows: 'repeat(48, minmax(4rem, 1fr))' }}>
+			style={{ gridTemplateRows: 'repeat(48, minmax(4rem))' }}>
 			<div />
 			{props.timeIntervals.map((time, idx) => (
 				<>

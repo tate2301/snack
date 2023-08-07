@@ -19,7 +19,7 @@ export default function WeekView(props: WeekCalendarProps) {
 			className="flex flex-col flex-auto overflow-auto ">
 			<div
 				style={{ width: '165%' }}
-				className="flex flex-col flex-none max-w-full sm:max-w-none md:max-w-full">
+				className="flex flex-col flex-none max-w-full bg-white sm:max-w-none md:max-w-full">
 				<div
 					ref={containerNav}
 					className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8">
@@ -29,6 +29,7 @@ export default function WeekView(props: WeekCalendarProps) {
 						week={props.week}
 						selectedDate={props.selectedDate}
 						view={CalendarView.Week}
+						selectDate={props.selectDate}
 					/>
 				</div>
 				<div className="relative flex flex-auto">

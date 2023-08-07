@@ -27,6 +27,26 @@ const Calendar = (props: CalendarProps) => {
 		prevDate,
 	} = useCalendarDates(startOfToday());
 
+	const next = () => {
+		if (calendarView === CalendarView.Day) {
+			nextDate();
+		} else if (calendarView === CalendarView.Week) {
+			nextWeek();
+		} else if (calendarView === CalendarView.Month) {
+			nextMonth();
+		}
+	};
+
+	const prev = () => {
+		if (calendarView === CalendarView.Day) {
+			prevDate();
+		} else if (calendarView === CalendarView.Week) {
+			prevWeek();
+		} else if (calendarView === CalendarView.Month) {
+			prevMonth();
+		}
+	};
+
 	return (
 		<div
 			className={
@@ -37,26 +57,15 @@ const Calendar = (props: CalendarProps) => {
 				setView={setCalendarView}
 				selectDate={selectDate}
 				selectedDate={selectedDate}
-				next={
-					props.view === CalendarView.Day
-						? nextDate
-						: props.view === CalendarView.Week
-						? nextWeek
-						: nextMonth
-				}
-				prev={
-					props.view === CalendarView.Day
-						? prevDate
-						: props.view === CalendarView.Week
-						? prevWeek
-						: prevMonth
-				}
+				next={next}
+				prev={prev}
 			/>
 			<AnimatePresence>
 				{calendarView === CalendarView.Day && (
 					<DayView
 						week={week}
 						selectedDate={selectedDate}
+						selectDate={selectDate}
 					/>
 				)}
 				{calendarView === CalendarView.Week && (
@@ -64,6 +73,7 @@ const Calendar = (props: CalendarProps) => {
 						selectedDate={selectedDate}
 						week={week}
 						daysToDisplay={7}
+						selectDate={selectDate}
 					/>
 				)}
 				{calendarView === CalendarView.Month && <div>Not implemented</div>}

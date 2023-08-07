@@ -5,6 +5,7 @@ module.exports = {
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./layouts/**/*.{js,ts,jsx,tsx,mdx}',
 		'./apps/**/*.{js,ts,jsx,tsx,mdx}',
+		'./constants/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	darkMode: 'class',
 	theme: {
