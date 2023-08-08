@@ -22,10 +22,7 @@ const Timezone = (props: { zone: string } & CalendarDayTimeProps) => {
 						className="h-[80px]"
 						key={`time-${idx}`}>
 						<div className="sticky left-0 z-20 -mt-2.5 w-full text-right text-xs leading-5 text-gray-400">
-							{Math.abs(differenceInMinutes(props.currentTime, time)) < 10 ||
-							idx === 0
-								? ''
-								: getTimeString(time)}
+							{idx === 0 ? '' : getTimeString(time)}
 						</div>
 					</div>
 				</>

@@ -47,4 +47,10 @@ export const EVENT_COLORS = {
 		'group-hover:bg-gray-600',
 		'group-hover:text-white',
 	],
+	orange: [
+		'bg-orange-200',
+		'text-orange-700',
+		'group-hover:bg-orange-600',
+		'group-hover:text-white',
+	],
 };

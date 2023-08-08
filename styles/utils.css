@@ -18,3 +18,6 @@ nav {
 #disable-right-border {
 	border-left: none !important;
 }
+.event-card:hover {
+	height: fit-content !important;
+}

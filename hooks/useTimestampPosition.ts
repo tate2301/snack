@@ -6,12 +6,13 @@ const useTimestampPosition = () => {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
+			const totalHeight = 80 * 24;
 			const now = new Date();
 			const hours = now.getHours();
 			const minutes = now.getMinutes();
-			const seconds = now.getSeconds();
-			const totalSeconds = hours * 60 + minutes;
-			const percentage = (totalSeconds / 1920) * 100;
+
+			const timeInMinutes = hours * 60 + minutes;
+			const percentage = (timeInMinutes / 1440) * 100;
 			setTimePosition(percentage);
 		}, 1000);
 

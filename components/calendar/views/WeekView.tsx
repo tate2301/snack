@@ -9,6 +9,7 @@ import CalendarVerticalLines from '../canvas/CalendarVerticalLines';
 import Timezone from '../canvas/Timezone';
 import CalendarDays from '../CalendarDays';
 import useTimestampPosition from '../../../hooks/useTimestampPosition';
+import EventsTrack from '../events/Track';
 
 export default function WeekView(props: WeekCalendarProps) {
 	const { container, containerNav, timeIntervals, timePosition, currentTime } =
@@ -45,11 +46,12 @@ export default function WeekView(props: WeekCalendarProps) {
 				/>
 				{props.week.map((day, index) => (
 					<div
-						className="relative divide-y group"
+						className="relative divide-y "
 						key={day.toString()}>
 						{isEqual(day, startOfToday()) && (
 							<Timestamp position={timestampPosition} />
 						)}
+						<EventsTrack date={day} />
 						{timeIntervals.map((time, idx) => (
 							<>
 								<div
