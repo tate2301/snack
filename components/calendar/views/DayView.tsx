@@ -16,6 +16,7 @@ import CalendarDays from '../CalendarDays';
 import { CalendarView, DayCalendarProps } from '../types';
 import clsx from 'clsx';
 import useTimestampPosition from '../../../hooks/useTimestampPosition';
+import EventsTrack from '../events/Track';
 
 export default function DayView(props: DayCalendarProps) {
 	const { container, containerNav, timeIntervals, timePosition, currentTime } =
@@ -48,7 +49,7 @@ export default function DayView(props: DayCalendarProps) {
 				</div>
 			</div>
 			<div
-				className="grid w-full"
+				className="grid w-full bg-white divide-x"
 				style={{
 					gridTemplateColumns: '7rem repeat(1, minmax(6rem, 1fr))',
 				}}>
@@ -59,7 +60,8 @@ export default function DayView(props: DayCalendarProps) {
 				/>
 
 				<div className="relative grid flex-auto grid-cols-1 grid-rows-1 divide-y">
-					<Timestamp position={timestampPosition} />
+					<Timestamp />
+					<EventsTrack date={props.selectedDate} />
 					{timeIntervals.map((time, idx) => (
 						<>
 							<div

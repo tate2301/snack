@@ -1,8 +1,16 @@
-import { useMemo } from 'react';
-import { formatTime, getEventPosition } from '../../../lib/utils';
+import { formatTime } from '../../../lib/utils';
 import clsx from 'clsx';
 import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
+import Draggable from 'react-draggable';
+import useResizableEvent from './hooks/useResizableEvent';
+import { Resizable } from 'react-resizable';
+import useDraggableEvent from './hooks/useDraggableEvent';
+import { useMemo } from 'react';
+import useTraceUpdate from '../../../hooks/useTraceUpdates';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { useDraggable } from '@dnd-kit/core';
 
 export type EventCardProps = {
 	startTime: Date;
@@ -11,74 +19,109 @@ export type EventCardProps = {
 	description: string;
 	location: string;
 	color: string;
+	id: string;
 };
 
-const cols = [
-	'col-start-2',
-	'col-start-3',
-	'col-start-4',
-	'col-start-5',
-	'col-start-6',
-	'col-start-7',
-];
-
-const CalendarEventCard = (props: EventCardProps & { trackLength: number }) => {
-	const { day, span, start } = useMemo(() => getEventPosition(props), [props]);
+const CalendarEventCardContent = (props: EventCardProps) => {
 	const [bgColor, textColor, bgHoverColor, textHoverColor] =
 		EVENT_COLORS[props.color];
 
-	const coords = getCoordinatesOfEvent(
-		props.startTime,
-		props.endTime,
-		props.trackLength,
+	return (
+		<div
+			className={clsx(
+				'flex flex-col px-2 overflow-y-auto text-sm leading-5 h-full',
+
+				textColor,
+				textHoverColor,
+			)}>
+			<p
+				className={clsx(
+					`order-1 capitalize font-semibold line-clamp-1`,
+					textColor,
+					textHoverColor,
+				)}>
+				{props.title}
+			</p>
+			<p
+				className={clsx(
+					`order-2 capitalize hidden hover:block`,
+					textColor,
+					textHoverColor,
+				)}>
+				{props.description}
+			</p>
+			<p className={clsx('uppercase line-clamp-1', textColor, textHoverColor)}>
+				<time dateTime={props.startTime.toString()}>
+					{formatTime(props.startTime)}
+				</time>{' '}
+				-{' '}
+				<time dateTime={props.endTime.toString()}>
+					{formatTime(props.endTime)}
+				</time>
+			</p>
+		</div>
 	);
+};
+
+const DragHandle = () => (
+	<div className="relative flex justify-center w-full mt-1 mb-2 cursor-n-resize">
+		<div className="w-8 h-[4px] bg-white rounded-full hidden group-hover:flex drop-shadow-xl transition-all" />
+	</div>
+);
+
+const CalendarEventCard = (
+	props: EventCardProps & {
+		trackLength: number;
+		id: string;
+		updateEvent: (event: EventCardProps) => void;
+	},
+) => {
+	// Get the initial coordinates
+	const coords = useMemo(
+		() =>
+			getCoordinatesOfEvent(props.startTime, props.endTime, props.trackLength),
+		[props],
+	);
+	// Get the resizable height
+	const { height, handleResize } = useResizableEvent(
+		coords.endY - coords.startY,
+	);
+
+	const { attributes, listeners, setNodeRef, over } = useDraggable({
+		id: props.id,
+		data: props,
+	});
+
+	const [bgColor, bgHoverColor, textHoverColor] = EVENT_COLORS[props.color];
 
 	return (
 		<div
-			key={`event-${props.startTime.toString()}`}
-			style={{
-				top: `${coords.startY}px`,
-				height: `${coords.endY - coords.startY}px`,
-			}}
-			className="absolute left-0 w-full group !hover:h-fit">
-			<a
-				href="#"
-				className={clsx(
-					'transition-all duration-150 flex flex-col px-2 hover:py-2 my-auto overflow-y-auto text-sm leading-5',
-					'border-2 border-white shadow hover:shadow-xl hover:py-4 bg-opacity-50 hover:z-40 hover:relative',
-					'backdrop-blur-sm rounded-xl group',
-					bgColor,
-					textColor,
-					bgHoverColor,
-					textHoverColor,
-				)}>
-				<p
+			ref={setNodeRef}
+			{...attributes}
+			{...listeners}>
+			<Resizable
+				height={height}
+				width={Infinity}
+				maxConstraints={[Infinity, props.trackLength]}
+				handle={<DragHandle />}
+				onResize={handleResize}>
+				<div
+					key={`event-${props.startTime.toString()}`}
+					style={{
+						top: `${coords.startY}px`,
+						height: `${height}px`,
+					}}
 					className={clsx(
-						`order-1 capitalize font-semibold`,
-						textColor,
+						'absolute left-0 w-full group !hover:h-fit cursor-pointer hover:z-40 hover:relative',
+						'bg-opacity-50',
+						'backdrop-blur-sm rounded-xl group',
+						bgColor,
+						bgHoverColor,
 						textHoverColor,
 					)}>
-					{props.title}
-				</p>
-				<p
-					className={clsx(
-						`order-2 hover:flex hidden`,
-						textColor,
-						textHoverColor,
-					)}>
-					{props.description}
-				</p>
-				<p
-					className={clsx('uppercase line-clamp-1', textColor, textHoverColor)}>
-					<time dateTime={props.startTime.toString()}>
-						{formatTime(props.startTime)}
-					</time>{' '}
-					-{' '}
-					<time dateTime={props.endTime.toString()}>
-						{formatTime(props.endTime)}
-					</time>
-				</p>
-			</a>
+					<CalendarEventCardContent {...props} />
+				</div>
+			</Resizable>
 		</div>
 	);
 };

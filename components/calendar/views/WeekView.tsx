@@ -1,4 +1,4 @@
-import { format, isEqual, startOfToday } from 'date-fns';
+import { add, format, isEqual, startOfToday } from 'date-fns';
 import clsx from 'clsx';
 import { CalendarView, WeekCalendarProps } from '../types';
 import useCalendarTime from '../../../hooks/useCalendarTime';
@@ -10,11 +10,31 @@ import Timezone from '../canvas/Timezone';
 import CalendarDays from '../CalendarDays';
 import useTimestampPosition from '../../../hooks/useTimestampPosition';
 import EventsTrack from '../events/Track';
+import {
+	DndContext,
+	KeyboardSensor,
+	PointerSensor,
+	closestCenter,
+	useDroppable,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { useState, ReactNode } from 'react';
+import { EventCardProps } from '../events/EventCard';
+import {
+	convertCoordinatesToTime,
+	generateEventDescription,
+	generateEventTitle,
+	getRandomColorForEvent,
+} from '../events/utils';
+import { generateUUID } from '../../../lib/functions';
+import DroppableColumn from '../events/DroppableColumn';
+import DroppableDays from '../events/DroppableDays';
 
 export default function WeekView(props: WeekCalendarProps) {
 	const { container, containerNav, timeIntervals, timePosition, currentTime } =
 		useCalendarTime();
-	const timestampPosition = useTimestampPosition();
 
 	return (
 		<div
@@ -44,49 +64,16 @@ export default function WeekView(props: WeekCalendarProps) {
 					currentTime={currentTime}
 					timeIntervals={timeIntervals}
 				/>
-				{props.week.map((day, index) => (
-					<div
-						className="relative divide-y "
-						key={day.toString()}>
-						{isEqual(day, startOfToday()) && (
-							<Timestamp position={timestampPosition} />
-						)}
-						<EventsTrack date={day} />
-						{timeIntervals.map((time, idx) => (
-							<>
-								<div
-									className={clsx(
-										'h-[80px] hover:bg-zinc-100',
-										idx === 0 && '!border-t-0',
-									)}
-									key={`time-${time.toString()}`}></div>
-							</>
-						))}
-					</div>
-				))}
+				<DroppableDays
+					timeIntervals={timeIntervals}
+					week={props.week}
+				/>
 			</div>
 		</div>
 	);
 }
-/*
-<div className="relative flex flex-auto">
-	<Timestamp position={timePosition} />
 
-	<div className="grid flex-auto grid-cols-1 grid-rows-1">
-		<>
-			<CalendarHorizontalLines
-				currentTime={currentTime}
-				timeIntervals={timeIntervals}
-			/>
-			<CalendarVerticalLines numberOfDaysToDisplay={props.daysToDisplay} />
-		</>
-
-		<CalendarEvents view={CalendarView.Week} />
-	</div>
-</div>; 
-*/
-
-function AllDayEvent({}) {
+function AllDayEvent() {
 	return (
 		<div
 			className="grid uppercase border-b divide-x"

@@ -28,15 +28,6 @@ const useCalendarTime = () => {
 			(currentMinute / 1380) * 2688 - 2 * blockHeight;
 	}, []);
 
-	useEffect(() => {
-		const calendarHeight = container.current.scrollHeight;
-		const gridHeight =
-			calendarHeight - containerNav.current.offsetHeight + remToPx(4);
-		const currentMinute =
-			currentTime.getHours() * 60 + currentTime.getMinutes();
-		setTimePosition((currentMinute / 1440) * gridHeight);
-	}, [currentTime]);
-
 	return {
 		container,
 		containerNav,

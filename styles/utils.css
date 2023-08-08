@@ -21,3 +21,7 @@ nav {
 .event-card:hover {
 	height: fit-content !important;
 }
+
+.react-resizable {
+	@apply p-0 pb-3 bg-white border-2 border-white shadow rounded-xl hover:h-fit;
+}

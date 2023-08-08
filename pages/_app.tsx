@@ -5,24 +5,27 @@ import { Provider } from 'react-redux';
 import store from '../redux/store';
 import { useLayoutEffect } from 'react';
 import { Database } from '../lib/database';
+import { StrictMode } from 'react';
 
 export default function App({ Component, pageProps }) {
 	useLayoutEffect(() => {
 		const db = Database.getInstance();
 	});
 	return (
-		<div
-			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base antialiased font-normal bg-sand-100 text-zinc-900"
-			id="app-container">
-			<Head>
-				<title>Snack ⏲</title>
-			</Head>
+		<StrictMode>
+			<div
+				className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base antialiased font-normal bg-sand-100 text-zinc-900"
+				id="app-container">
+				<Head>
+					<title>Snack ⏲</title>
+				</Head>
 
-			<Provider store={store}>
-				<DndContext>
-					<Component {...pageProps} />
-				</DndContext>
-			</Provider>
-		</div>
+				<Provider store={store}>
+					<DndContext>
+						<Component {...pageProps} />
+					</DndContext>
+				</Provider>
+			</div>
+		</StrictMode>
 	);
 }

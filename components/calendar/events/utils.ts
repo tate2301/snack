@@ -37,6 +37,19 @@ export const getCoordinatesOfEvent = (
 	};
 };
 
+export const convertCoordinatesToTime = (
+	y: number,
+	trackHeight: number,
+): Date => {
+	const percentageOfY = y / trackHeight;
+	const minutes = percentageOfY * 24 * 60;
+	const hours = Math.floor(minutes / 60);
+	const minutesLeft = Math.floor(minutes % 60);
+	const time = add(new Date(), { hours, minutes: minutesLeft });
+
+	return time;
+};
+
 export const getRandomColorForEvent = (): string => {
 	const randomIndex = Math.floor(Math.random() * colorMap.length);
 	return colorMap[randomIndex];
