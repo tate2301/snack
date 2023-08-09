@@ -3,10 +3,10 @@ import useCalendarTime from '../../../hooks/useCalendarTime';
 import Timezone from '../canvas/Timezone';
 import CalendarDays from '../CalendarDays';
 import DroppableDays from '../events/DroppableDays';
+import { useRef } from 'react';
 
 export default function WeekView(props: WeekCalendarProps) {
 	const { container, containerNav, timeIntervals } = useCalendarTime();
-
 	return (
 		<div
 			ref={container}
@@ -37,6 +37,7 @@ export default function WeekView(props: WeekCalendarProps) {
 				<DroppableDays
 					timeIntervals={timeIntervals}
 					week={props.week}
+					containerRef={container}
 				/>
 			</div>
 		</div>

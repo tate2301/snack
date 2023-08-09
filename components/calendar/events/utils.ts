@@ -1,5 +1,6 @@
 import { add, startOfToday } from 'date-fns';
 import { faker } from '@faker-js/faker';
+import { Collision } from '@dnd-kit/core';
 
 export const colorMap = [
 	'red',
@@ -37,22 +38,37 @@ export const getCoordinatesOfEvent = (
 	};
 };
 
-export const convertCoordinatesToTime = (
+/**
+ *
+ * @param y the y coordinate of the top of the event
+ * @param trackHeight the length of the day column in pixels
+ * @returns Date rounded of to the nearest 5 minutes
+ */
+export const convertCoordinatesToTimeRounded = (
 	y: number,
 	trackHeight: number,
+	date?: Date,
 ): Date => {
 	const percentageOfY = y / trackHeight;
 	const minutes = percentageOfY * 24 * 60;
 	const hours = Math.floor(minutes / 60);
 	const minutesLeft = Math.floor(minutes % 60);
+	const roundedMinutes = Math.round(minutesLeft / 5) * 5;
 
-	const time = add(startOfToday(), {
+	if (date) {
+		return add(date, {
+			hours,
+			minutes: roundedMinutes,
+		});
+	}
+
+	return add(startOfToday(), {
 		hours,
-		minutes: minutesLeft,
+		minutes: roundedMinutes,
 	});
-
-	return time;
 };
+
+export const getDayFromCollision = (collision: Collision) => {};
 
 export const getRandomColorForEvent = (): string => {
 	const randomIndex = Math.floor(Math.random() * colorMap.length);

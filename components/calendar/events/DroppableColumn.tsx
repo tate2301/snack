@@ -52,7 +52,7 @@ const DroppableTimeSlot = (props: { time: Date; collisions: Collision[] }) => {
 				height: `calc(100% / 12)`,
 			}}
 			ref={setNodeRef}
-			className={clsx('hover:bg-zinc-100', isColliding && 'bg-purple-50')}
+			className={clsx('hover:bg-zinc-100', isColliding && 'bg-orange-100')}
 		/>
 	);
 };

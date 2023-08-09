@@ -1,7 +1,7 @@
 import { useState, useEffect, MutableRefObject } from 'react';
 import { Collision } from '@dnd-kit/core';
 import { startOfToday } from 'date-fns';
-import { convertCoordinatesToTime } from '../events/utils';
+import { convertCoordinatesToTimeRounded } from '../events/utils';
 
 const NewEventStartTime = (props: {
 	topCollision: Collision;
@@ -14,7 +14,7 @@ const NewEventStartTime = (props: {
 		const parentOffset = props.containerRef.current?.offsetTop ?? 0;
 		const yTop = props.topCollision.data.droppableContainer.top;
 
-		const time = convertCoordinatesToTime(yTop - parentOffset, 80 * 24);
+		const time = convertCoordinatesToTimeRounded(yTop - parentOffset, 80 * 24);
 		setNewStartTime(time);
 		setTimestampPosition(yTop);
 	}, [props]);

@@ -78,55 +78,21 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 		const lastIndex = indexOfPointer + (indexOfPointer - firstIndex);
 		const collisions = droppablesArr.slice(firstIndex, lastIndex + 1);
 
-		return collisions.map((c) => {
+		return collisions.map((c, idx) => {
 			const droppableContainer = droppableRects.get(c.id);
-
 			return {
 				id: c.id,
 				data: {
-					droppableContainer,
+					droppableContainer: {
+						...droppableContainer,
+						// we need to return the actual position top of the collisionRect
+						top: droppableContainer.top,
+					},
 				},
 			};
 		});
 	}
-
-	let collisions = [];
-	// Find the index of the first droppable that is below the draggable element
-	const firstBelow = droppablesArr.findIndex((d) => d.top > top);
-	// Find the index of the first droppable that is above the draggable element
-	const firstAbove = droppablesArr.findIndex((d) => d.bottom > bottom);
-
-	// If the draggable element is below all droppables, return the last droppable
-	if (firstBelow === -1) {
-		collisions = [droppablesArr[droppablesArr.length - 1]];
-	} else if (firstAbove === -1) {
-		// If the draggable element is above all droppables, return the first droppable
-		collisions = [droppablesArr[0]];
-	} else {
-		// If the draggable element is between two droppables, return both droppables
-		collisions = droppablesArr.slice(firstBelow, firstAbove + 1);
-	}
-
-	const c: Collision = {
-		id: 'test',
-		data: {
-			current: null,
-		},
-	};
-
-	// Find collisions by id from the droppableRects map
-	const collisionsWithRects: Collision[] = collisions.map((c) => {
-		const droppableContainer = droppableRects.get(c.id);
-
-		return {
-			id: c.id,
-			data: {
-				droppableContainer,
-			},
-		};
-	});
-
-	return [...pointerCollisions, ...collisionsWithRects];
+	return rectIntersection(args);
 };
 
 function binarySearch(arr, target, comparator) {

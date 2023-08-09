@@ -5,6 +5,7 @@ import { getCoordinatesOfEvent } from './utils';
 import useResizableEvent from './hooks/useResizableEvent';
 import { Resizable } from 'react-resizable';
 import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 export type EventCardProps = {
 	startTime: Date;
@@ -81,42 +82,56 @@ const CalendarEventCard = (
 		coords.endY - coords.startY,
 	);
 
-	const { attributes, listeners, setNodeRef, over } = useDraggable({
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		over,
+		transform,
+		isDragging,
+		activatorEvent,
+	} = useDraggable({
 		id: props.id,
 		data: props,
 	});
 
-	const [bgColor, bgHoverColor, textHoverColor] = EVENT_COLORS[props.color];
+	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =
+		EVENT_COLORS[props.color];
+
+	const style = CSS.Transform.toString(transform);
 
 	return (
-		<div
-			ref={setNodeRef}
-			{...attributes}
-			{...listeners}>
-			<Resizable
-				height={height}
-				width={Infinity}
-				maxConstraints={[Infinity, props.trackLength]}
-				handle={<DragHandle />}
-				onResize={handleResize}>
-				<div
-					key={`event-${props.startTime.toString()}`}
-					style={{
-						top: `${coords.startY}px`,
-						height: `${height}px`,
-					}}
-					className={clsx(
-						'absolute left-0 w-full group !hover:h-fit cursor-pointer hover:z-40 hover:relative',
-						'bg-opacity-50',
-						'backdrop-blur-sm rounded-xl group',
-						bgColor,
-						bgHoverColor,
-						textHoverColor,
-					)}>
-					<CalendarEventCardContent {...props} />
-				</div>
-			</Resizable>
-		</div>
+		<Resizable
+			height={height}
+			width={Infinity}
+			maxConstraints={[Infinity, props.trackLength]}
+			handle={<DragHandle />}
+			onResize={handleResize}>
+			<div
+				ref={setNodeRef}
+				{...attributes}
+				{...listeners}
+				key={`event-${props.startTime.toString()}`}
+				style={{
+					top: `${coords.startY}px`,
+					height: `${height}px`,
+					transform: transform
+						? `translate3d(${transform.x}px, ${transform.y}px, 0) scale(1.05)`
+						: 'none',
+				}}
+				className={clsx(
+					'absolute left-0 w-full group !hover:h-fit cursor-pointer hover:z-40 hover:relative',
+					'bg-opacity-50',
+					'backdrop-blur-sm rounded-xl ',
+					bgColor,
+					bgHoverColor,
+					textHoverColor,
+					ringColor,
+					isDragging && 'ring-2 z-30 shadow-2xl',
+				)}>
+				<CalendarEventCardContent {...props} />
+			</div>
+		</Resizable>
 	);
 };
 

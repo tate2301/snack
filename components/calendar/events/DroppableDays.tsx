@@ -1,8 +1,14 @@
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { EventCardProps } from './EventCard';
-import { useState, useRef, useEffect, useCallback } from 'react';
 import {
-	convertCoordinatesToTime,
+	useState,
+	useRef,
+	useEffect,
+	useCallback,
+	MutableRefObject,
+} from 'react';
+import {
+	convertCoordinatesToTimeRounded,
 	generateEventDescription,
 	generateEventTitle,
 	getRandomColorForEvent,
@@ -34,18 +40,29 @@ import { LAYOUT } from '../../../constants/dimensions';
 const snapHeight = 80 / 12;
 const snapToGridModifier = createSnapModifier(snapHeight);
 
-const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
-	const containerRef = useRef<HTMLDivElement>(null);
-
+const DroppableDays = (props: {
+	week: Date[];
+	timeIntervals: Date[];
+	containerRef: MutableRefObject<HTMLDivElement>;
+}) => {
 	const [collisions, setCollisions] = useState<Collision[]>([]);
 	const [events, setEvents] = useState<EventCardProps[]>([]);
-
+	const daysContainerRef = useRef<HTMLDivElement>();
 	const sensors = useSensors(useSensor(PointerSensor));
 
 	const handleDragEnd = useCallback(
 		(event) => {
 			const { collisions, active } = event;
 			const oldCalendarEvent = active.data.current;
+			const calendarContainer = props.containerRef.current;
+			const daysContainer = daysContainerRef.current;
+
+			console.log({
+				scrollHeight: calendarContainer.scrollHeight,
+				detail: calendarContainer.scrollTop,
+			});
+
+			if (!calendarContainer || !daysContainer) return;
 
 			const {
 				top,
@@ -70,10 +87,16 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 				.map((key) => LAYOUT[key])
 				.reduce((prev, current) => prev + current, 0);
 
-			console.log({ offset });
-
-			const yTop = top.data.droppableContainer.top - offset;
-			const newStartTime = convertCoordinatesToTime(yTop, 80 * 24);
+			const yTop =
+				top.data.droppableContainer.top -
+				daysContainer.offsetTop +
+				calendarContainer.scrollTop;
+			const newStartTime = convertCoordinatesToTimeRounded(
+				yTop > 0 ? yTop : 0,
+				80 * 24,
+				startOfDay(oldCalendarEvent.startTime),
+			);
+			// Round of new time to the nearest 5 minute interval
 
 			const lengthOfEventInMinutes = differenceInMinutes(
 				oldCalendarEvent.endTime,
@@ -94,7 +117,7 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 			updateEvent(newCalendarEvent);
 			setCollisions([]);
 		},
-		[containerRef.current],
+		[props.containerRef.current],
 	);
 
 	function handleDragMove(event) {
@@ -108,6 +131,10 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 			newEvents[index] = event;
 			return newEvents;
 		});
+	};
+
+	const createEvent = (event: EventCardProps) => {
+		setEvents((events) => [...events, event]);
 	};
 
 	useEffect(() => {
@@ -126,12 +153,6 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 
 	return (
 		<>
-			{collisions.length !== 0 && (
-				<NewEventStartTime
-					containerRef={containerRef}
-					topCollision={collisions[0]}
-				/>
-			)}
 			{props.week.map((day, index) => (
 				<DndContext
 					onDragMove={handleDragMove}
@@ -141,12 +162,12 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 					collisionDetection={custom5MinuteCollisions}
 					onDragEnd={handleDragEnd}>
 					<div
-						ref={containerRef}
+						ref={daysContainerRef}
 						className={clsx('relative divide-y')}>
 						{isEqual(day, startOfToday()) && <Timestamp />}
 						<EventsTrack
 							updateEvent={updateEvent}
-							createEvent={updateEvent}
+							createEvent={createEvent}
 							events={events.filter((e) =>
 								isEqual(startOfDay(e.startTime), startOfDay(day)),
 							)}
