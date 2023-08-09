@@ -49,7 +49,7 @@ const Calendar = (props: CalendarProps) => {
 	};
 
 	return (
-		<div className={'flex-1 h-full w-full flex flex-col'}>
+		<div className={'flex-1 h-full w-full flex flex-col p-4'}>
 			<div className="flex flex-col justify-between w-full h-full overflow-hidden shadow bg-stone-50 border-zinc-200 rounded-xl">
 				<CalendarHeader
 					view={calendarView}
