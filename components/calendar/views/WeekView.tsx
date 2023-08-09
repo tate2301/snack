@@ -26,7 +26,7 @@ export default function WeekView(props: WeekCalendarProps) {
 			</div>
 			<AllDayEvent />
 			<div
-				className="grid flex-1 divide-x"
+				className="grid flex-1 divide-x "
 				style={{
 					gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 				}}>

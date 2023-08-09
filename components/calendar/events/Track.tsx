@@ -72,8 +72,6 @@ const EventsTrack = (props: EventTrackProps) => {
 		});
 	};
 
-	console.log({ events: props.events, date: props.date });
-
 	return (
 		<div
 			onClick={() => {}}
