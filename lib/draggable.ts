@@ -75,11 +75,7 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 
 		// We want elements from firstIndex through indexOfPointer to index of element that is same distance
 		// between firstIndex and indexOfPointer but in the positive direction
-
 		const lastIndex = indexOfPointer + (indexOfPointer - firstIndex);
-
-		console.log({ firstIndex, indexOfPointer, lastIndex });
-
 		const collisions = droppablesArr.slice(firstIndex, lastIndex + 1);
 
 		return collisions.map((c) => {

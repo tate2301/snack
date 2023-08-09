@@ -1,4 +1,4 @@
-import { add } from 'date-fns';
+import { add, startOfDay } from 'date-fns';
 import { useRef, useState } from 'react';
 import {
 	DndContext,
@@ -23,18 +23,19 @@ import {
 	getRandomColorForEvent,
 } from './utils';
 import { generateUUID } from '../../../lib/functions';
+import { equal } from 'assert';
 
 type EventTrackProps = {
 	date: Date;
 	events: EventCardProps[];
 	updateEvent: (event: EventCardProps) => void;
+	createEvent: (event: EventCardProps) => void;
 };
 
 const EventsTrack = (props: EventTrackProps) => {
 	const ref = useRef(null);
 
 	const [startTimeY, setStartTimeY] = useState<number>(0);
-	const [events, setEvents] = useState<EventCardProps[]>(props.events);
 
 	const onTrackClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		// Capture the position where the mouse clicked on the track
@@ -59,20 +60,19 @@ const EventsTrack = (props: EventTrackProps) => {
 
 		setStartTimeY(coordinates.startY);
 
-		setEvents([
-			...events,
-			{
-				color: getRandomColorForEvent(),
-				description: generateEventDescription(),
-				title: generateEventTitle(),
-				location: '',
-				// round start time to the nearest 5
-				startTime: date,
-				endTime: add(date, { minutes: 30 }),
-				id: generateUUID(),
-			},
-		]);
+		props.createEvent({
+			color: getRandomColorForEvent(),
+			description: generateEventDescription(),
+			title: generateEventTitle(),
+			location: '',
+			// round start time to the nearest 5
+			startTime: date,
+			endTime: add(date, { minutes: 30 }),
+			id: generateUUID(),
+		});
 	};
+
+	console.log({ events: props.events, date: props.date });
 
 	return (
 		<div
@@ -80,7 +80,7 @@ const EventsTrack = (props: EventTrackProps) => {
 			ref={ref}
 			className="absolute top-0 left-0 w-full h-full">
 			<div className="relative w-full h-full">
-				{events.map((event, idx) => (
+				{props.events.map((event, idx) => (
 					<CalendarEventCard
 						trackLength={ref.current?.getBoundingClientRect().height ?? 0}
 						{...event}

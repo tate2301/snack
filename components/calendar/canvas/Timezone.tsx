@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { CalendarDayTimeProps } from '../types';
-import { differenceInMinutes, format, getTime } from 'date-fns';
 
 const getTimeString = (time: Date) =>
 	Intl.DateTimeFormat('en-US', {

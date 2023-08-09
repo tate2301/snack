@@ -2,14 +2,8 @@ import { formatTime } from '../../../lib/utils';
 import clsx from 'clsx';
 import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
-import Draggable from 'react-draggable';
 import useResizableEvent from './hooks/useResizableEvent';
 import { Resizable } from 'react-resizable';
-import useDraggableEvent from './hooks/useDraggableEvent';
-import { useMemo } from 'react';
-import useTraceUpdate from '../../../hooks/useTraceUpdates';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useDraggable } from '@dnd-kit/core';
 
 export type EventCardProps = {
@@ -77,10 +71,10 @@ const CalendarEventCard = (
 	},
 ) => {
 	// Get the initial coordinates
-	const coords = useMemo(
-		() =>
-			getCoordinatesOfEvent(props.startTime, props.endTime, props.trackLength),
-		[props],
+	const coords = getCoordinatesOfEvent(
+		props.startTime,
+		props.endTime,
+		props.trackLength,
 	);
 	// Get the resizable height
 	const { height, handleResize } = useResizableEvent(

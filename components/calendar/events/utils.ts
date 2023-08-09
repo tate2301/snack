@@ -1,4 +1,4 @@
-import { add } from 'date-fns';
+import { add, startOfToday } from 'date-fns';
 import { faker } from '@faker-js/faker';
 
 export const colorMap = [
@@ -45,7 +45,11 @@ export const convertCoordinatesToTime = (
 	const minutes = percentageOfY * 24 * 60;
 	const hours = Math.floor(minutes / 60);
 	const minutesLeft = Math.floor(minutes % 60);
-	const time = add(new Date(), { hours, minutes: minutesLeft });
+
+	const time = add(startOfToday(), {
+		hours,
+		minutes: minutesLeft,
+	});
 
 	return time;
 };

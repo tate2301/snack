@@ -1,40 +1,11 @@
-import { add, format, isEqual, startOfToday } from 'date-fns';
-import clsx from 'clsx';
 import { CalendarView, WeekCalendarProps } from '../types';
 import useCalendarTime from '../../../hooks/useCalendarTime';
-import CalendarEvents from '../events';
-import Timestamp from '../canvas/Timestamp';
-import CalendarHorizontalLines from '../canvas/CalendarHorizontalLines';
-import CalendarVerticalLines from '../canvas/CalendarVerticalLines';
 import Timezone from '../canvas/Timezone';
 import CalendarDays from '../CalendarDays';
-import useTimestampPosition from '../../../hooks/useTimestampPosition';
-import EventsTrack from '../events/Track';
-import {
-	DndContext,
-	KeyboardSensor,
-	PointerSensor,
-	closestCenter,
-	useDroppable,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core';
-import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { useState, ReactNode } from 'react';
-import { EventCardProps } from '../events/EventCard';
-import {
-	convertCoordinatesToTime,
-	generateEventDescription,
-	generateEventTitle,
-	getRandomColorForEvent,
-} from '../events/utils';
-import { generateUUID } from '../../../lib/functions';
-import DroppableColumn from '../events/DroppableColumn';
 import DroppableDays from '../events/DroppableDays';
 
 export default function WeekView(props: WeekCalendarProps) {
-	const { container, containerNav, timeIntervals, timePosition, currentTime } =
-		useCalendarTime();
+	const { container, containerNav, timeIntervals } = useCalendarTime();
 
 	return (
 		<div
@@ -61,7 +32,6 @@ export default function WeekView(props: WeekCalendarProps) {
 				}}>
 				<Timezone
 					zone="est"
-					currentTime={currentTime}
 					timeIntervals={timeIntervals}
 				/>
 				<DroppableDays

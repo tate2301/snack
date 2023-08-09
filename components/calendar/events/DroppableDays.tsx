@@ -1,6 +1,6 @@
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { EventCardProps } from './EventCard';
-import { useState, useRef } from 'react';
+import { useState, useRef, MutableRefObject, useEffect } from 'react';
 import {
 	convertCoordinatesToTime,
 	generateEventDescription,
@@ -17,7 +17,14 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import clsx from 'clsx';
-import { add, isEqual, startOfToday } from 'date-fns';
+import {
+	add,
+	differenceInMinutes,
+	eachQuarterOfInterval,
+	isEqual,
+	startOfDay,
+	startOfToday,
+} from 'date-fns';
 import Timestamp from '../canvas/Timestamp';
 import EventsTrack from './Track';
 import DroppableColumn from './DroppableColumn';
@@ -32,51 +39,69 @@ const snapHeight = 80 / 12;
 const snapToGridModifier = createSnapModifier(snapHeight);
 
 const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
-	const [collisions, setCollisions] = useState<Collision[]>([]);
-	const [events, setEvents] = useState<EventCardProps[]>([
-		{
-			color: getRandomColorForEvent(),
-			description: generateEventDescription(),
-			title: generateEventTitle(),
-			location: '',
-			startTime: new Date(),
-			endTime: new Date(),
-			id: generateUUID(),
-		},
-	]);
+	const containerRef = useRef<HTMLDivElement>(null);
 
-	const sensors = useSensors(
-		useSensor(PointerSensor),
-		useSensor(KeyboardSensor),
-	);
+	const [collisions, setCollisions] = useState<Collision[]>([]);
+	const [events, setEvents] = useState<EventCardProps[]>([]);
+
+	const sensors = useSensors(useSensor(PointerSensor));
 
 	function handleDragEnd(event) {
-		const { active, over } = event;
-		//const { offset } = active.data.current;
-		const top = Math.abs(over.rect.top) + event.delta.y;
+		const calendarContainerEl = containerRef.current;
+		// If we don't have calendar container ref current then just return
+		if (!calendarContainerEl) return;
 
-		const time = convertCoordinatesToTime(over.rect.top, 80 * 24);
-		const initialTime = convertCoordinatesToTime(active.rect.top, 80 * 24);
+		// Grab the calendar top offset from the calendar container to add to our coordinates
+		// when calculating time
+		const parentOffset = calendarContainerEl.offsetTop;
 
+		const { collisions, active } = event;
+		const oldCalendarEvent = active.data.current;
+
+		const {
+			top,
+		}: {
+			[key in 'top' | 'bottom']: {
+				data: {
+					droppableContainer: {
+						bottom: number;
+						top: number;
+						width: number;
+						height: number;
+					};
+					id: string;
+				};
+			};
+		} = {
+			top: collisions[0],
+			bottom: collisions[collisions.length - 1],
+		};
+
+		const yTop = top.data.droppableContainer.top - parentOffset;
+		const newStartTime = convertCoordinatesToTime(yTop, 80 * 24);
+
+		const lengthOfEventInMinutes = differenceInMinutes(
+			oldCalendarEvent.endTime,
+			oldCalendarEvent.startTime,
+		);
+		const newCalendarEvent: EventCardProps = {
+			id: oldCalendarEvent.id,
+			color: oldCalendarEvent.color,
+			description: oldCalendarEvent.description,
+			location: oldCalendarEvent.location,
+			title: oldCalendarEvent.title,
+			startTime: newStartTime,
+			endTime: add(newStartTime, {
+				minutes: lengthOfEventInMinutes,
+			}),
+		};
+
+		updateEvent(newCalendarEvent);
 		setCollisions([]);
-
-		console.log({
-			event,
-		});
 	}
 
 	function handleDragMove(event) {
-		const { active, over } = event;
-		//const { offset } = active.data.current;
-		const top = Math.abs(over.rect.top) + event.delta.y;
-
-		const time = convertCoordinatesToTime(over.rect.top, 80 * 24);
-		const initialTime = convertCoordinatesToTime(active.rect.top, 80 * 24);
-
 		setCollisions(event.collisions);
-		console.log({
-			event,
-		});
 	}
 
 	const updateEvent = (event: EventCardProps) => {
@@ -88,6 +113,20 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 		});
 	};
 
+	useEffect(() => {
+		setEvents([
+			{
+				color: getRandomColorForEvent(),
+				description: generateEventDescription(),
+				title: generateEventTitle(),
+				location: '',
+				startTime: add(startOfToday(), { hours: 1, minutes: 30 }),
+				endTime: add(startOfToday(), { hours: 2, minutes: 0 }),
+				id: generateUUID(),
+			},
+		]);
+	}, []);
+
 	return (
 		<>
 			{props.week.map((day, index) => (
@@ -98,15 +137,16 @@ const DroppableDays = (props: { week: Date[]; timeIntervals: Date[] }) => {
 					sensors={sensors}
 					collisionDetection={custom5MinuteCollisions}
 					onDragEnd={handleDragEnd}>
-					<div className={clsx('relative divide-y')}>
+					<div
+						ref={containerRef}
+						className={clsx('relative divide-y')}>
 						{isEqual(day, startOfToday()) && <Timestamp />}
 						<EventsTrack
 							updateEvent={updateEvent}
-							events={events.map((e) => ({
-								...e,
-								startTime: add(day, { hours: 1, minutes: 30 }),
-								endTime: add(day, { hours: 2, minutes: 59 }),
-							}))}
+							createEvent={updateEvent}
+							events={events.filter((e) =>
+								isEqual(startOfDay(e.startTime), startOfDay(day)),
+							)}
 							date={day}
 						/>
 						{props.timeIntervals.map((time, idx) => (

@@ -30,5 +30,4 @@ export type WeekCalendarProps = {
 
 export type CalendarDayTimeProps = {
 	timeIntervals: Date[];
-	currentTime: Date;
 };

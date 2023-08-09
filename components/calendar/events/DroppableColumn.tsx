@@ -1,6 +1,6 @@
 import { Collision, useDroppable } from '@dnd-kit/core';
 import clsx from 'clsx';
-import { add, eachDayOfInterval, eachQuarterOfInterval } from 'date-fns';
+import { add } from 'date-fns';
 import { eachMinuteOfIntervalWithOptions } from 'date-fns/fp';
 import { useMemo, useEffect, useRef, useState } from 'react';
 import { generateUUID } from '../../../lib/functions';
