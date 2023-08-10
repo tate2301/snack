@@ -3,9 +3,8 @@ import clsx from 'clsx';
 import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
 import useResizableEvent from './hooks/useResizableEvent';
-import { Resizable } from 'react-resizable';
 import { useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
+import { forwardRef } from 'react';
 
 export type EventCardProps = {
 	startTime: Date;
@@ -37,14 +36,6 @@ const CalendarEventCardContent = (props: EventCardProps) => {
 				)}>
 				{props.title}
 			</p>
-			<p
-				className={clsx(
-					`order-2 capitalize hidden hover:block`,
-					textColor,
-					textHoverColor,
-				)}>
-				{props.description}
-			</p>
 			<p className={clsx('uppercase line-clamp-1', textColor, textHoverColor)}>
 				<time dateTime={props.startTime.toString()}>
 					{formatTime(props.startTime)}
@@ -57,12 +48,6 @@ const CalendarEventCardContent = (props: EventCardProps) => {
 		</div>
 	);
 };
-
-const DragHandle = () => (
-	<div className="relative flex justify-center w-full mt-1 mb-2 cursor-n-resize">
-		<div className="w-8 h-[4px] bg-white rounded-full hidden group-hover:flex drop-shadow-xl transition-all" />
-	</div>
-);
 
 const CalendarEventCard = (
 	props: EventCardProps & {
@@ -86,7 +71,6 @@ const CalendarEventCard = (
 		attributes,
 		listeners,
 		setNodeRef,
-		over,
 		transform,
 		isDragging,
 		activatorEvent,
@@ -94,22 +78,16 @@ const CalendarEventCard = (
 		id: props.id,
 		data: {
 			...props,
-			supports: ['droppableDay'],
+			supports: ['droppableDay', 'droppableAllDaySlot'],
 		},
 	});
 
 	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =
 		EVENT_COLORS[props.color];
 
-	const style = CSS.Transform.toString(transform);
-
 	return (
-		<Resizable
-			height={height}
-			width={Infinity}
-			maxConstraints={[Infinity, props.trackLength]}
-			handle={<DragHandle />}
-			onResize={handleResize}>
+		<div>
+			<div className="h-2 bg-white" />
 			<div
 				ref={setNodeRef}
 				{...attributes}
@@ -119,22 +97,23 @@ const CalendarEventCard = (
 					top: `${coords.startY}px`,
 					height: `${height}px`,
 					transform: transform
-						? `translate3d(${transform.x}px, ${transform.y}px, 0) scale(1.05)`
+						? `translate3d(${transform.x}px, ${transform.y}px, 0)`
 						: 'none',
 				}}
 				className={clsx(
-					'absolute left-0 w-full group !hover:h-fit cursor-pointer hover:z-40 hover:relative',
+					'absolute left-0 w-full group cursor-pointer border-2 border-white shadow',
 					'bg-opacity-50',
-					'backdrop-blur-sm rounded-xl ',
+					'rounded-xl ',
 					bgColor,
 					bgHoverColor,
 					textHoverColor,
 					ringColor,
-					isDragging && 'ring-2 z-30 shadow-2xl',
+					isDragging && 'z-30 shadow-2xl',
 				)}>
 				<CalendarEventCardContent {...props} />
 			</div>
-		</Resizable>
+			<div className="h-2 bg-white cursor-s-resize" />
+		</div>
 	);
 };
 

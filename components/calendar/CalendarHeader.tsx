@@ -34,14 +34,7 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 
 	return (
 		<div className="bg-white">
-			<nav className="h-12" />
-			<div className={'bg-white w-full justify-between flex gap-2 py-2 px-2'}>
-				<h1 className={'text-2xl'}>
-					{Intl.DateTimeFormat('en-gb', {
-						month: 'long',
-						year: 'numeric',
-					}).format(props.selectedDate)}
-				</h1>
+			<div className={'bg-white w-full justify-end flex gap-2 py-2 px-2'}>
 				<div className={'flex gap-4 items-center'}>
 					<div className="flex gap-2">
 						<button

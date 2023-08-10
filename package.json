@@ -7,7 +7,8 @@
 		"build:static": "next build && next out",
 		"build:extension": "next build && next export && cd out && mv _next next && grep -rl '_next' | xargs sed -i 's|/_next|/next|g'",
 		"start": "electron .",
-		"dev": "concurrently \"yarn start\" \"yarn next\""
+		"electron:dev": "concurrently \"yarn start\" \"yarn next\"",
+		"dev": "next dev"
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.0.8",
@@ -20,6 +21,7 @@
 		"@reduxjs/toolkit": "^1.9.5",
 		"@svgr/webpack": "^8.0.1",
 		"@tailwindcss/forms": "^0.5.4",
+		"@tauri-apps/api": "^1.4.0",
 		"clsx": "^2.0.0",
 		"cva": "npm:class-variance-authority",
 		"date-fns": "^2.30.0",
@@ -36,6 +38,7 @@
 		"react-hook-form": "^7.45.2",
 		"react-redux": "^8.1.1",
 		"react-resizable": "^3.0.5",
+		"react-virtuoso": "^4.5.0",
 		"redux": "^4.2.1",
 		"redux-logger": "^3.0.6",
 		"rxdb": "^14.15.1",
@@ -44,6 +47,7 @@
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^8.0.2",
+		"@tauri-apps/cli": "^1.4.0",
 		"@types/node": "20.4.2",
 		"@types/pouchdb": "^6.4.0",
 		"@types/react": "18.2.15",

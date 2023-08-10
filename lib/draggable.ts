@@ -1,19 +1,14 @@
 import { pointerWithin, rectIntersection } from '@dnd-kit/core';
 import { add, isEqual, startOfDay } from 'date-fns';
 import { getCoordinatesOfEvent } from '../components/calendar/events/utils';
+import { HOUR_HEIGHT } from '../constants/dimensions';
 
 // infer type from pointerWithin params
 export type CollisionsArgs = Parameters<typeof pointerWithin>[0];
 
-export const customDayTimeCollisions = (args: CollisionsArgs) => {
-	console.log(args);
-
+export const pointerCollisions = (args: CollisionsArgs) => {
 	// First, let's see if there are any collisions with the pointer
 	const pointerCollisions = pointerWithin(args);
-
-	console.log({ pointerCollisions });
-
-	// Collision detection algorithms return an array of collisions
 	if (pointerCollisions.length > 0) {
 		return pointerCollisions;
 	}
@@ -25,6 +20,7 @@ export const customDayTimeCollisions = (args: CollisionsArgs) => {
 // This function detects if a draggable element is colliding with droppables
 // It is used in the 5 minute interval calendar
 // Uses dnd-kit's collision detection algorithms
+// TODO: Calculate the actual new time based on the top of the collisionRect, use that as the new upper bound instead of collision rect
 export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 	const pointerCollisions = pointerWithin(args);
 
@@ -39,7 +35,7 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 	const { startY: startTimeTop, endY: startTimeBottom } = getCoordinatesOfEvent(
 		startTime,
 		endTime,
-		80 * 24,
+		HOUR_HEIGHT * 24,
 	);
 
 	const height = startTimeBottom - startTimeTop;
@@ -80,6 +76,13 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 		const lastIndex = indexOfPointer + (indexOfPointer - firstIndex);
 		const collisions = droppablesArr.slice(firstIndex, lastIndex + 1);
 
+		if (
+			centerCollision.data.droppableContainer.data.current.type ===
+			'droppableAllDaySlot'
+		) {
+			return [centerCollision];
+		}
+
 		return collisions
 			.map((c) => {
 				const droppableContainer = droppableRects.get(c.id);
@@ -95,6 +98,7 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 							time: droppableContainerData.data.current.time,
 							// we need to return the actual position top of the collisionRect
 							top: droppableContainer.top,
+							collisionRect,
 						},
 					},
 				};

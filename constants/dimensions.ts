@@ -6,3 +6,5 @@ export const LAYOUT = {
 	CALENDAR_PADDING: 12,
 	NAVBAR_HEIGHT: 36,
 };
+
+export const HOUR_HEIGHT = 80; // 80px per hour

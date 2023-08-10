@@ -1,4 +1,12 @@
-import { InboxIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+	ArrowRightIcon,
+	ArrowUturnRightIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	InboxIcon,
+	PlusIcon,
+	VideoCameraIcon,
+} from '@heroicons/react/24/outline';
 import TimerIcon from '../../icons/Timer';
 import CalendarIcon from '../../icons/CalendarIcon';
 import useToggle from '../../hooks/useToggle';
@@ -15,6 +23,7 @@ import { UserAccount } from '../UserAccount';
 import CalendarPreview from '../calendar/CalendarPreview';
 import { MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import ArrowsExpand from '../../icons/ArrowsExpand';
+import ExternalLink from '../../icons/ExternalLink';
 
 const tabs: NavItemType[] = [
 	{
@@ -41,6 +50,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 				<div className="flex flex-col gap-4 p-2">
 					<UserAccount />
 				</div>
+
 				<div className="flex flex-col w-full gap-1 p-2">
 					{tabs.map((tab: NavItemType) => (
 						<NavItem
@@ -92,13 +102,13 @@ export default function NavigationSidebar({}) {
 						</p>
 					</nav>
 					<div className="flex gap-1">
-						<button className="p-2 rounded hover:bg-surface-1">
+						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
 							<MinusIcon className="w-6 h-6" />
 						</button>
-						<button className="p-2 px-3 rounded hover:bg-surface-1">
+						<button className="p-2 px-3 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
 							<ArrowsExpand className="w-5 h-5" />
 						</button>
-						<button className="p-2 rounded hover:bg-surface-1">
+						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
 							<XMarkIcon className="w-6 h-6" />
 						</button>
 					</div>
@@ -117,17 +127,23 @@ export default function NavigationSidebar({}) {
 						New Calendar
 					</button>
 					<div className="flex flex-col">
-						<button className="flex items-center gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
 							<div className="flex items-center justify-center h-8 bg-white rounded-lg aspect-square">
-								<p className="text-sm uppercase text-danger-11">PE</p>
+								<p className="uppercase text-danger-11">⚒️</p>
 							</div>
 							<p className="text-md">Product Engineering Team</p>
 						</button>
-						<button className="flex items-center gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-							<div className="flex items-center justify-center h-8 rounded-lg bg-primary-10 aspect-square">
-								<p className="text-sm text-white uppercase">PE</p>
+						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+							<div className="flex items-center justify-center h-8 rounded-lg bg-primary-2 aspect-square">
+								<p className="text-white uppercase">🧑🏽‍🦱</p>
 							</div>
 							<p className="text-md">Personal</p>
+						</button>
+						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+							<div className="flex items-center justify-center h-8 rounded-lg bg-warning-1 aspect-square">
+								<p className="text-white uppercase">💃🏽</p>
+							</div>
+							<p className="text-md">Weeked Party Animal</p>
 						</button>
 					</div>
 				</div>
@@ -151,9 +167,9 @@ function NavItem(
 		<button
 			onClick={onClick}
 			className={clsx(
-				'p-4 pr-4 gap-4 transition-all rounded-xl items-center font-medium',
+				'p-4 pr-4 gap-4 transition-all font-semibold rounded-xl items-center',
 				props.active
-					? 'text-surface-12 font-semibold bg-surface-1 shadow'
+					? 'text-surface-12 bg-surface-1 shadow'
 					: 'hover:bg-zinc-900 hover:bg-opacity-10',
 			)}>
 			{props.icon}

@@ -1,5 +1,7 @@
 import {
 	add,
+	differenceInHours,
+	differenceInMinutes,
 	eachHourOfInterval,
 	endOfDay,
 	startOfDay,
@@ -7,6 +9,7 @@ import {
 } from 'date-fns';
 import { faker } from '@faker-js/faker';
 import { Collision } from '@dnd-kit/core';
+import { EventCardProps } from './EventCard';
 
 export const colorMap = [
 	'red',
@@ -98,4 +101,20 @@ export const generateEventTitle = (): string => {
 
 export const generateEventDescription = (): string => {
 	return faker.lorem.words(Math.floor(Math.random() * (20 - 5 + 1) + 5));
+};
+
+export const onlyAlldayEvents = (events: EventCardProps[]) => {
+	const dayLength = 24 * 60;
+
+	return events.filter(
+		(event) =>
+			differenceInHours(event.endTime, event.startTime) === 24 * 60 - 1,
+	);
+};
+
+export const onlyNonAlldayEvents = (events: EventCardProps[]) => {
+	return events.filter(
+		(event) =>
+			differenceInMinutes(event.endTime, event.startTime) !== 24 * 60 - 1,
+	);
 };

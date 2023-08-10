@@ -13,7 +13,7 @@ const CalendarDays = (
 	return (
 		<>
 			<div className="flex items-center justify-center">
-				<p className="uppercase text-sm text-center">
+				<p className="text-sm text-center uppercase">
 					GMT {new Date().getTimezoneOffset() / 60}
 				</p>
 			</div>
@@ -31,7 +31,7 @@ const CalendarDays = (
 						className={clsx(
 							'flex items-start justify-center font-semibold py-0.5 rounded-lg',
 						)}>
-						{format(day, 'dd')}
+						{format(day, 'dd')}, {format(day, 'MMM')}
 					</span>
 				</button>
 			))}

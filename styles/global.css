@@ -97,7 +97,7 @@ body {
 	background: url('../public/assets/default-bg.jpeg');
 	background-position: center;
 	background-size: cover;
-
+	background-repeat: no-repeat;
 	@apply select-none;
 }
 

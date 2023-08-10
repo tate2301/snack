@@ -10,22 +10,20 @@ import { StrictMode } from 'react';
 export default function App({ Component, pageProps }) {
 	useLayoutEffect(() => {
 		const db = Database.getInstance();
-	});
+	}, []);
 	return (
-		<StrictMode>
-			<div
-				className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-zinc-900"
-				id="app-container">
-				<Head>
-					<title>Snack ⏲</title>
-				</Head>
+		<div
+			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
+			id="app-container">
+			<Head>
+				<title>Snack ⏲</title>
+			</Head>
 
-				<Provider store={store}>
-					<DndContext>
-						<Component {...pageProps} />
-					</DndContext>
-				</Provider>
-			</div>
-		</StrictMode>
+			<Provider store={store}>
+				<DndContext>
+					<Component {...pageProps} />
+				</DndContext>
+			</Provider>
+		</div>
 	);
 }
