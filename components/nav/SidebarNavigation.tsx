@@ -81,7 +81,7 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-auto justify-between h-full w-[24rem] z-10 flex-grow-0 flex flex-col border-r'
+				'overflow-y-auto justify-between h-full w-[24rem] z-10 flex-grow-0 flex flex-col'
 			}>
 			<div>
 				<div className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">

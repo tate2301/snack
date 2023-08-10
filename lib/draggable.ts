@@ -1,5 +1,5 @@
-import { pointerWithin, rectIntersection, Collision } from '@dnd-kit/core';
-import { add } from 'date-fns';
+import { pointerWithin, rectIntersection } from '@dnd-kit/core';
+import { add, isEqual, startOfDay } from 'date-fns';
 import { getCoordinatesOfEvent } from '../components/calendar/events/utils';
 
 // infer type from pointerWithin params
@@ -28,7 +28,7 @@ export const customDayTimeCollisions = (args: CollisionsArgs) => {
 export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 	const pointerCollisions = pointerWithin(args);
 
-	const { collisionRect, droppableRects, active } = args;
+	const { collisionRect, droppableRects, active, droppableContainers } = args;
 	const { top } = collisionRect;
 
 	const { startTime, endTime } = active.data.current ?? {
@@ -50,6 +50,8 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 			id: d[0],
 			top: d[1].top,
 			bottom: d[1].top + d[1].height,
+			left: d[1].left,
+			right: d[1].right,
 		}))
 		.sort((a, b) => a.top - b.top);
 
@@ -59,7 +61,7 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 		const droppableContainer = droppableRects.get(centerCollision.id);
 		const delta = (bottom - top) / 2;
 
-		const firstIndex = binarySearch(
+		const firstIndex = findTopToBottom(
 			droppablesArr,
 			droppableContainer,
 			(a, b) => a.top > b.top - delta,
@@ -78,24 +80,37 @@ export const custom5MinuteCollisions = (args: CollisionsArgs) => {
 		const lastIndex = indexOfPointer + (indexOfPointer - firstIndex);
 		const collisions = droppablesArr.slice(firstIndex, lastIndex + 1);
 
-		return collisions.map((c, idx) => {
-			const droppableContainer = droppableRects.get(c.id);
-			return {
-				id: c.id,
-				data: {
-					droppableContainer: {
-						...droppableContainer,
-						// we need to return the actual position top of the collisionRect
-						top: droppableContainer.top,
+		return collisions
+			.map((c) => {
+				const droppableContainer = droppableRects.get(c.id);
+				const droppableContainerData = droppableContainers.find(
+					(container) => container.id === c.id,
+				);
+
+				return {
+					id: c.id,
+					data: {
+						droppableContainer: {
+							...droppableContainer,
+							time: droppableContainerData.data.current.time,
+							// we need to return the actual position top of the collisionRect
+							top: droppableContainer.top,
+						},
 					},
-				},
-			};
-		});
+				};
+			})
+			.filter((collision) =>
+				isEqual(
+					startOfDay(centerCollision.data.droppableContainer.data.current.time),
+					startOfDay(collision.data.droppableContainer.time),
+				),
+			);
 	}
+
 	return rectIntersection(args);
 };
 
-function binarySearch(arr, target, comparator) {
+function findTopToBottom(arr, target, comparator) {
 	let start = 0;
 	let end = arr.length - 1;
 	let index = -1;
@@ -113,4 +128,31 @@ function binarySearch(arr, target, comparator) {
 	}
 
 	return index;
+}
+
+function findLeftToRight(
+	items: any[],
+	targetLeft: number,
+	targetRight: number,
+): any[] {
+	const results: any[] = [];
+
+	let left = 0;
+	let right = items.length - 1;
+
+	while (left <= right) {
+		const mid = Math.floor((left + right) / 2);
+
+		if (items[mid].right <= targetRight && items[mid].left >= targetLeft) {
+			results.push(items[mid]);
+		}
+
+		if (items[mid].right < targetRight) {
+			left = mid + 1;
+		} else {
+			right = mid - 1;
+		}
+	}
+
+	return results;
 }

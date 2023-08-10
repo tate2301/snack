@@ -75,7 +75,13 @@ const Calendar = (props: CalendarProps) => {
 							selectDate={selectDate}
 						/>
 					)}
-					{calendarView === CalendarView.Month && <div>Not implemented</div>}
+					{calendarView === CalendarView.Month && (
+						<div className="flex items-center justify-center w-full h-full">
+							<button className="p-4 uppercase transition-all bg-danger-4 text-danger-11 hover:text-white hover:bg-danger-10 rounded-xl">
+								Not implemented
+							</button>
+						</div>
+					)}
 				</AnimatePresence>
 			</div>
 		</div>

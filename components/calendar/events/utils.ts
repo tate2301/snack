@@ -1,4 +1,10 @@
-import { add, startOfToday } from 'date-fns';
+import {
+	add,
+	eachHourOfInterval,
+	endOfDay,
+	startOfDay,
+	startOfToday,
+} from 'date-fns';
 import { faker } from '@faker-js/faker';
 import { Collision } from '@dnd-kit/core';
 
@@ -67,6 +73,17 @@ export const convertCoordinatesToTimeRounded = (
 		minutes: roundedMinutes,
 	});
 };
+
+export const getDayHourlyInterval = (start: Date) =>
+	eachHourOfInterval(
+		{
+			start: startOfDay(start),
+			end: endOfDay(start),
+		},
+		{
+			step: 1,
+		},
+	);
 
 export const getDayFromCollision = (collision: Collision) => {};
 

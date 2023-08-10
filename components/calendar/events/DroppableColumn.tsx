@@ -40,6 +40,10 @@ const DroppableTimeSlot = (props: { time: Date; collisions: Collision[] }) => {
 	const [isColliding, setIsColliding] = useState(false);
 	const { setNodeRef } = useDroppable({
 		id: id.current,
+		data: {
+			type: 'droppableDay',
+			time: props.time,
+		},
 	});
 
 	useEffect(() => {
@@ -52,7 +56,7 @@ const DroppableTimeSlot = (props: { time: Date; collisions: Collision[] }) => {
 				height: `calc(100% / 12)`,
 			}}
 			ref={setNodeRef}
-			className={clsx('hover:bg-zinc-100', isColliding && 'bg-orange-100')}
+			className={clsx('hover:bg-zinc-100')}
 		/>
 	);
 };

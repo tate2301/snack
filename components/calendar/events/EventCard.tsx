@@ -92,7 +92,10 @@ const CalendarEventCard = (
 		activatorEvent,
 	} = useDraggable({
 		id: props.id,
-		data: props,
+		data: {
+			...props,
+			supports: ['droppableDay'],
+		},
 	});
 
 	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =

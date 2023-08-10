@@ -12,6 +12,7 @@ import {
 	generateEventDescription,
 	generateEventTitle,
 	getRandomColorForEvent,
+	getDayHourlyInterval,
 } from './utils';
 import { generateUUID } from '../../../lib/functions';
 import {
@@ -25,6 +26,8 @@ import clsx from 'clsx';
 import {
 	add,
 	differenceInMinutes,
+	eachHourOfInterval,
+	endOfDay,
 	isEqual,
 	startOfDay,
 	startOfToday,
@@ -35,6 +38,7 @@ import DroppableColumn from './DroppableColumn';
 import { custom5MinuteCollisions } from '../../../lib/draggable';
 import NewEventStartTime from '../canvas/NewEventStartTime';
 import { LAYOUT } from '../../../constants/dimensions';
+import { time } from 'console';
 
 // 5m intervals = 288 intervals per day with 80px per hr
 const snapHeight = 80 / 12;
@@ -42,7 +46,6 @@ const snapToGridModifier = createSnapModifier(snapHeight);
 
 const DroppableDays = (props: {
 	week: Date[];
-	timeIntervals: Date[];
 	containerRef: MutableRefObject<HTMLDivElement>;
 }) => {
 	const [collisions, setCollisions] = useState<Collision[]>([]);
@@ -56,10 +59,26 @@ const DroppableDays = (props: {
 			const oldCalendarEvent = active.data.current;
 			const calendarContainer = props.containerRef.current;
 			const daysContainer = daysContainerRef.current;
+			/**
+			 * Collisions have the following type
+			 * {
+			 * 	data: {
+			 * 		droppableContainer: {
+			 * 			top: number;
+			 * 			bottom: number;
+			 * 			left: number;
+			 * 			right: number;
+			 * 			time: Date
+			 * 		}
+			 * 	}
+			 * }
+			 */
+			const topMostCollision = collisions[0];
 
 			console.log({
 				scrollHeight: calendarContainer.scrollHeight,
 				detail: calendarContainer.scrollTop,
+				topMostCollision,
 			});
 
 			if (!calendarContainer || !daysContainer) return;
@@ -79,7 +98,7 @@ const DroppableDays = (props: {
 					};
 				};
 			} = {
-				top: collisions[0],
+				top: topMostCollision,
 				bottom: collisions[collisions.length - 1],
 			};
 
@@ -94,7 +113,7 @@ const DroppableDays = (props: {
 			const newStartTime = convertCoordinatesToTimeRounded(
 				yTop > 0 ? yTop : 0,
 				80 * 24,
-				startOfDay(oldCalendarEvent.startTime),
+				startOfDay(topMostCollision.data.droppableContainer.time),
 			);
 			// Round of new time to the nearest 5 minute interval
 
@@ -153,17 +172,17 @@ const DroppableDays = (props: {
 
 	return (
 		<>
-			{props.week.map((day, index) => (
-				<DndContext
-					onDragMove={handleDragMove}
-					autoScroll={true}
-					modifiers={[snapToGridModifier]}
-					sensors={sensors}
-					collisionDetection={custom5MinuteCollisions}
-					onDragEnd={handleDragEnd}>
+			<DndContext
+				onDragMove={handleDragMove}
+				autoScroll={true}
+				modifiers={[snapToGridModifier]}
+				sensors={sensors}
+				collisionDetection={custom5MinuteCollisions}
+				onDragEnd={handleDragEnd}>
+				{props.week.map((day, index) => (
 					<div
 						ref={daysContainerRef}
-						className={clsx('relative divide-y')}>
+						className={clsx('divide-y relative')}>
 						{isEqual(day, startOfToday()) && <Timestamp />}
 						<EventsTrack
 							updateEvent={updateEvent}
@@ -173,7 +192,7 @@ const DroppableDays = (props: {
 							)}
 							date={day}
 						/>
-						{props.timeIntervals.map((time, idx) => (
+						{getDayHourlyInterval(day).map((time, idx) => (
 							<>
 								<DroppableColumn
 									idx={idx}
@@ -184,8 +203,8 @@ const DroppableDays = (props: {
 							</>
 						))}
 					</div>
-				</DndContext>
-			))}
+				))}
+			</DndContext>
 		</>
 	);
 };
