@@ -9,11 +9,13 @@ import FocusPeriod from '../components/focus/Focus';
 import FocusTaskItem from '../components/TaskItem/FocusTaskItem';
 import TaskList from '../components/Home/TaskList';
 import { PlusIcon } from '@heroicons/react/20/solid';
+import AppRouter from '../components/nav/AppRouter';
 
 export default function Page() {
 	return (
 		<CalendarLayout>
-			<main className="flex flex-col h-full w-[32rem]">
+			<main>
+				<AppRouter />
 				<TaskList />
 			</main>
 		</CalendarLayout>

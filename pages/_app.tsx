@@ -6,15 +6,18 @@ import store from '../redux/store';
 import { useLayoutEffect } from 'react';
 import { Database } from '../lib/database';
 import { StrictMode } from 'react';
+import CommandBar from '../components/commandbar';
 
 export default function App({ Component, pageProps }) {
 	useLayoutEffect(() => {
 		const db = Database.getInstance();
 	}, []);
+
 	return (
 		<div
 			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
 			id="app-container">
+			<CommandBar />
 			<Head>
 				<title>Snack ⏲</title>
 			</Head>

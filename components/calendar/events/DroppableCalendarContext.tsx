@@ -72,6 +72,7 @@ const DroppableCalendarContext = (props: {
 				scrollTop: calendarContainer.scrollTop,
 				rect: calendarContainer.getBoundingClientRect(),
 				topMostCollision,
+				daysContainer,
 			});
 
 			if (!calendarContainer || !daysContainer || !topMostCollision) return;
@@ -136,8 +137,6 @@ const DroppableCalendarContext = (props: {
 				newCalendarEvent.endTime = add(newTime, {
 					minutes: lengthOfEventInMinutes,
 				});
-
-				console.log({ newTime });
 			}
 
 			console.log({

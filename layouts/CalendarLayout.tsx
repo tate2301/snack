@@ -34,9 +34,7 @@ export default function CalendarLayout(props) {
 						'w-full flex flex-1 items-start bg-surface-3 h-[calc(100vh-2.5rem)] border-t'
 					}>
 					<NavigationSidebar />
-					<div className="w-[32rem] h-full">
-						<AppRouter />
-					</div>
+					<div className="flex-1 h-full">{props.children}</div>
 					<Calendar view={CalendarView.Week} />
 				</div>
 			</div>

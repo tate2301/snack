@@ -32,6 +32,16 @@ const tabs: NavItemType[] = [
 		label: 'Streams',
 	},
 	{
+		icon: <InboxIcon className="w-6 h-6" />,
+		value: 'calendar',
+		label: 'In Focus',
+	},
+	{
+		icon: <InboxIcon className="w-6 h-6" />,
+		value: 'calendar',
+		label: 'Maybe later',
+	},
+	{
 		icon: <TimerIcon className="w-6 h-6" />,
 		value: 'timers',
 		label: 'Timers',
