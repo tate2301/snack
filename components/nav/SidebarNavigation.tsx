@@ -27,14 +27,9 @@ import ExternalLink from '../../icons/ExternalLink';
 
 const tabs: NavItemType[] = [
 	{
-		icon: <CalendarIcon className="w-6 h-6" />,
-		value: 'calendar',
-		label: 'Calendar',
-	},
-	{
 		icon: <InboxIcon className="w-6 h-6" />,
 		value: 'inbox',
-		label: 'Inbox',
+		label: 'Streams',
 	},
 	{
 		icon: <TimerIcon className="w-6 h-6" />,
@@ -85,34 +80,15 @@ export default function NavigationSidebar({}) {
 	);
 
 	useEffect(() => {
-		setActiveTab('calendar');
+		setActiveTab('inbox');
 	}, []);
 
 	return (
 		<div
 			className={
-				'overflow-y-auto justify-between h-full w-[24rem] z-10 flex-grow-0 flex flex-col'
+				'overflow-y-auto justify-between h-full w-[24rem] flex-shrink-0 z-10 flex-grow-0 flex flex-col border-r'
 			}>
 			<div>
-				<div className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">
-					<nav className="flex items-center flex-1 h-full gap-2 px-2">
-						<p className="font-semibold uppercase">Snack</p>
-						<p className="px-2 py-0.5 bg-warning-10 text-white text-sm font-semibold uppercase rounded-lg ">
-							DEV
-						</p>
-					</nav>
-					<div className="flex gap-1">
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<MinusIcon className="w-6 h-6" />
-						</button>
-						<button className="p-2 px-3 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<ArrowsExpand className="w-5 h-5" />
-						</button>
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<XMarkIcon className="w-6 h-6" />
-						</button>
-					</div>
-				</div>
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -120,32 +96,32 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<div className="h-0.5 m-4 bg-opacity-10 rounded bg-zinc-900"></div>
+				<div className="h-px my-4 rounded bg-opacity-10 bg-zinc-900"></div>
 				<div className="flex flex-col gap-2 mx-4">
-					<button className="items-center w-full gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-						<PlusIcon className="w-5 h-5" />
-						New Calendar
-					</button>
 					<div className="flex flex-col">
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<button className="flex items-center gap-4 p-2 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
 							<div className="flex items-center justify-center h-8 bg-white rounded-lg aspect-square">
 								<p className="uppercase text-danger-11">⚒️</p>
 							</div>
 							<p className="text-md">Product Engineering Team</p>
 						</button>
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<button className="flex items-center gap-4 p-2 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
 							<div className="flex items-center justify-center h-8 rounded-lg bg-primary-2 aspect-square">
 								<p className="text-white uppercase">🧑🏽‍🦱</p>
 							</div>
 							<p className="text-md">Personal</p>
 						</button>
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<button className="flex items-center gap-4 p-2 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
 							<div className="flex items-center justify-center h-8 rounded-lg bg-warning-1 aspect-square">
 								<p className="text-white uppercase">💃🏽</p>
 							</div>
 							<p className="text-md">Weeked Party Animal</p>
 						</button>
 					</div>
+					<button className="items-center w-full gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<PlusIcon className="w-5 h-5" />
+						New Calendar
+					</button>
 				</div>
 			</div>
 			<div className="p-4 m-4 bg-white rounded-xl">

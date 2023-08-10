@@ -65,6 +65,10 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 					<div className="flex p-1 overflow-hidden bg-zinc-100 rounded-xl group">
 						<CalendarToggleButton
 							{...props}
+							value={CalendarView.Planner}
+						/>
+						<CalendarToggleButton
+							{...props}
 							value={CalendarView.Day}
 						/>
 						<CalendarToggleButton

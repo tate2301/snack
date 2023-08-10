@@ -1,20 +1,5 @@
-import { add, startOfDay } from 'date-fns';
+import { add } from 'date-fns';
 import { useRef, useState } from 'react';
-import {
-	DndContext,
-	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core';
-import {
-	SortableContext,
-	sortableKeyboardCoordinates,
-	useSortable,
-} from '@dnd-kit/sortable';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { CSS } from '@dnd-kit/utilities';
 import CalendarEventCard, { EventCardProps } from './EventCard';
 import {
 	generateEventDescription,
@@ -23,7 +8,6 @@ import {
 	getRandomColorForEvent,
 } from './utils';
 import { generateUUID } from '../../../lib/functions';
-import { equal } from 'assert';
 
 type EventTrackProps = {
 	date: Date;
@@ -72,17 +56,20 @@ const EventsTrack = (props: EventTrackProps) => {
 		});
 	};
 
+	console.log({ events: props.events, day: props.date });
+
 	return (
 		<div
 			onDoubleClick={onCreateEvent}
 			ref={ref}
-			className="absolute top-0 left-0 w-full h-full">
+			className="absolute top-0 left-0 w-full h-full overflow-y-hidden">
 			<div className="relative w-full h-full">
 				{props.events.map((event, idx) => (
 					<CalendarEventCard
 						trackLength={ref.current?.getBoundingClientRect().height ?? 0}
 						{...event}
 						updateEvent={props.updateEvent}
+						date={props.date}
 					/>
 				))}
 			</div>

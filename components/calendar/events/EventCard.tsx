@@ -54,6 +54,7 @@ const CalendarEventCard = (
 		trackLength: number;
 		id: string;
 		updateEvent: (event: EventCardProps) => void;
+		date: Date;
 	},
 ) => {
 	// Get the initial coordinates
@@ -61,6 +62,7 @@ const CalendarEventCard = (
 		props.startTime,
 		props.endTime,
 		props.trackLength,
+		props.date,
 	);
 	// Get the resizable height
 	const { height, handleResize } = useResizableEvent(
@@ -103,7 +105,7 @@ const CalendarEventCard = (
 				className={clsx(
 					'absolute left-0 w-full group cursor-pointer border-2 border-white shadow',
 					'bg-opacity-50',
-					'rounded-xl ',
+					'rounded',
 					bgColor,
 					bgHoverColor,
 					textHoverColor,

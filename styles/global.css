@@ -94,10 +94,18 @@ html,
 body {
 	font-size: 12px;
 	font-family: 'Inter', sans-serif;
-	background: url('../public/assets/default-bg.jpeg');
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
+	background-color: rgb(207, 250, 254);
+	background-image: radial-gradient(
+			at 5% 33%,
+			rgb(232, 121, 249) 0,
+			transparent 56%
+		),
+		radial-gradient(at 62% 1%, rgb(29, 78, 216) 0, transparent 70%),
+		radial-gradient(at 71% 2%, rgb(148, 163, 184) 0, transparent 73%),
+		radial-gradient(at 44% 55%, rgb(125, 211, 252) 0, transparent 70%),
+		radial-gradient(at 36% 51%, rgb(52, 211, 153) 0, transparent 81%),
+		radial-gradient(at 1% 37%, rgb(190, 242, 100) 0, transparent 48%);
+
 	@apply select-none;
 }
 

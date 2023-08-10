@@ -7,6 +7,7 @@ export enum CalendarView {
 	Day = 'day',
 	Week = 'week',
 	Month = 'month',
+	Planner = 'planner',
 }
 
 export enum CalendarViewDirection {

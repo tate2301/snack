@@ -21,7 +21,6 @@ export default function WeekView(props: WeekCalendarProps) {
 	const { container, containerNav, timeIntervals } = useCalendarTime();
 	const [events, setEvents] = useState<EventCardProps[]>([]);
 	const updateEvent = (event: EventCardProps) => {
-		console.log('Called updateEvent in WeekView.tsx');
 		setEvents((events) => {
 			const index = events.findIndex((e) => e.id === event.id);
 			const newEvents = [...events];
@@ -48,7 +47,6 @@ export default function WeekView(props: WeekCalendarProps) {
 		]);
 	}, []);
 
-	console.log(events);
 	return (
 		<div
 			ref={container}

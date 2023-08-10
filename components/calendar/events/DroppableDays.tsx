@@ -31,8 +31,10 @@ const DroppableDays = (props: {
 					<EventsTrack
 						updateEvent={props.updateEvent}
 						createEvent={props.createEvent}
-						events={props.events.filter((e) =>
-							isEqual(startOfDay(e.startTime), startOfDay(day)),
+						events={props.events.filter(
+							(e) =>
+								isEqual(startOfDay(e.startTime), startOfDay(day)) ||
+								isEqual(startOfDay(e.endTime), startOfDay(day)),
 						)}
 						date={day}
 					/>

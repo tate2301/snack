@@ -1,35 +1,15 @@
 import { ReactNode } from 'react';
 import { createSnapModifier } from '@dnd-kit/modifiers';
 import { EventCardProps } from './EventCard';
+import { useRef, useCallback, MutableRefObject } from 'react';
+import { convertCoordinatesToTimeRounded } from './utils';
 import {
-	useState,
-	useRef,
-	useEffect,
-	useCallback,
-	MutableRefObject,
-} from 'react';
-import {
-	convertCoordinatesToTimeRounded,
-	generateEventDescription,
-	generateEventTitle,
-	getRandomColorForEvent,
-} from './utils';
-import { generateUUID } from '../../../lib/functions';
-import {
-	Collision,
 	DndContext,
 	PointerSensor,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';
-import {
-	add,
-	differenceInHours,
-	differenceInMinutes,
-	endOfDay,
-	startOfDay,
-	startOfToday,
-} from 'date-fns';
+import { add, differenceInMinutes, endOfDay, startOfDay } from 'date-fns';
 import { custom5MinuteCollisions } from '../../../lib/draggable';
 import { HOUR_HEIGHT } from '../../../constants/dimensions';
 
@@ -89,10 +69,9 @@ const DroppableCalendarContext = (props: {
 
 			console.log({
 				scrollHeight: calendarContainer.scrollHeight,
-				detail: calendarContainer.scrollTop,
+				scrollTop: calendarContainer.scrollTop,
+				rect: calendarContainer.getBoundingClientRect(),
 				topMostCollision,
-				calendarContainer,
-				daysContainer,
 			});
 
 			if (!calendarContainer || !daysContainer || !topMostCollision) return;
@@ -110,10 +89,12 @@ const DroppableCalendarContext = (props: {
 				return;
 			}
 
-			const yTop =
-				topMostCollision.data.droppableContainer.collisionRect.top -
-				daysContainer.offsetTop +
-				calendarContainer.scrollTop;
+			const top =
+				topMostCollision.data.droppableContainer.collisionRect?.top ??
+				topMostCollision.data.droppableContainer.rect.current.top;
+
+			const yTop = top - daysContainer.offsetTop + calendarContainer.scrollTop;
+
 			const newStartTime = convertCoordinatesToTimeRounded(
 				yTop > 0 ? yTop : 0,
 				HOUR_HEIGHT * 24,
@@ -135,6 +116,41 @@ const DroppableCalendarContext = (props: {
 					minutes: lengthOfEventInMinutes,
 				}),
 			};
+
+			if (
+				topMostCollision.data.droppableContainer.data?.current.time &&
+				isNaN(newStartTime.getTime())
+			) {
+				// Event has been dragged to a time below 11:30 might overspill to next day
+				// newStartTime is Invalid Date so lets get the new time from the droppable container
+				// and that becomes the new start time
+
+				const newTime = convertCoordinatesToTimeRounded(
+					yTop > 0 ? yTop : 0,
+					HOUR_HEIGHT * 24,
+					startOfDay(
+						topMostCollision.data.droppableContainer.data.current.time,
+					),
+				);
+				newCalendarEvent.startTime = newTime;
+				newCalendarEvent.endTime = add(newTime, {
+					minutes: lengthOfEventInMinutes,
+				});
+
+				console.log({ newTime });
+			}
+
+			console.log({
+				newStartTime,
+				yTop,
+				lengthOfEventInMinutes,
+				top,
+				topMostCollision,
+				track: HOUR_HEIGHT * 24,
+				time: topMostCollision.data.droppableContainer.data?.current.time,
+			});
+
+			// Event happens to cross over into the next day
 
 			updateEvent(newCalendarEvent);
 		},
