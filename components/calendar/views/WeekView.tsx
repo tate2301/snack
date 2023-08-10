@@ -81,7 +81,7 @@ export default function WeekView(props: WeekCalendarProps) {
 							/>
 						</div>
 						<div
-							className="grid flex-1 divide-x"
+							className="grid flex-1 overflow-hidden divide-x"
 							style={{
 								gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 							}}>

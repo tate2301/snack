@@ -62,7 +62,7 @@ const EventsTrack = (props: EventTrackProps) => {
 		<div
 			onDoubleClick={onCreateEvent}
 			ref={ref}
-			className="absolute top-0 left-0 w-full h-full overflow-y-hidden">
+			className="absolute top-0 left-0 w-full h-full">
 			<div className="relative w-full h-full">
 				{props.events.map((event, idx) => (
 					<CalendarEventCard

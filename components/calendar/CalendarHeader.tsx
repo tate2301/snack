@@ -47,9 +47,9 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 						<button
 							onClick={jumpToToday}
 							className={clsx(
-								'text-sm rounded-lg px-3 py-1',
+								'text-sm rounded-lg px-3 py-1 transition-all',
 								isEqual(props.selectedDate, startOfToday())
-									? 'bg-zinc-950 text-white'
+									? 'bg-warning-10 text-surface-12'
 									: 'bg-white hover:shadow border',
 							)}>
 							Today
