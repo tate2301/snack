@@ -8,10 +8,3 @@ export const LAYOUT = {
 };
 
 export const HOUR_HEIGHT = 80; // 80px per hour
-
-export const ZINDEX = {
-	DROPDOWN: 1000,
-	TOOLTIP: 1000,
-	TOAST: 2000,
-	MODAL: 5000,
-};
