@@ -50,7 +50,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 
 	return (
 		<div className="flex-none hidden w-full md:block">
-			<div className="flex items-baseline justify-between px-6 text-center text-zinc-900">
+			<div className="flex items-baseline justify-between px-4 text-center text-zinc-900">
 				<p className="font-semibold uppercase text-zinc-900">
 					{format(firstDayOfCurrentMonth, 'MMMM yyyy')}
 				</p>
@@ -94,10 +94,8 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 						onClick={() => selectDate(day)}
 						className={clsx(
 							'py-1.5 hover:bg-zinc-100 focus:z-10 rounded-xl flex items-center justify-center flex-col gap-1 transition-all',
-							isSameMonth(day, firstDayOfCurrentMonth) ? 'bg-white' : '',
 							(isEqual(day, selectedDate) || isToday(day)) && 'font-semibold',
-							isEqual(day, selectedDate) &&
-								'text-white bg-zinc-950 hover:bg-zinc-800',
+
 							!isEqual(day, selectedDate) &&
 								isSameMonth(day, firstDayOfCurrentMonth) &&
 								!isToday(day) &&
@@ -112,6 +110,9 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 							dayIdx === month.length - 7 && 'rounded-bl-lg',
 							dayIdx === month.length - 1 && 'rounded-br-lg',
 							dayIdx === 0 && colStartClasses[getDay(day)],
+							isEqual(day, selectedDate) &&
+								'!text-white bg-zinc-950 hover:bg-zinc-800',
+							isSameMonth(day, firstDayOfCurrentMonth) ? 'text-zinc-900' : '',
 						)}>
 						<time
 							dateTime={day.getDate().toString()}

@@ -2,15 +2,9 @@ import { formatTime } from '../../../lib/utils';
 import clsx from 'clsx';
 import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
-import Draggable from 'react-draggable';
 import useResizableEvent from './hooks/useResizableEvent';
-import { Resizable } from 'react-resizable';
-import useDraggableEvent from './hooks/useDraggableEvent';
-import { useMemo } from 'react';
-import useTraceUpdate from '../../../hooks/useTraceUpdates';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useDraggable } from '@dnd-kit/core';
+import { forwardRef } from 'react';
 
 export type EventCardProps = {
 	startTime: Date;
@@ -42,14 +36,6 @@ const CalendarEventCardContent = (props: EventCardProps) => {
 				)}>
 				{props.title}
 			</p>
-			<p
-				className={clsx(
-					`order-2 capitalize hidden hover:block`,
-					textColor,
-					textHoverColor,
-				)}>
-				{props.description}
-			</p>
 			<p className={clsx('uppercase line-clamp-1', textColor, textHoverColor)}>
 				<time dateTime={props.startTime.toString()}>
 					{formatTime(props.startTime)}
@@ -63,12 +49,6 @@ const CalendarEventCardContent = (props: EventCardProps) => {
 	);
 };
 
-const DragHandle = () => (
-	<div className="relative flex justify-center w-full mt-1 mb-2 cursor-n-resize">
-		<div className="w-8 h-[4px] bg-white rounded-full hidden group-hover:flex drop-shadow-xl transition-all" />
-	</div>
-);
-
 const CalendarEventCard = (
 	props: EventCardProps & {
 		trackLength: number;
@@ -77,51 +57,62 @@ const CalendarEventCard = (
 	},
 ) => {
 	// Get the initial coordinates
-	const coords = useMemo(
-		() =>
-			getCoordinatesOfEvent(props.startTime, props.endTime, props.trackLength),
-		[props],
+	const coords = getCoordinatesOfEvent(
+		props.startTime,
+		props.endTime,
+		props.trackLength,
 	);
 	// Get the resizable height
 	const { height, handleResize } = useResizableEvent(
 		coords.endY - coords.startY,
 	);
 
-	const { attributes, listeners, setNodeRef, over } = useDraggable({
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		isDragging,
+		activatorEvent,
+	} = useDraggable({
 		id: props.id,
-		data: props,
+		data: {
+			...props,
+			supports: ['droppableDay', 'droppableAllDaySlot'],
+		},
 	});
 
-	const [bgColor, bgHoverColor, textHoverColor] = EVENT_COLORS[props.color];
+	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =
+		EVENT_COLORS[props.color];
 
 	return (
-		<div
-			ref={setNodeRef}
-			{...attributes}
-			{...listeners}>
-			<Resizable
-				height={height}
-				width={Infinity}
-				maxConstraints={[Infinity, props.trackLength]}
-				handle={<DragHandle />}
-				onResize={handleResize}>
-				<div
-					key={`event-${props.startTime.toString()}`}
-					style={{
-						top: `${coords.startY}px`,
-						height: `${height}px`,
-					}}
-					className={clsx(
-						'absolute left-0 w-full group !hover:h-fit cursor-pointer hover:z-40 hover:relative',
-						'bg-opacity-50',
-						'backdrop-blur-sm rounded-xl group',
-						bgColor,
-						bgHoverColor,
-						textHoverColor,
-					)}>
-					<CalendarEventCardContent {...props} />
-				</div>
-			</Resizable>
+		<div>
+			<div className="h-2 bg-white" />
+			<div
+				ref={setNodeRef}
+				{...attributes}
+				{...listeners}
+				key={`event-${props.startTime.toString()}`}
+				style={{
+					top: `${coords.startY}px`,
+					height: `${height}px`,
+					transform: transform
+						? `translate3d(${transform.x}px, ${transform.y}px, 0)`
+						: 'none',
+				}}
+				className={clsx(
+					'absolute left-0 w-full group cursor-pointer border-2 border-white shadow',
+					'bg-opacity-50',
+					'rounded-xl ',
+					bgColor,
+					bgHoverColor,
+					textHoverColor,
+					ringColor,
+					isDragging && 'z-30 shadow-2xl',
+				)}>
+				<CalendarEventCardContent {...props} />
+			</div>
+			<div className="h-2 bg-white cursor-s-resize" />
 		</div>
 	);
 };

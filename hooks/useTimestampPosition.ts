@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { HOUR_HEIGHT } from '../constants/dimensions';
 
 // Take current time and express it as percentage of 24 hours
 const useTimestampPosition = () => {
@@ -6,7 +7,7 @@ const useTimestampPosition = () => {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const totalHeight = 80 * 24;
+			const totalHeight = HOUR_HEIGHT * 24;
 			const now = new Date();
 			const hours = now.getHours();
 			const minutes = now.getMinutes();

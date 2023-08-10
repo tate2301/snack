@@ -21,10 +21,10 @@ import InboxList from './components/List';
 export default function Inbox() {
 	return (
 		<div>
-			<div className="p-4 pb-2 mb-4 divide-y bg-stone-50 rounded-xl">
+			<div className="p-4 pb-2 mb-4 divide-y bg-stone-200 bg-opacity-80 backdrop-blur rounded-xl">
 				<div className="pb-4">
 					<div className="flex items-center justify-between">
-						<p className="font-semibold uppercase text-zinc-500">
+						<p className="font-semibold uppercase text-zinc-600">
 							Coming up next
 						</p>
 						<div className="flex gap-4 px-2">
@@ -75,8 +75,8 @@ export default function Inbox() {
 					</div>
 				</div>
 			</div>
-			<div className="flex items-baseline justify-between p-2 pt-4">
-				<p className="uppercase text-zinc-500">Inbox</p>
+			<div className="flex items-baseline justify-between p-2 border-b">
+				<p className="uppercase text-zinc-800">Inbox</p>
 				<button className="flex items-center gap-2 p-2 py-1 uppercase transition-all bg-white rounded-lg shadow">
 					<PlusIcon className="w-5 h-5" />
 					<p>New item</p>

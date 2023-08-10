@@ -50,7 +50,7 @@ const Calendar = (props: CalendarProps) => {
 
 	return (
 		<div className={'flex-1 h-full w-full flex flex-col p-4'}>
-			<div className="flex flex-col justify-between w-full h-full overflow-hidden shadow bg-stone-50 border-zinc-200 rounded-xl">
+			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-200">
 				<CalendarHeader
 					view={calendarView}
 					setView={setCalendarView}
@@ -75,7 +75,13 @@ const Calendar = (props: CalendarProps) => {
 							selectDate={selectDate}
 						/>
 					)}
-					{calendarView === CalendarView.Month && <div>Not implemented</div>}
+					{calendarView === CalendarView.Month && (
+						<div className="flex items-center justify-center w-full h-full">
+							<button className="p-4 uppercase transition-all bg-danger-4 text-danger-11 hover:text-white hover:bg-danger-10 rounded-xl">
+								Not implemented
+							</button>
+						</div>
+					)}
 				</AnimatePresence>
 			</div>
 		</div>

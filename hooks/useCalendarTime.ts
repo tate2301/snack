@@ -4,7 +4,6 @@ import { eachHourOfInterval, endOfToday, startOfToday } from 'date-fns';
 import { remToPx } from '../lib/utils';
 
 const useCalendarTime = () => {
-	const currentTime = useCurrentTime();
 	const container = useRef(null);
 	const containerNav = useRef(null);
 	const [timePosition, setTimePosition] = useState(0);
@@ -21,7 +20,7 @@ const useCalendarTime = () => {
 
 	useEffect(() => {
 		// Set the container scroll position based on the current time.
-		const currentMinute = currentTime.getHours() * 60;
+		const currentMinute = new Date().getHours() * 60;
 		const blockHeight = remToPx(4);
 
 		container.current.scrollTop =
@@ -33,7 +32,6 @@ const useCalendarTime = () => {
 		containerNav,
 		timeIntervals,
 		timePosition,
-		currentTime,
 	};
 };
 

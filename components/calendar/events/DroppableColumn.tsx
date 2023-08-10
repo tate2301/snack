@@ -1,19 +1,15 @@
-import { Collision, useDroppable } from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 import clsx from 'clsx';
-import { add, eachDayOfInterval, eachQuarterOfInterval } from 'date-fns';
+import { add } from 'date-fns';
 import { eachMinuteOfIntervalWithOptions } from 'date-fns/fp';
-import { useMemo, useEffect, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { generateUUID } from '../../../lib/functions';
 
-const DroppableColumn = (props: {
-	idx: number;
-	time: Date;
-	collisions: Collision[];
-}) => {
+const DroppableColumn = (props: { idx: number; time: Date }) => {
 	const fiveMinuteIntervalsForHour = useMemo(() => {
 		return eachMinuteOfIntervalWithOptions(
 			{
-				step: 5,
+				step: 15,
 			},
 			{
 				start: props.time,
@@ -28,31 +24,29 @@ const DroppableColumn = (props: {
 				<DroppableTimeSlot
 					time={time}
 					key={time.getTime()}
-					collisions={props.collisions}
 				/>
 			))}
 		</div>
 	);
 };
 
-const DroppableTimeSlot = (props: { time: Date; collisions: Collision[] }) => {
+const DroppableTimeSlot = (props: { time: Date }) => {
 	const id = useRef(generateUUID());
-	const [isColliding, setIsColliding] = useState(false);
 	const { setNodeRef } = useDroppable({
 		id: id.current,
+		data: {
+			type: 'droppableDay',
+			time: props.time,
+		},
 	});
-
-	useEffect(() => {
-		setIsColliding(props.collisions.some((c) => c.id === id.current));
-	}, [props.collisions]);
 
 	return (
 		<div
 			style={{
-				height: `calc(100% / 12)`,
+				height: `calc(100% / 4)`,
 			}}
 			ref={setNodeRef}
-			className={clsx('hover:bg-zinc-100', isColliding && 'bg-purple-50')}
+			className={clsx('hover:bg-zinc-100')}
 		/>
 	);
 };

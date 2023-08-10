@@ -1,5 +1,15 @@
-import { add } from 'date-fns';
+import {
+	add,
+	differenceInHours,
+	differenceInMinutes,
+	eachHourOfInterval,
+	endOfDay,
+	startOfDay,
+	startOfToday,
+} from 'date-fns';
 import { faker } from '@faker-js/faker';
+import { Collision } from '@dnd-kit/core';
+import { EventCardProps } from './EventCard';
 
 export const colorMap = [
 	'red',
@@ -37,18 +47,48 @@ export const getCoordinatesOfEvent = (
 	};
 };
 
-export const convertCoordinatesToTime = (
+/**
+ *
+ * @param y the y coordinate of the top of the event
+ * @param trackHeight the length of the day column in pixels
+ * @returns Date rounded of to the nearest 5 minutes
+ */
+export const convertCoordinatesToTimeRounded = (
 	y: number,
 	trackHeight: number,
+	date?: Date,
 ): Date => {
 	const percentageOfY = y / trackHeight;
 	const minutes = percentageOfY * 24 * 60;
 	const hours = Math.floor(minutes / 60);
 	const minutesLeft = Math.floor(minutes % 60);
-	const time = add(new Date(), { hours, minutes: minutesLeft });
+	const roundedMinutes = Math.round(minutesLeft / 5) * 5;
 
-	return time;
+	if (date) {
+		return add(date, {
+			hours,
+			minutes: roundedMinutes,
+		});
+	}
+
+	return add(startOfToday(), {
+		hours,
+		minutes: roundedMinutes,
+	});
 };
+
+export const getDayHourlyInterval = (start: Date) =>
+	eachHourOfInterval(
+		{
+			start: startOfDay(start),
+			end: endOfDay(start),
+		},
+		{
+			step: 1,
+		},
+	);
+
+export const getDayFromCollision = (collision: Collision) => {};
 
 export const getRandomColorForEvent = (): string => {
 	const randomIndex = Math.floor(Math.random() * colorMap.length);
@@ -61,4 +101,20 @@ export const generateEventTitle = (): string => {
 
 export const generateEventDescription = (): string => {
 	return faker.lorem.words(Math.floor(Math.random() * (20 - 5 + 1) + 5));
+};
+
+export const onlyAlldayEvents = (events: EventCardProps[]) => {
+	const dayLength = 24 * 60;
+
+	return events.filter(
+		(event) =>
+			differenceInHours(event.endTime, event.startTime) === 24 * 60 - 1,
+	);
+};
+
+export const onlyNonAlldayEvents = (events: EventCardProps[]) => {
+	return events.filter(
+		(event) =>
+			differenceInMinutes(event.endTime, event.startTime) !== 24 * 60 - 1,
+	);
 };
