@@ -163,13 +163,13 @@ export default function HomePage() {
 										<>
 											{key}
 											<span className="ml-2 rounded-lg bg-surface-4 py-0.5 px-1.5">
-												{groupedTasks[key].length}
+												{groupedTasks[key]?.length}
 											</span>
 										</>
 									)}
 								</p>
 							</div>
-							{groupedTasks[key].length > 0 &&
+							{groupedTasks[key]?.length > 0 &&
 								groupedTasks[key].map((task) => (
 									<div key={task.id}>
 										<TaskListItem

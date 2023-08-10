@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('./scrollbar.css');
+@import url('./utils.css');
+
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/blue-dark.css';
+
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/sand-dark.css';
+
+@import '@radix-ui/colors/purple.css';
+@import '@radix-ui/colors/purple-dark.css';
+
+@import '@radix-ui/colors/tomato.css';
+@import '@radix-ui/colors/tomato-dark.css';
+
+@import '@radix-ui/colors/amber.css';
+@import '@radix-ui/colors/amber-dark.css';
+
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/green-dark.css';
+/*
+    Chrome Extension: Use max-width and max-height
+*/
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(/fonts/subset-SFRounded-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Regular.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Regular.woff) format('woff');
+	font-family: SFRounded;
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 500;
+	src: url(/fonts/subset-SFRounded-Medium.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Medium.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Medium.woff) format('woff');
+	font-family: SFRounded;
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 600;
+	src: url(/fonts/subset-SFRounded-Semibold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Semibold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Semibold.woff) format('woff');
+	font-family: SFRounded;
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 700;
+	src: url(/fonts/subset-SFRounded-Bold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Bold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Bold.woff) format('woff');
+	font-family: SFRounded;
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/subset-SFRounded-Heavy.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Heavy.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Heavy.woff) format('woff');
+	font-family: SFRounded;
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/SF-Mono-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/SF-Mono-Regular.woff2) format('woff2'),
+		url(/fonts/SF-Mono-Regular.woff) format('woff');
+	font-family: SFMono;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-size: 12px;
+	font-family: 'Inter', sans-serif;
+	background: url('../public/assets/default-bg.jpeg');
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	@apply select-none;
+}
+
+.app-noise {
+	height: 100vh;
+	width: 100vw;
+	background: linear-gradient(to right, blue, rgba(0, 0, 0, 0)),
+		url('https://grainy-gradients.vercel.app/noise.svg');
+	filter: contrast(170%) brightness(1000%);
+}
+
+.noise-overlay {
+	background: moccasin;
+	mix-blend-mode: multiply;
+}
+
+.app-bg-isolate {
+	isolation: isolate;
+}
+
+/*
+    Chrome Extension: Use min-width and min-height
+*/
+
+#app-container {
+	width: 100%;
+}
+
+svg {
+	stroke-width: 2px;
+}
+
+p,
+span {
+	@apply outline-none;
+}
+
+input[type='checkbox'] {
+	@apply w-4 h-4 font-semibold rounded stroke-2 form-checkbox;
+}
+
+button {
+	@apply flex items-center gap-2 p-1 font-semibold text-zinc-900;
+}
+
+.grid-day {
+	@apply grid-cols-[24];
+}
+
+.uppercase {
+	@apply font-mono;
+}
+
+nav button:hover {
+	@apply bg-zinc-800;
+}
+
+.font-mono {
+	font-family: 'SFMono', monospace;
+}
+
+input {
+	@apply focus:border-0 focus:ring-0 active:border-0 active:ring-0;
+}
