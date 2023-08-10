@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }) {
 	return (
 		<StrictMode>
 			<div
-				className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base antialiased font-normal bg-sand-100 text-zinc-900"
+				className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-zinc-900"
 				id="app-container">
 				<Head>
 					<title>Snack ⏲</title>

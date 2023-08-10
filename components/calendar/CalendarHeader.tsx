@@ -34,30 +34,14 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 
 	return (
 		<div className="bg-white">
-			<div className={'py-2 mt-4 px-4'}>
-				<h1 className={'font-semibold uppercase text-2xl'}>
+			<nav className="h-12" />
+			<div className={'bg-white w-full justify-between flex gap-2 py-2 px-2'}>
+				<h1 className={'text-2xl'}>
 					{Intl.DateTimeFormat('en-gb', {
 						month: 'long',
 						year: 'numeric',
 					}).format(props.selectedDate)}
 				</h1>
-			</div>
-			<div className={'border-b w-full justify-between flex gap-2 py-2 px-2'}>
-				<div
-					className={
-						'w-auto flex-shrink-0 flex gap-1 p-2 rounded-tr-xl rounded-b-none border-b-0'
-					}>
-					<button
-						className={'py-0.5 px-2 rounded font-semibold text-sm bg-zinc-100'}>
-						+
-					</button>
-					<button
-						className={
-							'py-0.5 px-2 rounded text-sm font-semibold hover:bg-zinc-100'
-						}>
-						Activity
-					</button>
-				</div>
 				<div className={'flex gap-4 items-center'}>
 					<div className="flex gap-2">
 						<button

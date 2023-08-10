@@ -1,64 +1,48 @@
-import {
-	HashtagIcon,
-	Cog6ToothIcon,
-	CloudIcon,
-	InboxIcon,
-	ListBulletIcon,
-} from '@heroicons/react/24/outline';
+import { InboxIcon, PlusIcon } from '@heroicons/react/24/outline';
 import TimerIcon from '../../icons/Timer';
 import CalendarIcon from '../../icons/CalendarIcon';
-import CollapseSidebarIcon from '../../icons/CollapseSidebarIcon';
 import useToggle from '../../hooks/useToggle';
-import ExpandSidebarIcon from '../../icons/ExpandSidebarIcon';
-import { AppNavigation, NavItem, SidebarToggleProps, Tab } from './types';
-import SidebarContainer from './SidebarContainer';
+import {
+	AppNavigation,
+	NavItem as NavItemType,
+	SidebarToggleProps,
+	Tab,
+} from './types';
 import { useRouter } from 'next/router';
 import { useEffect, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
-import TaskList from '../Home/TaskList';
 import { UserAccount } from '../UserAccount';
+import CalendarPreview from '../calendar/CalendarPreview';
+import { MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import ArrowsExpand from '../../icons/ArrowsExpand';
 
-const tabs: NavItem[] = [
+const tabs: NavItemType[] = [
+	{
+		icon: <CalendarIcon className="w-6 h-6" />,
+		value: 'calendar',
+		label: 'Calendar',
+	},
 	{
 		icon: <InboxIcon className="w-6 h-6" />,
 		value: 'inbox',
 		label: 'Inbox',
 	},
-	// {
-	// 	icon: <CalendarIcon className="w-6 h-6" />,
-	// 	value: 'calendar',
-	// 	label: 'Calendar',
-	// },
-	// {
-	// 	icon: <TimerIcon className="w-6 h-6" />,
-	// 	value: 'timers',
-	// 	label: 'Timers',
-	// },
+	{
+		icon: <TimerIcon className="w-6 h-6" />,
+		value: 'timers',
+		label: 'Timers',
+	},
 ];
-
-function SidebarToggle({ isExpanded, toggle }: SidebarToggleProps) {
-	return (
-		<button
-			onClick={toggle}
-			className="p-2 rounded-xl hover:bg-zinc-100 text-zinc-400">
-			{isExpanded ? (
-				<CollapseSidebarIcon className="w-6 h-6" />
-			) : (
-				<ExpandSidebarIcon className="w-6 h-6" />
-			)}
-		</button>
-	);
-}
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col items-center justify-between flex-shrink-0 h-full gap-4 bg-stone-100">
+		<div className="sticky flex flex-col justify-between gap-4 p-2">
 			<div className="flex flex-col gap-4">
-				<div className="mx-auto mb-8">
-					<SidebarToggle {...props} />
-				</div>
 				<div className="flex flex-col gap-4 p-2">
-					{tabs.map((tab: NavItem) => (
+					<UserAccount />
+				</div>
+				<div className="flex flex-col w-full gap-1 p-2">
+					{tabs.map((tab: NavItemType) => (
 						<NavItem
 							key={tab.value}
 							{...tab}
@@ -67,9 +51,6 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 						/>
 					))}
 				</div>
-			</div>
-			<div className="flex flex-col gap-4 p-2">
-				<UserAccount />
 			</div>
 		</div>
 	);
@@ -94,31 +75,72 @@ export default function NavigationSidebar({}) {
 	);
 
 	useEffect(() => {
-		setActiveTab('inbox');
+		setActiveTab('calendar');
 	}, []);
 
 	return (
-		<div className={'overflow-y-auto h-full bg-white z-10 flex-grow-0 flex'}>
-			<SidebarNavigation
-				isExpanded={isExpanded}
-				toggle={toggle}
-				expand={expand}
-				setActiveTab={setActiveTab}
-				activeTab={query.active}
-			/>
-			<SidebarContainer
-				isExpanded={isExpanded}
-				toggle={toggle}
-				expand={expand}
-				activeTab={query.active}
-				setActiveTab={setActiveTab}
-			/>
+		<div
+			className={
+				'overflow-y-auto justify-between h-full w-[24rem] z-10 flex-grow-0 flex flex-col border-r'
+			}>
+			<div>
+				<div className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">
+					<nav className="flex items-center flex-1 h-full gap-2 px-2">
+						<p className="font-semibold uppercase">Snack</p>
+						<p className="px-2 py-0.5 bg-warning-10 text-white text-sm font-semibold uppercase rounded-lg ">
+							DEV
+						</p>
+					</nav>
+					<div className="flex gap-1">
+						<button className="p-2 rounded hover:bg-surface-1">
+							<MinusIcon className="w-6 h-6" />
+						</button>
+						<button className="p-2 px-3 rounded hover:bg-surface-1">
+							<ArrowsExpand className="w-5 h-5" />
+						</button>
+						<button className="p-2 rounded hover:bg-surface-1">
+							<XMarkIcon className="w-6 h-6" />
+						</button>
+					</div>
+				</div>
+				<SidebarNavigation
+					isExpanded={isExpanded}
+					toggle={toggle}
+					expand={expand}
+					setActiveTab={setActiveTab}
+					activeTab={query.active}
+				/>
+				<div className="h-0.5 m-4 bg-opacity-10 rounded bg-zinc-900"></div>
+				<div className="flex flex-col gap-2 mx-4">
+					<button className="items-center w-full gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+						<PlusIcon className="w-5 h-5" />
+						New Calendar
+					</button>
+					<div className="flex flex-col">
+						<button className="flex items-center gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+							<div className="flex items-center justify-center h-8 bg-white rounded-lg aspect-square">
+								<p className="text-sm uppercase text-danger-11">PE</p>
+							</div>
+							<p className="text-md">Product Engineering Team</p>
+						</button>
+						<button className="flex items-center gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+							<div className="flex items-center justify-center h-8 rounded-lg bg-primary-10 aspect-square">
+								<p className="text-sm text-white uppercase">PE</p>
+							</div>
+							<p className="text-md">Personal</p>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div className="p-4 m-4 bg-white rounded-xl">
+				<CalendarPreview />
+			</div>
 		</div>
 	);
 }
 
 function NavItem(
-	props: NavItem & {
+	props: NavItemType & {
 		active?: boolean;
 		callback: (v: Tab) => void;
 	},
@@ -129,12 +151,13 @@ function NavItem(
 		<button
 			onClick={onClick}
 			className={clsx(
-				'p-2 transition-all rounded-xl',
+				'p-4 pr-4 gap-4 transition-all rounded-xl items-center font-medium',
 				props.active
-					? 'bg-zinc-900 text-white'
-					: 'hover:bg-stone-100 text-zinc-400',
+					? 'text-surface-12 font-semibold bg-surface-1 shadow'
+					: 'hover:bg-zinc-900 hover:bg-opacity-10',
 			)}>
 			{props.icon}
+			{props.label}
 		</button>
 	);
 }

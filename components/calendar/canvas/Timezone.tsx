@@ -11,7 +11,7 @@ const Timezone = (props: { zone: string } & CalendarDayTimeProps) => {
 	return (
 		<div
 			className={clsx(
-				'sticky left-0 z-10 flex-none bg-white px-4',
+				'sticky left-0 z-10 flex-none px-4',
 				'grid col-start-1 col-end-2 row-start-1 uppercase',
 			)}
 			style={{ gridTemplateRows: 'repeat(48, minmax(4rem))' }}>

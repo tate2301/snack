@@ -5,6 +5,23 @@
 @import url('./scrollbar.css');
 @import url('./utils.css');
 
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/blue-dark.css';
+
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/sand-dark.css';
+
+@import '@radix-ui/colors/purple.css';
+@import '@radix-ui/colors/purple-dark.css';
+
+@import '@radix-ui/colors/tomato.css';
+@import '@radix-ui/colors/tomato-dark.css';
+
+@import '@radix-ui/colors/amber.css';
+@import '@radix-ui/colors/amber-dark.css';
+
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/green-dark.css';
 /*
     Chrome Extension: Use max-width and max-height
 */
@@ -77,6 +94,9 @@ html,
 body {
 	font-size: 12px;
 	font-family: 'Inter', sans-serif;
+	background: url('../public/assets/default-bg.jpeg');
+	background-position: center;
+	background-size: cover;
 
 	@apply select-none;
 }

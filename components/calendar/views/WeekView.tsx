@@ -13,7 +13,7 @@ export default function WeekView(props: WeekCalendarProps) {
 			className="flex flex-col flex-auto h-full overflow-auto bg-white">
 			<div
 				ref={containerNav}
-				className="sticky top-0 z-30 grid flex-1 bg-white border-b divide-x border-zinc-200"
+				className="sticky top-0 z-30 grid flex-1 p-2 mx-2 mb-2 border bg-zinc-900 bg-opacity-10 rounded-xl border-zinc-200 backdrop-blur"
 				style={{
 					gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 				}}>
@@ -24,21 +24,25 @@ export default function WeekView(props: WeekCalendarProps) {
 					selectDate={props.selectDate}
 				/>
 			</div>
-			<AllDayEvent />
-			<div
-				className="grid flex-1 divide-x "
-				style={{
-					gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
-				}}>
-				<Timezone
-					zone="est"
-					timeIntervals={timeIntervals}
-				/>
-				<DroppableDays
-					timeIntervals={timeIntervals}
-					week={props.week}
-					containerRef={container}
-				/>
+			<div className="w-full border-t border-b border-zinc-200">
+				<div>
+					<AllDayEvent />
+				</div>
+				<div
+					className="grid flex-1 divide-x"
+					style={{
+						gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
+					}}>
+					<Timezone
+						zone="est"
+						timeIntervals={timeIntervals}
+					/>
+					<DroppableDays
+						timeIntervals={timeIntervals}
+						week={props.week}
+						containerRef={container}
+					/>
+				</div>
 			</div>
 		</div>
 	);
@@ -51,10 +55,10 @@ function AllDayEvent() {
 			style={{
 				gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 			}}>
-			<p className="py-2 text-xs text-center">All Day</p>
+			<p className="py-2 pt-4 text-xs text-center">All Day</p>
 			{[...Array(7)].map((_, index) => (
 				<div
-					className="flex flex-col items-center justify-center p-2 hover:bg-zinc-100"
+					className="flex flex-col items-center justify-center p-2 pt-4 hover:bg-zinc-100"
 					key={`week-day-${index}`}></div>
 			))}
 		</div>
