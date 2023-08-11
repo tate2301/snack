@@ -58,7 +58,7 @@ function NavLink(props: {
 	return (
 		<Link
 			className={clsx(
-				'relative px-4 py-1 text-lg rounded-xl',
+				'relative px-4 py-1 rounded-xl',
 				isActive && 'font-semibold text-surface-12',
 			)}
 			style={{
