@@ -23,42 +23,46 @@ import { useEffect, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { UserAccount } from '../UserAccount';
 import CalendarPreview from '../calendar/CalendarPreview';
-import { MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { ArrowPathIcon, MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import ExternalLink from '../../icons/ExternalLink';
+import Kbd from '../ui/typography/Kbd';
+import TargetIcon from '../../icons/TargetIcon';
+import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
 
 const tabs: NavItemType[] = [
 	{
-		icon: <InboxIcon className="w-6 h-6" />,
-		value: 'inbox',
-		label: 'Streams',
+		icon: <InboxIcon className="w-5 h-5 text-surface-12" />,
+		value: 'settings',
+		label: 'Inbox',
 	},
 	{
-		icon: <BoltIcon className="w-6 h-6" />,
+		icon: <TargetIcon className="w-5 h-5 text-surface-12" />,
 		value: 'calendar',
-		label: 'In Focus',
+		label: 'Active',
 	},
 	{
-		icon: <Square3Stack3DIcon className="w-6 h-6" />,
+		icon: <CalendarIcon className="w-5 h-5 text-surface-12" />,
+		value: 'inbox',
+		label: 'Today',
+	},
+	{
+		icon: <MaybeLaterIcon className="w-5 h-5 text-surface-12" />,
 		value: 'contacts',
 		label: 'Maybe later',
 	},
 	{
-		icon: <TimerIcon className="w-6 h-6" />,
+		icon: <TimerIcon className="w-5 h-5 text-surface-12" />,
 		value: 'timers',
-		label: 'Timers',
+		label: 'Focus',
 	},
 ];
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col justify-between gap-4 p-2">
+		<div className="sticky flex flex-col justify-between gap-4 w-96">
 			<div className="flex flex-col gap-4">
-				<div className="flex flex-col gap-4 p-2">
-					<UserAccount />
-				</div>
-
-				<div className="flex flex-col items-center w-full gap-1 p-2">
+				<div className="flex flex-col w-full gap-1 p-2">
 					{tabs.map((tab: NavItemType) => (
 						<NavItem
 							key={tab.value}
@@ -98,9 +102,9 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-auto bg-white justify-between h-full flex-shrink-0 z-10 flex-grow-0 flex flex-col border-r'
+				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col p-2'
 			}>
-			<div>
+			<div className="bg-white bg-opacity-75 rounded-xl">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -108,15 +112,65 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<div className="h-px my-4 rounded bg-opacity-10 bg-zinc-900"></div>
-				<div className="flex flex-col justify-center gap-2 mx-4">
-					<div className="flex flex-col items-center justify-center">
-						<button className="flex items-center justify-center gap-4 font-medium rounded-2xl aspect-square h-14 ring-offset-2 ring-2 ring-warning-10 bg-warning-10">
-							<p className="text-2xl uppercase text-danger-12">⚒️</p>
-						</button>
+				<div className="flex flex-col gap-2 p-2 mt-8">
+					<p className="px-4 uppercase">Calendars</p>
+					<div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md text-md aspect-square">
+									🏋🏽‍♂️
+								</p>
+								<p>Workout scheme</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md aspect-square">
+									🔥
+								</p>
+								<p>Party Animal</p>
+							</button>
+						</div>
 					</div>
-					<button className="justify-center w-full gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
+					<button className="flex items-center gap-4 p-4 hover:bg-surface-3 rounded-xl">
 						<PlusIcon className="w-5 h-5" />
+						<p className="flex items-center justify-between flex-1">
+							<span>New calendar</span>
+							<Kbd keys={['⌘', 'D']} />
+						</p>
+					</button>
+				</div>
+				<div className="flex flex-col gap-2 p-2 mt-8">
+					<p className="px-4 uppercase">Lists</p>
+					<div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-success-9"></p>
+								<p>Sideprojects</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+								<p className="flex items-center justify-between flex-1">
+									<span>School run</span>
+									<ArrowPathIcon className="w-4 h-4" />
+								</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+								<p>Grocery shopping</p>
+							</button>
+						</div>
+					</div>
+					<button className="flex items-center gap-4 p-4 text-surface-11 hover:bg-surface-3 rounded-xl">
+						<PlusIcon className="w-5 h-5" />
+						<p className="flex items-center justify-between flex-1">
+							<span>New list</span>
+							<Kbd keys={['⌘', 'L']} />
+						</p>
 					</button>
 				</div>
 			</div>
@@ -136,12 +190,13 @@ function NavItem(
 		<button
 			onClick={onClick}
 			className={clsx(
-				'p-4 gap-4 transition-all font-semibold rounded-xl items-center',
+				'p-4 gap-4 transition-all text-md font-semibold rounded-xl items-center',
 				props.active
-					? 'text-surface-12 bg-surface-1 shadow'
+					? 'text-surface-12 bg-surface-3'
 					: 'hover:bg-zinc-900 text-surface-11 hover:bg-opacity-10',
 			)}>
 			{props.icon}
+			{props.label}
 		</button>
 	);
 }

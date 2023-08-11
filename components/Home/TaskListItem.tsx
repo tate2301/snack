@@ -12,7 +12,7 @@ export default function TaskListItem({
 	const [isChecked, toggle] = useToggle(false);
 
 	return (
-		<div className="flex items-start justify-between py-2 pl-4 pr-2 transition-all rounded-lg hover:bg-zinc-50">
+		<div className="flex items-start justify-between p-4 transition-all bg-white rounded-lg">
 			<div className="flex items-center gap-4">
 				<input
 					className="mt-1 rounded-xl"

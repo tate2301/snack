@@ -9,8 +9,8 @@ import AppRouter from '../components/nav/AppRouter';
 export default function CalendarLayout(props) {
 	return (
 		<DndContext>
-			<div className="flex flex-col h-screen overflow-y-hidden">
-				<nav className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2 bg-surface-3">
+			<div className="flex flex-col h-screen overflow-y-hidden bg-zinc-950 bg-opacity-5">
+				<nav className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">
 					<div className="flex items-center flex-1 h-full gap-2 px-2">
 						<p className="font-semibold uppercase">Snack</p>
 						<p className="px-2 py-0.5 bg-warning-10 text-surface-12 text-sm font-semibold uppercase rounded-lg ">
@@ -31,7 +31,7 @@ export default function CalendarLayout(props) {
 				</nav>
 				<div
 					className={
-						'w-full flex flex-1 items-start bg-surface-3 h-[calc(100vh-2.5rem)] border-t'
+						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] border-t'
 					}>
 					<NavigationSidebar />
 					<div className="h-full w-[32rem]">{props.children}</div>

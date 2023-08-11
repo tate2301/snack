@@ -49,8 +49,8 @@ const Calendar = (props: CalendarProps) => {
 	};
 
 	return (
-		<div className={'flex-1 h-full w-full flex flex-col p-4'}>
-			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-200">
+		<div className={'flex-1 h-full w-full flex flex-col'}>
+			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white border-l border-zinc-200">
 				<CalendarHeader
 					view={calendarView}
 					setView={setCalendarView}

@@ -7,6 +7,7 @@ import { useLayoutEffect } from 'react';
 import { Database } from '../lib/database';
 import { StrictMode } from 'react';
 import CommandBar from '../components/commandbar';
+import { AuthContextProvider } from '../context/AuthContext';
 
 export default function App({ Component, pageProps }) {
 	useLayoutEffect(() => {
@@ -14,19 +15,21 @@ export default function App({ Component, pageProps }) {
 	}, []);
 
 	return (
-		<div
-			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
-			id="app-container">
-			<CommandBar />
-			<Head>
-				<title>Snack ⏲</title>
-			</Head>
+		<AuthContextProvider>
+			<div
+				className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
+				id="app-container">
+				<Head>
+					<title>Snack ⏲</title>
+				</Head>
 
-			<Provider store={store}>
-				<DndContext>
-					<Component {...pageProps} />
-				</DndContext>
-			</Provider>
-		</div>
+				<Provider store={store}>
+					<CommandBar />
+					<DndContext>
+						<Component {...pageProps} />
+					</DndContext>
+				</Provider>
+			</div>
+		</AuthContextProvider>
 	);
 }

@@ -8,8 +8,8 @@
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/blue-dark.css';
 
-@import '@radix-ui/colors/sand.css';
-@import '@radix-ui/colors/sand-dark.css';
+@import '@radix-ui/colors/sage.css';
+@import '@radix-ui/colors/sage-dark.css';
 
 @import '@radix-ui/colors/purple.css';
 @import '@radix-ui/colors/purple-dark.css';
@@ -93,21 +93,11 @@
 html,
 body {
 	font-size: 12px;
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	background-color: rgb(207, 250, 254);
-	background-image: radial-gradient(
-			at 5% 33%,
-			rgb(232, 121, 249) 0,
-			transparent 56%
-		),
-		radial-gradient(at 62% 1%, rgb(29, 78, 216) 0, transparent 70%),
-		radial-gradient(at 71% 2%, rgb(148, 163, 184) 0, transparent 73%),
-		radial-gradient(at 44% 55%, rgb(125, 211, 252) 0, transparent 70%),
-		radial-gradient(at 36% 51%, rgb(52, 211, 153) 0, transparent 81%),
-		radial-gradient(at 1% 37%, rgb(190, 242, 100) 0, transparent 48%);
-
-	@apply select-none;
+	font-family: 'Inter', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	@apply bg-white select-none;
 }
 
 .app-noise {
@@ -145,11 +135,11 @@ span {
 }
 
 input[type='checkbox'] {
-	@apply w-4 h-4 font-semibold rounded stroke-2 form-checkbox;
+	@apply w-4 h-4 font-semibold rounded stroke-2;
 }
 
 button {
-	@apply flex items-center gap-2 p-1 font-semibold text-zinc-900;
+	@apply flex items-center gap-2 p-1 font-semibold text-surface-11;
 }
 
 .grid-day {

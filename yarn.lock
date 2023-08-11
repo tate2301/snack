@@ -2665,6 +2665,11 @@ base64-js@^1.3.1:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
+bcryptjs@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+  integrity sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==
+
 binary-decision-diagram@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/binary-decision-diagram/-/binary-decision-diagram-2.0.1.tgz#27fccd35baecc9d32f7196f0903d9f3f87046c78"
@@ -5124,6 +5129,11 @@ raw-body@2.5.1:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+react-apple-emojis@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-apple-emojis/-/react-apple-emojis-2.2.1.tgz#6462a32bff9d1d21dd1c893bb784ddb6eab2c1a9"
+  integrity sha512-tgq/+GUR6WsBkkkl0EYgVbaU803IF8GoELcG83cfircrEiyiiIbHqpBXIHyD8YIOecAGgN2ucEG6U/REDR7jvQ==
 
 react-cosmos-core@6.0.0-beta.5:
   version "6.0.0-beta.5"
