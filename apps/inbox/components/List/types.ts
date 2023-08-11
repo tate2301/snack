@@ -4,6 +4,7 @@ export type DNDItemProps = {
 	setNodeRef: any;
 	transform: any;
 	style: any;
+	isDragging: boolean;
 };
 
 export type InboxPresenterItemProps = {

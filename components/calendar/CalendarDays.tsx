@@ -7,8 +7,7 @@ const CalendarDays = (
 		view: CalendarView;
 	},
 ) => {
-	const activeDay =
-		props.view === CalendarView.Day ? props.selectedDate : startOfToday();
+	const activeDay = props.selectedDate;
 
 	return (
 		<>
@@ -23,15 +22,18 @@ const CalendarDays = (
 					onClick={() => props.selectDate(day)}
 					type="button"
 					className={clsx(
-						'flex flex-col items-center py-2 gap-px text-zinc-500 uppercase rounded-xl',
-						isEqual(activeDay, day) && 'bg-white text-zinc-900 px-2 shadow-lg',
+						'flex flex-col items-center py-2 gap-px transition-all rounded-xl',
+						isEqual(activeDay, day)
+							? 'bg-white text-surface-12 px-2 shadow-lg'
+							: 'text-surface-9',
 					)}>
-					<span>{format(day, 'EEE')}</span>
+					<span className="text-sm uppercase">{format(day, 'EEE')}</span>
 					<span
 						className={clsx(
-							'flex items-start justify-center font-semibold py-0.5 rounded-lg',
+							'flex items-start justify-center font-semibold p-0.5 rounded-xl text-lg',
+							isEqual(activeDay, day) && 'text-surface-12',
 						)}>
-						{format(day, 'dd')}, {format(day, 'MMM')}
+						{format(day, 'dd')}
 					</span>
 				</button>
 			))}

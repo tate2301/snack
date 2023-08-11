@@ -26,7 +26,7 @@ export default function InboxList(props) {
 	};
 
 	return (
-		<div className="px-1 py-2 overflow-x-hidden min-h-full">
+		<div className="min-h-full px-1 py-2 overflow-x-clip">
 			<DndContext sensors={sensors}>
 				<ul
 					ref={setNodeRef}

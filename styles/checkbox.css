@@ -1,0 +1,39 @@
+input[type='checkbox'] {
+	position: relative;
+	background: none;
+	cursor: pointer;
+	line-height: 0;
+	margin: 0 0.6em 0 0;
+	outline: 0;
+	padding: 0 !important;
+	vertical-align: text-top;
+	-webkit-appearance: none;
+	opacity: 0.5;
+
+	@apply flex items-center justify-center w-6 h-6 transition-colors border-2 rounded-lg border-surface-6;
+}
+
+input[type='checkbox']:hover {
+	opacity: 1;
+	@apply bg-surface-6;
+}
+
+input[type='checkbox']:focus {
+	opacity: 1;
+	@apply border-2;
+}
+
+input[type='checkbox']:checked {
+	opacity: 1;
+	@apply bg-primary-10 border-primary-10;
+}
+
+input[type='checkbox']:before {
+	content: '';
+	width: 4px;
+	height: 10px;
+	border: solid #fff;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
+	z-index: 2;
+}

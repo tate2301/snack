@@ -1,10 +1,12 @@
 import {
 	ArrowRightIcon,
 	ArrowUturnRightIcon,
+	BoltIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	InboxIcon,
 	PlusIcon,
+	Square3Stack3DIcon,
 	VideoCameraIcon,
 } from '@heroicons/react/24/outline';
 import TimerIcon from '../../icons/Timer';
@@ -21,36 +23,46 @@ import { useEffect, useCallback, useMemo } from 'react';
 import clsx from 'clsx';
 import { UserAccount } from '../UserAccount';
 import CalendarPreview from '../calendar/CalendarPreview';
-import { MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { ArrowPathIcon, MinusIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import ExternalLink from '../../icons/ExternalLink';
+import Kbd from '../ui/typography/Kbd';
+import TargetIcon from '../../icons/TargetIcon';
+import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
+import ExclusionTab from '../Tabs/ExlusionTab';
 
 const tabs: NavItemType[] = [
 	{
-		icon: <CalendarIcon className="w-6 h-6" />,
-		value: 'calendar',
-		label: 'Calendar',
-	},
-	{
-		icon: <InboxIcon className="w-6 h-6" />,
-		value: 'inbox',
+		icon: <InboxIcon className="w-5 h-5 text-surface-12" />,
+		value: 'settings',
 		label: 'Inbox',
 	},
 	{
-		icon: <TimerIcon className="w-6 h-6" />,
+		icon: <TargetIcon className="w-5 h-5 text-surface-12" />,
+		value: 'calendar',
+		label: 'Active',
+	},
+	{
+		icon: <CalendarIcon className="w-5 h-5 text-surface-12" />,
+		value: 'inbox',
+		label: 'Today',
+	},
+	{
+		icon: <MaybeLaterIcon className="w-5 h-5 text-surface-12" />,
+		value: 'contacts',
+		label: 'Maybe later',
+	},
+	{
+		icon: <TimerIcon className="w-5 h-5 text-surface-12" />,
 		value: 'timers',
-		label: 'Timers',
+		label: 'Focus',
 	},
 ];
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col justify-between gap-4 p-2">
+		<div className="sticky flex flex-col justify-between gap-4 w-96">
 			<div className="flex flex-col gap-4">
-				<div className="flex flex-col gap-4 p-2">
-					<UserAccount />
-				</div>
-
 				<div className="flex flex-col w-full gap-1 p-2">
 					{tabs.map((tab: NavItemType) => (
 						<NavItem
@@ -85,34 +97,15 @@ export default function NavigationSidebar({}) {
 	);
 
 	useEffect(() => {
-		setActiveTab('calendar');
+		setActiveTab('inbox');
 	}, []);
 
 	return (
 		<div
 			className={
-				'overflow-y-auto justify-between h-full w-[24rem] z-10 flex-grow-0 flex flex-col'
+				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col p-2'
 			}>
-			<div>
-				<div className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">
-					<nav className="flex items-center flex-1 h-full gap-2 px-2">
-						<p className="font-semibold uppercase">Snack</p>
-						<p className="px-2 py-0.5 bg-warning-10 text-white text-sm font-semibold uppercase rounded-lg ">
-							DEV
-						</p>
-					</nav>
-					<div className="flex gap-1">
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<MinusIcon className="w-6 h-6" />
-						</button>
-						<button className="p-2 px-3 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<ArrowsExpand className="w-5 h-5" />
-						</button>
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<XMarkIcon className="w-6 h-6" />
-						</button>
-					</div>
-				</div>
+			<div className="bg-white bg-opacity-75 rounded-xl">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -120,36 +113,67 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<div className="h-0.5 m-4 bg-opacity-10 rounded bg-zinc-900"></div>
-				<div className="flex flex-col gap-2 mx-4">
-					<button className="items-center w-full gap-4 p-4 hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-						<PlusIcon className="w-5 h-5" />
-						New Calendar
-					</button>
-					<div className="flex flex-col">
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-							<div className="flex items-center justify-center h-8 bg-white rounded-lg aspect-square">
-								<p className="uppercase text-danger-11">⚒️</p>
-							</div>
-							<p className="text-md">Product Engineering Team</p>
-						</button>
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-							<div className="flex items-center justify-center h-8 rounded-lg bg-primary-2 aspect-square">
-								<p className="text-white uppercase">🧑🏽‍🦱</p>
-							</div>
-							<p className="text-md">Personal</p>
-						</button>
-						<button className="flex items-center gap-4 p-4 font-medium hover:bg-zinc-900 hover:bg-opacity-10 rounded-xl">
-							<div className="flex items-center justify-center h-8 rounded-lg bg-warning-1 aspect-square">
-								<p className="text-white uppercase">💃🏽</p>
-							</div>
-							<p className="text-md">Weeked Party Animal</p>
-						</button>
+				<div className="flex flex-col gap-2 p-2 mt-8">
+					<p className="px-4 uppercase">Calendars</p>
+					<div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md text-md aspect-square">
+									🏋🏽‍♂️
+								</p>
+								<p>Workout scheme</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md aspect-square">
+									🔥
+								</p>
+								<p>Party Animal</p>
+							</button>
+						</div>
 					</div>
+					<button className="flex items-center gap-4 p-4 hover:bg-surface-3 rounded-xl">
+						<PlusIcon className="w-5 h-5" />
+						<p className="flex items-center justify-between flex-1">
+							<span>New calendar</span>
+							<Kbd keys={['⌘', 'D']} />
+						</p>
+					</button>
 				</div>
-			</div>
-			<div className="p-4 m-4 bg-white rounded-xl">
-				<CalendarPreview />
+				<div className="flex flex-col gap-2 p-2 mt-8">
+					<p className="px-4 uppercase">Lists</p>
+					<div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-success-9"></p>
+								<p>Sideprojects</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+								<p className="flex items-center justify-between flex-1">
+									<span>School run</span>
+									<ArrowPathIcon className="w-4 h-4" />
+								</p>
+							</button>
+						</div>
+						<div className="flex flex-col justify-center">
+							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+								<p>Grocery shopping</p>
+							</button>
+						</div>
+					</div>
+					<button className="flex items-center gap-4 p-4 text-surface-11 hover:bg-surface-3 rounded-xl">
+						<PlusIcon className="w-5 h-5" />
+						<p className="flex items-center justify-between flex-1">
+							<span>New list</span>
+							<Kbd keys={['⌘', 'L']} />
+						</p>
+					</button>
+				</div>
 			</div>
 		</div>
 	);
@@ -164,16 +188,18 @@ function NavItem(
 	const onClick = () => props.callback(props.value);
 
 	return (
-		<button
-			onClick={onClick}
-			className={clsx(
-				'p-4 pr-4 gap-4 transition-all font-semibold rounded-xl items-center',
-				props.active
-					? 'text-surface-12 bg-surface-1 shadow'
-					: 'hover:bg-zinc-900 hover:bg-opacity-10',
-			)}>
-			{props.icon}
-			{props.label}
-		</button>
+		<ExclusionTab
+			id={'sidebar'}
+			isActive={props.active}>
+			<p
+				onClick={onClick}
+				className={clsx(
+					'p-4 gap-4 flex w-full transition-all text-md font-semibold rounded-xl items-center',
+					props.active ? 'text-surface-12' : 'text-surface-11',
+				)}>
+				{props.icon}
+				{props.label}
+			</p>
+		</ExclusionTab>
 	);
 }

@@ -21,7 +21,17 @@ import InboxList from './components/List';
 export default function Inbox() {
 	return (
 		<div>
-			<div className="p-4 pb-2 mb-4 divide-y bg-stone-200 bg-opacity-80 backdrop-blur rounded-xl">
+			<div className="flex items-center justify-between p-2 mb-4">
+				<div>
+					<p className="text-lg font-bold text-surface-12">All streams</p>
+					<p>340 tasks, 10 unsorted</p>
+				</div>
+				<button className="flex items-center gap-2 p-2 py-1 font-semibold uppercase transition-all rounded-lg shadow bg-surface-1 text-surface-12">
+					<PlusIcon className="w-5 h-5" />
+					<p>New item</p>
+				</button>
+			</div>
+			<div className="p-4 pb-2 mx-2 mb-4 divide-y bg-stone-200 bg-opacity-80 backdrop-blur rounded-xl">
 				<div className="pb-4">
 					<div className="flex items-center justify-between">
 						<p className="font-semibold uppercase text-zinc-600">
@@ -75,13 +85,7 @@ export default function Inbox() {
 					</div>
 				</div>
 			</div>
-			<div className="flex items-baseline justify-between p-2 border-b">
-				<p className="uppercase text-zinc-800">Inbox</p>
-				<button className="flex items-center gap-2 p-2 py-1 uppercase transition-all bg-white rounded-lg shadow">
-					<PlusIcon className="w-5 h-5" />
-					<p>New item</p>
-				</button>
-			</div>
+
 			<InboxList />
 		</div>
 	);

@@ -1,20 +1,5 @@
-import { add, startOfDay } from 'date-fns';
-import { useRef, useState } from 'react';
-import {
-	DndContext,
-	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core';
-import {
-	SortableContext,
-	sortableKeyboardCoordinates,
-	useSortable,
-} from '@dnd-kit/sortable';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { CSS } from '@dnd-kit/utilities';
+import { add } from 'date-fns';
+import { useEffect, useRef, useState } from 'react';
 import CalendarEventCard, { EventCardProps } from './EventCard';
 import {
 	generateEventDescription,
@@ -23,19 +8,20 @@ import {
 	getRandomColorForEvent,
 } from './utils';
 import { generateUUID } from '../../../lib/functions';
-import { equal } from 'assert';
+import { CalendarView } from '../types';
 
 type EventTrackProps = {
 	date: Date;
 	events: EventCardProps[];
 	updateEvent: (event: EventCardProps) => void;
 	createEvent: (event: EventCardProps) => void;
+	view: CalendarView;
 };
 
 const EventsTrack = (props: EventTrackProps) => {
 	const ref = useRef(null);
-
 	const [startTimeY, setStartTimeY] = useState<number>(0);
+	const [trackLength, setTrackLength] = useState<number>(0);
 
 	const onCreateEvent = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		// Capture the position where the mouse clicked on the track
@@ -67,10 +53,17 @@ const EventsTrack = (props: EventTrackProps) => {
 			location: '',
 			// round start time to the nearest 5
 			startTime: date,
-			endTime: add(date, { minutes: 30 }),
+			endTime: add(date, { minutes: 30, hours: 39 }),
 			id: generateUUID(),
 		});
 	};
+
+	// set the track length when ref is set
+	useEffect(() => {
+		if (ref.current) {
+			setTrackLength(ref.current.getBoundingClientRect().height);
+		}
+	}, [ref.current]);
 
 	return (
 		<div
@@ -80,9 +73,11 @@ const EventsTrack = (props: EventTrackProps) => {
 			<div className="relative w-full h-full">
 				{props.events.map((event, idx) => (
 					<CalendarEventCard
-						trackLength={ref.current?.getBoundingClientRect().height ?? 0}
+						view={props.view}
+						trackLength={trackLength}
 						{...event}
 						updateEvent={props.updateEvent}
+						date={props.date}
 					/>
 				))}
 			</div>

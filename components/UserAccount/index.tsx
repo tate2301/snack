@@ -5,10 +5,6 @@ const UserAccount = () => {
 				className="object-cover h-full border-2 border-white rounded-full shadow-sm aspect-square hover:shadow"
 				src="https://images.pexels.com/photos/9869646/pexels-photo-9869646.jpeg?auto=compress&cs=tinysrgb&w=420"
 			/>
-			<div>
-				<p>Tatenda's Workspace</p>
-				<p className="font-normal text-zinc-500">tatendachris@gmail.com</p>
-			</div>
 		</button>
 	);
 };

@@ -4,6 +4,7 @@ import {
 	differenceInMinutes,
 	eachHourOfInterval,
 	endOfDay,
+	isEqual,
 	startOfDay,
 	startOfToday,
 } from 'date-fns';
@@ -26,13 +27,21 @@ export const getCoordinatesOfEvent = (
 	startTime: Date,
 	endTime: Date,
 	trackHeight: number,
+	currentDate?: Date,
 ): {
 	startY: number;
 	endY: number;
 } => {
 	// Get minutes and express them as percentage of trackHeight
-	const start = add(startTime, { hours: 0, minutes: 0 });
+	let start = add(startTime, { hours: 0, minutes: 0 });
 	const end = add(endTime, { hours: 0, minutes: 0 });
+
+	if (currentDate) {
+		if (!isEqual(startOfDay(currentDate), startOfDay(start))) {
+			// If the event spans multiple days, set the start to the start of the day
+			start = startOfDay(currentDate);
+		}
+	}
 
 	const startY = start.getHours() * 60 + start.getMinutes();
 	const endY = end.getHours() * 60 + end.getMinutes();

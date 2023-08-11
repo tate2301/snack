@@ -1,14 +1,31 @@
 import CalendarPreview from '../calendar/CalendarPreview';
-import { AppNavigation, SidebarToggleProps } from './types';
+import { AppNavigation, SidebarToggleProps, Tab } from './types';
 import { motion } from 'framer-motion';
 import { Apps } from '../../apps';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo } from 'react';
 
-export default function AppRouter(props: AppNavigation & SidebarToggleProps) {
+export default function AppRouter() {
+	const router = useRouter();
+	const _query = useMemo(() => router.query, [router]);
+
+	const query = {
+		active: _query.activeTab as Tab,
+	};
+
+	const setActiveTab = useCallback(
+		(tab: Tab) => {
+			router.query.activeTab = tab;
+			router.push(router);
+		},
+		[router],
+	);
+
 	return (
 		<>
 			<SidebarContainerPresentation
-				activeTab={props.activeTab}
-				{...props}
+				activeTab={query.active}
+				setActiveTab={setActiveTab}
 			/>
 		</>
 	);
@@ -16,13 +33,11 @@ export default function AppRouter(props: AppNavigation & SidebarToggleProps) {
 
 const PlaceholderDiv = () => <div></div>;
 
-const SidebarContainerPresentation = (
-	props: AppNavigation & SidebarToggleProps,
-) => {
+const SidebarContainerPresentation = (props: AppNavigation) => {
 	const App = Apps[props.activeTab] ?? PlaceholderDiv;
 	return (
-		<motion.div className="w-[32rem]f lex-1 overflow-y-auto flex flex-col justify-between h-full shadow-sm border-l border-zinc-200 py-2">
-			<div className="flex flex-col overflow-y-auto flex-1 p-2">
+		<motion.div className="flex flex-col justify-between flex-1 overflow-y-auto h-fullpy-2">
+			<div className="flex flex-col flex-1 p-2 overflow-y-auto">
 				<App />
 			</div>
 		</motion.div>

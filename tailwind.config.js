@@ -12,7 +12,7 @@ module.exports = {
 		extend: {
 			colors: {
 				primary: generateScale('blue'),
-				surface: generateScale('sand'),
+				surface: generateScale('sage'),
 				accent: generateScale('purple'),
 				danger: generateScale('tomato'),
 				warning: generateScale('amber'),
@@ -20,7 +20,7 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [require('@tailwindcss/forms')],
+	plugins: [],
 	jit: false,
 };
 

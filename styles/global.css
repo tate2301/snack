@@ -4,12 +4,13 @@
 
 @import url('./scrollbar.css');
 @import url('./utils.css');
+@import url('./checkbox.css');
 
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/blue-dark.css';
 
-@import '@radix-ui/colors/sand.css';
-@import '@radix-ui/colors/sand-dark.css';
+@import '@radix-ui/colors/sage.css';
+@import '@radix-ui/colors/sage-dark.css';
 
 @import '@radix-ui/colors/purple.css';
 @import '@radix-ui/colors/purple-dark.css';
@@ -94,11 +95,10 @@ html,
 body {
 	font-size: 12px;
 	font-family: 'Inter', sans-serif;
-	background: url('../public/assets/default-bg.jpeg');
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	@apply select-none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	@apply bg-white select-none;
 }
 
 .app-noise {
@@ -135,12 +135,8 @@ span {
 	@apply outline-none;
 }
 
-input[type='checkbox'] {
-	@apply w-4 h-4 font-semibold rounded stroke-2 form-checkbox;
-}
-
 button {
-	@apply flex items-center gap-2 p-1 font-semibold text-zinc-900;
+	@apply flex items-center gap-2 p-1 font-semibold text-surface-11;
 }
 
 .grid-day {

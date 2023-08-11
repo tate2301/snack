@@ -4,8 +4,15 @@ import WeekView from './views/WeekView';
 import CalendarHeader from './CalendarHeader';
 import { AnimatePresence } from 'framer-motion';
 import DayView from './views/DayView';
-import { startOfToday } from 'date-fns';
+import { add, startOfToday } from 'date-fns';
 import useCalendarDates from '../../hooks/useCalendarDates';
+import { EventCardProps } from './events/EventCard';
+import {
+	generateEventDescription,
+	generateEventTitle,
+	getRandomColorForEvent,
+} from './events/utils';
+import { generateUUID } from '../../lib/functions';
 
 type CalendarProps = {
 	view: CalendarView;
@@ -15,6 +22,34 @@ const Calendar = (props: CalendarProps) => {
 	const [calendarView, setCalendarView] = useState<CalendarView>(
 		props.view ?? CalendarView.Week,
 	);
+
+	const [events, setEvents] = useState<EventCardProps[]>([]);
+	const updateEvent = (event: EventCardProps) => {
+		setEvents((events) => {
+			const index = events.findIndex((e) => e.id === event.id);
+			const newEvents = [...events];
+			newEvents[index] = event;
+			return newEvents;
+		});
+	};
+
+	const createEvent = (event: EventCardProps) => {
+		setEvents((events) => [...events, event]);
+	};
+
+	useEffect(() => {
+		setEvents([
+			{
+				color: getRandomColorForEvent(),
+				description: generateEventDescription(),
+				title: generateEventTitle(),
+				location: '',
+				startTime: add(startOfToday(), { hours: 1, minutes: 30 }),
+				endTime: add(startOfToday(), { hours: 2, minutes: 0 }),
+				id: generateUUID(),
+			},
+		]);
+	}, []);
 
 	const {
 		week,
@@ -49,8 +84,8 @@ const Calendar = (props: CalendarProps) => {
 	};
 
 	return (
-		<div className={'flex-1 h-full w-full flex flex-col p-4'}>
-			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-200">
+		<div className={'flex-1 h-full w-full flex flex-col'}>
+			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white border-l border-zinc-200">
 				<CalendarHeader
 					view={calendarView}
 					setView={setCalendarView}
@@ -65,6 +100,9 @@ const Calendar = (props: CalendarProps) => {
 							week={week}
 							selectedDate={selectedDate}
 							selectDate={selectDate}
+							events={events}
+							createEvent={createEvent}
+							updateEvent={updateEvent}
 						/>
 					)}
 					{calendarView === CalendarView.Week && (
@@ -73,6 +111,9 @@ const Calendar = (props: CalendarProps) => {
 							week={week}
 							daysToDisplay={7}
 							selectDate={selectDate}
+							events={events}
+							createEvent={createEvent}
+							updateEvent={updateEvent}
 						/>
 					)}
 					{calendarView === CalendarView.Month && (

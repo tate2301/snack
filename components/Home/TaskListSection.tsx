@@ -13,7 +13,7 @@ export default function TaskListSection(props: TaskSection) {
 	const [headerIsExpanded, toggleHeaderIsExpanded] = useToggle(true);
 
 	return (
-		<div className="mb-1">
+		<div className="mb-2">
 			<TaskSectionHeader
 				title={props.title}
 				isExpanded={headerIsExpanded}
@@ -41,6 +41,7 @@ export default function TaskListSection(props: TaskSection) {
 					className="flex flex-col gap-1">
 					<DndContext>
 						<TaskListItem title="Design new App icon to replace eletron logo" />
+						<TaskListItem title="Design new App icon to replace eletron logo" />
 					</DndContext>
 				</motion.div>
 			)}
@@ -60,15 +61,15 @@ export function TaskSectionHeader({
 	return (
 		<div
 			onClick={toggle}
-			className="flex w-full justify-between items-center hover:bg-zinc-200 bg-zinc-100 rounded-lg pr-2 py-0.5 cursor-pointer">
-			<button className="inline-flex items-center flex-1 w-full gap-4 px-4 py-2 font-mono text-sm font-semibold uppercase text-zinc-500">
+			className="flex w-full justify-between items-center  hover:bg-zinc-200 bg-surface-1 mb-1 shadow rounded-lg pr-2 py-0.5 cursor-pointer">
+			<button className="inline-flex items-center flex-1 w-full gap-2 px-4 py-2 font-semibold text-zinc-500">
 				{isExpanded ? (
 					<ChevronDownIcon className="w-4 h-4" />
 				) : (
 					<ChevronRightIcon className="w-4 h-4" />
 				)}
-				<p className="block text-left">
-					{title} <span className="text-zinc-400">(6/14)</span>
+				<p className="block text-left text-surface-12">
+					🔥 {title} <span className="uppercase text-surface-10">(6/14)</span>
 				</p>
 			</button>
 			<button className="p-1 rounded hover:bg-zinc-100 text-zinc-500">

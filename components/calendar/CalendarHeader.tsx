@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { CalendarView } from './types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { add, isEqual, startOfToday } from 'date-fns';
+import { add, format, isEqual, startOfToday } from 'date-fns';
 import { useCallback } from 'react';
 
 type CalendarHeaderProps = {
@@ -34,35 +34,47 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 
 	return (
 		<div className="bg-white">
-			<div className={'bg-white w-full justify-end flex gap-2 py-2 px-2'}>
+			<div className={'bg-white w-full justify-between flex gap-2 py-2 px-2'}>
+				<div className="flex items-center gap-2">
+					<button
+						onClick={props.prev}
+						className={
+							'text-sm bg-white h-full hover:bg-surface-4 rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
+						}>
+						<ChevronLeftIcon className="w-4 h-4" />
+					</button>
+					<button
+						onClick={jumpToToday}
+						className={clsx(
+							'text-sm rounded-lg h-full px-3 py-1 transition-all',
+							isEqual(props.selectedDate, startOfToday())
+								? 'bg-warning-10 text-surface-12'
+								: 'bg-white hover:shadow',
+						)}>
+						Today
+					</button>
+					<button
+						onClick={props.next}
+						className={
+							'text-sm h-full bg-white hover:bg-surface-4 rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
+						}>
+						<ChevronRightIcon className="w-4 h-4" />
+					</button>
+					<p className="ml-4 text-xl font-semibold text-surface-12">
+						{format(
+							props.selectedDate,
+							isEqual(props.selectedDate, startOfToday())
+								? 'EEEE, MMMM do'
+								: 'EEEE, MMMM do, yyyy',
+						)}
+					</p>
+				</div>
 				<div className={'flex gap-4 items-center'}>
-					<div className="flex gap-2">
-						<button
-							onClick={props.prev}
-							className={
-								'text-sm bg-white hover:ring-1 hover:shadow rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
-							}>
-							<ChevronLeftIcon className="w-4 h-4" />
-						</button>
-						<button
-							onClick={jumpToToday}
-							className={clsx(
-								'text-sm rounded-lg px-3 py-1',
-								isEqual(props.selectedDate, startOfToday())
-									? 'bg-zinc-950 text-white'
-									: 'bg-white hover:shadow border',
-							)}>
-							Today
-						</button>
-						<button
-							onClick={props.next}
-							className={
-								'text-sm bg-white hover:shadow hover:ring-1 rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
-							}>
-							<ChevronRightIcon className="w-4 h-4" />
-						</button>
-					</div>
-					<div className="flex p-1 overflow-hidden bg-zinc-100 rounded-xl group">
+					<div className="flex p-1 overflow-hidden bg-zinc-900 bg-opacity-10 rounded-xl group">
+						<CalendarToggleButton
+							{...props}
+							value={CalendarView.Planner}
+						/>
 						<CalendarToggleButton
 							{...props}
 							value={CalendarView.Day}
