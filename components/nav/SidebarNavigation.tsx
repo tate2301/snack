@@ -29,6 +29,7 @@ import ExternalLink from '../../icons/ExternalLink';
 import Kbd from '../ui/typography/Kbd';
 import TargetIcon from '../../icons/TargetIcon';
 import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
+import ExclusionTab from '../Tabs/ExlusionTab';
 
 const tabs: NavItemType[] = [
 	{
@@ -187,16 +188,18 @@ function NavItem(
 	const onClick = () => props.callback(props.value);
 
 	return (
-		<button
-			onClick={onClick}
-			className={clsx(
-				'p-4 gap-4 transition-all text-md font-semibold rounded-xl items-center',
-				props.active
-					? 'text-surface-12 bg-surface-3'
-					: 'hover:bg-zinc-900 text-surface-11 hover:bg-opacity-10',
-			)}>
-			{props.icon}
-			{props.label}
-		</button>
+		<ExclusionTab
+			id={'sidebar'}
+			isActive={props.active}>
+			<p
+				onClick={onClick}
+				className={clsx(
+					'p-4 gap-4 flex w-full transition-all text-md font-semibold rounded-xl items-center',
+					props.active ? 'text-surface-12' : 'text-surface-11',
+				)}>
+				{props.icon}
+				{props.label}
+			</p>
+		</ExclusionTab>
 	);
 }
