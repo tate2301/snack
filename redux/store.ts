@@ -1,8 +1,39 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 
+const calendarsReducer = (state = [], action) => {
+	return state;
+};
+
+const listsReducer = (state = [], action) => {
+	return state;
+};
+
+const eventsReducer = (state = [], action) => {
+	return state;
+};
+
+const remindersReducer = (state = [], action) => {
+	return state;
+};
+
+const userReducer = (state = {}, action) => {
+	return state;
+};
+
+const settingsReducer = (state = {}, action) => {
+	return state;
+};
+
 const store = configureStore({
-	reducer: {},
+	reducer: {
+		calendars: calendarsReducer,
+		lists: listsReducer,
+		events: eventsReducer,
+		reminders: remindersReducer,
+		user: userReducer,
+		settings: settingsReducer,
+	},
 	middleware: (getDefaultMiddleware) => {
 		const defaultMiddleware = getDefaultMiddleware({
 			serializableCheck: false,

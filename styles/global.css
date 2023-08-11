@@ -4,6 +4,7 @@
 
 @import url('./scrollbar.css');
 @import url('./utils.css');
+@import url('./checkbox.css');
 
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/blue-dark.css';
@@ -132,10 +133,6 @@ svg {
 p,
 span {
 	@apply outline-none;
-}
-
-input[type='checkbox'] {
-	@apply w-4 h-4 font-semibold rounded stroke-2;
 }
 
 button {

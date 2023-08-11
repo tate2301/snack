@@ -4,7 +4,8 @@ import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
 import useResizableEvent from './hooks/useResizableEvent';
 import { useDraggable } from '@dnd-kit/core';
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
+import { CalendarView } from '../types';
 
 export type EventCardProps = {
 	startTime: Date;
@@ -55,6 +56,7 @@ const CalendarEventCard = (
 		id: string;
 		updateEvent: (event: EventCardProps) => void;
 		date: Date;
+		view: CalendarView;
 	},
 ) => {
 	// Get the initial coordinates
@@ -65,27 +67,28 @@ const CalendarEventCard = (
 		props.date,
 	);
 	// Get the resizable height
-	const { height, handleResize } = useResizableEvent(
-		coords.endY - coords.startY,
-	);
+	const initial_height = useMemo(() => {
+		if (coords.endY < coords.startY) {
+			return props.trackLength - coords.startY;
+		}
 
-	const {
-		attributes,
-		listeners,
-		setNodeRef,
-		transform,
-		isDragging,
-		activatorEvent,
-	} = useDraggable({
-		id: props.id,
-		data: {
-			...props,
-			supports: ['droppableDay', 'droppableAllDaySlot'],
-		},
-	});
+		return coords.endY - coords.startY;
+	}, [coords]);
+	const { height, handleResize } = useResizableEvent(initial_height);
+
+	const { attributes, listeners, setNodeRef, transform, isDragging } =
+		useDraggable({
+			id: props.id,
+			data: {
+				...props,
+				supports: ['droppableDay', 'droppableAllDaySlot'],
+			},
+		});
 
 	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =
 		EVENT_COLORS[props.color];
+
+	console.log({ track: props.trackLength, coords, height });
 
 	return (
 		<div>
@@ -97,7 +100,7 @@ const CalendarEventCard = (
 				key={`event-${props.startTime.toString()}`}
 				style={{
 					top: `${coords.startY}px`,
-					height: `${height}px`,
+					height: `${Math.abs(height)}px`,
 					transform: transform
 						? `translate3d(${transform.x}px, ${transform.y}px, 0)`
 						: 'none',

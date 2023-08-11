@@ -8,6 +8,7 @@ import Timestamp from '../canvas/Timestamp';
 import EventsTrack from './Track';
 import DroppableColumn from './DroppableColumn';
 import { HOUR_HEIGHT } from '../../../constants/dimensions';
+import { CalendarView } from '../types';
 
 // 5m intervals = 288 intervals per day with 80px per hr
 const snapHeight = HOUR_HEIGHT / 60;
@@ -20,6 +21,7 @@ const DroppableDays = (props: {
 	createEvent: (event: EventCardProps) => void;
 	updateEvent: (event: EventCardProps) => void;
 	events: EventCardProps[];
+	view: CalendarView;
 }) => {
 	return (
 		<>
@@ -29,6 +31,7 @@ const DroppableDays = (props: {
 					className={clsx('divide-y relative')}>
 					{isEqual(day, startOfToday()) && <Timestamp />}
 					<EventsTrack
+						view={props.view}
 						updateEvent={props.updateEvent}
 						createEvent={props.createEvent}
 						events={props.events.filter(

@@ -1,63 +1,16 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useEffect, useRef, useState } from 'react';
-import {
-	ChevronDownIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
-} from '@heroicons/react/24/solid';
-import { Menu, Transition } from '@headlessui/react';
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
-import CalendarHorizontalLines from '../canvas/CalendarHorizontalLines';
 import useCalendarTime from '../../../hooks/useCalendarTime';
-import { add, format, isEqual, startOfDay, startOfToday } from 'date-fns';
+import { format, isEqual, startOfDay, startOfToday } from 'date-fns';
 import Timestamp from '../canvas/Timestamp';
 import Timezone from '../canvas/Timezone';
-import CalendarDays from '../CalendarDays';
 import { CalendarView, DayCalendarProps } from '../types';
 import clsx from 'clsx';
-import useTimestampPosition from '../../../hooks/useTimestampPosition';
 import EventsTrack from '../events/Track';
-import { EventCardProps } from '../events/EventCard';
 import DroppableCalendarContext from '../events/DroppableCalendarContext';
-import {
-	generateEventDescription,
-	generateEventTitle,
-	getDayHourlyInterval,
-	getRandomColorForEvent,
-} from '../events/utils';
-import { generateUUID } from '../../../lib/functions';
+import { getDayHourlyInterval } from '../events/utils';
 import DroppableColumn from '../events/DroppableColumn';
 
 export default function DayView(props: DayCalendarProps) {
-	const { container, containerNav, timeIntervals, timePosition } =
-		useCalendarTime();
-	const [events, setEvents] = useState<EventCardProps[]>([]);
-	const updateEvent = (event: EventCardProps) => {
-		setEvents((events) => {
-			const index = events.findIndex((e) => e.id === event.id);
-			const newEvents = [...events];
-			newEvents[index] = event;
-			return newEvents;
-		});
-	};
-
-	const createEvent = (event: EventCardProps) => {
-		setEvents((events) => [...events, event]);
-	};
-
-	useEffect(() => {
-		setEvents([
-			{
-				color: getRandomColorForEvent(),
-				description: generateEventDescription(),
-				title: generateEventTitle(),
-				location: '',
-				startTime: add(startOfToday(), { hours: 1, minutes: 30 }),
-				endTime: add(startOfToday(), { hours: 2, minutes: 0 }),
-				id: generateUUID(),
-			},
-		]);
-	}, []);
+	const { container, containerNav, timeIntervals } = useCalendarTime();
 
 	return (
 		<div
@@ -86,9 +39,9 @@ export default function DayView(props: DayCalendarProps) {
 			</div>
 			<DroppableCalendarContext
 				containerRef={container}
-				createEvent={createEvent}
-				updateEvent={updateEvent}
-				events={events}
+				createEvent={props.createEvent}
+				updateEvent={props.updateEvent}
+				events={props.events}
 				week={props.week}>
 				{({ daysContainerRef }) => (
 					<div className="w-full px-2 border-zinc-200">
@@ -107,8 +60,9 @@ export default function DayView(props: DayCalendarProps) {
 								className="relative grid flex-auto grid-cols-1 grid-rows-1 divide-y">
 								<Timestamp />
 								<EventsTrack
-									createEvent={createEvent}
-									events={events.filter(
+									view={CalendarView.Day}
+									createEvent={props.createEvent}
+									events={props.events.filter(
 										(e) =>
 											isEqual(
 												startOfDay(e.startTime),
@@ -119,7 +73,7 @@ export default function DayView(props: DayCalendarProps) {
 												startOfDay(props.selectedDate),
 											),
 									)}
-									updateEvent={updateEvent}
+									updateEvent={props.updateEvent}
 									date={props.selectedDate}
 								/>
 								{getDayHourlyInterval(props.selectedDate).map((time, idx) => (

@@ -19,33 +19,6 @@ import { generateUUID } from '../../../lib/functions';
 
 export default function WeekView(props: WeekCalendarProps) {
 	const { container, containerNav, timeIntervals } = useCalendarTime();
-	const [events, setEvents] = useState<EventCardProps[]>([]);
-	const updateEvent = (event: EventCardProps) => {
-		setEvents((events) => {
-			const index = events.findIndex((e) => e.id === event.id);
-			const newEvents = [...events];
-			newEvents[index] = event;
-			return newEvents;
-		});
-	};
-
-	const createEvent = (event: EventCardProps) => {
-		setEvents((events) => [...events, event]);
-	};
-
-	useEffect(() => {
-		setEvents([
-			{
-				color: getRandomColorForEvent(),
-				description: generateEventDescription(),
-				title: generateEventTitle(),
-				location: '',
-				startTime: add(startOfToday(), { hours: 1, minutes: 30 }),
-				endTime: add(startOfToday(), { hours: 2, minutes: 0 }),
-				id: generateUUID(),
-			},
-		]);
-	}, []);
 
 	return (
 		<div
@@ -62,22 +35,25 @@ export default function WeekView(props: WeekCalendarProps) {
 					selectedDate={props.selectedDate}
 					view={CalendarView.Week}
 					selectDate={props.selectDate}
+					createEvent={props.createEvent}
+					updateEvent={props.updateEvent}
+					events={props.events}
 				/>
 			</div>
 			<DroppableCalendarContext
 				containerRef={container}
-				createEvent={createEvent}
-				updateEvent={updateEvent}
-				events={events}
+				createEvent={props.createEvent}
+				updateEvent={props.updateEvent}
+				events={props.events}
 				week={props.week}>
 				{({ daysContainerRef }) => (
 					<div className="w-full px-2 border-zinc-200">
 						<div>
 							<AllDayEvent
 								week={props.week}
-								createEvent={createEvent}
-								updateEvent={updateEvent}
-								events={onlyAlldayEvents(events)}
+								createEvent={props.createEvent}
+								updateEvent={props.updateEvent}
+								events={onlyAlldayEvents(props.events)}
 							/>
 						</div>
 						<div
@@ -90,11 +66,12 @@ export default function WeekView(props: WeekCalendarProps) {
 								timeIntervals={timeIntervals}
 							/>
 							<DroppableDays
+								view={CalendarView.Week}
 								week={props.week}
 								containerRef={container}
-								createEvent={createEvent}
-								updateEvent={updateEvent}
-								events={onlyNonAlldayEvents(events)}
+								createEvent={props.createEvent}
+								updateEvent={props.updateEvent}
+								events={onlyNonAlldayEvents(props.events)}
 								daysContainerRef={daysContainerRef}
 							/>
 						</div>

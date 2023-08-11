@@ -8,9 +8,9 @@ const CommandBar = () => {
 	useEffect(() => {
 		// TODO: Add event listener for keyboard shortcut
 		const handleKeyDown = (event: KeyboardEvent) => {
-			event.preventDefault();
 			if (event.key === 'k') {
 				onToggle();
+				event.preventDefault();
 			}
 		};
 

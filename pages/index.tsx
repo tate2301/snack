@@ -1,32 +1,79 @@
 'use client';
-
-import TaskItem from '../components/TaskItem';
-import { motion } from 'framer-motion';
-import clsx from 'clsx';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useMemo } from 'react';
 import CalendarLayout from '../layouts/CalendarLayout';
-import FocusPeriod from '../components/focus/Focus';
-import FocusTaskItem from '../components/TaskItem/FocusTaskItem';
 import TaskList from '../components/Home/TaskList';
-import { PlusIcon } from '@heroicons/react/20/solid';
-import AppRouter from '../components/nav/AppRouter';
+import { motion } from 'framer-motion';
+import TaskListItem from '../components/Home/TaskListItem';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import clsx from 'clsx';
 
 export default function Page() {
 	return (
 		<CalendarLayout>
 			<main>
-				<AppRouter />
-				<TaskList />
+				<Nav />
+				<div className="flex flex-col gap-2 drop-shadow">
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+					<TaskListItem title="Design new App icon to replace eletron logo" />
+				</div>
 			</main>
 		</CalendarLayout>
 	);
 }
 
-const SectionHeading = (props: { children: ReactNode }) => (
-	<h2
-		className={
-			'uppercase text-zinc-500 text-sm before:min-w-1/4 after:min-w-1/4 before:flex-1 after:flex-1 gap-4 before:border-zinc-200 after:border-zinc-200 before:border-b flex w-full justify-between after:border-b items-center'
-		}>
-		{props.children}
-	</h2>
-);
+const Nav = () => {
+	return (
+		<motion.div className="flex gap-2 mb-4">
+			<NavLink
+				href={{
+					query: {
+						activeTab: 'inbox',
+					},
+				}}>
+				Inbox
+			</NavLink>
+			<NavLink
+				href={{
+					query: {
+						activeTab: 'complete',
+					},
+				}}>
+				Complete
+			</NavLink>
+		</motion.div>
+	);
+};
+
+function NavLink(props: {
+	children: ReactNode;
+	href: Parameters<typeof Link>[0]['href'];
+}) {
+	const router = useRouter();
+	const isActive = useMemo(() => {
+		// deep compare href
+		// @ts-ignore
+		return router.query.activeTab === props.href.query?.activeTab;
+	}, [router, props.href]);
+	return (
+		<Link
+			className={clsx(
+				'relative px-4 py-1 text-lg rounded-xl',
+				isActive && 'font-semibold text-surface-12',
+			)}
+			style={{
+				WebkitTapHighlightColor: 'transparent',
+			}}
+			href={props.href}>
+			{isActive && (
+				<motion.span
+					layoutId="bubble"
+					className="absolute inset-0 z-10 bg-surface-4 mix-blend-multiply rounded-xl"
+					style={{ borderRadius: 9999 }}
+					transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+				/>
+			)}
+			{props.children}
+		</Link>
+	);
+}
