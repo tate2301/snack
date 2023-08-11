@@ -21,7 +21,6 @@ export default function WeeklyCanvas(props: {
 								idx={idx}
 								time={time}
 								key={`time-${time.toString()}`}
-								collisions={props.collisions}
 							/>
 						</>
 					))}
