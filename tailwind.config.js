@@ -12,7 +12,7 @@ module.exports = {
 		extend: {
 			colors: {
 				primary: generateScale('blue'),
-				surface: generateScale('sage'),
+				surface: generateScale('gray'),
 				accent: generateScale('purple'),
 				danger: generateScale('tomato'),
 				warning: generateScale('amber'),

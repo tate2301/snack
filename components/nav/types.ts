@@ -12,6 +12,7 @@ export type NavItem = {
 	icon: ReactNode;
 	value: Tab;
 	label: string;
+	href?: string
 };
 
 export type AppNavigation = {

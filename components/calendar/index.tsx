@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { CalendarView } from './types';
 import WeekView from './views/WeekView';
 import CalendarHeader from './CalendarHeader';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import DayView from './views/DayView';
 import { add, startOfToday } from 'date-fns';
 import useCalendarDates from '../../hooks/useCalendarDates';
 import { EventCardProps } from './events/EventCard';
-import {
-	generateEventDescription,
-	generateEventTitle,
-	getRandomColorForEvent,
-} from './events/utils';
+import { generateEventDescription, generateEventTitle, getRandomColorForEvent } from './events/utils';
 import { generateUUID } from '../../lib/functions';
+import { useDroppable } from '@dnd-kit/core';
+import clsx from 'clsx';
 
 type CalendarProps = {
 	view: CalendarView;
@@ -22,8 +20,8 @@ const Calendar = (props: CalendarProps) => {
 	const [calendarView, setCalendarView] = useState<CalendarView>(
 		props.view ?? CalendarView.Week,
 	);
-
 	const [events, setEvents] = useState<EventCardProps[]>([]);
+
 	const updateEvent = (event: EventCardProps) => {
 		setEvents((events) => {
 			const index = events.findIndex((e) => e.id === event.id);
@@ -63,6 +61,15 @@ const Calendar = (props: CalendarProps) => {
 		prevDate,
 	} = useCalendarDates(startOfToday());
 
+	const { isOver, setNodeRef } = useDroppable({
+		id: 'calendar',
+		data: {
+			view: calendarView,
+			selectedDate: selectedDate,
+		},
+	});
+
+
 	const next = () => {
 		if (calendarView === CalendarView.Day) {
 			nextDate();
@@ -85,7 +92,15 @@ const Calendar = (props: CalendarProps) => {
 
 	return (
 		<div className={'flex-1 h-full w-full flex flex-col'}>
-			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white border-l border-zinc-200">
+			<div
+				ref={setNodeRef}
+				className={clsx('flex flex-col relative justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white rounded-xl')}>
+				{isOver &&
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						className={'absolute top-0 left-0 w-full h-full bg-zinc-900 bg-opacity-20 z-[30]'}></motion.div>}
 				<CalendarHeader
 					view={calendarView}
 					setView={setCalendarView}
@@ -117,8 +132,9 @@ const Calendar = (props: CalendarProps) => {
 						/>
 					)}
 					{calendarView === CalendarView.Month && (
-						<div className="flex items-center justify-center w-full h-full">
-							<button className="p-4 uppercase transition-all bg-danger-4 text-danger-11 hover:text-white hover:bg-danger-10 rounded-xl">
+						<div className='flex items-center justify-center w-full h-full'>
+							<button
+								className='p-4 uppercase transition-all bg-danger-4 text-danger-11 hover:text-white hover:bg-danger-10 rounded-xl'>
 								Not implemented
 							</button>
 						</div>

@@ -2,15 +2,28 @@ import { ReactNode } from 'react';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import { useAnimate } from 'framer-motion';
+import { useDraggable } from '@dnd-kit/core';
 
 export default function TaskListItem({
-	icon,
-	title,
-}: {
+																			 icon,
+																			 title,
+																			 id,
+																		 }: {
 	icon?: ReactNode;
 	title: string;
+	id: string
 }) {
 	const [isChecked, toggle] = useToggle(false);
+	const { attributes, listeners, setNodeRef, transform, isDragging } =
+		useDraggable({
+			id: id,
+		});
+	const style = transform
+		? {
+			transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+		}
+		: undefined;
+
 	let [ref, animate] = useAnimate();
 
 	const onCheck = (e) => {
@@ -25,14 +38,20 @@ export default function TaskListItem({
 		});
 	};
 
+
 	return (
-		<div className="flex items-start justify-between p-4 transition-all bg-white rounded-xl">
+		<div
+			style={style}
+			ref={setNodeRef}
+			{...listeners}
+			{...attributes}
+			className={clsx('flex items-start justify-between p-4 bg-white rounded-xl', isDragging && 'z-40 shadow-xl')}>
 			<div
 				ref={ref}
-				className="flex items-center gap-2">
+				className='flex items-center gap-2'>
 				<input
-					className="rounded-xl"
-					type="checkbox"
+					className='rounded-xl'
+					type='checkbox'
 					onChange={onCheck}
 					checked={isChecked}
 				/>
@@ -44,7 +63,7 @@ export default function TaskListItem({
 					{title}
 				</p>
 			</div>
-			<button className="p-1 text-zinc-400">{icon}</button>
+			<button className='p-1 text-zinc-400'>{icon}</button>
 		</div>
 	);
 }

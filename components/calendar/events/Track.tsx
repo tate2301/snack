@@ -1,12 +1,7 @@
 import { add } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 import CalendarEventCard, { EventCardProps } from './EventCard';
-import {
-	generateEventDescription,
-	generateEventTitle,
-	getCoordinatesOfEvent,
-	getRandomColorForEvent,
-} from './utils';
+import { generateEventDescription, generateEventTitle, getCoordinatesOfEvent, getRandomColorForEvent } from './utils';
 import { generateUUID } from '../../../lib/functions';
 import { CalendarView } from '../types';
 
@@ -53,7 +48,7 @@ const EventsTrack = (props: EventTrackProps) => {
 			location: '',
 			// round start time to the nearest 5
 			startTime: date,
-			endTime: add(date, { minutes: 30, hours: 39 }),
+			endTime: add(date, { minutes: 0, hours: 1 }),
 			id: generateUUID(),
 		});
 	};
@@ -69,8 +64,8 @@ const EventsTrack = (props: EventTrackProps) => {
 		<div
 			onDoubleClick={onCreateEvent}
 			ref={ref}
-			className="absolute top-0 left-0 w-full h-full">
-			<div className="relative w-full h-full">
+			className='absolute top-0 left-0 w-full h-full'>
+			<div className='relative w-full h-full'>
 				{props.events.map((event, idx) => (
 					<CalendarEventCard
 						view={props.view}

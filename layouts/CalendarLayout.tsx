@@ -1,40 +1,50 @@
 import NavigationSidebar from '../components/nav/SidebarNavigation';
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import Calendar from '../components/calendar';
 import { CalendarView } from '../components/calendar/types';
 import { MinusIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import ArrowsExpand from '../icons/ArrowsExpand';
-import AppRouter from '../components/nav/AppRouter';
 
 export default function CalendarLayout(props) {
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 8,
+			},
+		}),
+	);
+
+	const onDragEnd = (event) => {
+		console.log(event);
+	};
 	return (
-		<DndContext>
-			<div className="flex flex-col h-screen overflow-y-hidden bg-zinc-950 bg-opacity-5">
-				<nav className="flex items-center justify-between flex-shrink-0 w-full h-12 px-2">
-					<div className="flex items-center flex-1 h-full gap-2 px-2">
-						<p className="font-semibold uppercase">Snack</p>
-						<p className="px-2 py-0.5 bg-warning-10 text-surface-12 text-sm font-semibold uppercase rounded-lg ">
+		<DndContext onDragEnd={onDragEnd} sensors={sensors}>
+			<div className='flex flex-col h-screen overflow-hidden bg-surface-4 relative '>
+				<nav className='flex items-center justify-between flex-shrink-0 w-full h-12 px-2'>
+					<div className='flex items-center flex-1 h-full gap-2 px-2'>
+						<p className='font-semibold uppercase'>Snack</p>
+						<p className='px-2 py-0.5 bg-warning-10 text-surface-12 text-sm font-semibold uppercase rounded-lg '>
 							DEV
 						</p>
 					</div>
-					<div className="flex gap-1">
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<MinusIcon className="w-6 h-6" />
+					<div className='flex gap-1'>
+						<button className='p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500'>
+							<MinusIcon className='w-6 h-6' />
 						</button>
-						<button className="p-2 px-3 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<ArrowsExpand className="w-5 h-5" />
+						<button className='p-2 px-3 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500'>
+							<ArrowsExpand className='w-5 h-5' />
 						</button>
-						<button className="p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500">
-							<XMarkIcon className="w-6 h-6" />
+						<button className='p-2 rounded hover:bg-opacity-10 hover:bg-zinc-900 text-zinc-500'>
+							<XMarkIcon className='w-6 h-6' />
 						</button>
 					</div>
 				</nav>
 				<div
 					className={
-						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] border-t'
+						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)]'
 					}>
 					<NavigationSidebar />
-					<div className="h-full w-[32rem] p-4 mr-2">{props.children}</div>
+					<div className='h-full w-[32rem] p-4 mr-2'>{props.children}</div>
 					<Calendar view={CalendarView.Week} />
 				</div>
 			</div>
