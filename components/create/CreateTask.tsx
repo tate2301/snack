@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import CalendarIcon from '../../icons/CalendarIcon';
 import clsx from 'clsx';
+import Textarea from '../ui/input/textarea';
 
 const CreateTask = () => {
 	const [isFocused, toggle] = useToggle(false);
@@ -32,11 +33,11 @@ const CreateTask = () => {
 											exit={{ opacity: 0 }}
 											className={'flex flex-col gap-2 items-start bg-white p-4 rounded-xl shadow'}
 					>
-						<div className={'flex-1 flex items-center w-full'}>
+						<div className={'flex-1 flex items-start w-full'}>
 							<input type={'checkbox'} disabled className={'!bg-surface-6 flex-shrink-0'} />
-							<input
+							<Textarea
 								placeholder={'Create a new task'}
-								className={'outline-none ring-0 flex-1 p-1 rounded-xl text-surface-12 w-full font-medium'}
+								className={'outline-none ring-0 flex-1 text-surface-12 w-full font-medium'}
 								autoFocus />
 						</div>
 

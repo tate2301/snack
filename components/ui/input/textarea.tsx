@@ -1,17 +1,38 @@
-import clsx from 'clsx';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
-interface TextareaProps
-	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+const Textarea = forwardRef((props, ref) => {
+	const [value, setValue] = useState('');
+	const inputRef = useRef(null);
 
-const Textarea = (props: TextareaProps) => {
+	const handleInputChange = (event) => {
+		setValue(event.target.value);
+		adjustInputHeight();
+	};
+
+	const adjustInputHeight = () => {
+		const input = inputRef.current;
+		input.style.height = 'auto';
+		input.style.height = `${input.scrollHeight}px`;
+	};
+
+	useImperativeHandle(ref, () => ({
+		getValue: () => value,
+		setValue: (newValue) => {
+			setValue(newValue);
+			adjustInputHeight();
+		},
+	}));
+
 	return (
 		<textarea
+			ref={inputRef}
+			value={value}
+			onChange={handleInputChange}
+			style={{ resize: 'none', overflow: 'hidden' }}
 			{...props}
-			className={clsx(
-				props.className,
-				'w-full p-1 placeholder:text-zinc-400 form-textarea resize-none h-auto border-none focus:ring-0',
-			)}></textarea>
+		/>
 	);
-};
+});
+
 
 export default Textarea;
