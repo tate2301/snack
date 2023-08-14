@@ -20,6 +20,7 @@ import useDisclosure from '../../hooks/useDisclosure';
 import TaskExpandedView from './TaskExpandedView';
 import { generateUUID } from '../../lib/functions';
 import { addEvent } from '../../redux/events';
+import TargetIcon from '../../icons/TargetIcon';
 
 const TaskDropdownOptions = (props: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -51,13 +52,13 @@ const TaskDropdownOptions = (props: SnackTask) => {
 					</button>
 				</Dropdown.Trigger>
 				<Dropdown.Content>
+					<Dropdown.Item>
+						<TargetIcon className="w-5 h-5 text-warning-10" />
+						Focus on this
+					</Dropdown.Item>
 					<Dropdown.Item onClick={handleOnDuplicate}>
 						<Square2StackIcon className="w-5 h-5" />
 						Duplicate
-					</Dropdown.Item>
-					<Dropdown.Item>
-						<CalendarIcon className="w-5 h-5" />
-						Create event
 					</Dropdown.Item>
 					<Dropdown.Item onClick={handleMoveToTrash}>
 						<TrashIcon className="w-5 h-5" />
@@ -149,9 +150,9 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 						{props.deadline && (
 							<span
 								className={
-									'p-0.5 rounded bg-surface-4 text-surface-10 px-1 text-sm font-semibold'
+									'p-0.5 rounded bg-primary-4 text-primary-10 px-1 text-sm font-semibold'
 								}>
-								{format(props.deadline, 'MMM dd')}
+								{format(props.deadline, 'dd MMM yyyy')}
 							</span>
 						)}
 					</div>

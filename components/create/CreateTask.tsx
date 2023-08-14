@@ -2,7 +2,12 @@ import useToggle from '../../hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useClickOutside from '../../hooks/useClickOutside';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ClockIcon, LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+	ArrowUpIcon,
+	ClockIcon,
+	LinkIcon,
+	PlusIcon,
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Textarea from '../ui/input/textarea';
 import { useAppDispatch } from '../../redux/store';
@@ -15,9 +20,12 @@ import {
 import { generateUUID } from '../../lib/functions';
 import { addTask } from '../../redux/tasks';
 import { useFormik } from 'formik';
+import Popover from '../ui/popover';
+import Datepicker from '../ui/datepicker';
+import { format, startOfToday } from 'date-fns';
 
 const CreateTask = () => {
-	const [isFocused, toggle] = useToggle(false);
+	const [isFocused, toggle, setIsFocused] = useToggle(false);
 
 	return (
 		<div className={'group'}>
@@ -47,7 +55,10 @@ const CreateTask = () => {
 						className={
 							'flex flex-col gap-2 items-start bg-white p-4 rounded-xl shadow'
 						}>
-						<CreateTaskForm toggle={toggle} />
+						<CreateTaskForm
+							toggle={toggle}
+							setIsFocused={setIsFocused}
+						/>
 					</motion.div>
 				)}
 			</AnimatePresence>
@@ -55,15 +66,19 @@ const CreateTask = () => {
 	);
 };
 
-const CreateTaskForm = (props: { toggle: () => void }) => {
+const CreateTaskForm = (props: {
+	toggle: () => void;
+	setIsFocused: (t: boolean) => void;
+}) => {
 	const [, forceRerender] = useState(0);
-	const ref = useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLFormElement>(null);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const dispatch = useAppDispatch();
 
 	const form = useFormik({
 		initialValues: {
 			title: '',
+			deadline: undefined,
 		},
 		onSubmit: (values) => {
 			onSubmit(values);
@@ -84,10 +99,12 @@ const CreateTaskForm = (props: { toggle: () => void }) => {
 			lastUpdated: new Date(),
 			tags: [],
 			subtasks: [],
+			deadline: data.deadline,
 		};
 
 		dispatch(addTask(task));
 		form.resetForm();
+		props.setIsFocused(false);
 	};
 
 	const enterKeyListener = useCallback(
@@ -104,18 +121,17 @@ const CreateTaskForm = (props: { toggle: () => void }) => {
 		[textAreaRef.current, form, onSubmit],
 	);
 
-	// Effects
-	useClickOutside(ref, () => {
-		form.submitForm().then(props.toggle);
-	});
+	// // Effects
+	// useClickOutside(ref, () => {
+	// 	form.submitForm().then(props.toggle);
+	// });
 
 	return (
 		<form
 			className="w-full"
+			ref={ref}
 			onSubmit={form.handleSubmit}>
-			<div
-				ref={ref}
-				className={'flex-1 flex items-start w-full mb-1'}>
+			<div className={'flex-1 flex items-start w-full mb-1'}>
 				<input
 					type={'checkbox'}
 					disabled
@@ -136,22 +152,28 @@ const CreateTaskForm = (props: { toggle: () => void }) => {
 				/>
 			</div>
 
-			<div className={'flex items-center gap-2'}>
+			<div className={'flex items-center justify-between gap-2'}>
+				<AddDeadline
+					selectDate={(date) => form.setFieldValue('deadline', date)}
+					selectedDate={form.values.deadline}
+				/>
+				{false && (
+					<button
+						type={'button'}
+						className={
+							'p-2 rounded-xl bg-surface-2 hover:bg-accent-3 hover:text-accent-11 text-surface-10'
+						}>
+						<LinkIcon className={'h-6 w-6'} />
+						Add link
+					</button>
+				)}
 				<button
-					type={'button'}
-					className={
-						'p-2 rounded-xl bg-surface-2 hover:bg-danger-3 hover:text-danger-11 items-center text-surface-10'
-					}>
-					<ClockIcon className={'h-6 w-6'} />
-					Deadline
-				</button>
-				<button
-					type={'button'}
-					className={
-						'p-2 rounded-xl bg-surface-2 hover:bg-accent-3 hover:text-accent-11 text-surface-10'
-					}>
-					<LinkIcon className={'h-6 w-6'} />
-					Add link
+					type={'submit'}
+					className={'p-2 px-4 rounded-xl bg-primary-10 text-white'}>
+					<p className="p-1 rounded-full bg-white">
+						<ArrowUpIcon className="w-4 h-4 text-primary-11 stroke-2" />
+					</p>
+					Add task
 				</button>
 			</div>
 		</form>
@@ -159,3 +181,34 @@ const CreateTaskForm = (props: { toggle: () => void }) => {
 };
 
 export default CreateTask;
+
+function AddDeadline(props: {
+	selectDate: (date: Date) => void;
+	selectedDate?: Date;
+}) {
+	return (
+		<Popover>
+			<Popover.Trigger>
+				<button
+					type={'button'}
+					className={clsx(
+						'p-2 rounded-xl items-center',
+						props.selectedDate
+							? 'bg-primary-4 text-primary-11'
+							: 'bg-surface-2 hover:bg-danger-3 hover:text-danger-11 text-surface-10',
+					)}>
+					<ClockIcon className={'h-6 w-6'} />
+					{props.selectedDate
+						? format(props.selectedDate, 'EEE dd yyyy')
+						: 'Deadline'}
+				</button>
+			</Popover.Trigger>
+			<Popover.Content noClose>
+				<Datepicker
+					value={props.selectedDate ?? startOfToday()}
+					onChange={props.selectDate}
+				/>
+			</Popover.Content>
+		</Popover>
+	);
+}

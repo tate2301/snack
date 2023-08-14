@@ -37,7 +37,7 @@ const FocusPeriod = () => {
 
 	useEffect(() => {
 		const e = ref.current;
-		if (e) {
+		if (e && count === 0) {
 			const rectWidth = e.getBoundingClientRect();
 			const width = rectWidth.width;
 			const elementCount = Math.floor(width / 8);
@@ -54,7 +54,11 @@ const FocusPeriod = () => {
 	);
 
 	return (
-		<div className="px-2">
+		<div className="p-4 rounded-xl bg-white">
+			<button className="px-4 py-2 bg-surface-4 rounded-xl gap-4">
+				<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+				Math Exam CUIT-103
+			</button>
 			<div className={'mt-2'}>
 				<div className={'flex items-center py-2 w-full rounded-xl'}>
 					<p className={'text-3xl font-semibold uppercase'}>
@@ -88,10 +92,12 @@ const FocusPeriod = () => {
 							}}
 							onClick={toggle}
 							className={
-								'py-2 px-4 rounded-xl text-sm flex gap-2 bg-zinc-900 text-white'
+								'py-2 px-4 rounded-xl flex gap-2 bg-zinc-900 text-white'
 							}>
 							<PlayIcon className={'w-5 h-5'} />
-							{remainingTime === initialTime ? 'Start' : 'Continue'}
+							{remainingTime === initialTime
+								? 'Start timed session'
+								: 'Continue session'}
 						</motion.button>
 					)}
 					{isRunning && (
@@ -107,10 +113,10 @@ const FocusPeriod = () => {
 							}}
 							onClick={toggle}
 							className={
-								'py-2 px-4 rounded-xl text-sm flex gap-2 bg-red-600 text-white'
+								'py-2 px-4 rounded-xl flex gap-2 bg-red-600 text-white'
 							}>
 							<PauseIcon className={'w-5 h-5'} />
-							Pause
+							Pause session
 						</motion.button>
 					)}
 					{!isRunning && remainingTime !== initialTime && (
@@ -125,15 +131,13 @@ const FocusPeriod = () => {
 								opacity: 0,
 							}}
 							onClick={restart}
-							className={
-								'py-2 px-4 rounded-xl text-sm flex gap-2 bg-white border'
-							}>
+							className={'py-2 px-4 rounded-xl flex gap-2 bg-white border'}>
 							<ArrowPathIcon className={'w-5 h-5'} />
-							Restart
+							Restart session
 						</motion.button>
 					)}
-					<button className={'p-2 rounded-full bg-white border'}>
-						<EllipsisHorizontalIcon className={'w-5 h-5'} />
+					<button className={'p-2 px-3 rounded-xl bg-surface-2'}>
+						<EllipsisHorizontalIcon className={'w-6 h-6'} />
 					</button>
 				</div>
 			</div>

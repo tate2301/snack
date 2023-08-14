@@ -30,13 +30,14 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 						{props.title}
 					</h1>
 				</div>
-				<div className="mb-4 bg-surface-3 p-4 rounded-xl">
+				<div className="mb-8 bg-surface-3 divide-surface-4 rounded-xl divide-y">
 					<Textarea
 						name={'description'}
-						className="w-full bg-transparent !outline-none"
+						className="w-full bg-transparent !outline-none p-4"
 						placeholder="Add a description"
 					/>
-					<div className="flex gap-2 mt-4">
+
+					<div className="flex gap-2 mt-4 p-4">
 						<Tooltip content="Add a deadline">
 							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-surface-10">
 								<CalendarIcon className="w-5 h-5" />
@@ -61,21 +62,22 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 					</div>
 				</div>
 
-				<div className="py-4 mb-8">
+				<div className="mb-8 mt-4">
 					<div className="flex flex-col gap-2">
 						<div className="flex items-center gap-2">
 							<input
-								className="rounded-xl  flex-shrink-0"
+								className="!rounded-full flex-shrink-0"
 								type="checkbox"
 							/>
 							<p>Add bookmarks control</p>
 						</div>
 					</div>
-					<button className="font-semibold p-2 px-4 rounded-xl bg-surface-2 hover:bg-surface-4 mt-4">
+					<button className="font-semibold p-2 px-2 rounded-xl bg-transparent hover:bg-surface-4 mt-4">
 						<PlusIcon className="w-5 h-5" />
 						Add a subtask
 					</button>
 				</div>
+
 				<div className="flex gap-4">
 					<button className="px-4 py-2 rounded-xl bg-danger-4 text-danger-11">
 						<TrashIcon className="w-5 h-5" />

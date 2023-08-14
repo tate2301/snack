@@ -1,8 +1,6 @@
 import {
 	ArrowPathIcon,
-	BellSnoozeIcon,
-	DocumentIcon,
-	MapPinIcon,
+	CalendarDaysIcon,
 	PlusIcon,
 	TrashIcon,
 } from '@heroicons/react/24/outline';
@@ -15,50 +13,39 @@ import {
 	Tab,
 } from './types';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 import Kbd from '../ui/typography/Kbd';
-import TargetIcon from '../../icons/TargetIcon';
 import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
 import ExclusionTab from '../Tabs/ExlusionTab';
 import Link from 'next/link';
-import PostItNoteIcon from '../../icons/PostItNoteIcon';
 import InboxIcon from '../../icons/InboxIcon';
-import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { SnackCalendar } from '../../redux/calendar/types';
-import { getRandomColorForEvent } from '../calendar/events/utils';
-import { generateUUID } from '../../lib/functions';
-import { addCalendar, selectCalendars } from '../../redux/calendar';
 import { CheckIcon } from '@heroicons/react/24/solid';
+import useClickOutside from '../../hooks/useClickOutside';
+import TargetIcon from '../../icons/TargetIcon';
 
 const tabs: NavItemType[] = [
 	{
-		icon: <InboxIcon className="w-5 h-5 text-primary-11" />,
+		icon: <InboxIcon className="w-5 h-5 text-surface-12" />,
 		value: 'inbox',
 		label: 'Home',
-		href: '/?active=tasks',
+		href: '/',
 	},
 
 	{
-		icon: <CalendarIcon className="w-5 h-5 text-success-10" />,
+		icon: <TargetIcon className="w-5 h-5 text-surface-12" />,
 		value: 'today',
-		label: 'Today',
-		href: '/today?active=tasks',
+		label: 'Focus',
+		href: '/today',
 	},
 	{
-		icon: <MaybeLaterIcon className="w-5 h-5 text-warning-10" />,
-		value: 'later',
-		label: 'Maybe later',
-		href: '/later',
-	},
-	{
-		icon: <CheckIcon className="w-5 h-5 text-accent-10" />,
+		icon: <CheckIcon className="w-5 h-5 text-surface-12" />,
 		value: 'notes',
 		label: 'Complete',
 		href: '/complete',
 	},
 	{
-		icon: <TrashIcon className="w-5 h-5 text-danger-10" />,
+		icon: <TrashIcon className="w-5 h-5 text-surface-12" />,
 		value: 'trash',
 		label: 'Trash',
 		href: '/trash',
@@ -106,9 +93,9 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col p-2'
+				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="bg-white bg-opacity-75 h-full border border-surface-4 pt-16 rounded-xl">
+			<div className="bg-white bg-opacity-75 h-full border border-surface-4 pt-16 border-r">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -116,39 +103,7 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<div className="flex flex-col gap-2 p-2 mt-8">
-					<p className="px-4 uppercase">Lists</p>
-					<div>
-						<div className="flex flex-col justify-center">
-							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-success-9"></p>
-								<p>Sideprojects</p>
-							</button>
-						</div>
-						<div className="flex flex-col justify-center">
-							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
-								<p className="flex items-center justify-between flex-1">
-									<span>School run</span>
-									<ArrowPathIcon className="w-4 h-4" />
-								</p>
-							</button>
-						</div>
-						<div className="flex flex-col justify-center">
-							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-								<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
-								<p>Grocery shopping</p>
-							</button>
-						</div>
-					</div>
-					<button className="flex items-center gap-4 p-4 text-surface-11 hover:bg-surface-3 rounded-xl">
-						<PlusIcon className="w-5 h-5" />
-						<p className="flex items-center justify-between flex-1">
-							<span>New list</span>
-							<Kbd keys={['⌘', 'L']} />
-						</p>
-					</button>
-				</div>
+				<Lists />
 			</div>
 		</div>
 	);
@@ -186,5 +141,80 @@ function NavItem(
 				</p>
 			</ExclusionTab>
 		</Link>
+	);
+}
+
+function Lists({}) {
+	return (
+		<div className="flex flex-col gap-2 p-2 mt-8">
+			<p className="px-4 uppercase">Lists</p>
+			<div>
+				<div className="flex flex-col justify-center">
+					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-success-9"></p>
+						<p>Sideprojects</p>
+					</button>
+				</div>
+				<div className="flex flex-col justify-center">
+					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+						<p className="flex items-center justify-between flex-1">
+							<span>School run</span>
+							<ArrowPathIcon className="w-4 h-4" />
+						</p>
+					</button>
+				</div>
+				<div className="flex flex-col justify-center">
+					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+						<p>Grocery shopping</p>
+					</button>
+				</div>
+			</div>
+			<CreateList />
+		</div>
+	);
+}
+
+function CreateList() {
+	const [isOpened, toggle] = useToggle(false);
+	const ref = useRef(null);
+
+	useClickOutside(ref, toggle);
+
+	return (
+		<>
+			{!isOpened && (
+				<button
+					onClick={toggle}
+					className="flex items-center gap-4 p-4 text-surface-11 hover:bg-surface-3 rounded-xl">
+					<PlusIcon className="w-5 h-5" />
+					<p className="flex items-center justify-between flex-1">
+						<span>New list</span>
+						<Kbd keys={['⌘', 'L']} />
+					</p>
+				</button>
+			)}
+
+			{isOpened && (
+				<form
+					ref={ref}
+					className="p-2 rounded-xl bg-surface-1 border">
+					<div className="flex gap-2 w-full items-center">
+						<button
+							type={'button'}
+							className="p-4 rounded-xl hover:bg-surface-4">
+							<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+						</button>
+						<input
+							name={'title'}
+							autoFocus
+							className="p-2 flex-1 bg-transparent outline-none font-semibold"
+							placeholder="Enter list name"
+						/>
+					</div>
+				</form>
+			)}
+		</>
 	);
 }

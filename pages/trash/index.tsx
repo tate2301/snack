@@ -35,10 +35,10 @@ export default function Page() {
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
-					<div className="flex gap-4 items-center mb-8">
+					<div className="gap-4 items-center mb-8">
 						<h1 className="text-3xl font-semibold text-surface-12">Trash</h1>
+						<p className="text-xl">Tasks come here to die</p>
 					</div>
-					<CreateTask />
 					<motion.div className="flex flex-col gap-2 mt-4">
 						<AnimatePresence initial={false}>
 							{tasks.map((task) => (

@@ -3,31 +3,14 @@ import CalendarLayout from '../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../components/Home/TaskListItem';
 import CreateTask from '../components/create/CreateTask';
-import NavLink from '../components/nav/NavLink';
 import { useAppSelector } from '../redux/store';
 import { SnackTaskStatus } from '../redux/tasks/types';
-import { selectAllTasks, selectTaskByStatus } from '../redux/tasks';
-import InboxIcon from '../icons/InboxIcon';
-import { useRouter } from 'next/router';
+import { selectTaskByStatus } from '../redux/tasks';
 
 export default function Page() {
-	const router = useRouter();
-	const { active } = router.query as {
-		active: 'all' | 'complete' | 'in-progress';
-	};
-	const tasks = useAppSelector(selectAllTasks);
-	const completeTasks = useAppSelector((state) =>
-		selectTaskByStatus(state, SnackTaskStatus.Complete),
-	);
 	const inProgress = useAppSelector((state) =>
 		selectTaskByStatus(state, SnackTaskStatus.InProgress),
 	);
-
-	const tabs = {
-		all: tasks,
-		complete: completeTasks,
-		'in-progress': inProgress,
-	};
 
 	const t = (n: number) => n * 1000;
 
@@ -40,9 +23,8 @@ export default function Page() {
 							Good evening, Tatenda
 						</h1>
 					</div>
-					<p className="text-xl">You have {tasks.length} tasks and 0 events</p>
+					<p className="text-xl">You have {inProgress.length} tasks</p>
 				</div>
-				<Nav />
 				<CreateTask />
 				<motion.div className="flex flex-col gap-2 mt-4">
 					<AnimatePresence initial={false}>
@@ -77,26 +59,3 @@ export default function Page() {
 		</CalendarLayout>
 	);
 }
-
-const Nav = () => {
-	return (
-		<motion.div className="flex gap-2 mb-4">
-			<NavLink
-				href={{
-					query: {
-						active: 'tasks',
-					},
-				}}>
-				Tasks
-			</NavLink>
-			<NavLink
-				href={{
-					query: {
-						active: 'events',
-					},
-				}}>
-				Events
-			</NavLink>
-		</motion.div>
-	);
-};

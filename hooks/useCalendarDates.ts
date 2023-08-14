@@ -4,13 +4,8 @@ import {
 	endOfMonth,
 	endOfWeek,
 	format,
-	getDay,
-	isEqual,
-	isSameMonth,
-	isToday,
 	parse,
 	startOfMonth,
-	startOfToday,
 	startOfWeek,
 } from 'date-fns';
 import { useMemo, useState } from 'react';
@@ -18,8 +13,9 @@ import { useAppDispatch, useAppSelector } from '../redux/store';
 import { selectSelectedDate, updateSelectedDate } from '../redux/calendar';
 
 const useCalendarDates = (today: Date) => {
+	const [selectedDate, setSelectedDate] = useState(today);
 	const dispatch = useAppDispatch();
-	const selectedDate = useAppSelector(selectSelectedDate);
+	const globalSelectedDate = useAppSelector(selectSelectedDate);
 
 	const [currentMonth, setCurrentMonth] = useState<string>(
 		format(selectedDate, 'MMMM yyyy'),
@@ -46,6 +42,11 @@ const useCalendarDates = (today: Date) => {
 	);
 
 	const selectDate = (day: Date) => {
+		setSelectedDate(day);
+	};
+
+	const globalSelectDate = (day: Date) => {
+		// TODO: Return back to default select date
 		dispatch(updateSelectedDate(day));
 	};
 

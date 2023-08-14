@@ -9,7 +9,7 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: true,
 		},
-		// titleBarStyle: 'hidden',
+		titleBarStyle: 'customButtonsOnHover',
 		maximizable: true,
 		icon: path.join(__dirname, './public/app-logo.png'),
 	});

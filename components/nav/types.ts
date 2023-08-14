@@ -8,10 +8,9 @@ export type SidebarToggleProps = {
 
 export type Tab =
 	| 'inbox'
-	| 'calendar'
 	| 'timers'
 	| 'settings'
-	| 'contacts'
+	| 'tomorrow'
 	| 'later'
 	| 'trash'
 	| 'today'
