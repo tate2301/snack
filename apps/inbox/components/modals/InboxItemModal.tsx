@@ -69,10 +69,12 @@ export default function InboxItemModal(props: ModalProps) {
 					<div className="py-4">
 						<div>
 							<Textarea
+								name={'title'}
 								className="w-full p-0 overflow-hidden text-lg font-medium"
 								rows={1}
 								placeholder="Task name"></Textarea>
 							<Textarea
+								name={'description'}
 								className="w-full h-auto p-0 resize-none placeholder:text-zinc-400 text-zinc-600"
 								rows={2}
 								placeholder="Description"></Textarea>

@@ -1,5 +1,4 @@
 import { createSnapModifier } from '@dnd-kit/modifiers';
-import { EventCardProps } from './EventCard';
 import { MutableRefObject } from 'react';
 import { getDayHourlyInterval } from './utils';
 import clsx from 'clsx';
@@ -9,6 +8,7 @@ import EventsTrack from './Track';
 import DroppableColumn from './DroppableColumn';
 import { HOUR_HEIGHT } from '../../../constants/styles';
 import { CalendarView } from '../types';
+import { SnackEvent } from '../../../redux/events/types';
 
 // 5m intervals = 288 intervals per day with 80px per hr
 const snapHeight = HOUR_HEIGHT / 60;
@@ -18,9 +18,9 @@ const DroppableDays = (props: {
 	week: Date[];
 	containerRef: MutableRefObject<HTMLDivElement>;
 	daysContainerRef: MutableRefObject<HTMLDivElement>;
-	createEvent: (event: EventCardProps) => void;
-	updateEvent: (event: EventCardProps) => void;
-	events: EventCardProps[];
+	createEvent: (event: SnackEvent) => void;
+	updateEvent: (event: SnackEvent) => void;
+	events: SnackEvent[];
 	view: CalendarView;
 }) => {
 	return (

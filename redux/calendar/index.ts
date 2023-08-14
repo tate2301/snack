@@ -1,11 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CalendarView } from '../../components/calendar/types';
-import { SnackGlobalCalendar } from './types';
+import { SnackCalendar, SnackGlobalCalendar } from './types';
 import { RootState } from '../store';
 import { isEqual, startOfDay, startOfToday } from 'date-fns';
+import { getRandomColorForEvent } from '../../components/calendar/events/utils';
+import { generateUUID } from '../../lib/functions';
+
+const defaultCalendar: SnackCalendar = {
+	color: getRandomColorForEvent(),
+	id: generateUUID(),
+	title: 'Default Calendar',
+	createdAt: new Date(),
+	events: [],
+	tasks: [],
+	lastUpdated: new Date(),
+	emoji: '📖',
+};
 
 const initialState: SnackGlobalCalendar = {
-	items: [],
+	items: [defaultCalendar],
 	preferences: {
 		view: CalendarView.Week,
 		width: 1290,

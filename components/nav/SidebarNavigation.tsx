@@ -24,20 +24,26 @@ import ExclusionTab from '../Tabs/ExlusionTab';
 import Link from 'next/link';
 import PostItNoteIcon from '../../icons/PostItNoteIcon';
 import InboxIcon from '../../icons/InboxIcon';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { SnackCalendar } from '../../redux/calendar/types';
+import { getRandomColorForEvent } from '../calendar/events/utils';
+import { generateUUID } from '../../lib/functions';
+import { addCalendar, selectCalendars } from '../../redux/calendar';
+import { CheckIcon } from '@heroicons/react/24/solid';
 
 const tabs: NavItemType[] = [
 	{
 		icon: <InboxIcon className="w-5 h-5 text-primary-11" />,
 		value: 'inbox',
 		label: 'Home',
-		href: '/?active=all',
+		href: '/?active=tasks',
 	},
 
 	{
 		icon: <CalendarIcon className="w-5 h-5 text-success-10" />,
 		value: 'today',
 		label: 'Today',
-		href: '/today',
+		href: '/today?active=tasks',
 	},
 	{
 		icon: <MaybeLaterIcon className="w-5 h-5 text-warning-10" />,
@@ -45,12 +51,12 @@ const tabs: NavItemType[] = [
 		label: 'Maybe later',
 		href: '/later',
 	},
-	// {
-	// 	icon: <PostItNoteIcon className="w-5 h-5 text-accent-10" />,
-	// 	value: 'notes',
-	// 	label: 'Notes',
-	// 	href: '/notes',
-	// },
+	{
+		icon: <CheckIcon className="w-5 h-5 text-accent-10" />,
+		value: 'notes',
+		label: 'Complete',
+		href: '/complete',
+	},
 	{
 		icon: <TrashIcon className="w-5 h-5 text-danger-10" />,
 		value: 'trash',
@@ -102,7 +108,7 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col p-2'
 			}>
-			<div className="bg-white bg-opacity-75 rounded-xl">
+			<div className="bg-white bg-opacity-75 h-full border border-surface-4 pt-16 rounded-xl">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -110,34 +116,6 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<div className="flex flex-col gap-2 p-2 mt-8">
-					<p className="px-4 uppercase">Calendars</p>
-					<div>
-						<div className="flex flex-col justify-center">
-							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md text-md aspect-square">
-									🏋🏽‍♂️
-								</p>
-								<p>Workout scheme</p>
-							</button>
-						</div>
-						<div className="flex flex-col justify-center">
-							<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-								<p className="flex items-center w-4 gap-4 text-lg font-medium rounded-md aspect-square">
-									🔥
-								</p>
-								<p>Party Animal</p>
-							</button>
-						</div>
-					</div>
-					<button className="flex items-center gap-4 p-4 hover:bg-surface-3 rounded-xl">
-						<PlusIcon className="w-5 h-5" />
-						<p className="flex items-center justify-between flex-1">
-							<span>New calendar</span>
-							<Kbd keys={['⌘', 'D']} />
-						</p>
-					</button>
-				</div>
 				<div className="flex flex-col gap-2 p-2 mt-8">
 					<p className="px-4 uppercase">Lists</p>
 					<div>

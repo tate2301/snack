@@ -39,10 +39,7 @@ export default function TaskListSection(props: TaskSection) {
 						duration: 0.1,
 					}}
 					className="flex flex-col gap-1">
-					<DndContext>
-						<TaskListItem title="Design new App icon to replace eletron logo" />
-						<TaskListItem title="Design new App icon to replace eletron logo" />
-					</DndContext>
+					<DndContext></DndContext>
 				</motion.div>
 			)}
 		</div>

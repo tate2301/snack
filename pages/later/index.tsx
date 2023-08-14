@@ -37,6 +37,7 @@ export default function Page() {
 							Will do maybe later
 						</h1>
 					</div>
+					<Nav />
 					<CreateTask />
 					<motion.div className="flex flex-col gap-2 mt-4">
 						<AnimatePresence initial={false}>
@@ -82,3 +83,26 @@ export default function Page() {
 		</CalendarLayout>
 	);
 }
+
+const Nav = () => {
+	return (
+		<motion.div className="flex gap-2 mb-4">
+			<NavLink
+				href={{
+					query: {
+						active: 'tasks',
+					},
+				}}>
+				Tasks
+			</NavLink>
+			<NavLink
+				href={{
+					query: {
+						active: 'events',
+					},
+				}}>
+				Events
+			</NavLink>
+		</motion.div>
+	);
+};

@@ -36,19 +36,17 @@ export default function Page() {
 			<main className={'h-full'}>
 				<div className="mb-4">
 					<div className="flex gap-4 items-center mb-1">
-						<InboxIcon className="w-8 h-8" />
-						<h1 className="text-3xl font-semibold text-surface-12">Inbox</h1>
+						<h1 className="text-3xl font-semibold text-surface-12">
+							Good evening, Tatenda
+						</h1>
 					</div>
-					<p className="text-xl">
-						You have {tasks.length} tasks, {completeTasks.length} complete and{' '}
-						{inProgress.length} pending
-					</p>
+					<p className="text-xl">You have {tasks.length} tasks and 0 events</p>
 				</div>
 				<Nav />
 				<CreateTask />
 				<motion.div className="flex flex-col gap-2 mt-4">
 					<AnimatePresence initial={false}>
-						{(tabs[active] ?? tasks).map((task) => (
+						{inProgress.map((task) => (
 							<motion.div
 								key={task.id}
 								initial={{
@@ -86,26 +84,18 @@ const Nav = () => {
 			<NavLink
 				href={{
 					query: {
-						active: 'all',
+						active: 'tasks',
 					},
 				}}>
-				Inbox
+				Tasks
 			</NavLink>
 			<NavLink
 				href={{
 					query: {
-						active: 'in-progress',
+						active: 'events',
 					},
 				}}>
-				Pending
-			</NavLink>
-			<NavLink
-				href={{
-					query: {
-						active: 'complete',
-					},
-				}}>
-				Complete
+				Events
 			</NavLink>
 		</motion.div>
 	);

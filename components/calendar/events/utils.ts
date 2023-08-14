@@ -10,7 +10,7 @@ import {
 } from 'date-fns';
 import { faker } from '@faker-js/faker';
 import { Collision } from '@dnd-kit/core';
-import { EventCardProps } from './EventCard';
+import { SnackEvent } from '../../../redux/events/types';
 
 export const colorMap = [
 	'red',
@@ -112,7 +112,7 @@ export const generateEventDescription = (): string => {
 	return faker.lorem.words(Math.floor(Math.random() * (20 - 5 + 1) + 5));
 };
 
-export const onlyAlldayEvents = (events: EventCardProps[]) => {
+export const onlyAlldayEvents = (events: SnackEvent[]) => {
 	const dayLength = 24 * 60;
 
 	return events.filter(
@@ -121,7 +121,7 @@ export const onlyAlldayEvents = (events: EventCardProps[]) => {
 	);
 };
 
-export const onlyNonAlldayEvents = (events: EventCardProps[]) => {
+export const onlyNonAlldayEvents = (events: SnackEvent[]) => {
 	return events.filter(
 		(event) =>
 			differenceInMinutes(event.endTime, event.startTime) !== 24 * 60 - 1,

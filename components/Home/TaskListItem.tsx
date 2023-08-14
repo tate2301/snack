@@ -83,8 +83,6 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 	const onCheck = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		e.cancelBubble = true;
-		e.stopImmediatePropagation();
 
 		dispatch(
 			updateTask({

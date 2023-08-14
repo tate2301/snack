@@ -20,11 +20,11 @@ function AllDayEvent(props: {
 }) {
 	return (
 		<div
-			className="grid uppercase bg-surface-2 rounded-xl border"
+			className="grid bg-surface-2 rounded-xl border"
 			style={{
 				gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 			}}>
-			<p className="py-4 text-xs text-center">All Day</p>
+			<p className="py-4 text-xs text-center uppercase">All Day</p>
 			{props.week.map((day) => (
 				<DroppableEventSlot
 					createEvent={props.createEvent}
@@ -67,10 +67,16 @@ const DroppableEventSlot = (props: {
 			ref={setNodeRef}
 			onDoubleClick={onDoubleClick}
 			className={clsx(
-				'hover:bg-zinc-100 flex flex-col items-center justify-center h-12 uppercase',
+				'hover:bg-zinc-100 flex flex-col items-center gap-1 justify-center h-12',
 				isOver && 'bg-primary-4',
 			)}>
-			{allDayEventsForDay.length}
+			{allDayEventsForDay.map((event) => (
+				<div
+					key={event.id}
+					className="w-full h-full p-0.5 rounded-xl text-sm flex">
+					<p className="line-clamp-1">{event.title}</p>
+				</div>
+			))}
 		</div>
 	);
 };

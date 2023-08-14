@@ -7,7 +7,7 @@ import { Tab } from '../components/nav/types';
 import Lists from './lists';
 
 type Apps = {
-	[key in Tab]: React.FC;
+	[key: string]: React.FC;
 };
 
 export const Apps: Apps = {

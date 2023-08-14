@@ -1,5 +1,5 @@
 import { add } from 'date-fns';
-import { EventCardProps } from '../components/calendar/events/EventCard';
+import { SnackEvent } from '../redux/events/types';
 
 export const remToPx = (rem) => {
 	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -11,7 +11,7 @@ export const remToPx = (rem) => {
  * @returns The event's grid meta data.
  * @description This hook is used to render an event on the calendar.
  */
-export const getEventPosition = (event: EventCardProps) => {
+export const getEventPosition = (event: SnackEvent) => {
 	const start = new Date(event.startTime);
 	const end = new Date(event.endTime);
 	const startHour = start.getHours();
