@@ -28,94 +28,95 @@
 */
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 400;
-    src: url(/fonts/subset-SFRounded-Regular.eot?) format('embedded-opentype'),
-    url(/fonts/subset-SFRounded-Regular.woff2) format('woff2'),
-    url(/fonts/subset-SFRounded-Regular.woff) format('woff');
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(/fonts/subset-SFRounded-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Regular.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Regular.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 500;
-    src: url(/fonts/subset-SFRounded-Medium.eot?) format('embedded-opentype'),
-    url(/fonts/subset-SFRounded-Medium.woff2) format('woff2'),
-    url(/fonts/subset-SFRounded-Medium.woff) format('woff');
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 500;
+	src: url(/fonts/subset-SFRounded-Medium.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Medium.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Medium.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 600;
-    src: url(/fonts/subset-SFRounded-Semibold.eot?) format('embedded-opentype'),
-    url(/fonts/subset-SFRounded-Semibold.woff2) format('woff2'),
-    url(/fonts/subset-SFRounded-Semibold.woff) format('woff');
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 600;
+	src: url(/fonts/subset-SFRounded-Semibold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Semibold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Semibold.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 700;
-    src: url(/fonts/subset-SFRounded-Bold.eot?) format('embedded-opentype'),
-    url(/fonts/subset-SFRounded-Bold.woff2) format('woff2'),
-    url(/fonts/subset-SFRounded-Bold.woff) format('woff');
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 700;
+	src: url(/fonts/subset-SFRounded-Bold.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Bold.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Bold.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 800;
-    src: url(/fonts/subset-SFRounded-Heavy.eot?) format('embedded-opentype'),
-    url(/fonts/subset-SFRounded-Heavy.woff2) format('woff2'),
-    url(/fonts/subset-SFRounded-Heavy.woff) format('woff');
-    font-family: SFRounded;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/subset-SFRounded-Heavy.eot?) format('embedded-opentype'),
+		url(/fonts/subset-SFRounded-Heavy.woff2) format('woff2'),
+		url(/fonts/subset-SFRounded-Heavy.woff) format('woff');
+	font-family: SFRounded;
 }
 
 @font-face {
-    font-display: auto;
-    font-style: normal;
-    font-weight: 800;
-    src: url(/fonts/SF-Mono-Regular.eot?) format('embedded-opentype'),
-    url(/fonts/SF-Mono-Regular.woff2) format('woff2'),
-    url(/fonts/SF-Mono-Regular.woff) format('woff');
-    font-family: SFMono;
+	font-display: auto;
+	font-style: normal;
+	font-weight: 800;
+	src: url(/fonts/SF-Mono-Regular.eot?) format('embedded-opentype'),
+		url(/fonts/SF-Mono-Regular.woff2) format('woff2'),
+		url(/fonts/SF-Mono-Regular.woff) format('woff');
+	font-family: SFMono;
 }
 
 * {
-    box-sizing: border-box;
+	box-sizing: border-box;
+	@apply outline-primary-8 outline-1;
 }
 
 html,
 body {
-    font-size: 12px;
-    font-family: 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    @apply bg-white select-none;
+	font-size: 12px;
+	font-family: 'Inter', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow-x: hidden;
+	@apply bg-white select-none;
 }
 
 .app-noise {
-    height: 100vh;
-    width: 100vw;
-    background: linear-gradient(to right, blue, rgba(0, 0, 0, 0)),
-    url('https://grainy-gradients.vercel.app/noise.svg');
-    filter: contrast(170%) brightness(1000%);
+	height: 100vh;
+	width: 100vw;
+	background: linear-gradient(to right, blue, rgba(0, 0, 0, 0)),
+		url('https://grainy-gradients.vercel.app/noise.svg');
+	filter: contrast(170%) brightness(1000%);
 }
 
 .noise-overlay {
-    background: moccasin;
-    mix-blend-mode: multiply;
+	background: moccasin;
+	mix-blend-mode: multiply;
 }
 
 .app-bg-isolate {
-    isolation: isolate;
+	isolation: isolate;
 }
 
 /*
@@ -123,38 +124,38 @@ body {
 */
 
 #app-container {
-    width: 100%;
+	width: 100%;
 }
 
 svg {
-    stroke-width: 2px;
+	stroke-width: 2px;
 }
 
 p,
 span {
-    @apply outline-none;
+	@apply outline-none;
 }
 
 button {
-    @apply flex items-center gap-2 p-1 font-semibold text-surface-11;
+	@apply flex items-center gap-2 p-1 font-semibold text-surface-11;
 }
 
 .grid-day {
-    @apply grid-cols-[24];
+	@apply grid-cols-[24];
 }
 
 .uppercase {
-    @apply font-mono;
+	@apply font-mono;
 }
 
 nav button:hover {
-    @apply bg-zinc-800;
+	@apply bg-zinc-800;
 }
 
 .font-mono {
-    font-family: 'SFMono', monospace;
+	font-family: 'SFMono', monospace;
 }
 
 input {
-    @apply focus:border-0 focus:ring-0 active:border-0 active:ring-0;
+	@apply focus:border-0 focus:ring-0 active:border-0 active:ring-0;
 }

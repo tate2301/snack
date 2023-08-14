@@ -1,15 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
-
-const calendarsReducer = (state = [], action) => {
-	return state;
-};
+import { tasksSlice } from './tasks';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { calendarSlice } from './calendar';
+import { eventsSlice } from './events';
 
 const listsReducer = (state = [], action) => {
-	return state;
-};
-
-const eventsReducer = (state = [], action) => {
 	return state;
 };
 
@@ -27,12 +23,13 @@ const settingsReducer = (state = {}, action) => {
 
 const store = configureStore({
 	reducer: {
-		calendars: calendarsReducer,
+		calendars: calendarSlice.reducer,
 		lists: listsReducer,
-		events: eventsReducer,
+		events: eventsSlice.reducer,
 		reminders: remindersReducer,
 		user: userReducer,
 		settings: settingsReducer,
+		tasks: tasksSlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) => {
 		const defaultMiddleware = getDefaultMiddleware({
@@ -49,5 +46,8 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;

@@ -3,6 +3,7 @@ import { CalendarView } from './types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { add, format, isEqual, startOfToday } from 'date-fns';
 import { useCallback } from 'react';
+import ExpandSidebarIcon from '../../icons/ExpandSidebarIcon';
 
 type CalendarHeaderProps = {
 	view: CalendarView;
@@ -39,9 +40,9 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 					<button
 						onClick={props.prev}
 						className={
-							'text-sm bg-white h-full hover:bg-surface-4 rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
+							'text-sm bg-white h-full hover:bg-surface-4 rounded-lg px-3 py-1 text-surface-10 hover:text-surface-12'
 						}>
-						<ChevronLeftIcon className="w-4 h-4" />
+						<ChevronLeftIcon className="w-5 h-5" />
 					</button>
 					<button
 						onClick={jumpToToday}
@@ -56,9 +57,9 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 					<button
 						onClick={props.next}
 						className={
-							'text-sm h-full bg-white hover:bg-surface-4 rounded-lg px-3 py-1 text-zinc-400 hover:text-zinc-800'
+							'text-sm h-full bg-white hover:bg-surface-4 rounded-lg px-3 py-1 text-surface-10 hover:text-surface-12'
 						}>
-						<ChevronRightIcon className="w-4 h-4" />
+						<ChevronRightIcon className="w-5 h-5" />
 					</button>
 					<p className="ml-4 text-xl font-semibold text-surface-12">
 						{format(

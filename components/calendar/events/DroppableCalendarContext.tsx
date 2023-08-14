@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
+import { MutableRefObject, ReactNode, useCallback, useRef } from 'react';
 import { createSnapModifier } from '@dnd-kit/modifiers';
-import { EventCardProps } from './EventCard';
-import { useRef, useCallback, MutableRefObject } from 'react';
 import { convertCoordinatesToTimeRounded } from './utils';
 import {
 	DndContext,
@@ -11,7 +9,8 @@ import {
 } from '@dnd-kit/core';
 import { add, differenceInMinutes, endOfDay, startOfDay } from 'date-fns';
 import { custom5MinuteCollisions } from '../../../lib/draggable';
-import { HOUR_HEIGHT } from '../../../constants/dimensions';
+import { HOUR_HEIGHT } from '../../../constants/styles';
+import { SnackEvent } from '../../../redux/events/types';
 
 // 5m intervals = 288 intervals per day with 80px per hr
 const snapHeight = HOUR_HEIGHT / 60;
@@ -25,9 +24,9 @@ const DroppableCalendarContext = (props: {
 	}) => ReactNode;
 	week: Date[];
 	containerRef: MutableRefObject<HTMLDivElement>;
-	events: EventCardProps[];
-	updateEvent: (event: EventCardProps) => void;
-	createEvent: (event: EventCardProps) => void;
+	events: SnackEvent[];
+	updateEvent: (event: SnackEvent) => void;
+	createEvent: (event: SnackEvent) => void;
 }) => {
 	const daysContainerRef = useRef<HTMLDivElement>();
 	const sensors = useSensors(
@@ -39,7 +38,7 @@ const DroppableCalendarContext = (props: {
 	);
 
 	const updateEvent = useCallback(
-		(event: EventCardProps) => {
+		(event: SnackEvent) => {
 			props.updateEvent(event);
 		},
 		[props.updateEvent],
@@ -67,14 +66,6 @@ const DroppableCalendarContext = (props: {
 			 */
 			const topMostCollision = collisions[0];
 
-			console.log({
-				scrollHeight: calendarContainer.scrollHeight,
-				scrollTop: calendarContainer.scrollTop,
-				rect: calendarContainer.getBoundingClientRect(),
-				topMostCollision,
-				daysContainer,
-			});
-
 			if (!calendarContainer || !daysContainer || !topMostCollision) return;
 
 			if (
@@ -86,6 +77,7 @@ const DroppableCalendarContext = (props: {
 					...oldCalendarEvent,
 					startTime: startOfDay(oldCalendarEvent.startTime),
 					endTime: endOfDay(oldCalendarEvent.startTime),
+					allDay: true,
 				});
 				return;
 			}
@@ -94,7 +86,13 @@ const DroppableCalendarContext = (props: {
 				topMostCollision.data.droppableContainer.collisionRect?.top ??
 				topMostCollision.data.droppableContainer.rect.current.top;
 
-			const yTop = top - daysContainer.offsetTop + calendarContainer.scrollTop;
+			// Here we subtract the calendar view offset top, and the calendar container offset top
+			// then we add the scroll top of the calendar container
+			const yTop =
+				top -
+				daysContainer.offsetTop -
+				calendarContainer.offsetTop +
+				calendarContainer.scrollTop;
 
 			const newStartTime = convertCoordinatesToTimeRounded(
 				yTop > 0 ? yTop : 0,
@@ -106,17 +104,24 @@ const DroppableCalendarContext = (props: {
 				oldCalendarEvent.endTime,
 				oldCalendarEvent.startTime,
 			);
-			const newCalendarEvent: EventCardProps = {
-				id: oldCalendarEvent.id,
-				color: oldCalendarEvent.color,
-				description: oldCalendarEvent.description,
-				location: oldCalendarEvent.location,
-				title: oldCalendarEvent.title,
+			const newCalendarEvent: SnackEvent = {
+				...oldCalendarEvent,
 				startTime: newStartTime,
 				endTime: add(newStartTime, {
 					minutes: lengthOfEventInMinutes,
 				}),
 			};
+
+			console.log({
+				scrollHeight: calendarContainer.scrollHeight,
+				scrollTop: calendarContainer.scrollTop,
+				rect: daysContainer.getBoundingClientRect(),
+				collisionRect: topMostCollision.data.droppableContainer.collisionRect,
+				topMostCollision,
+				daysContainer: daysContainer.offsetTop,
+				yTop,
+				top,
+			});
 
 			if (
 				topMostCollision.data.droppableContainer.data?.current.time &&
@@ -138,16 +143,6 @@ const DroppableCalendarContext = (props: {
 					minutes: lengthOfEventInMinutes,
 				});
 			}
-
-			console.log({
-				newStartTime,
-				yTop,
-				lengthOfEventInMinutes,
-				top,
-				topMostCollision,
-				track: HOUR_HEIGHT * 24,
-				time: topMostCollision.data.droppableContainer.data?.current.time,
-			});
 
 			// Event happens to cross over into the next day
 

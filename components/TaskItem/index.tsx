@@ -1,14 +1,11 @@
 import {
 	ArchiveBoxIcon,
-	ClockIcon,
 	ListBulletIcon,
 	RectangleStackIcon,
 	TrashIcon,
 } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { timeDifference } from '../../lib/time';
 import Subtask from './Subtask';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';

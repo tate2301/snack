@@ -4,20 +4,11 @@ import { EVENT_COLORS } from '../../../constants/event-colors';
 import { getCoordinatesOfEvent } from './utils';
 import useResizableEvent from './hooks/useResizableEvent';
 import { useDraggable } from '@dnd-kit/core';
-import { forwardRef, useMemo } from 'react';
+import { useMemo } from 'react';
 import { CalendarView } from '../types';
+import { SnackEvent } from '../../../redux/events/types';
 
-export type EventCardProps = {
-	startTime: Date;
-	endTime: Date;
-	title: string;
-	description: string;
-	location: string;
-	color: string;
-	id: string;
-};
-
-const CalendarEventCardContent = (props: EventCardProps) => {
+const CalendarEventCardContent = (props: SnackEvent) => {
 	const [bgColor, textColor, bgHoverColor, textHoverColor] =
 		EVENT_COLORS[props.color];
 
@@ -51,10 +42,10 @@ const CalendarEventCardContent = (props: EventCardProps) => {
 };
 
 const CalendarEventCard = (
-	props: EventCardProps & {
+	props: SnackEvent & {
 		trackLength: number;
 		id: string;
-		updateEvent: (event: EventCardProps) => void;
+		updateEvent: (event: SnackEvent) => void;
 		date: Date;
 		view: CalendarView;
 	},
@@ -88,11 +79,8 @@ const CalendarEventCard = (
 	const [bgColor, textColor, bgHoverColor, textHoverColor, ringColor] =
 		EVENT_COLORS[props.color];
 
-	console.log({ track: props.trackLength, coords, height });
-
 	return (
 		<div>
-			<div className="h-2 bg-white" />
 			<div
 				ref={setNodeRef}
 				{...attributes}
@@ -117,7 +105,6 @@ const CalendarEventCard = (
 				)}>
 				<CalendarEventCardContent {...props} />
 			</div>
-			<div className="h-2 bg-white cursor-s-resize" />
 		</div>
 	);
 };

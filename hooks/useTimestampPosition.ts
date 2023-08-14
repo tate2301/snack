@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { HOUR_HEIGHT } from '../constants/dimensions';
+import { HOUR_HEIGHT } from '../constants/styles';
 
 // Take current time and express it as percentage of 24 hours
 const useTimestampPosition = () => {

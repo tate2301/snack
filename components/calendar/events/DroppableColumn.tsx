@@ -32,7 +32,7 @@ const DroppableColumn = (props: { idx: number; time: Date }) => {
 
 const DroppableTimeSlot = (props: { time: Date }) => {
 	const id = useRef(generateUUID());
-	const { setNodeRef } = useDroppable({
+	const { setNodeRef, isOver } = useDroppable({
 		id: id.current,
 		data: {
 			type: 'droppableDay',
@@ -46,7 +46,7 @@ const DroppableTimeSlot = (props: { time: Date }) => {
 				height: `calc(100% / 4)`,
 			}}
 			ref={setNodeRef}
-			className={clsx('hover:bg-zinc-100')}
+			className={clsx('hover:bg-zinc-100', isOver && 'bg-accent-4')}
 		/>
 	);
 };

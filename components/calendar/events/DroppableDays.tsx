@@ -7,7 +7,7 @@ import { isEqual, startOfDay, startOfToday } from 'date-fns';
 import Timestamp from '../canvas/Timestamp';
 import EventsTrack from './Track';
 import DroppableColumn from './DroppableColumn';
-import { HOUR_HEIGHT } from '../../../constants/dimensions';
+import { HOUR_HEIGHT } from '../../../constants/styles';
 import { CalendarView } from '../types';
 
 // 5m intervals = 288 intervals per day with 80px per hr

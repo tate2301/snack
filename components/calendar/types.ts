@@ -1,4 +1,4 @@
-import { EventCardProps } from './events/EventCard';
+import { SnackEvent } from '../../redux/events/types';
 
 export enum CalendarDefs {
 	TimezoneWidth = 'w-24',
@@ -20,9 +20,9 @@ export enum CalendarViewDirection {
 export type CalendarProps = {
 	selectedDate: Date;
 	selectDate: (d: Date) => void;
-	events: EventCardProps[];
-	createEvent: (e: EventCardProps) => void;
-	updateEvent: (e: EventCardProps) => void;
+	events: SnackEvent[];
+	createEvent: (event: SnackEvent) => void;
+	updateEvent: (event: SnackEvent) => void;
 };
 
 export type DayCalendarProps = {

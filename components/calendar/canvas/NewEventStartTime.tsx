@@ -2,7 +2,7 @@ import { useState, useEffect, MutableRefObject } from 'react';
 import { Collision } from '@dnd-kit/core';
 import { startOfToday } from 'date-fns';
 import { convertCoordinatesToTimeRounded } from '../events/utils';
-import { HOUR_HEIGHT } from '../../../constants/dimensions';
+import { HOUR_HEIGHT } from '../../../constants/styles';
 
 const NewEventStartTime = (props: {
 	topCollision: Collision;

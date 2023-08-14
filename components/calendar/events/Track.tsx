@@ -1,15 +1,16 @@
 import { add } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
-import CalendarEventCard, { EventCardProps } from './EventCard';
-import { generateEventDescription, generateEventTitle, getCoordinatesOfEvent, getRandomColorForEvent } from './utils';
-import { generateUUID } from '../../../lib/functions';
+import CalendarEventCard from './EventCard';
+import { generateEventTitle, getCoordinatesOfEvent } from './utils';
 import { CalendarView } from '../types';
+import { SnackEvent } from '../../../redux/events/types';
+import { createTemplateEvent } from '../../../redux/events/utils';
 
 type EventTrackProps = {
 	date: Date;
-	events: EventCardProps[];
-	updateEvent: (event: EventCardProps) => void;
-	createEvent: (event: EventCardProps) => void;
+	events: SnackEvent[];
+	updateEvent: (event: SnackEvent) => void;
+	createEvent: (event: SnackEvent) => void;
 	view: CalendarView;
 };
 
@@ -41,16 +42,11 @@ const EventsTrack = (props: EventTrackProps) => {
 
 		setStartTimeY(coordinates.startY);
 
-		props.createEvent({
-			color: getRandomColorForEvent(),
-			description: generateEventDescription(),
-			title: generateEventTitle(),
-			location: '',
-			// round start time to the nearest 5
-			startTime: date,
-			endTime: add(date, { minutes: 0, hours: 1 }),
-			id: generateUUID(),
-		});
+		const event = createTemplateEvent(generateEventTitle());
+		event.startTime = date;
+		event.endTime = add(date, { minutes: 30 });
+
+		props.createEvent(event);
 	};
 
 	// set the track length when ref is set
@@ -64,8 +60,8 @@ const EventsTrack = (props: EventTrackProps) => {
 		<div
 			onDoubleClick={onCreateEvent}
 			ref={ref}
-			className='absolute top-0 left-0 w-full h-full'>
-			<div className='relative w-full h-full'>
+			className="absolute top-0 left-0 w-full h-full !border-0">
+			<div className="relative w-full h-full">
 				{props.events.map((event, idx) => (
 					<CalendarEventCard
 						view={props.view}

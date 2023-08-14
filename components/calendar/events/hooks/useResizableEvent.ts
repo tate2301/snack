@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { HOUR_HEIGHT } from '../../../../constants/dimensions';
+import { HOUR_HEIGHT } from '../../../../constants/styles';
 
 const useResizableEvent = (event_height: number) => {
 	const [height, setHeight] = useState(0);

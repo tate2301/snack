@@ -3,14 +3,14 @@ import '../styles/global.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { Database } from '../lib/database';
-import { StrictMode } from 'react';
 import CommandBar from '../components/commandbar';
 import { AuthContextProvider } from '../context/AuthContext';
+import Inspect from 'inspx';
 
 export default function App({ Component, pageProps }) {
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const db = Database.getInstance();
 	}, []);
 
@@ -24,7 +24,6 @@ export default function App({ Component, pageProps }) {
 				</Head>
 
 				<Provider store={store}>
-					<CommandBar />
 					<DndContext>
 						<Component {...pageProps} />
 					</DndContext>

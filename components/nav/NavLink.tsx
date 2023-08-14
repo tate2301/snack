@@ -12,7 +12,7 @@ function NavLink(props: {
 	const isActive = useMemo(() => {
 		// deep compare href
 		// @ts-ignore
-		return router.query.activeTab === props.href.query?.activeTab;
+		return router.query.active === props.href.query?.active;
 	}, [router, props.href]);
 	return (
 		<Link
@@ -26,8 +26,8 @@ function NavLink(props: {
 			href={props.href}>
 			{isActive && (
 				<motion.span
-					layoutId='bubble'
-					className='absolute inset-0 z-10 bg-surface-4 mix-blend-multiply rounded-xl'
+					layoutId="bubble"
+					className="absolute inset-0 z-10 bg-surface-4 mix-blend-multiply rounded-xl"
 					style={{ borderRadius: 9999 }}
 					transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
 				/>

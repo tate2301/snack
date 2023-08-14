@@ -1,82 +1,84 @@
 'use client';
-import { ReactNode, useMemo } from 'react';
 import CalendarLayout from '../../layouts/CalendarLayout';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import clsx from 'clsx';
-import { generateUUID } from '../../lib/functions';
 import CreateTask from '../../components/create/CreateTask';
+import NavLink from '../../components/nav/NavLink';
+import { useAppSelector } from '../../redux/store';
+import { SnackTaskStatus } from '../../redux/tasks/types';
+import { selectAllTasks, selectTaskByStatus } from '../../redux/tasks';
+import InboxIcon from '../../icons/InboxIcon';
+import { useRouter } from 'next/router';
+import CalendarIcon from '../../icons/CalendarIcon';
 
 export default function Page() {
+	const router = useRouter();
+	const { active } = router.query as {
+		active: 'all' | 'complete' | 'in-progress';
+	};
+	const tasks = useAppSelector(selectAllTasks);
+	const completeTasks = useAppSelector((state) =>
+		selectTaskByStatus(state, SnackTaskStatus.Complete),
+	);
+
+	const tabs = {
+		all: tasks,
+		complete: completeTasks,
+	};
+
+	const t = (n: number) => n * 1000;
 
 	return (
 		<CalendarLayout>
-			<main className={'h-full'}>
-				<Nav />
-				<CreateTask />
-				<div className='flex flex-col gap-2 mt-4'>
-					<TaskListItem title='Design new App icon to replace eletron logo' id={generateUUID()} />
-					<TaskListItem title='Design new App icon to replace eletron logo' id={generateUUID()} />
+			<main className={'h-full flex gap-4 items-start'}>
+				<div className="flex-1">
+					<div className="flex gap-4 items-center mb-8">
+						<h1 className="text-3xl font-semibold text-surface-12">
+							Will do maybe later
+						</h1>
+					</div>
+					<CreateTask />
+					<motion.div className="flex flex-col gap-2 mt-4">
+						<AnimatePresence initial={false}>
+							{tasks.map((task) => (
+								<motion.div
+									initial={{
+										opacity: 0,
+										height: 0,
+									}}
+									animate={{
+										opacity: 1,
+										height: 'auto',
+										transition: {
+											type: 'spring',
+											bounce: 0.3,
+											opactiy: {
+												delay: t(0.02),
+											},
+										},
+									}}
+									exit={{
+										opacity: 0,
+										height: 0,
+									}}
+									transition={{
+										type: 'spring',
+										bounce: 0,
+										duration: t(0.15),
+										opactiy: {
+											duration: t(0.03),
+										},
+									}}>
+									<TaskListItem
+										key={task.id}
+										{...task}
+									/>
+								</motion.div>
+							))}
+						</AnimatePresence>
+					</motion.div>
 				</div>
 			</main>
 		</CalendarLayout>
-	);
-}
-
-const Nav = () => {
-	return (
-		<motion.div className='flex gap-2 mb-4'>
-			<NavLink
-				href={{
-					query: {
-						activeTab: 'inbox',
-					},
-				}}>
-				Inbox
-			</NavLink>
-			<NavLink
-				href={{
-					query: {
-						activeTab: 'complete',
-					},
-				}}>
-				Complete
-			</NavLink>
-		</motion.div>
-	);
-};
-
-function NavLink(props: {
-	children: ReactNode;
-	href: Parameters<typeof Link>[0]['href'];
-}) {
-	const router = useRouter();
-	const isActive = useMemo(() => {
-		// deep compare href
-		// @ts-ignore
-		return router.query.activeTab === props.href.query?.activeTab;
-	}, [router, props.href]);
-	return (
-		<Link
-			className={clsx(
-				'relative px-4 py-1 rounded-xl',
-				isActive && 'font-semibold text-surface-12',
-			)}
-			style={{
-				WebkitTapHighlightColor: 'transparent',
-			}}
-			href={props.href}>
-			{isActive && (
-				<motion.span
-					layoutId='bubble'
-					className='absolute inset-0 z-10 bg-surface-4 mix-blend-multiply rounded-xl'
-					style={{ borderRadius: 9999 }}
-					transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-				/>
-			)}
-			{props.children}
-		</Link>
 	);
 }

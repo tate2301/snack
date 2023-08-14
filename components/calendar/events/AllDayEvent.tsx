@@ -3,18 +3,24 @@ import { useCallback, useRef } from 'react';
 import { generateUUID } from '../../../lib/functions';
 import clsx from 'clsx';
 import { endOfToday, startOfDay } from 'date-fns';
-import { EventCardProps } from './EventCard';
 import { generateEventTitle, getRandomColorForEvent } from './utils';
+import { SnackEvent } from '../../../redux/events/types';
+import { createTemplateEvent } from '../../../redux/events/utils';
+import { useAppSelector } from '../../../redux/store';
+import {
+	selectAllDayEvents,
+	selectAllDayEventsByDate,
+} from '../../../redux/events';
 
 function AllDayEvent(props: {
 	week: Date[];
-	createEvent: (event: EventCardProps) => void;
-	updateEvent: (event: EventCardProps) => void;
-	events: EventCardProps[];
+	createEvent: (event: SnackEvent) => void;
+	updateEvent: (event: SnackEvent) => void;
+	events: SnackEvent[];
 }) {
 	return (
 		<div
-			className="grid uppercase divide-x bg-surface-2 rounded-xl"
+			className="grid uppercase bg-surface-2 rounded-xl border"
 			style={{
 				gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 			}}>
@@ -32,9 +38,12 @@ function AllDayEvent(props: {
 
 const DroppableEventSlot = (props: {
 	time: Date;
-	createEvent: (event: EventCardProps) => void;
-	events: EventCardProps[];
+	createEvent: (event: SnackEvent) => void;
+	events: SnackEvent[];
 }) => {
+	const allDayEventsForDay = useAppSelector((state) =>
+		selectAllDayEventsByDate(state, props.time),
+	);
 	const id = useRef(generateUUID());
 	const { setNodeRef, isOver } = useDroppable({
 		id: id.current,
@@ -45,15 +54,12 @@ const DroppableEventSlot = (props: {
 	});
 
 	const onDoubleClick = useCallback(() => {
-		props.createEvent({
-			id: generateUUID(),
-			title: generateEventTitle(),
-			description: '',
-			color: getRandomColorForEvent(),
-			startTime: startOfDay(props.time),
-			endTime: endOfToday(),
-			location: '',
-		});
+		const event = createTemplateEvent(generateEventTitle());
+		event.startTime = startOfDay(props.time);
+		event.endTime = endOfToday();
+		event.allDay = true;
+
+		props.createEvent(event);
 	}, [props.createEvent]);
 
 	return (
@@ -64,7 +70,7 @@ const DroppableEventSlot = (props: {
 				'hover:bg-zinc-100 flex flex-col items-center justify-center h-12 uppercase',
 				isOver && 'bg-primary-4',
 			)}>
-			{props.events.length}
+			{allDayEventsForDay.length}
 		</div>
 	);
 };

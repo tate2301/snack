@@ -8,13 +8,14 @@ function CalendarIcon(props: { className?: string }) {
 			height="24"
 			fill="none"
 			{...props}
-			viewBox="0 0 25 24">
+			viewBox="0 0 24 24">
 			<path
+				d="M4.125 8.57139H19.875M6.16071 2V3.71449M17.625 2V3.71428M21 6.71428L21 19C21 20.6569 19.6569 22 18 22H6C4.34315 22 3 20.6569 3 19V6.71428C3 5.05742 4.34315 3.71428 6 3.71428H18C19.6569 3.71428 21 5.05742 21 6.71428Z"
 				stroke="currentColor"
+				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-				strokeWidth="2"
-				d="M4.125 8.571h15.75M6.161 2v1.714M17.625 2v1.714m3.375 3V19a3 3 0 01-3 3H6a3 3 0 01-3-3V6.714a3 3 0 013-3h12a3 3 0 013 3z"></path>
+			/>
 		</svg>
 	);
 }

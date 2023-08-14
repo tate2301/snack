@@ -14,9 +14,13 @@ import {
 	startOfWeek,
 } from 'date-fns';
 import { useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import { selectSelectedDate, updateSelectedDate } from '../redux/calendar';
 
 const useCalendarDates = (today: Date) => {
-	const [selectedDate, setSelectedDate] = useState<Date | null>(today);
+	const dispatch = useAppDispatch();
+	const selectedDate = useAppSelector(selectSelectedDate);
+
 	const [currentMonth, setCurrentMonth] = useState<string>(
 		format(selectedDate, 'MMMM yyyy'),
 	);
@@ -42,7 +46,7 @@ const useCalendarDates = (today: Date) => {
 	);
 
 	const selectDate = (day: Date) => {
-		setSelectedDate(day);
+		dispatch(updateSelectedDate(day));
 	};
 
 	const nextDate = () => {
