@@ -19,7 +19,7 @@ const SelectList = (props: {
 		<Select
 			defaultValue={props.defaultListId}
 			onValueChange={props.onChange}>
-			<SelectTrigger className="min-w-[180px] w-fit">
+			<SelectTrigger className="min-w-[120px] w-fit">
 				<div className="flex gap-4">
 					<SelectValue placeholder={'No list'} />
 				</div>

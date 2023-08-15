@@ -31,6 +31,7 @@ import {
 import { useFormik } from 'formik';
 import { SnackList } from '../../redux/lists/types';
 import { generateUUID } from '../../lib/functions';
+import { UserAccount } from '../UserAccount';
 
 const tabs: NavItemType[] = [
 	{
@@ -103,7 +104,10 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="bg-white bg-opacity-75 h-full border border-surface-4 pt-16 border-r">
+			<div className="bg-white  h-full border border-surface-4 pt-8 border-r">
+				<div className="mb-4">
+					<UserAccount />
+				</div>
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}

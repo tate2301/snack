@@ -54,12 +54,14 @@ export default function Page() {
 						</div>
 					</div>
 
-					<CreateTask />
 					<motion.div className="flex flex-col gap-2 mt-8">
 						<AnimatePresence
 							key={listObject.id}
 							initial={false}>
-							<div className="flex justify-between p-2 px-4 bg-surface-6 text-surface-12 rounded-xl">
+							<div className="mb-8">
+								<CreateTask />
+							</div>
+							<div className="flex justify-between p-2 px-4 bg-zinc-900 bg-opacity-10 text-surface-12 rounded-xl mb-2">
 								<h2 className="font-semibold">{listObject.name}</h2>
 								<h2 className="font-semibold uppercase flex items-center gap-2 text-surface-10">
 									02:47:00
@@ -68,6 +70,7 @@ export default function Page() {
 									</button>
 								</h2>
 							</div>
+
 							{tasksForList.map((task) => (
 								<motion.div
 									initial={{

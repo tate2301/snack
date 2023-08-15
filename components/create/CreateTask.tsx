@@ -158,13 +158,13 @@ const CreateTaskForm = (props: {
 
 			<div className={'flex items-center justify-between gap-2'}>
 				<div className="flex gap-2">
-					<AddDeadline
-						selectDate={(date) => form.setFieldValue('deadline', date)}
-						selectedDate={form.values.deadline}
-					/>
 					<SelectList
 						defaultListId={form.values.list}
 						onChange={(val) => form.setFieldValue('list', val)}
+					/>
+					<AddDeadline
+						selectDate={(date) => form.setFieldValue('deadline', date)}
+						selectedDate={form.values.deadline}
 					/>
 				</div>
 				{false && (
