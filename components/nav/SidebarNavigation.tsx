@@ -23,6 +23,14 @@ import InboxIcon from '../../icons/InboxIcon';
 import { CheckIcon } from '@heroicons/react/24/solid';
 import useClickOutside from '../../hooks/useClickOutside';
 import TargetIcon from '../../icons/TargetIcon';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import {
+	addListItem,
+	selectAllLists as selectAllLists,
+} from '../../redux/lists';
+import { useFormik } from 'formik';
+import { SnackList } from '../../redux/lists/types';
+import { generateUUID } from '../../lib/functions';
 
 const tabs: NavItemType[] = [
 	{
@@ -145,40 +153,56 @@ function NavItem(
 }
 
 function Lists({}) {
+	const lists = useAppSelector(selectAllLists);
 	return (
 		<div className="flex flex-col gap-2 p-2 mt-8">
 			<p className="px-4 uppercase">Lists</p>
 			<div>
-				<div className="flex flex-col justify-center">
-					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-success-9"></p>
-						<p>Sideprojects</p>
-					</button>
-				</div>
-				<div className="flex flex-col justify-center">
-					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
-						<p className="flex items-center justify-between flex-1">
-							<span>School run</span>
-							<ArrowPathIcon className="w-4 h-4" />
-						</p>
-					</button>
-				</div>
-				<div className="flex flex-col justify-center">
-					<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
-						<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
-						<p>Grocery shopping</p>
-					</button>
-				</div>
+				{lists.map((list) => (
+					<div className="flex flex-col justify-center">
+						<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+							<p
+								style={{
+									borderColor: `var(--${list.color}-10)`,
+								}}
+								className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square border-2"></p>
+							<p>{list.name}</p>
+						</button>
+					</div>
+				))}
 			</div>
 			<CreateList />
 		</div>
 	);
 }
 
+const colors = ['green', 'purple', 'tomato', 'blue', 'amber', 'gray'];
+const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
 function CreateList() {
+	const dispatch = useAppDispatch();
+
 	const [isOpened, toggle] = useToggle(false);
 	const ref = useRef(null);
+
+	const form = useFormik({
+		initialValues: {
+			title: '',
+		},
+		onSubmit: (values) => {
+			if (!values.title) return toggle();
+			const newList: SnackList = {
+				name: values.title,
+				color: getRandomColor(),
+				id: generateUUID(),
+				tasks: [],
+			};
+
+			dispatch(addListItem(newList));
+			form.resetForm();
+			toggle();
+		},
+	});
 
 	useClickOutside(ref, toggle);
 
@@ -199,6 +223,7 @@ function CreateList() {
 			{isOpened && (
 				<form
 					ref={ref}
+					onSubmit={form.handleSubmit}
 					className="p-2 rounded-xl bg-surface-1 border">
 					<div className="flex gap-2 w-full items-center">
 						<button
@@ -208,6 +233,7 @@ function CreateList() {
 						</button>
 						<input
 							name={'title'}
+							{...form.getFieldProps('title')}
 							autoFocus
 							className="p-2 flex-1 bg-transparent outline-none font-semibold"
 							placeholder="Enter list name"

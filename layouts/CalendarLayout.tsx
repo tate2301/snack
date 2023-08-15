@@ -30,7 +30,7 @@ export default function CalendarLayout(props) {
 					}>
 					<NavigationSidebar />
 					<div
-						className={clsx('h-full p-4 pt-16 mx-auto max-w-screen-sm w-full')}>
+						className={clsx('h-full p-4 pt-16 mx-auto max-w-screen-sm flex-1')}>
 						{props.children}
 					</div>
 				</div>

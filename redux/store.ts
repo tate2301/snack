@@ -4,10 +4,7 @@ import { tasksSlice } from './tasks';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { calendarSlice } from './calendar';
 import { eventsSlice } from './events';
-
-const listsReducer = (state = [], action) => {
-	return state;
-};
+import { listSlice } from './lists';
 
 const remindersReducer = (state = [], action) => {
 	return state;
@@ -24,7 +21,7 @@ const settingsReducer = (state = {}, action) => {
 const store = configureStore({
 	reducer: {
 		calendars: calendarSlice.reducer,
-		lists: listsReducer,
+		lists: listSlice.reducer,
 		events: eventsSlice.reducer,
 		reminders: remindersReducer,
 		user: userReducer,

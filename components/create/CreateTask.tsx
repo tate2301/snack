@@ -23,6 +23,8 @@ import { useFormik } from 'formik';
 import Popover from '../ui/popover';
 import Datepicker from '../ui/datepicker';
 import { format, startOfToday } from 'date-fns';
+import SelectList from './SelectList';
+import { addTaskToList } from '../../redux/lists';
 
 const CreateTask = () => {
 	const [isFocused, toggle, setIsFocused] = useToggle(false);
@@ -79,6 +81,7 @@ const CreateTaskForm = (props: {
 		initialValues: {
 			title: '',
 			deadline: undefined,
+			list: 'default',
 		},
 		onSubmit: (values) => {
 			onSubmit(values);
@@ -103,6 +106,7 @@ const CreateTaskForm = (props: {
 		};
 
 		dispatch(addTask(task));
+		dispatch(addTaskToList({ listId: data.list, taskId: task.id }));
 		form.resetForm();
 		props.setIsFocused(false);
 	};
@@ -153,10 +157,16 @@ const CreateTaskForm = (props: {
 			</div>
 
 			<div className={'flex items-center justify-between gap-2'}>
-				<AddDeadline
-					selectDate={(date) => form.setFieldValue('deadline', date)}
-					selectedDate={form.values.deadline}
-				/>
+				<div className="flex gap-2">
+					<AddDeadline
+						selectDate={(date) => form.setFieldValue('deadline', date)}
+						selectedDate={form.values.deadline}
+					/>
+					<SelectList
+						defaultListId={form.values.list}
+						onChange={(val) => form.setFieldValue('list', val)}
+					/>
+				</div>
 				{false && (
 					<button
 						type={'button'}
@@ -192,14 +202,14 @@ function AddDeadline(props: {
 				<button
 					type={'button'}
 					className={clsx(
-						'p-2 rounded-xl items-center',
+						'p-2 rounded-xl items-center border flex-shrink-0',
 						props.selectedDate
-							? 'bg-primary-4 text-primary-11'
-							: 'bg-surface-2 hover:bg-danger-3 hover:text-danger-11 text-surface-10',
+							? 'bg-primary-4 text-primary-11 border-primary-6'
+							: 'bg-white border-surface-4 hover:bg-danger-3 hover:text-danger-11 hover:border-danger-6 text-surface-10',
 					)}>
 					<ClockIcon className={'h-6 w-6'} />
 					{props.selectedDate
-						? format(props.selectedDate, 'EEE dd yyyy')
+						? format(props.selectedDate, 'dd MMM yyyy')
 						: 'Deadline'}
 				</button>
 			</Popover.Trigger>

@@ -49,33 +49,51 @@ export default function Datepicker(props: CalendarPreviewProps) {
 	};
 
 	return (
-		<div className="flex-none hidden w-full md:block">
-			<div className="flex items-baseline justify-between px-2 text-center text-zinc-900">
+		<div className="w-full">
+			<div className="flex gap-2 mb-4">
+				<button
+					type="button"
+					onClick={() => selectDate(add(startOfToday(), { days: 1 }))}
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					Tomorrow
+				</button>
+				<button
+					type="button"
+					onClick={() => selectDate(add(startOfToday(), { days: 5 }))}
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					In 5 days
+				</button>
+				<button
+					type="button"
+					onClick={() => selectDate(endOfMonth(startOfToday()))}
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					Monthend
+				</button>
+			</div>
+			<div className="flex items-center justify-between px-2 text-center text-zinc-900">
+				<button
+					type="button"
+					onClick={prevMonth}
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-lg bg-surface-2 text-surface-12">
+					<span className="sr-only">Previous month</span>
+					<ChevronLeftIcon
+						className="w-5 h-5"
+						aria-hidden="true"
+					/>
+				</button>
 				<p className="font-semibold uppercase text-zinc-900">
 					{format(firstDayOfCurrentMonth, 'MMMM yyyy')}
 				</p>
-				<div className="flex gap-4">
-					<button
-						type="button"
-						onClick={prevMonth}
-						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-white hover:shadow rounded-lg bg-surface-1 border border-surface-4">
-						<span className="sr-only">Previous month</span>
-						<ChevronLeftIcon
-							className="w-5 h-5"
-							aria-hidden="true"
-						/>
-					</button>
-					<button
-						type="button"
-						onClick={nextMonth}
-						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-white hover:shadow rounded-lg bg-surface-1 border border-surface-4">
-						<span className="sr-only">Next month</span>
-						<ChevronRightIcon
-							className="w-5 h-5"
-							aria-hidden="true"
-						/>
-					</button>
-				</div>
+				<button
+					type="button"
+					onClick={nextMonth}
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-lg bg-surface-2 text-surface-12">
+					<span className="sr-only">Next month</span>
+					<ChevronRightIcon
+						className="w-5 h-5"
+						aria-hidden="true"
+					/>
+				</button>
 			</div>
 			<div className="grid grid-cols-7 mt-6 text-xs leading-6 text-center uppercase text-zinc-500">
 				<div>S</div>

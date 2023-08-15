@@ -23,7 +23,6 @@ export default function Page() {
 							Good evening, Tatenda
 						</h1>
 					</div>
-					<p className="text-xl">You have {inProgress.length} tasks</p>
 				</div>
 				<CreateTask />
 				<motion.div className="flex flex-col gap-2 mt-4">
