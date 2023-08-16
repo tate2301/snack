@@ -1,10 +1,4 @@
-import {
-	ArrowPathIcon,
-	CalendarDaysIcon,
-	PlusIcon,
-	TrashIcon,
-} from '@heroicons/react/24/outline';
-import CalendarIcon from '../../icons/CalendarIcon';
+import { CheckCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import useToggle from '../../hooks/useToggle';
 import {
 	AppNavigation,
@@ -16,7 +10,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import clsx from 'clsx';
 import Kbd from '../ui/typography/Kbd';
-import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
 import ExclusionTab from '../Tabs/ExlusionTab';
 import Link from 'next/link';
 import InboxIcon from '../../icons/InboxIcon';
@@ -31,7 +24,10 @@ import {
 import { useFormik } from 'formik';
 import { SnackList } from '../../redux/lists/types';
 import { generateUUID } from '../../lib/functions';
-import { UserAccount } from '../UserAccount';
+import { UserAccount } from '../ControlCenter';
+import Popover from '../ui/popover';
+import TrashIcon from '../../icons/TrashIcon';
+import InProgressIcon from '../../icons/InProgressIcon';
 
 const tabs: NavItemType[] = [
 	{
@@ -42,19 +38,20 @@ const tabs: NavItemType[] = [
 	},
 
 	{
-		icon: <TargetIcon className="w-5 h-5 text-surface-12" />,
+		icon: <InProgressIcon className="w-5 h-5 text-surface-12" />,
 		value: 'today',
-		label: 'Focus',
+		label: 'In Progress',
 		href: '/today',
 	},
 	{
-		icon: <CheckIcon className="w-5 h-5 text-surface-12" />,
+		icon: <CheckCircleIcon className="w-5 h-5 text-surface-12" />,
 		value: 'notes',
 		label: 'Complete',
 		href: '/complete',
 	},
 	{
 		icon: <TrashIcon className="w-5 h-5 text-surface-12" />,
+
 		value: 'trash',
 		label: 'Trash',
 		href: '/trash',
@@ -104,7 +101,7 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="bg-white  h-full border border-surface-4 pt-8 border-r">
+			<div className="bg-white h-full border border-surface-4 border-r">
 				<div className="mb-4">
 					<UserAccount />
 				</div>
@@ -145,11 +142,14 @@ function NavItem(
 				isActive={isActive}>
 				<p
 					className={clsx(
-						'p-2 gap-4 flex w-full transition-all text-md font-semibold rounded-xl items-center',
-						props.active ? 'text-surface-12' : 'text-surface-11',
+						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
+						props.active && '',
 					)}>
-					{props.icon}
-					{props.label}
+					<span className="gap-4 flex">
+						{props.icon}
+						{props.label}
+					</span>
+					<span>{8}</span>
 				</p>
 			</ExclusionTab>
 		</Link>
@@ -192,12 +192,13 @@ function CreateList() {
 	const form = useFormik({
 		initialValues: {
 			title: '',
+			color: getRandomColor(),
 		},
 		onSubmit: (values) => {
 			if (!values.title) return toggle();
 			const newList: SnackList = {
 				name: values.title,
-				color: getRandomColor(),
+				color: values.color,
 				id: generateUUID(),
 				tasks: [],
 			};
@@ -228,13 +229,16 @@ function CreateList() {
 				<form
 					ref={ref}
 					onSubmit={form.handleSubmit}
-					className="p-2 rounded-xl bg-surface-1 border">
+					style={{
+						backgroundColor: `var(--${form.values.color}-1)`,
+						borderColor: `var(--${form.values.color}-6)`,
+					}}
+					className="p-2 rounded-xl border">
 					<div className="flex gap-2 w-full items-center">
-						<button
-							type={'button'}
-							className="p-4 rounded-xl hover:bg-surface-4">
-							<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
-						</button>
+						<SelectColor
+							value={form.values.color}
+							onChange={(color) => form.setFieldValue('color', color)}
+						/>
 						<input
 							name={'title'}
 							{...form.getFieldProps('title')}
@@ -248,3 +252,45 @@ function CreateList() {
 		</>
 	);
 }
+
+const SelectColor = (props: {
+	value: string;
+	onChange: (color: string) => void;
+}) => {
+	const [isOpened, toggle, onChange] = useToggle(false);
+	return (
+		<Popover
+			open={isOpened}
+			onOpenChange={(open) => onChange(open)}>
+			<Popover.Trigger>
+				<button
+					type={'button'}
+					className="p-2 rounded-xl hover:bg-surface-4">
+					<p
+						className="flex items-center h-5 gap-4 font-medium rounded-md aspect-square border-2"
+						style={{
+							borderColor: `var(--${props.value}-10)`,
+						}}></p>
+				</button>
+			</Popover.Trigger>
+			<Popover.Content>
+				<div className="grid grid-cols-4 gap-4 w-fit">
+					{colors.map((color) => (
+						<button
+							key={color}
+							onClick={() => props.onChange(color)}
+							style={{
+								backgroundColor: `var(--${color}-10)`,
+							}}
+							className={clsx(
+								'rounded-xl hover:bg-surface-4',
+								props.value === color && 'ring-2 ring-offset-2 ring-primary-10',
+							)}>
+							<div className="h-4 w-4 rounded-xl" />
+						</button>
+					))}
+				</div>
+			</Popover.Content>
+		</Popover>
+	);
+};

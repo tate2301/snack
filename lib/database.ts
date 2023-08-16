@@ -18,3 +18,15 @@ export class Database {
 		return new Database();
 	};
 }
+
+interface Repository<T> {
+	db: Database;
+
+	save: (entity: T) => T;
+	delete: (entity: T) => void;
+
+	findAll(): T[];
+	findOneById: (id: string) => T | undefined;
+	findOne: (predicate: (entity: T) => boolean) => T | undefined;
+	updateById: (id: string, entity: T) => T | undefined;
+}

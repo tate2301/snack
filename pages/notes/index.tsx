@@ -25,9 +25,9 @@ const NotesPage = () => {
 					<Nav />
 					<div className={'flex flex-col gap-2'}>
 						<div
-							className={'p-3 flex flex-col rounded-lg bg-surface-1 shadow-sm'}>
+							className={'p-3 flex flex-col rounded-xl bg-surface-1 shadow-sm'}>
 							<div className={'flex items-center gap-2'}>
-								<div className={'h-6 rounded-lg aspect-square'}>
+								<div className={'h-6 rounded-xl aspect-square'}>
 									<img
 										src={'https://arc.net/favicon.png'}
 										alt={'Arc logo'}
@@ -56,9 +56,9 @@ const NotesPage = () => {
 							</div>
 						</div>
 						<div
-							className={'p-3 flex flex-col rounded-lg bg-surface-1 shadow-sm'}>
+							className={'p-3 flex flex-col rounded-xl bg-surface-1 shadow-sm'}>
 							<div className={'flex items-center gap-2'}>
-								<p className={'h-4 rounded-lg aspect-square bg-zinc-900'} />
+								<p className={'h-4 rounded-xl aspect-square bg-zinc-900'} />
 								<div className={'flex items-baseline gap-2'}>
 									<p className={'text-surface-12'}>rgba(0, 0, 0, 0.5)</p>
 								</div>
@@ -68,7 +68,7 @@ const NotesPage = () => {
 								<p className={'text-sm'}>No additional text</p>
 							</div>
 						</div>
-						<div className={'p-3 flex flex-col rounded-lg bg-surface-1'}>
+						<div className={'p-3 flex flex-col rounded-xl bg-surface-1'}>
 							<div className={'flex items-center gap-2'}>
 								<p className={'h-4 rounded aspect-square bg-warning-10'} />
 								<div className={'flex items-baseline gap-2'}>

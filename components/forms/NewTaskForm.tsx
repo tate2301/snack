@@ -14,7 +14,7 @@ export default function NewTaskForm() {
 					exit={{ opacity: 0 }}>
 					<button
 						onClick={toggle}
-						className="flex gap-2 items-center p-2 text-zinc-900 rounded-lg bg-zinc-100 w-full">
+						className="flex gap-2 items-center p-2 text-zinc-900 rounded-xl bg-zinc-100 w-full">
 						<PlusIcon className="w-5 h-5" />
 						<p>Add a new task</p>
 					</button>

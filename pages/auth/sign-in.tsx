@@ -37,7 +37,7 @@ export default function SignIn() {
 							id="email"
 							name="email"
 							autoComplete="off"
-							className="w-full border border-zinc-200 rounded-lg px-4 py-2 mt-1"
+							className="w-full border border-zinc-200 rounded-xl px-4 py-2 mt-1"
 						/>
 					</div>
 					<div>
@@ -51,7 +51,7 @@ export default function SignIn() {
 							id="password"
 							name="password"
 							autoComplete="off"
-							className="w-full border border-zinc-200 rounded-lg px-4 py-2 mt-1"
+							className="w-full border border-zinc-200 rounded-xl px-4 py-2 mt-1"
 						/>
 					</div>
 				</div>

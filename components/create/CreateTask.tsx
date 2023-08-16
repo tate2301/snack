@@ -1,17 +1,10 @@
 import useToggle from '../../hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useClickOutside from '../../hooks/useClickOutside';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-	ArrowUpIcon,
-	ClockIcon,
-	LinkIcon,
-	PlusIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowUpIcon, LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Textarea from '../ui/input/textarea';
 import { useAppDispatch } from '../../redux/store';
-import { useForm } from 'react-hook-form';
 import {
 	SnackTask,
 	SnackTaskPriority,
@@ -25,6 +18,8 @@ import Datepicker from '../ui/datepicker';
 import { format, startOfToday } from 'date-fns';
 import SelectList from './SelectList';
 import { addTaskToList } from '../../redux/lists';
+import { CalendarDaysIcon } from '@heroicons/react/24/solid';
+import Kbd from '../ui/typography/Kbd';
 
 const CreateTask = () => {
 	const [isFocused, toggle, setIsFocused] = useToggle(false);
@@ -125,6 +120,20 @@ const CreateTaskForm = (props: {
 		[textAreaRef.current, form, onSubmit],
 	);
 
+	useEffect(() => {
+		if (ref.current) {
+			const evtListener = (evt: KeyboardEvent) => {
+				if (evt.key === 'Escape') props.toggle();
+			};
+
+			ref.current.addEventListener('keydown', evtListener);
+
+			return () => {
+				ref.current?.removeEventListener('keydown', evtListener);
+			};
+		}
+	}, []);
+
 	// // Effects
 	// useClickOutside(ref, () => {
 	// 	form.submitForm().then(props.toggle);
@@ -177,14 +186,24 @@ const CreateTaskForm = (props: {
 						Add link
 					</button>
 				)}
-				<button
-					type={'submit'}
-					className={'p-2 px-4 rounded-xl bg-primary-10 text-white'}>
-					<p className="p-1 rounded-full bg-white">
-						<ArrowUpIcon className="w-4 h-4 text-primary-11 stroke-2" />
-					</p>
-					Add task
-				</button>
+				<div className="flex gap-4">
+					<button
+						type={'button'}
+						onClick={props.toggle}
+						className={'p-2 px-4 rounded-xl text-surface-10'}>
+						Cancel
+						<Kbd keys={['Esc']} />
+					</button>
+					<button
+						type={'submit'}
+						className={'p-2 px-4 rounded-xl bg-primary-10 text-white'}>
+						<p className="p-1 rounded-full bg-white">
+							<ArrowUpIcon className="w-4 h-4 text-primary-11 stroke-2" />
+						</p>
+						Add task
+						<Kbd keys={['Enter']} />
+					</button>
+				</div>
 			</div>
 		</form>
 	);
@@ -196,28 +215,36 @@ function AddDeadline(props: {
 	selectDate: (date: Date) => void;
 	selectedDate?: Date;
 }) {
+	const [isOpen, toggle, setIsOpen] = useToggle(false);
 	return (
-		<Popover>
+		<Popover
+			open={isOpen}
+			onOpenChange={setIsOpen}>
 			<Popover.Trigger>
 				<button
 					type={'button'}
 					className={clsx(
-						'p-2 rounded-xl items-center border flex-shrink-0',
+						'p-2 rounded-xl items-center flex-shrink-0',
 						props.selectedDate
 							? 'bg-primary-4 text-primary-11 border-primary-6'
 							: 'bg-white border-surface-4 hover:bg-danger-3 hover:text-danger-11 hover:border-danger-6 text-surface-10',
 					)}>
-					<ClockIcon className={'h-6 w-6'} />
+					<CalendarDaysIcon className="w-6 h-6" />
 					{props.selectedDate
 						? format(props.selectedDate, 'dd MMM yyyy')
-						: 'Deadline'}
+						: null}
 				</button>
 			</Popover.Trigger>
-			<Popover.Content noClose>
-				<Datepicker
-					value={props.selectedDate ?? startOfToday()}
-					onChange={props.selectDate}
-				/>
+			<Popover.Content>
+				<div className="p-2">
+					<Datepicker
+						value={props.selectedDate ?? startOfToday()}
+						onChange={(date) => {
+							props.selectDate(date);
+							toggle();
+						}}
+					/>
+				</div>
 			</Popover.Content>
 		</Popover>
 	);

@@ -9,7 +9,11 @@ function createWindow() {
 		webPreferences: {
 			nodeIntegration: true,
 		},
-		titleBarStyle: 'customButtonsOnHover',
+		titleBarOverlay: {
+			color: '#ebebeb',
+			symbolColor: '#808080',
+		},
+		titleBarStyle: 'hidden',
 		maximizable: true,
 		icon: path.join(__dirname, './public/app-logo.png'),
 	});

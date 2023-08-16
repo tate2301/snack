@@ -94,7 +94,7 @@
 
 html,
 body {
-	font-size: 12px;
+	font-size: 14px;
 	font-family: 'Inter', sans-serif;
 	font-weight: 500;
 	-webkit-font-smoothing: antialiased;
@@ -118,6 +118,11 @@ body {
 
 .app-bg-isolate {
 	isolation: isolate;
+}
+
+main {
+	padding-bottom: 4rem;
+	@apply mx-auto max-w-screen-md;
 }
 
 /*

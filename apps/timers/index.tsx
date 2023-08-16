@@ -13,11 +13,11 @@ export default function Timers() {
 				<div className="flex items-center justify-between p-4 mb-4 border-b">
 					<p className="font-semibold uppercase ">Focus Timer</p>
 					<div className="flex items-center gap-4">
-						<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-lg shadow">
+						<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-xl shadow">
 							<QueueListIcon className="w-5 h-5" />
 							New list
 						</button>
-						<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-lg shadow">
+						<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-xl shadow">
 							<TimerIcon className="w-5 h-5" />
 							New timer
 						</button>

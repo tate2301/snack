@@ -107,3 +107,16 @@ export const selectTaskByDate = (state: RootState, priority: string) =>
 				task.deadline && isEqual(startOfDay(task.deadline), startOfToday()),
 		)
 		.filter((task) => task.priority === priority);
+
+export const selectOverdueTasksByID = (state: RootState, id: string) => {
+	const task = state.tasks.items.find((task) => task.id === id);
+	if (task) {
+		return task.subtasks.filter(
+			(task) =>
+				task.status !== SnackTaskStatus.Complete &&
+				task.deadline &&
+				task.deadline.getTime() < new Date().getTime(),
+		);
+	}
+	return [];
+};

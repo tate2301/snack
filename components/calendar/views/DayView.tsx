@@ -15,22 +15,22 @@ export default function DayView(props: DayCalendarProps) {
 	return (
 		<div
 			ref={container}
-			className='flex flex-col flex-auto overflow-auto'>
+			className="flex flex-col flex-auto overflow-auto">
 			<div
 				ref={containerNav}
 				style={{
 					gridTemplateColumns: '7rem repeat(1, minmax(6rem, 1fr))',
 				}}
-				className='sticky top-0 z-20 grid px-2 bg-white divide-x ring-1 ring-black ring-opacity-5 sm:pr-8'>
-				<div className='border-zinc-100' />
-				<div className='flex justify-center flex-1 py-2 '>
-					<button className='uppercase'>
+				className="sticky top-0 z-20 grid px-2 bg-white divide-x ring-1 ring-black ring-opacity-5 sm:pr-8">
+				<div className="border-zinc-100" />
+				<div className="flex justify-center flex-1 py-2 ">
+					<button className="uppercase">
 						<span>{format(props.selectedDate, 'EEE')}</span>
 						<span
 							className={clsx(
-								'flex items-start justify-center font-semibold p-1 rounded-lg',
+								'flex items-start justify-center font-semibold p-1 rounded-xl',
 								isEqual(props.selectedDate, startOfToday()) &&
-								'bg-orange-600 text-white px-2',
+									'bg-orange-600 text-white px-2',
 							)}>
 							{format(props.selectedDate, 'dd')}
 						</span>
@@ -44,20 +44,20 @@ export default function DayView(props: DayCalendarProps) {
 				events={props.events}
 				week={props.week}>
 				{({ daysContainerRef }) => (
-					<div className='w-full px-2 border-zinc-200'>
+					<div className="w-full px-2 border-zinc-200">
 						<div
-							className='grid w-full bg-white divide-x'
+							className="grid w-full bg-white divide-x"
 							style={{
 								gridTemplateColumns: '7rem repeat(1, minmax(6rem, 1fr))',
 							}}>
 							<Timezone
-								zone='est'
+								zone="est"
 								timeIntervals={timeIntervals}
 							/>
 
 							<div
 								ref={daysContainerRef}
-								className='relative grid flex-auto grid-cols-1 grid-rows-1 divide-y'>
+								className="relative grid flex-auto grid-cols-1 grid-rows-1 divide-y">
 								<Timestamp />
 								<EventsTrack
 									view={CalendarView.Day}

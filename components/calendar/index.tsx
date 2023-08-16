@@ -162,7 +162,7 @@ const Calendar = (props: CalendarProps) => {
 			<div className="p-2 justify-start items-center flex h-full flex-col gap-8 rounded-xl bg-white ">
 				<button
 					onClick={onToggleCalendar}
-					className="p-2 rounded-lg hover:bg-surface-4 text-surface-10 hover:text-surface-12">
+					className="p-2 rounded-xl hover:bg-surface-4 text-surface-10 hover:text-surface-12">
 					{globalCalendar.preferences.expanded ? (
 						<CollapseSidebarIcon className="w-6 h-6" />
 					) : (

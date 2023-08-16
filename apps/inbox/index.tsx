@@ -26,7 +26,7 @@ export default function Inbox() {
 					<p className="text-lg font-bold text-surface-12">All streams</p>
 					<p>340 tasks, 10 unsorted</p>
 				</div>
-				<button className="flex items-center gap-2 p-2 py-1 font-semibold uppercase transition-all rounded-lg shadow bg-surface-1 text-surface-12">
+				<button className="flex items-center gap-2 p-2 py-1 font-semibold uppercase transition-all rounded-xl shadow bg-surface-1 text-surface-12">
 					<PlusIcon className="w-5 h-5" />
 					<p>New item</p>
 				</button>
@@ -40,7 +40,7 @@ export default function Inbox() {
 						<div className="flex gap-4 px-2">
 							<button
 								type="button"
-								className="-m-1.5 flex flex-none items-center justify-center p-1.5 bg-white shadow rounded-lg">
+								className="-m-1.5 flex flex-none items-center justify-center p-1.5 bg-white shadow rounded-xl">
 								<span className="sr-only">Previous event</span>
 								<ChevronLeftIcon
 									className="w-5 h-5"
@@ -49,7 +49,7 @@ export default function Inbox() {
 							</button>
 							<button
 								type="button"
-								className="-m-1.5 flex flex-none items-center justify-center p-1.5 bg-white shadow rounded-lg">
+								className="-m-1.5 flex flex-none items-center justify-center p-1.5 bg-white shadow rounded-xl">
 								<span className="sr-only">Next event</span>
 								<ChevronRightIcon
 									className="w-5 h-5"
@@ -60,7 +60,7 @@ export default function Inbox() {
 					</div>
 
 					<div className="flex items-center p-2 mt-4 bg-white rounded-xl drop-shadow border-zinc-100">
-						<p className="p-2 rounded-lg bg-zinc-100">
+						<p className="p-2 rounded-xl bg-zinc-100">
 							<VideoCameraIcon className="w-5 h-5" />
 						</p>
 						<div className="flex-1 ml-4">
@@ -69,7 +69,7 @@ export default function Inbox() {
 								10:00 <ArrowRightIcon className="w-4 h-4" /> 11:00
 							</p>
 						</div>
-						<button className="p-2 rounded-lg bg-zinc-100">
+						<button className="p-2 rounded-xl bg-zinc-100">
 							<ExternalLink className="w-5 h-5" />
 						</button>
 					</div>

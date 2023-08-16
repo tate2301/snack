@@ -40,7 +40,6 @@ const colStartClasses = [
 
 export default function Datepicker(props: CalendarPreviewProps) {
 	let today = props.value ?? startOfToday();
-	console.log({ today });
 	const { prevMonth, nextMonth, month, firstDayOfCurrentMonth, selectedDate } =
 		useCalendarDates(today);
 
@@ -74,7 +73,7 @@ export default function Datepicker(props: CalendarPreviewProps) {
 				<button
 					type="button"
 					onClick={prevMonth}
-					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-lg bg-surface-2 text-surface-12">
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-surface-2 text-surface-12">
 					<span className="sr-only">Previous month</span>
 					<ChevronLeftIcon
 						className="w-5 h-5"
@@ -87,7 +86,7 @@ export default function Datepicker(props: CalendarPreviewProps) {
 				<button
 					type="button"
 					onClick={nextMonth}
-					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-lg bg-surface-2 text-surface-12">
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-surface-2 text-surface-12">
 					<span className="sr-only">Next month</span>
 					<ChevronRightIcon
 						className="w-5 h-5"
@@ -104,7 +103,7 @@ export default function Datepicker(props: CalendarPreviewProps) {
 				<div>F</div>
 				<div>S</div>
 			</div>
-			<div className="grid grid-cols-7 gap-px mt-2 text-sm uppercase rounded-lg isolate">
+			<div className="grid grid-cols-7 gap-px mt-2 text-sm uppercase rounded-xl isolate">
 				{month.map((day, dayIdx) => (
 					<button
 						key={day.toString()}

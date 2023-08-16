@@ -73,3 +73,20 @@ export const selectTasksByListId = (listId: string) => (state: RootState) => {
 
 	return tasksInList.filter((task) => !task.complete);
 };
+
+export const selectOverdueTasksByListID =
+	(listId: string) => (state: RootState) => {
+		const list = state.lists.items.find((list) => list.id === listId);
+		if (!list) return [];
+
+		const tasksInList = list.tasks.map((taskId) => {
+			return state.tasks.items.find(
+				(task) => task.id === taskId && !task.trashed,
+			);
+		});
+
+		return tasksInList.filter(
+			(task) =>
+				!task.complete && task.deadline && task.deadline.getTime() < Date.now(),
+		);
+	};

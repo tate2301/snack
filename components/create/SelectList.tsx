@@ -25,6 +25,9 @@ const SelectList = (props: {
 				</div>
 			</SelectTrigger>
 			<SelectContent>
+				<div className="w-64 flex justify-between">
+					<p className="text-md font-semibold p-2">Select a list</p>
+				</div>
 				{lists.map((list) => (
 					<SelectItem
 						key={list.id}
@@ -35,7 +38,7 @@ const SelectList = (props: {
 								style={{
 									borderColor: `var(--${list.color}-10)`,
 								}}
-								className="w-5 h-5 border-2 rounded-lg"
+								className="w-5 h-5 border-2 rounded-xl"
 							/>
 							{list.name}
 						</p>

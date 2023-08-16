@@ -58,7 +58,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 					<button
 						type="button"
 						onClick={prevMonth}
-						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-zinc-100 rounded-lg">
+						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-zinc-100 rounded-xl">
 						<span className="sr-only">Previous month</span>
 						<ChevronLeftIcon
 							className="w-5 h-5"
@@ -68,7 +68,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 					<button
 						type="button"
 						onClick={nextMonth}
-						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-zinc-100 rounded-lg">
+						className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-zinc-400 hover:bg-zinc-100 rounded-xl">
 						<span className="sr-only">Next month</span>
 						<ChevronRightIcon
 							className="w-5 h-5"
@@ -86,7 +86,7 @@ export default function CalendarPreview(props: CalendarPreviewProps) {
 				<div>F</div>
 				<div>S</div>
 			</div>
-			<div className="grid grid-cols-7 gap-px mt-2 text-sm uppercase rounded-lg isolate">
+			<div className="grid grid-cols-7 gap-px mt-2 text-sm uppercase rounded-xl isolate">
 				{month.map((day, dayIdx) => (
 					<button
 						key={day.toString()}

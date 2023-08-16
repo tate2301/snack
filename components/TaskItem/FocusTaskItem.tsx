@@ -43,7 +43,7 @@ export default function FocusTaskItem({
 	const expand = () => setIsExpanded(!isExpanded);
 	const { isHovering, hover } = useWhileHover();
 	return (
-		<div className="transition-all divide-y rounded-lg divide-zinc-100">
+		<div className="transition-all divide-y rounded-xl divide-zinc-100">
 			<div className={`flex gap-2 items-baseline justify-between px-4 py-2`}>
 				<p className="flex gap-1 mt-1 text-sm font-bold dark:text-zinc-500 text-zinc-900">
 					<button className="flex gap-2 p-1 mr-2 uppercase rounded bg-zinc-100">
@@ -58,13 +58,13 @@ export default function FocusTaskItem({
 				<div className={`flex gap-2 items-center`}>
 					<button
 						className={
-							'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+							'p-2 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 						}>
 						<ArchiveBoxIcon className={'w-4 h-4'} />
 					</button>
 					<button
 						className={
-							'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+							'p-2 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 						}>
 						<TrashIcon className={'w-4 h-4'} />
 					</button>
@@ -102,15 +102,15 @@ export default function FocusTaskItem({
 						get more funding.
 					</p>
 					<div className="flex items-start gap-2 mt-2">
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-lg w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
 							<BoltIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							00:00:00
 						</p>
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-lg w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
 							<ListBulletIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							4/10
 						</p>
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-lg w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
 							<ArrowPathIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							Repeats yearly
 						</p>
@@ -125,7 +125,7 @@ export default function FocusTaskItem({
 							<ChevronDownIcon className="w-5 h-5" />
 							Burnout 🔥 Session
 						</button>
-						<button className="flex gap-4 px-2 py-1 rounded-lg hover:bg-zinc-50">
+						<button className="flex gap-4 px-2 py-1 rounded-xl hover:bg-zinc-50">
 							<PlusIcon className="w-5 h-5" />
 						</button>
 					</div>

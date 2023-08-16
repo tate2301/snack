@@ -32,9 +32,9 @@ export default function TaskItem({
 	const expand = () => setIsExpanded(!isExpanded);
 	const { isHovering, hover } = useWhileHover();
 	return (
-		<div className="px-4 py-1 transition-all rounded-lg hover:bg-zinc-50 dark:bg-transparent">
+		<div className="px-4 py-1 transition-all rounded-xl hover:bg-zinc-50 dark:bg-transparent">
 			{inFocus && (
-				<button className="flex items-center gap-2 px-2 py-1 mb-2 text-sm font-semibold border rounded-lg shadow text-zinc-500 bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-300 border-zinc-800">
+				<button className="flex items-center gap-2 px-2 py-1 mb-2 text-sm font-semibold border rounded-xl shadow text-zinc-500 bg-zinc-100 dark:bg-zinc-950 dark:text-zinc-300 border-zinc-800">
 					<RectangleStackIcon className="w-4 h-4" />
 					Personal Website
 				</button>
@@ -96,14 +96,14 @@ export default function TaskItem({
 													<div className={`flex gap-2 items-center`}>
 														<button
 															className={
-																'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+																'p-2 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 															}
 															onClick={expand}>
 															<ArchiveBoxIcon className={'w-4 h-4'} />
 														</button>
 														<button
 															className={
-																'p-2 rounded-lg bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
+																'p-2 rounded-xl bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-300 right-0'
 															}
 															onClick={expand}>
 															<TrashIcon className={'w-4 h-4'} />
@@ -128,7 +128,7 @@ export default function TaskItem({
 									className="flex gap-4 mt-2">
 									<button
 										onClick={toggle}
-										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-lg text-zinc-900 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
+										className="flex items-center gap-2 px-2 py-1 text-sm font-semibold rounded-xl text-zinc-900 bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300">
 										<ListBulletIcon className="w-4 h-4" />3 Tasks
 									</button>
 								</motion.div>

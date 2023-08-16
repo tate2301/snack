@@ -45,7 +45,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 						</Tooltip>
 						<Tooltip content="Add a deadline">
 							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-surface-10">
-								<div className="w-5 h-5 rounded-lg border-2 border-primary-10" />
+								<div className="w-5 h-5 rounded-xl border-2 border-primary-10" />
 							</button>
 						</Tooltip>
 						<Tooltip content="Add a deadline">

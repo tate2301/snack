@@ -2,18 +2,33 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import * as RadixPopover from '@radix-ui/react-popover';
 import { ReactNode } from 'react';
 
-const Popover = (props: { children: ReactNode }) => (
-	<RadixPopover.Root>{props.children}</RadixPopover.Root>
-);
+const Popover = (props: {
+	children: ReactNode;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
+}) => {
+	if (props.onOpenChange) {
+		return (
+			<RadixPopover.Root
+				open={props.open}
+				onOpenChange={props.onOpenChange}>
+				{props.children}
+			</RadixPopover.Root>
+		);
+	}
+
+	return <RadixPopover.Root>{props.children}</RadixPopover.Root>;
+};
 
 const Content = (props: { children: ReactNode; noClose?: boolean }) => (
 	<RadixPopover.Portal>
 		<RadixPopover.Content
-			className="rounded-xl p-4 w-[260px] bg-white shadow-xl border border-surface-2 -translate-x-4"
-			sideOffset={4}>
-			{!props.noClose && <Popover.Close />}
+			asChild
+			align="start"
+			side="bottom"
+			className="rounded-xl p-4 w-fit transition-all border-surface-6 bg-white shadow-xl border"
+			sideOffset={-5}>
 			{props.children}
-			<RadixPopover.Arrow className="fill-white" />
 		</RadixPopover.Content>
 	</RadixPopover.Portal>
 );

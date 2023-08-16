@@ -69,12 +69,12 @@ function InboxListItemPresenter(props: InboxPresenterItemProps) {
 				<div className="flex items-baseline justify-between">
 					<p className="font-semibold">Design Trivia</p>
 					<div className="flex flex-shrink-0 gap-2 inset-1">
-						<button className="right-0 p-2 bg-white rounded-lg text-zinc-400 group-hover:text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+						<button className="right-0 p-2 bg-white rounded-xl text-zinc-400 group-hover:text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
 							<ArchiveBoxIcon className={'w-4 h-4'} />
 						</button>
 						<button
 							onClick={props.onExpand}
-							className="right-0 p-2 bg-white rounded-lg text-zinc-400 group-hover:text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
+							className="right-0 p-2 bg-white rounded-xl text-zinc-400 group-hover:text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300">
 							<ArrowsExpand className={'w-4 h-4'} />
 						</button>
 					</div>

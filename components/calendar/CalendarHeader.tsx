@@ -22,7 +22,7 @@ const CalendarToggleButton = (props: {
 	<button
 		onClick={() => props.setView(props.value)}
 		className={clsx(
-			'text-sm px-3 rounded-lg py-1 capitalize transition-colors',
+			'text-sm px-3 rounded-xl py-1 capitalize transition-colors',
 			props.view === props.value && 'bg-white drop-shadow',
 		)}>
 		{props.value}
@@ -40,14 +40,14 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 					<button
 						onClick={props.prev}
 						className={
-							'text-sm bg-white h-full hover:bg-surface-4 rounded-lg px-3 py-1 text-surface-10 hover:text-surface-12'
+							'text-sm bg-white h-full hover:bg-surface-4 rounded-xl px-3 py-1 text-surface-10 hover:text-surface-12'
 						}>
 						<ChevronLeftIcon className="w-5 h-5" />
 					</button>
 					<button
 						onClick={jumpToToday}
 						className={clsx(
-							'text-sm rounded-lg h-full px-3 py-1 transition-all',
+							'text-sm rounded-xl h-full px-3 py-1 transition-all',
 							isEqual(props.selectedDate, startOfToday())
 								? 'bg-warning-10 text-surface-12'
 								: 'bg-white hover:shadow',
@@ -57,7 +57,7 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
 					<button
 						onClick={props.next}
 						className={
-							'text-sm h-full bg-white hover:bg-surface-4 rounded-lg px-3 py-1 text-surface-10 hover:text-surface-12'
+							'text-sm h-full bg-white hover:bg-surface-4 rounded-xl px-3 py-1 text-surface-10 hover:text-surface-12'
 						}>
 						<ChevronRightIcon className="w-5 h-5" />
 					</button>

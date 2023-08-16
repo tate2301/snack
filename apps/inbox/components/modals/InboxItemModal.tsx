@@ -20,19 +20,19 @@ const ActionCenter = () => {
 	return (
 		<div className="flex justify-between gap-2">
 			<div className="flex gap-2">
-				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-lg shadow">
+				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-xl shadow">
 					<CalendarIcon className="w-4 h-4" />
 					When
 				</button>
-				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-lg shadow">
+				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-xl shadow">
 					<ArrowPathIcon className="w-4 h-4" />
 					Repeat
 				</button>
-				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-lg shadow">
+				<button className="flex items-center gap-2 px-2 py-1 uppercase bg-white rounded-xl shadow">
 					<CalendarDaysIcon className="w-4 h-4" />
 					Due date
 				</button>
-				<button className="flex items-center gap-2 px-2 py-1 text-white uppercase bg-red-600 rounded-lg">
+				<button className="flex items-center gap-2 px-2 py-1 text-white uppercase bg-red-600 rounded-xl">
 					<ExclamationCircleIcon className="w-5 h-5" />
 					Priority
 				</button>
@@ -52,16 +52,16 @@ export default function InboxItemModal(props: ModalProps) {
 				<div className="w-[36rem]">
 					<div className="flex items-center justify-between mb-4">
 						<div className="flex gap-2">
-							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-lg border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:shadow hover:text-zinc-900">
+							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-xl border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:shadow hover:text-zinc-900">
 								<CheckCircleIcon className="w-5 h-5 text-green-600" />
 								Complete
 							</button>
 						</div>
 						<div className="flex gap-2">
-							<button className="p-2 rounded-lg bg-zinc-100 hover:bg-zinc-200">
+							<button className="p-2 rounded-xl bg-zinc-100 hover:bg-zinc-200">
 								<ArchiveBoxIcon className="w-5 h-5" />
 							</button>
-							<button className="p-2 rounded-lg bg-zinc-100 hover:bg-zinc-200">
+							<button className="p-2 rounded-xl bg-zinc-100 hover:bg-zinc-200">
 								<LinkIcon className="w-5 h-5" />
 							</button>
 						</div>
@@ -86,7 +86,7 @@ export default function InboxItemModal(props: ModalProps) {
 							<TaskListSection title="Project tasks" />
 						</div>
 						<div className="flex mt-4">
-							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-lg hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
+							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-xl hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
 								<PlusIcon className="w-5 h-5" />
 								Add checklist
 							</button>
@@ -95,7 +95,7 @@ export default function InboxItemModal(props: ModalProps) {
 					<div className="py-4 border-t">
 						<p className="uppercase text-zinc-400">People</p>
 						<div className="flex mt-4">
-							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-lg hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
+							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-xl hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
 								<UsersIcon className="w-5 h-5" />
 								Invite
 							</button>
@@ -104,7 +104,7 @@ export default function InboxItemModal(props: ModalProps) {
 					<div className="py-4 border-t">
 						<p className="uppercase text-zinc-400">Video Conferencing</p>
 						<div className="flex mt-4">
-							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-lg hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
+							<button className="flex items-center justify-center gap-2 px-2 py-1 uppercase transition-all bg-white border rounded-xl hover:shadow-sm border-zinc-100 text-zinc-500 hover:border-zinc-200 hover:text-zinc-900">
 								<VideoCameraIcon className="w-5 h-5" />
 								Create meeting
 							</button>

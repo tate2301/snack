@@ -14,10 +14,10 @@ export default function CreateItemMenu() {
 				className={
 					'p-2 max-w-fit text-left rounded-xl min-w-[180px] bg-white shadow-2xl flex flex-col'
 				}>
-				<button className="py-2 px-4 text-left rounded-lg  text-zinc-800 hover:bg-zinc-50">
+				<button className="py-2 px-4 text-left rounded-xl  text-zinc-800 hover:bg-zinc-50">
 					Task
 				</button>
-				<button className="py-2 px-4 text-left rounded-lg  text-zinc-800 hover:bg-zinc-50">
+				<button className="py-2 px-4 text-left rounded-xl  text-zinc-800 hover:bg-zinc-50">
 					Timed Task
 				</button>
 			</Popover.Panel>
