@@ -16,6 +16,12 @@ function createWindow() {
 		titleBarStyle: 'hidden',
 		maximizable: true,
 		icon: path.join(__dirname, './public/app-logo.png'),
+		webPreferences: {
+			// preload: path.join(__dirname, 'preload.js'),
+			nodeIntegration: true,
+			// contextIsolation: false,
+			webSecurity: true,
+		},
 	});
 
 	win.loadURL(

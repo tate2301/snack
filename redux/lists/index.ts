@@ -71,7 +71,7 @@ export const selectTasksByListId = (listId: string) => (state: RootState) => {
 		);
 	});
 
-	return tasksInList.filter((task) => !task.complete);
+	return tasksInList;
 };
 
 export const selectOverdueTasksByListID =
@@ -90,3 +90,10 @@ export const selectOverdueTasksByListID =
 				!task.complete && task.deadline && task.deadline.getTime() < Date.now(),
 		);
 	};
+
+export const getListContainingTask = (taskId: string) => (state: RootState) => {
+	return (
+		state.lists.items.find((list) => list.tasks.includes(taskId)) ??
+		state.lists[0]
+	);
+};

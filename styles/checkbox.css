@@ -10,7 +10,7 @@ input[type='checkbox'] {
 	-webkit-appearance: none;
 	opacity: 0.5;
 
-	@apply flex items-center justify-center w-6 h-6 transition-colors border-2 rounded-xl border-surface-6;
+	@apply flex items-center justify-center w-6 h-6 transition-colors border-2 rounded-lg border-surface-6;
 }
 
 input[type='checkbox']:hover {

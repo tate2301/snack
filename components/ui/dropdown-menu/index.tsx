@@ -14,7 +14,7 @@ const DropdownTrigger = (props: { children: ReactNode }) => {
 const DropdownContent = (props: { children: ReactNode }) => {
 	return (
 		<DropdownMenu.Content
-			className="bg-surface-12 rounded-2xl p-1 shadow-xl min-w-[16rem] border border-surface-3"
+			className="bg-surface-12 rounded-2xl p-1 shadow-xl min-w-[16rem]"
 			style={{ zIndex: ZINDEX.DROPDOWN }}>
 			{props.children}
 		</DropdownMenu.Content>

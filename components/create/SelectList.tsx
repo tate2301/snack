@@ -19,26 +19,23 @@ const SelectList = (props: {
 		<Select
 			defaultValue={props.defaultListId}
 			onValueChange={props.onChange}>
-			<SelectTrigger className="min-w-[120px] w-fit">
+			<SelectTrigger className="min-w-[120px] w-fit text-surface-12">
 				<div className="flex gap-4">
 					<SelectValue placeholder={'No list'} />
 				</div>
 			</SelectTrigger>
 			<SelectContent>
-				<div className="w-64 flex justify-between">
-					<p className="text-md font-semibold p-2">Select a list</p>
-				</div>
 				{lists.map((list) => (
 					<SelectItem
 						key={list.id}
 						value={list.id}
 						className="flex">
-						<p className="flex gap-4 items-center">
+						<p className="flex items-center gap-4">
 							<span
 								style={{
 									borderColor: `var(--${list.color}-10)`,
 								}}
-								className="w-5 h-5 border-2 rounded-xl"
+								className="w-4 h-4 border-2 rounded-md"
 							/>
 							{list.name}
 						</p>

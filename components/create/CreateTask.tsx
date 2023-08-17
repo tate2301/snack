@@ -26,6 +26,7 @@ import { addTaskToList } from '../../redux/lists';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import Kbd from '../ui/typography/Kbd';
 import useDisclosure from '../../hooks/useDisclosure';
+import TagInput from '../ui/input/TagInput';
 
 const CreateTask = () => {
 	const ref = useRef<HTMLButtonElement>(null);
@@ -97,11 +98,16 @@ const CreateTaskForm = (props: {
 	toggle: () => void;
 	setIsFocused: (t: boolean) => void;
 }) => {
-	const { isOpen: hasDescriptionField, onOpen: addDescriptionField } =
-		useDisclosure();
+	const {
+		isOpen: hasDescriptionField,
+		onOpen: addDescriptionField,
+		onClose: removeDescriptionField,
+	} = useDisclosure();
+	const { isOpen: hasTags, onOpen: addTagsField } = useDisclosure();
 	const [, forceRerender] = useState(0);
 	const formRef = useRef<HTMLFormElement>(null);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
+	const descriptionRef = useRef<HTMLTextAreaElement>(null);
 	const dispatch = useAppDispatch();
 
 	const form = useFormik({
@@ -110,6 +116,7 @@ const CreateTaskForm = (props: {
 			deadline: undefined,
 			list: 'default',
 			description: '',
+			tags: [],
 		},
 		onSubmit: (values) => {
 			onSubmit(values);
@@ -128,7 +135,7 @@ const CreateTaskForm = (props: {
 			status: SnackTaskStatus.InProgress,
 			createdAt: new Date(),
 			lastUpdated: new Date(),
-			tags: [],
+			tags: data.tags,
 			subtasks: [],
 			deadline: data.deadline,
 		};
@@ -139,32 +146,45 @@ const CreateTaskForm = (props: {
 		props.setIsFocused(false);
 	};
 
+	const stopAllPropagation = (evt: KeyboardEvent) => {
+		evt.preventDefault();
+		evt.stopPropagation();
+		evt.cancelBubble = true;
+		evt.stopImmediatePropagation();
+	};
+
 	const enterKeyListener = useCallback(
 		(evt: KeyboardEvent) => {
+			// If user presses enter in title field, lets submit the form
 			if (evt.key === 'Enter' && !evt.shiftKey) {
-				evt.preventDefault();
-				evt.stopPropagation();
-				evt.cancelBubble = true;
-				evt.stopImmediatePropagation();
-				// trigger submit
+				stopAllPropagation(evt);
 				form.submitForm().then(props.toggle);
 			}
 		},
 		[textAreaRef.current, form, onSubmit],
 	);
 
-	const shiftEnterKey = useCallback(
+	const titleShiftEnterKeyListener = useCallback(
 		(evt: KeyboardEvent) => {
+			// If user presses shift + enter in title field, lets add a description field
 			if (evt.key === 'Enter' && evt.shiftKey) {
-				evt.preventDefault();
-				evt.stopPropagation();
-				evt.cancelBubble = true;
-				evt.stopImmediatePropagation();
-				// trigger submit
+				stopAllPropagation(evt);
 				addDescriptionField();
 			}
 		},
 		[textAreaRef.current, form],
+	);
+
+	const backspaceDescriptionListener = useCallback(
+		(evt: KeyboardEvent) => {
+			// If user presses backspace in description field and its already empty, lets remove the field
+			if (evt.key === 'Backspace' && descriptionRef.current?.value === '') {
+				stopAllPropagation(evt);
+				// Focus back on title field
+				textAreaRef.current.focus();
+			}
+		},
+		[descriptionRef.current, textAreaRef.current, form],
 	);
 
 	useEffect(() => {
@@ -188,9 +208,15 @@ const CreateTaskForm = (props: {
 
 	return (
 		<form
-			className="w-full"
+			className="flex flex-col w-full gap-2"
 			ref={formRef}
 			onSubmit={form.handleSubmit}>
+			<div className="flex mb-2 w-fit">
+				<SelectList
+					defaultListId={form.values.list}
+					onChange={(val) => form.setFieldValue('list', val)}
+				/>
+			</div>
 			<div className={'flex-1 flex items-start w-full mb-1'}>
 				<input
 					type={'checkbox'}
@@ -199,6 +225,7 @@ const CreateTaskForm = (props: {
 				/>
 				<div className="flex-1">
 					<Textarea
+						setRef={textAreaRef}
 						rows={1}
 						placeholder={'Create a new task'}
 						className={
@@ -207,13 +234,14 @@ const CreateTaskForm = (props: {
 						name={'title'}
 						autoFocus
 						listeners={{
-							keydown: [enterKeyListener, shiftEnterKey],
+							keydown: [enterKeyListener, titleShiftEnterKeyListener],
 						}}
 						onChange={form.handleChange}
 						value={form.values.title}
 					/>
 					{hasDescriptionField && (
 						<Textarea
+							setRef={descriptionRef}
 							placeholder="Additional notes"
 							name={'description'}
 							className={
@@ -222,23 +250,32 @@ const CreateTaskForm = (props: {
 							autoFocus
 							onChange={form.handleChange}
 							value={form.values.description}
+							listeners={{
+								keydown: [backspaceDescriptionListener],
+							}}
+						/>
+					)}
+					{hasTags && (
+						<TagInput
+							value={form.values.tags ?? []}
+							onChange={(tags) => form.setFieldValue('tags', tags)}
 						/>
 					)}
 				</div>
 			</div>
 
-			<div className={'flex items-center justify-between gap-2'}>
+			<div className={'flex items-center justify-between gap-2 mt-2'}>
 				<div className="flex gap-2">
-					<SelectList
-						defaultListId={form.values.list}
-						onChange={(val) => form.setFieldValue('list', val)}
-					/>
 					<AddDeadline
 						selectDate={(date) => form.setFieldValue('deadline', date)}
 						selectedDate={form.values.deadline}
 					/>
 					<button
-						className="p-2 rounded-xl hover:bg-surface-3"
+						onClick={addTagsField}
+						className={clsx(
+							'p-2 rounded-xl',
+							hasTags && 'bg-primary-4 text-primary-11 border-primary-6',
+						)}
 						type={'button'}>
 						<HashtagIcon className={'w-5 h-5'} />
 					</button>

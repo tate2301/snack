@@ -4,39 +4,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import CreateTask from '../../components/create/CreateTask';
 import { useAppSelector } from '../../redux/store';
-import { useRouter } from 'next/router';
-import TimerIcon from '../../icons/Timer';
-import { CheckIcon, PlayIcon } from '@heroicons/react/20/solid';
-import {
-	selectAllLists,
-	selectListById,
-	selectOverdueTasksByListID,
-	selectTasksByListId,
-} from '../../redux/lists';
+import { PlayIcon } from '@heroicons/react/20/solid';
+import { selectListById, selectTasksByListId } from '../../redux/lists';
 import SelectList from '../../components/create/SelectList';
 import { ReactNode, useEffect, useState } from 'react';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
-	ArrowPathIcon,
-	ArrowRightIcon,
-	CheckCircleIcon,
-	RectangleStackIcon,
-	XCircleIcon,
-} from '@heroicons/react/24/outline';
-import TargetIcon from '../../icons/TargetIcon';
-import {
-	CalendarDaysIcon,
-	CalendarIcon,
 	EllipsisVerticalIcon,
 	PauseIcon,
-	PencilIcon,
 	StopIcon,
 } from '@heroicons/react/24/solid';
-import ProgressBar from '../../components/ui/progress';
-import { SnackTask } from '../../redux/tasks/types';
+import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import InProgressIcon from '../../icons/InProgressIcon';
-import { selectOverdueTasksByID } from '../../redux/tasks';
+import CalendarIcon from '../../icons/CalendarIcon';
 
 const t = (n: number) => n * 1000;
 
@@ -44,14 +26,19 @@ export default function Page() {
 	const [selectedList, setSelectedList] = useState('default');
 	const listObject = useAppSelector(selectListById(selectedList));
 	const allTasks = useAppSelector(selectTasksByListId(selectedList));
+
 	const onTrackTasks = allTasks.filter(
 		(task) =>
-			!task.complete &&
-			(!task.deadline || task.deadline.getTime() > Date.now()),
+			task.status !== SnackTaskStatus.Complete &&
+			task.status !== SnackTaskStatus.Blocked,
 	);
-	const overdueTasks = allTasks.filter(
-		(task) =>
-			!task.complete && task.deadline && task.deadline.getTime() < Date.now(),
+
+	const completeTasks = allTasks.filter(
+		(task) => task.complete || task.status === SnackTaskStatus.Complete,
+	);
+
+	const blockedTasks = allTasks.filter(
+		(task) => !task.complete && task.status === SnackTaskStatus.Blocked,
 	);
 
 	const onChange = (val: string) => {
@@ -61,7 +48,12 @@ export default function Page() {
 	return (
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
+				<CalendarIcon className="w-6 h-6 text-surface-10" />
+
 				<div className="flex-1">
+					<div className="mb-4">
+						<h1 className="text-2xl font-semibold text-surface-12">Today</h1>
+					</div>
 					<div className="w-full gap-4 mb-12">
 						<div className="flex items-start justify-between w-full gap-2 mb-2">
 							<h1 className="relative flex items-baseline gap-8 mb-2 font-semibold border w-fit border-surface-6 rounded-xl group">
@@ -81,7 +73,7 @@ export default function Page() {
 						<div className="flex items-center gap-6">
 							<p className="flex items-center font-semibold">
 								<CheckCircleIcon className="w-5 h-5 text-success-10" />
-								<span className="ml-2">8 complete</span>
+								<span className="ml-2">{completeTasks.length} complete</span>
 							</p>
 							<p className="flex items-center font-semibold">
 								<InProgressIcon className="w-5 h-5 text-primary-10" />
@@ -89,7 +81,7 @@ export default function Page() {
 							</p>
 							<p className="flex items-center font-semibold">
 								<XCircleIcon className="w-5 h-5 text-danger-10" />
-								<span className="ml-2">{overdueTasks.length} overdue</span>
+								<span className="ml-2">{blockedTasks.length} blocked</span>
 							</p>
 						</div>
 					</div>
@@ -102,14 +94,22 @@ export default function Page() {
 								<CreateTask />
 							</div>
 							<TasksList
+								emptyStateLabel="No tasks yet"
 								title="In Progress"
 								icon={<InProgressIcon className="w-5 h-5 text-primary-10" />}
 								tasks={onTrackTasks}
 							/>
 							<TasksList
-								title="Overdue"
+								emptyStateLabel="Finish up your tasks for today!"
+								title="Complete"
+								icon={<CheckCircleIcon className="w-5 h-5 text-success-10" />}
+								tasks={completeTasks}
+							/>
+							<TasksList
+								emptyStateLabel="Yaay! No blocked tasks."
+								title="Blocked"
 								icon={<XCircleIcon className="w-5 h-5 text-danger-10" />}
-								tasks={overdueTasks}
+								tasks={blockedTasks}
 							/>
 						</AnimatePresence>
 					</motion.div>
@@ -123,6 +123,7 @@ const TasksList = (props: {
 	title: string;
 	icon: ReactNode;
 	tasks: SnackTask[];
+	emptyStateLabel: string;
 }) => {
 	return (
 		<div>
@@ -170,7 +171,7 @@ const TasksList = (props: {
 						</motion.div>
 					))
 				) : (
-					<p className="px-10 text-surface-10">Oops. No tasks here.</p>
+					<p className="px-10 text-surface-10">{props.emptyStateLabel}</p>
 				)}
 			</div>
 		</div>

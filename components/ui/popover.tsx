@@ -26,7 +26,7 @@ const Content = (props: { children: ReactNode; noClose?: boolean }) => (
 			asChild
 			align="start"
 			side="bottom"
-			className="rounded-xl p-4 w-fit transition-all border-surface-6 bg-white shadow-xl border"
+			className="p-4 transition-all shadow-xl rounded-xl w-fit border-surface-6 bg-surface-12"
 			sideOffset={-5}>
 			{props.children}
 		</RadixPopover.Content>
@@ -38,9 +38,9 @@ const Trigger = (props: { children: ReactNode }) => (
 );
 
 const Close = () => (
-	<div className="flex w-full mb-4 justify-end">
+	<div className="flex justify-end w-full mb-4">
 		<RadixPopover.Close
-			className="rounded-full inline-flex items-center justify-center top-1 right-1 outline-none cursor-default"
+			className="inline-flex items-center justify-center rounded-full outline-none cursor-default top-1 right-1"
 			aria-label="Close">
 			<XMarkIcon className="w-6 h-6" />
 		</RadixPopover.Close>

@@ -3,12 +3,11 @@ import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import CreateTask from '../../components/create/CreateTask';
-import NavLink from '../../components/nav/NavLink';
 import { useAppSelector } from '../../redux/store';
 import { SnackTaskStatus } from '../../redux/tasks/types';
-import { selectAllTasks, selectTaskByStatus } from '../../redux/tasks';
+import { selectTaskByStatus } from '../../redux/tasks';
 import { useRouter } from 'next/router';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import InProgressIcon from '../../icons/InProgressIcon';
 
 export default function Page() {
 	const router = useRouter();
@@ -24,11 +23,13 @@ export default function Page() {
 	return (
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
-				<CheckCircleIcon className="w-6 h-6 text-success-10" />
+				<InProgressIcon className="w-6 h-6 text-primary-10" />
 
 				<div className="flex-1">
 					<div className="flex items-center gap-4 mb-8">
-						<h1 className="text-2xl font-semibold text-surface-12">Complete</h1>
+						<h1 className="text-2xl font-semibold text-surface-12">
+							In Progress
+						</h1>
 					</div>
 					<CreateTask />
 					<motion.div className="flex flex-col gap-2 mt-4">

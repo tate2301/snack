@@ -10,7 +10,7 @@ import { selectAllTasks, selectTaskByStatus } from '../../redux/tasks';
 import InboxIcon from '../../icons/InboxIcon';
 import { useRouter } from 'next/router';
 import CalendarIcon from '../../icons/CalendarIcon';
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Page() {
 	const router = useRouter();
@@ -18,7 +18,7 @@ export default function Page() {
 		active: 'all' | 'complete' | 'in-progress';
 	};
 	const tasks = useAppSelector((state) =>
-		state.tasks.items.filter((task) => task.status === SnackTaskStatus.Trashed),
+		state.tasks.items.filter((task) => task.status === SnackTaskStatus.Blocked),
 	);
 	const completeTasks = useAppSelector((state) =>
 		selectTaskByStatus(state, SnackTaskStatus.Complete),
@@ -34,10 +34,11 @@ export default function Page() {
 	return (
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
+				<XCircleIcon className="w-6 h-6 text-danger-10" />
 				<div className="flex-1">
-					<div className="gap-4 items-center mb-8">
-						<h1 className="text-3xl font-semibold text-surface-12">Trash</h1>
-						<p className="text-xl">Tasks come here to die</p>
+					<div className="items-center gap-4 mb-8">
+						<h1 className="text-2xl font-semibold text-surface-12">Blocked</h1>
+						<p>This is the place to procrastinate</p>
 					</div>
 					<motion.div className="flex flex-col gap-2 mt-4">
 						<AnimatePresence initial={false}>

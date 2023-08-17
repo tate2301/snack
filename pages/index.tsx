@@ -6,6 +6,14 @@ import CreateTask from '../components/create/CreateTask';
 import { useAppSelector } from '../redux/store';
 import { SnackTaskStatus } from '../redux/tasks/types';
 import { selectTaskByStatus } from '../redux/tasks';
+import InboxIcon from '../icons/InboxIcon';
+import {
+	ArrowRightIcon,
+	EllipsisVerticalIcon,
+	Square3Stack3DIcon,
+} from '@heroicons/react/24/outline';
+import AppLogo from '../public/app-logo.png';
+import Image from 'next/image';
 
 export default function Page() {
 	const inProgress = useAppSelector((state) =>
@@ -15,46 +23,50 @@ export default function Page() {
 	const t = (n: number) => n * 1000;
 
 	return (
-		<CalendarLayout>
-			<main className={'h-full'}>
-				<div className="mb-4">
-					<div className="flex gap-4 items-center mb-1">
-						<h1 className="text-3xl font-semibold text-surface-12">
-							Good evening, Tatenda
-						</h1>
+		<main className={'h-screen w-screen flex items-center justify-center'}>
+			<div className="w-full max-w-screen-md">
+				<div className="flex flex-col items-center mb-16">
+					<Image
+						src={AppLogo}
+						alt={'Logo'}
+						height={100}
+						width={100}
+						className="mb-4"
+					/>
+					<h2 className="text-3xl font-semibold text-surface-12">Snack</h2>
+					<p className="uppercase">Version 1.0.0</p>
+					<div className="flex justify-center gap-4 mt-4">
+						<button className="px-8 py-2 text-white shadow bg-surface-12 rounded-xl">
+							Quick start
+							<ArrowRightIcon className="w-5 h-5" />
+						</button>
 					</div>
 				</div>
-				<CreateTask />
-				<motion.div className="flex flex-col gap-2 mt-4">
-					<AnimatePresence initial={false}>
-						{inProgress.map((task) => (
-							<motion.div
-								key={task.id}
-								initial={{
-									opacity: 0,
-									height: 0,
-								}}
-								animate={{
-									opacity: 1,
-									height: 'auto',
-									transition: {
-										type: 'spring',
-										bounce: 0.3,
-										opactiy: {
-											delay: t(0.02),
-										},
-									},
-								}}
-								exit={{
-									opacity: 0,
-									height: 0,
-								}}>
-								<TaskListItem {...task} />
-							</motion.div>
-						))}
-					</AnimatePresence>
-				</motion.div>
-			</main>
-		</CalendarLayout>
+				<div className="flex flex-col py-8 divide-y divide-surface-4">
+					<div className="flex items-center justify-between w-full py-4">
+						<div>
+							<h2 className="text-lg font-semibold text-surface-12">
+								Create new snack
+							</h2>
+							<p>Create a new database on your local machine</p>
+						</div>
+						<button className="px-8 py-2 text-white shadow bg-surface-12 rounded-xl">
+							Create
+						</button>
+					</div>
+					<div className="flex items-center justify-between w-full py-4">
+						<div>
+							<h2 className="text-lg font-semibold text-surface-12">
+								Load existing database
+							</h2>
+							<p>Transfer existing snack or load a backup database</p>
+						</div>
+						<button className="px-8 py-2 text-white rounded-lg bg-surface-12">
+							Open
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
 	);
 }

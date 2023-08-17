@@ -1,4 +1,8 @@
-import { CheckCircleIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+	CheckCircleIcon,
+	PlusIcon,
+	XCircleIcon,
+} from '@heroicons/react/24/outline';
 import useToggle from '../../hooks/useToggle';
 import {
 	AppNavigation,
@@ -28,6 +32,7 @@ import { UserAccount } from '../ControlCenter';
 import Popover from '../ui/popover';
 import TrashIcon from '../../icons/TrashIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
+import CalendarIcon from '../../icons/CalendarIcon';
 
 const tabs: NavItemType[] = [
 	{
@@ -36,12 +41,17 @@ const tabs: NavItemType[] = [
 		label: 'Home',
 		href: '/',
 	},
-
+	{
+		icon: <CalendarIcon className="w-5 h-5 text-surface-12" />,
+		value: 'today',
+		label: 'Today',
+		href: '/today',
+	},
 	{
 		icon: <InProgressIcon className="w-5 h-5 text-surface-12" />,
-		value: 'today',
+		value: 'in-progress',
 		label: 'In Progress',
-		href: '/today',
+		href: '/in-progress',
 	},
 	{
 		icon: <CheckCircleIcon className="w-5 h-5 text-surface-12" />,
@@ -50,10 +60,10 @@ const tabs: NavItemType[] = [
 		href: '/complete',
 	},
 	{
-		icon: <TrashIcon className="w-5 h-5 text-surface-12" />,
+		icon: <XCircleIcon className="w-5 h-5 text-surface-12" />,
 
-		value: 'trash',
-		label: 'Trash',
+		value: 'blocked',
+		label: 'Blocked',
 		href: '/trash',
 	},
 ];
@@ -99,9 +109,9 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
+				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="h-full bg-white border border-r border-surface-4">
+			<div className="flex flex-col h-full bg-white border border-r border-surface-4">
 				<div className="mb-4">
 					<UserAccount />
 				</div>
@@ -158,7 +168,7 @@ function NavItem(
 function Lists({}) {
 	const lists = useAppSelector(selectAllLists);
 	return (
-		<div className="flex flex-col gap-2 p-2 mt-8">
+		<div className="flex flex-col flex-1 gap-2 p-2 mt-8 overflow-y-scroll">
 			<p className="px-4 uppercase">Lists</p>
 			<div>
 				{lists.map((list) => (
@@ -172,7 +182,7 @@ function Lists({}) {
 							<p className="flex-1 text-left">{list.name}</p>
 							{list.tasks.length > 0 && (
 								<p>
-									<span className="p-1 text-sm font-normal font-semibold rounded bg-surface-2 text-surface-10">
+									<span className="p-1 text-sm font-semibold rounded bg-surface-2 text-surface-10">
 										{list.tasks.length}
 									</span>
 								</p>
@@ -186,7 +196,16 @@ function Lists({}) {
 	);
 }
 
-const colors = ['green', 'purple', 'tomato', 'blue', 'amber', 'gray'];
+const colors = [
+	'green',
+	'purple',
+	'tomato',
+	'blue',
+	'amber',
+	'gray',
+	'purple',
+	'tomato',
+];
 const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 function CreateList() {
@@ -215,7 +234,7 @@ function CreateList() {
 		},
 	});
 
-	useClickOutside(ref, toggle);
+	// useClickOutside(ref, toggle);
 
 	return (
 		<>
@@ -239,7 +258,7 @@ function CreateList() {
 						backgroundColor: `var(--${form.values.color}-1)`,
 						borderColor: `var(--${form.values.color}-6)`,
 					}}
-					className="p-2 border rounded-xl">
+					className="p-2 border rounded-lg">
 					<div className="flex items-center w-full gap-2">
 						<SelectColor
 							value={form.values.color}
@@ -289,8 +308,9 @@ const SelectColor = (props: {
 								backgroundColor: `var(--${color}-10)`,
 							}}
 							className={clsx(
-								'rounded-xl hover:bg-surface-4',
-								props.value === color && 'ring-2 ring-offset-2 ring-primary-10',
+								'rounded-lg',
+								props.value === color &&
+									'ring-2 ring-offset-2 ring-offset-surface-12 ring-surface-6',
 							)}>
 							<div className="w-4 h-4 rounded-xl" />
 						</button>

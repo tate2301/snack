@@ -13,6 +13,8 @@ export type Tab =
 	| 'tomorrow'
 	| 'later'
 	| 'trash'
+	| 'blocked'
+	| 'in-progress'
 	| 'today'
 	| 'notes';
 

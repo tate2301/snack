@@ -8,10 +8,10 @@ export enum SnackTaskPriority {
 }
 
 export enum SnackTaskStatus {
-	Open = 'Open',
+	Todo = 'Todo',
 	InProgress = 'In Progress',
 	Complete = 'Complete',
-	Trashed = 'Trashed',
+	Blocked = 'Blocked',
 }
 
 export type SnackTask = {

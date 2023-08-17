@@ -3,14 +3,14 @@ import '../styles/global.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { Database } from '../lib/database';
-import CommandBar from '../components/commandbar';
 import { AuthContextProvider } from '../context/AuthContext';
-import Inspect from 'inspx';
 
 export default function App({ Component, pageProps }) {
 	useEffect(() => {
+		// find snack.json in "./snack.json", if it doesn't exist then create it
+
 		const db = Database.getInstance();
 	}, []);
 
