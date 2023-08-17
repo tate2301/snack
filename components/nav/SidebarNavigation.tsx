@@ -101,7 +101,7 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-auto justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="bg-white h-full border border-surface-4 border-r">
+			<div className="h-full bg-white border border-r border-surface-4">
 				<div className="mb-4">
 					<UserAccount />
 				</div>
@@ -145,11 +145,10 @@ function NavItem(
 						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
 						props.active && '',
 					)}>
-					<span className="gap-4 flex">
+					<span className="flex gap-4">
 						{props.icon}
 						{props.label}
 					</span>
-					<span>{8}</span>
 				</p>
 			</ExclusionTab>
 		</Link>
@@ -164,13 +163,20 @@ function Lists({}) {
 			<div>
 				{lists.map((list) => (
 					<div className="flex flex-col justify-center">
-						<button className="flex items-center gap-4 p-4 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+						<button className="flex items-center gap-4 p-2 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
 							<p
 								style={{
 									borderColor: `var(--${list.color}-10)`,
 								}}
-								className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square border-2"></p>
-							<p>{list.name}</p>
+								className="flex items-center h-4 gap-4 font-medium border-2 rounded-md aspect-square"></p>
+							<p className="flex-1 text-left">{list.name}</p>
+							{list.tasks.length > 0 && (
+								<p>
+									<span className="p-1 text-sm font-normal font-semibold rounded bg-surface-2 text-surface-10">
+										{list.tasks.length}
+									</span>
+								</p>
+							)}
 						</button>
 					</div>
 				))}
@@ -233,8 +239,8 @@ function CreateList() {
 						backgroundColor: `var(--${form.values.color}-1)`,
 						borderColor: `var(--${form.values.color}-6)`,
 					}}
-					className="p-2 rounded-xl border">
-					<div className="flex gap-2 w-full items-center">
+					className="p-2 border rounded-xl">
+					<div className="flex items-center w-full gap-2">
 						<SelectColor
 							value={form.values.color}
 							onChange={(color) => form.setFieldValue('color', color)}
@@ -243,7 +249,7 @@ function CreateList() {
 							name={'title'}
 							{...form.getFieldProps('title')}
 							autoFocus
-							className="p-2 flex-1 bg-transparent outline-none font-semibold"
+							className="flex-1 p-2 font-semibold bg-transparent outline-none"
 							placeholder="Enter list name"
 						/>
 					</div>
@@ -267,7 +273,7 @@ const SelectColor = (props: {
 					type={'button'}
 					className="p-2 rounded-xl hover:bg-surface-4">
 					<p
-						className="flex items-center h-5 gap-4 font-medium rounded-md aspect-square border-2"
+						className="flex items-center h-5 gap-4 font-medium border-2 rounded-md aspect-square"
 						style={{
 							borderColor: `var(--${props.value}-10)`,
 						}}></p>
@@ -286,7 +292,7 @@ const SelectColor = (props: {
 								'rounded-xl hover:bg-surface-4',
 								props.value === color && 'ring-2 ring-offset-2 ring-primary-10',
 							)}>
-							<div className="h-4 w-4 rounded-xl" />
+							<div className="w-4 h-4 rounded-xl" />
 						</button>
 					))}
 				</div>

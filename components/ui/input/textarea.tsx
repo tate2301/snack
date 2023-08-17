@@ -2,6 +2,7 @@ import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 const Textarea = (props: {
 	dualTone?: boolean;
+	rows?: number;
 	className?: string;
 	placeholder?: string;
 	autoFocus?: boolean;
@@ -27,6 +28,13 @@ const Textarea = (props: {
 	useEffect(() => {
 		if (props.listeners) {
 			Object.keys(props.listeners).forEach((key) => {
+				const value = props.listeners[key];
+				if (Array.isArray(value)) {
+					value.forEach((val) => {
+						textAreaRef.current?.addEventListener(key, val);
+					});
+					return;
+				}
 				textAreaRef.current?.addEventListener(key, props.listeners[key]);
 			});
 		}
@@ -45,6 +53,7 @@ const Textarea = (props: {
 			style={{ resize: 'none', overflow: 'hidden' }}
 			{...props}
 			name={props.name}
+			rows={props.rows ?? 1}
 			onChange={(e) => {
 				handleInputChange(e);
 				// @ts-ignore

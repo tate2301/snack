@@ -62,9 +62,9 @@ export default function Page() {
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
-					<div className="gap-4 w-full mb-12">
-						<div className="flex justify-between items-start gap-2 mb-2 w-full">
-							<h1 className="w-fit border border-surface-6 rounded-xl font-semibold mb-2 relative group flex items-baseline gap-8">
+					<div className="w-full gap-4 mb-12">
+						<div className="flex items-start justify-between w-full gap-2 mb-2">
+							<h1 className="relative flex items-baseline gap-8 mb-2 font-semibold border w-fit border-surface-6 rounded-xl group">
 								<SelectList
 									defaultListId="default"
 									onChange={onChange}
@@ -78,18 +78,18 @@ export default function Page() {
 								</button>
 							</div>
 						</div>
-						<div className="flex gap-6 items-center">
+						<div className="flex items-center gap-6">
 							<p className="flex items-center font-semibold">
 								<CheckCircleIcon className="w-5 h-5 text-success-10" />
 								<span className="ml-2">8 complete</span>
 							</p>
 							<p className="flex items-center font-semibold">
 								<InProgressIcon className="w-5 h-5 text-primary-10" />
-								<span className="ml-2">22 in progress</span>
+								<span className="ml-2">{onTrackTasks.length} in progress</span>
 							</p>
 							<p className="flex items-center font-semibold">
 								<XCircleIcon className="w-5 h-5 text-danger-10" />
-								<span className="ml-2">3 overdue</span>
+								<span className="ml-2">{overdueTasks.length} overdue</span>
 							</p>
 						</div>
 					</div>
@@ -127,7 +127,7 @@ const TasksList = (props: {
 	return (
 		<div>
 			<div className="mb-2">
-				<h1 className="text-xl text-surface-12 font-semibold flex items-center gap-4">
+				<h1 className="flex items-center gap-4 text-xl font-semibold text-surface-12">
 					{props.icon}
 					{props.title}
 				</h1>

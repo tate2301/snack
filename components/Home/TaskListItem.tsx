@@ -56,7 +56,7 @@ const TaskDropdownOptions = (props: SnackTask) => {
 		<>
 			<Dropdown>
 				<Dropdown.Trigger>
-					<button className="p-1 text-surface-12 hover:bg-surface-3 rounded-xl transition-all group-hover:opacity-100 opacity-0">
+					<button className="p-1 transition-all text-surface-12 hover:bg-surface-3 rounded-xl group-hover:opacity-100">
 						<EllipsisVerticalIcon className="w-6 h-6" />
 					</button>
 				</Dropdown.Trigger>
@@ -140,7 +140,7 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 					ref={ref}
 					className="flex items-start flex-1">
 					<input
-						className="rounded-xl  flex-shrink-0"
+						className="flex-shrink-0 rounded-xl"
 						type="checkbox"
 						onChange={onCheck}
 						checked={isChecked}
@@ -189,21 +189,15 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 							</div>
 						</div>
 						{isOpen && (
-							<motion.div className="py-2 flex flex-col gap-2">
-								<p className="text-surface-12">
-									Very excited to have built something inspiring to other
-									developers, I hope they keep using it. It really is my source
-									of pride if we are being honest! We allow you to Share your
-									portfolio, send invoices, and complete projects to unlock
-									trends to optimize your business growth.
-								</p>
-								<div className="flex gap-4 items-center">
-									<button className="flex gap-2 items-center text-surface-12 px-2 py-1 font-normal rounded-xl bg-surface-3">
+							<motion.div className="flex flex-col gap-2 py-2">
+								<p className="text-surface-12">{props.description}</p>
+								<div className="flex items-center gap-4">
+									<button className="flex items-center gap-2 px-2 py-1 font-normal text-surface-12 rounded-xl bg-surface-3">
 										<InProgressIcon className="w-5 h-5" />
 										In progress
 									</button>
-									<button className="flex gap-2 items-center text-surface-12 px-2 py-1 font-normal rounded-xl bg-surface-3">
-										<p className="flex gap-4 items-center">
+									<button className="flex items-center gap-2 px-2 py-1 font-normal text-surface-12 rounded-xl bg-surface-3">
+										<p className="flex items-center gap-4">
 											<span
 												style={{
 													borderColor: `var(--blue-10)`,
@@ -219,13 +213,13 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 						)}
 					</div>
 				</div>
-				<div className="flex gap-2 items-center ">
+				<div className="flex items-center gap-2 ">
 					{!isOpen && (
 						<>
 							{props.description && (
 								<PostItNoteIcon className="w-5 h-5 text-surface-8" />
 							)}
-							<p className="flex gap-4 items-center mx-2">
+							<p className="flex items-center gap-4 mx-2">
 								<span
 									style={{
 										borderColor: `var(--blue-10)`,
@@ -235,17 +229,17 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 							</p>
 						</>
 					)}
-					<TaskDropdownOptions
-						{...props}
-						id={props.id}
-					/>
 					{isOpen && (
 						<>
-							<button className="flex gap-2 items-center p-2 font-normal rounded-xl hover:bg-surface-3">
+							<button className="flex items-center gap-2 p-2 font-normal rounded-xl hover:bg-surface-3">
 								<ArrowsExpand className="w-4 h-4" />
 							</button>
 						</>
 					)}
+					<TaskDropdownOptions
+						{...props}
+						id={props.id}
+					/>
 				</div>
 			</div>
 		</div>
@@ -256,14 +250,14 @@ const SetReminderButton = () => {
 	return (
 		<Dropdown>
 			<Dropdown.Trigger>
-				<button className="flex gap-2 items-center text-surface-12 px-2 py-1 font-normal rounded-xl bg-surface-3">
+				<button className="flex items-center gap-2 px-2 py-1 font-normal text-surface-12 rounded-xl bg-surface-3">
 					<BellIcon className="w-5 h-5" />
 					Set reminder
 				</button>
 			</Dropdown.Trigger>
 			<Dropdown.Content>
 				<Dropdown.Item>
-					<div className="flex items-center gap-4 w-64 text-surface-12">
+					<div className="flex items-center w-64 gap-4 text-surface-1">
 						<SunIcon className="w-5 h-5" />
 						<p className="flex-1">Later today</p>
 						<p>
@@ -275,7 +269,7 @@ const SetReminderButton = () => {
 					</div>
 				</Dropdown.Item>
 				<Dropdown.Item>
-					<div className="flex items-center gap-4 w-64 text-surface-12">
+					<div className="flex items-center w-64 gap-4 text-surface-1">
 						<CalendarIcon className="w-5 h-5" />
 						<p className="flex-1">Tomorrow</p>
 						<p>
@@ -284,7 +278,7 @@ const SetReminderButton = () => {
 					</div>
 				</Dropdown.Item>
 				<Dropdown.Item>
-					<div className="flex items-center gap-4 w-64 text-surface-12">
+					<div className="flex items-center w-64 gap-4 text-surface-1">
 						<CalendarDaysIcon className="w-5 h-5" />
 						<p className="flex-1">Pick Date & Time</p>
 					</div>

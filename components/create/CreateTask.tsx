@@ -1,7 +1,12 @@
 import useToggle from '../../hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpIcon, LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+	ArrowUpIcon,
+	HashtagIcon,
+	LinkIcon,
+	PlusIcon,
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Textarea from '../ui/input/textarea';
 import { useAppDispatch } from '../../redux/store';
@@ -20,15 +25,39 @@ import SelectList from './SelectList';
 import { addTaskToList } from '../../redux/lists';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import Kbd from '../ui/typography/Kbd';
+import useDisclosure from '../../hooks/useDisclosure';
 
 const CreateTask = () => {
+	const ref = useRef<HTMLButtonElement>(null);
 	const [isFocused, toggle, setIsFocused] = useToggle(false);
+
+	useEffect(() => {
+		if (ref.current) {
+			const evtListener = (evt: KeyboardEvent) => {
+				// Listen for Ctrl + Enter
+				if (evt.key === 'Enter' && evt.ctrlKey) {
+					evt.preventDefault();
+					evt.stopPropagation();
+					evt.cancelBubble = true;
+					evt.stopImmediatePropagation();
+					toggle();
+				}
+			};
+
+			ref.current.addEventListener('keydown', evtListener);
+
+			return () => {
+				ref.current?.removeEventListener('keydown', evtListener);
+			};
+		}
+	}, [ref.current]);
 
 	return (
 		<div className={'group'}>
 			<AnimatePresence>
 				{!isFocused && (
 					<motion.button
+						ref={ref}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
@@ -38,10 +67,11 @@ const CreateTask = () => {
 							'relative flex items-center font-normal bg-surface-6 rounded-xl w-full p-4 hover:bg-surface-7',
 						)}>
 						<PlusIcon
-							className="h-5 w-5"
+							className="w-5 h-5"
 							aria-hidden="true"
 						/>
 						<span className={'text-surface-11'}>Create a new task</span>
+						<Kbd keys={['Ctrl', 'Enter']} />
 					</motion.button>
 				)}
 				{isFocused && (
@@ -67,8 +97,10 @@ const CreateTaskForm = (props: {
 	toggle: () => void;
 	setIsFocused: (t: boolean) => void;
 }) => {
+	const { isOpen: hasDescriptionField, onOpen: addDescriptionField } =
+		useDisclosure();
 	const [, forceRerender] = useState(0);
-	const ref = useRef<HTMLFormElement>(null);
+	const formRef = useRef<HTMLFormElement>(null);
 	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 	const dispatch = useAppDispatch();
 
@@ -77,19 +109,20 @@ const CreateTaskForm = (props: {
 			title: '',
 			deadline: undefined,
 			list: 'default',
+			description: '',
 		},
 		onSubmit: (values) => {
 			onSubmit(values);
 		},
 	});
 
-	const onSubmit = (data) => {
+	const onSubmit = (data: typeof form.values) => {
 		if (!data.title) return;
 
 		const task: SnackTask = {
 			id: generateUUID(),
 			title: data.title,
-			description: '',
+			description: data.description,
 			complete: false,
 			priority: SnackTaskPriority.High,
 			status: SnackTaskStatus.InProgress,
@@ -120,16 +153,30 @@ const CreateTaskForm = (props: {
 		[textAreaRef.current, form, onSubmit],
 	);
 
+	const shiftEnterKey = useCallback(
+		(evt: KeyboardEvent) => {
+			if (evt.key === 'Enter' && evt.shiftKey) {
+				evt.preventDefault();
+				evt.stopPropagation();
+				evt.cancelBubble = true;
+				evt.stopImmediatePropagation();
+				// trigger submit
+				addDescriptionField();
+			}
+		},
+		[textAreaRef.current, form],
+	);
+
 	useEffect(() => {
-		if (ref.current) {
-			const evtListener = (evt: KeyboardEvent) => {
+		if (formRef.current) {
+			const closeFormListener = (evt: KeyboardEvent) => {
 				if (evt.key === 'Escape') props.toggle();
 			};
 
-			ref.current.addEventListener('keydown', evtListener);
+			formRef.current.addEventListener('keydown', closeFormListener);
 
 			return () => {
-				ref.current?.removeEventListener('keydown', evtListener);
+				formRef.current?.removeEventListener('keydown', closeFormListener);
 			};
 		}
 	}, []);
@@ -142,7 +189,7 @@ const CreateTaskForm = (props: {
 	return (
 		<form
 			className="w-full"
-			ref={ref}
+			ref={formRef}
 			onSubmit={form.handleSubmit}>
 			<div className={'flex-1 flex items-start w-full mb-1'}>
 				<input
@@ -150,19 +197,34 @@ const CreateTaskForm = (props: {
 					disabled
 					className={'!bg-surface-6 flex-shrink-0'}
 				/>
-				<Textarea
-					placeholder={'Create a new task'}
-					className={
-						'outline-none ring-0 flex-1 text-surface-12 w-full font-medium'
-					}
-					name={'title'}
-					autoFocus
-					listeners={{
-						keydown: enterKeyListener,
-					}}
-					onChange={form.handleChange}
-					value={form.values.title}
-				/>
+				<div className="flex-1">
+					<Textarea
+						rows={1}
+						placeholder={'Create a new task'}
+						className={
+							'outline-none ring-0 text-surface-12 w-full font-medium h-fit'
+						}
+						name={'title'}
+						autoFocus
+						listeners={{
+							keydown: [enterKeyListener, shiftEnterKey],
+						}}
+						onChange={form.handleChange}
+						value={form.values.title}
+					/>
+					{hasDescriptionField && (
+						<Textarea
+							placeholder="Additional notes"
+							name={'description'}
+							className={
+								'outline-none ring-0 flex-1 text-surface-10 w-full font-medium'
+							}
+							autoFocus
+							onChange={form.handleChange}
+							value={form.values.description}
+						/>
+					)}
+				</div>
 			</div>
 
 			<div className={'flex items-center justify-between gap-2'}>
@@ -175,6 +237,11 @@ const CreateTaskForm = (props: {
 						selectDate={(date) => form.setFieldValue('deadline', date)}
 						selectedDate={form.values.deadline}
 					/>
+					<button
+						className="p-2 rounded-xl hover:bg-surface-3"
+						type={'button'}>
+						<HashtagIcon className={'w-5 h-5'} />
+					</button>
 				</div>
 				{false && (
 					<button
@@ -197,8 +264,8 @@ const CreateTaskForm = (props: {
 					<button
 						type={'submit'}
 						className={'p-2 px-4 rounded-xl bg-primary-10 text-white'}>
-						<p className="p-1 rounded-full bg-white">
-							<ArrowUpIcon className="w-4 h-4 text-primary-11 stroke-2" />
+						<p className="p-1 bg-white rounded-full">
+							<ArrowUpIcon className="w-4 h-4 stroke-2 text-primary-11" />
 						</p>
 						Add task
 						<Kbd keys={['Enter']} />
