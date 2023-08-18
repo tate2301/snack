@@ -1,13 +1,10 @@
 /** @type {import('next').NextConfig} */
-// set fs, path to empty
 const nextConfig = {
-	webpack(config) {
+	webpack: (config) => {
+		// Fixes npm packages that depend on `fs` module
 		config.resolve.fallback = {
-			fs: 'empty',
-			path: 'empty',
-			os: 'empty',
+			fs: false,
 		};
-
 		return config;
 	},
 	images: {

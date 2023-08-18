@@ -5,3 +5,9 @@ export type User = {
 	password?: string;
 	avatar: string;
 };
+
+export enum CalendarView {
+	Daily = 'Daily',
+	Week = 'Weekly',
+	Monthly = 'Monthly',
+}

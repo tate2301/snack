@@ -1,4 +1,4 @@
-import { CalendarView } from '../../components/calendar/types';
+import { CalendarView } from '../../lib/types';
 
 export type SnackCalendar = {
 	id: string;

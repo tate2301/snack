@@ -4,7 +4,6 @@ import {
 	PlusIcon,
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
-import TaskListItem from './TaskListItem';
 import { TaskSection } from './types';
 import useToggle from '../../hooks/useToggle';
 import { DndContext } from '@dnd-kit/core';

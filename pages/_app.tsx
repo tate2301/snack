@@ -2,17 +2,29 @@ import { DndContext } from '@dnd-kit/core';
 import '../styles/global.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
-import store from '../redux/store';
-import { useEffect } from 'react';
-import { Database } from '../lib/database';
+import store, { persistor } from '../redux/store';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AuthContextProvider } from '../context/AuthContext';
+import { electronAPI } from '../lib/core/electron';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function App({ Component, pageProps }) {
-	useEffect(() => {
-		// find snack.json in "./snack.json", if it doesn't exist then create it
+	const [databaseLoaded, setDatabaseLoaded] = useState(false);
+	const [config, setConfig] = useState<{
+		dbPath: string;
+	} | null>(null);
 
-		const db = Database.getInstance();
+	useLayoutEffect(() => {
+		electronAPI.loadConfig().then(setConfig);
 	}, []);
+
+	useEffect(() => {
+		if (config?.dbPath && !databaseLoaded) {
+			electronAPI.loadDatabase(config.dbPath);
+		}
+	}, [config, databaseLoaded]);
+
+	if (!config) return null;
 
 	return (
 		<AuthContextProvider>
@@ -24,9 +36,13 @@ export default function App({ Component, pageProps }) {
 				</Head>
 
 				<Provider store={store}>
-					<DndContext>
-						<Component {...pageProps} />
-					</DndContext>
+					<PersistGate
+						loading={null}
+						persistor={persistor}>
+						<DndContext>
+							<Component {...pageProps} />
+						</DndContext>
+					</PersistGate>
 				</Provider>
 			</div>
 		</AuthContextProvider>

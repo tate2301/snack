@@ -1,7 +1,7 @@
 import { add } from 'date-fns';
 import { SnackEvent, SnackEventPriority, SnackEventStatus } from './types';
-import { getRandomColorForEvent } from '../../components/calendar/events/utils';
 import { generateUUID } from '../../lib/functions';
+import { getRandomColorForEvent } from '../../lib/utils';
 
 export const createTemplateEvent = (title: string): SnackEvent => {
 	return {

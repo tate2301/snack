@@ -41,6 +41,7 @@ import {
 	getListContainingTask,
 	removeTaskFromList,
 } from '../../redux/lists';
+import React from 'react';
 
 const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();

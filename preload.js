@@ -1,7 +1,12 @@
 // Preload (Isolated World)
 const { contextBridge, ipcRenderer } = require('electron');
-const path = require('path');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-	path,
+	loadConfig: () => ipcRenderer.invoke('load-config'),
+	saveConfig: (data) => ipcRenderer.invoke('save-config', data),
+	loadDatabase: (pathname) => ipcRenderer.invoke('load-database', pathname),
+	saveDatabase: (data) => ipcRenderer.invoke('save-database', data),
+	invoke: (event) => ipcRenderer.invoke(event),
+	send: (event, data) => ipcRenderer.send(event, data),
+	on: (event, callback) => ipcRenderer.on(event, callback),
 });

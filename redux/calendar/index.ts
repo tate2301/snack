@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CalendarView } from '../../components/calendar/types';
 import { SnackCalendar, SnackGlobalCalendar } from './types';
 import { RootState } from '../store';
 import { isEqual, startOfDay, startOfToday } from 'date-fns';
-import { getRandomColorForEvent } from '../../components/calendar/events/utils';
 import { generateUUID } from '../../lib/functions';
+import { CalendarView } from '../../lib/types';
+import { getRandomColorForEvent } from '../../lib/utils';
 
 const defaultCalendar: SnackCalendar = {
 	color: getRandomColorForEvent(),

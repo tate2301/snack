@@ -37,3 +37,5 @@ export const formatTime = (time: Date) =>
 		minute: '2-digit',
 		hour12: true,
 	}).format(time);
+
+export const getRandomColorForEvent = () => 'purple';
