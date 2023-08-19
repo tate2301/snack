@@ -24,7 +24,7 @@ const createSnackStorage = async (pre?: {
 		getItem: (key) => {
 			return new Promise((resolve, reject) => {
 				store.find({}, (err, data) => console.log(data));
-				store.findOne({ key: 'root' }, (err, data) => {
+				store.findOne({ key }, (err, data) => {
 					if (err) resolve(JSON.stringify({}));
 					if (!data) resolve(JSON.stringify({}));
 					resolve(JSON.stringify(data));
@@ -35,7 +35,7 @@ const createSnackStorage = async (pre?: {
 			return new Promise((resolve) => {
 				resolve(
 					store.update(
-						{ key: 'root' },
+						{ key },
 						{ $set: { ...deepParseJson(item) } },
 						{ upsert: true, new: true },
 					),
