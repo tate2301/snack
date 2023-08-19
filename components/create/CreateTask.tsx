@@ -20,7 +20,7 @@ import { addTask } from '../../redux/tasks';
 import { useFormik } from 'formik';
 import Popover from '../ui/popover';
 import Datepicker from '../ui/datepicker';
-import { format, startOfToday } from 'date-fns';
+import { differenceInDays, format, startOfToday } from 'date-fns';
 import SelectList from './SelectList';
 import { addTaskToList } from '../../redux/lists';
 import { CalendarDaysIcon } from '@heroicons/react/24/solid';
@@ -28,7 +28,7 @@ import Kbd from '../ui/typography/Kbd';
 import useDisclosure from '../../hooks/useDisclosure';
 import TagInput from '../ui/input/TagInput';
 
-const CreateTask = () => {
+const CreateTask = (props: { defaultList?: string }) => {
 	const ref = useRef<HTMLButtonElement>(null);
 	const [isFocused, toggle, setIsFocused] = useToggle(false);
 
@@ -86,6 +86,7 @@ const CreateTask = () => {
 						<CreateTaskForm
 							toggle={toggle}
 							setIsFocused={setIsFocused}
+							defaultList={props.defaultList}
 						/>
 					</motion.div>
 				)}
@@ -97,6 +98,7 @@ const CreateTask = () => {
 const CreateTaskForm = (props: {
 	toggle: () => void;
 	setIsFocused: (t: boolean) => void;
+	defaultList?: string;
 }) => {
 	const {
 		isOpen: hasDescriptionField,
@@ -114,7 +116,7 @@ const CreateTaskForm = (props: {
 		initialValues: {
 			title: '',
 			deadline: undefined,
-			list: 'default',
+			list: props.defaultList || 'default',
 			description: '',
 			tags: [],
 		},
@@ -181,6 +183,8 @@ const CreateTaskForm = (props: {
 			if (evt.key === 'Backspace' && descriptionRef.current?.value === '') {
 				stopAllPropagation(evt);
 				// Focus back on title field
+				removeDescriptionField();
+				console.log('removing');
 				textAreaRef.current.focus();
 			}
 		},
@@ -330,8 +334,10 @@ function AddDeadline(props: {
 					className={clsx(
 						'p-2 rounded-xl items-center flex-shrink-0',
 						props.selectedDate
-							? 'bg-primary-4 text-primary-11 border-primary-6'
-							: 'bg-white border-surface-4 hover:bg-danger-3 hover:text-danger-11 hover:border-danger-6 text-surface-10',
+							? differenceInDays(props.selectedDate, new Date()) > 0
+								? 'bg-primary-4 text-primary-11 border-primary-6'
+								: 'bg-danger-4 text-danger-11 border-primary-6'
+							: 'bg-white border-surface-4 hover:bg-surface-3 hover:text-surface-11 hover:border-surface-6 text-surface-10',
 					)}>
 					<CalendarDaysIcon className="w-6 h-6" />
 					{props.selectedDate

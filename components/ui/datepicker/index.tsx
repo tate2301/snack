@@ -53,19 +53,19 @@ export default function Datepicker(props: CalendarPreviewProps) {
 				<button
 					type="button"
 					onClick={() => selectDate(add(startOfToday(), { days: 1 }))}
-					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-white bg-opacity-10 text-surface-4 hover:bg-surface-11 rounded-xl px-3">
 					Tomorrow
 				</button>
 				<button
 					type="button"
 					onClick={() => selectDate(add(startOfToday(), { days: 5 }))}
-					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-white bg-opacity-10 text-surface-4 hover:bg-surface-11 rounded-xl px-3">
 					In 5 days
 				</button>
 				<button
 					type="button"
 					onClick={() => selectDate(endOfMonth(startOfToday()))}
-					className="flex text-sm flex-none items-center justify-center p-1.5 bg-surface-3 hover:bg-surface-6 rounded-xl px-3">
+					className="flex text-sm flex-none items-center justify-center p-1.5 bg-white bg-opacity-10 text-surface-4 hover:bg-surface-11 rounded-xl px-3">
 					Monthend
 				</button>
 			</div>
@@ -73,20 +73,20 @@ export default function Datepicker(props: CalendarPreviewProps) {
 				<button
 					type="button"
 					onClick={prevMonth}
-					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-surface-2 text-surface-12">
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-white bg-opacity-90 text-surface-12">
 					<span className="sr-only">Previous month</span>
 					<ChevronLeftIcon
 						className="w-5 h-5"
 						aria-hidden="true"
 					/>
 				</button>
-				<p className="font-semibold uppercase text-zinc-900">
+				<p className="font-semibold text-white uppercase">
 					{format(firstDayOfCurrentMonth, 'MMMM yyyy')}
 				</p>
 				<button
 					type="button"
 					onClick={nextMonth}
-					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-surface-2 text-surface-12">
+					className="flex flex-none items-center justify-center p-1.5 hover:shadow rounded-xl bg-white bg-opacity-90 text-surface-12">
 					<span className="sr-only">Next month</span>
 					<ChevronRightIcon
 						className="w-5 h-5"
@@ -110,26 +110,25 @@ export default function Datepicker(props: CalendarPreviewProps) {
 						type="button"
 						onClick={() => selectDate(day)}
 						className={clsx(
-							'py-1.5 hover:bg-zinc-100 focus:z-10 rounded-xl flex items-center justify-center flex-col gap-1 transition-all',
+							'py-1.5 hover:bg-white hover:bg-opacity-10 focus:z-10 rounded-xl flex items-center justify-center flex-col gap-1 transition-all',
 							(isEqual(day, selectedDate) || isToday(day)) && 'font-semibold',
 
 							!isEqual(day, selectedDate) &&
 								isSameMonth(day, firstDayOfCurrentMonth) &&
 								!isToday(day) &&
-								'text-zinc-800',
+								'text-surface-2',
 							!isEqual(day, selectedDate) &&
 								!isSameMonth(day, today) &&
 								!isToday(day) &&
-								'text-zinc-400',
+								'text-surface-10',
 							isToday(day) && !isEqual(day, selectedDate) && 'text-purple-600',
 							dayIdx === 0 && 'rounded-tl-lg',
 							dayIdx === 6 && 'rounded-tr-lg',
 							dayIdx === month.length - 7 && 'rounded-bl-lg',
 							dayIdx === month.length - 1 && 'rounded-br-lg',
 							dayIdx === 0 && colStartClasses[getDay(day)],
-							isEqual(day, selectedDate) &&
-								'!text-white bg-zinc-950 hover:bg-zinc-800',
-							isSameMonth(day, firstDayOfCurrentMonth) ? 'text-zinc-900' : '',
+							isEqual(day, selectedDate) && '!text-surface-12 bg-surface-1',
+							isSameMonth(day, firstDayOfCurrentMonth) ? 'text-surface-1' : '',
 						)}>
 						<time
 							dateTime={day.getDate().toString()}

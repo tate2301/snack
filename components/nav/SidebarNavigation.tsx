@@ -55,12 +55,6 @@ const tabs: NavItemType[] = [
 		href: '/home',
 	},
 	{
-		icon: <CalendarIcon className="w-5 h-5 text-surface-12" />,
-		value: 'today',
-		label: 'Today',
-		href: '/today',
-	},
-	{
 		icon: <InProgressIcon className="w-5 h-5 text-surface-12" />,
 		value: 'in-progress',
 		label: 'In Progress',
@@ -83,7 +77,7 @@ const tabs: NavItemType[] = [
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col justify-between gap-4 w-96">
+		<div className="sticky flex flex-col gap-4 w-96">
 			<div className="flex flex-col gap-4">
 				<div className="flex flex-col w-full gap-1 p-2">
 					{tabs.map((tab: NavItemType) => (
@@ -95,6 +89,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 							href={tab.href}
 						/>
 					))}
+					<Lists />
 				</div>
 			</div>
 		</div>
@@ -135,7 +130,6 @@ export default function NavigationSidebar({}) {
 					setActiveTab={setActiveTab}
 					activeTab={query.active}
 				/>
-				<Lists />
 			</div>
 		</div>
 	);
@@ -159,7 +153,8 @@ function NavItem(
 								activeTab: props.value,
 							},
 					  }
-			}>
+			}
+			className="hover:bg-surface-4 rounded-xl">
 			<ExclusionTab
 				id={'sidebar'}
 				isActive={isActive}>
@@ -181,20 +176,17 @@ function NavItem(
 function Lists({}) {
 	const lists = useAppSelector(selectAllLists);
 	return (
-		<div className="flex flex-col flex-1 max-h-full p-2 mt-8 overflow-hidden">
-			<p className="px-4 py-2 uppercase border-b">Lists</p>
-			<div className="flex-1 pt-1 overflow-y-scroll">
-				<AnimatePresence initial={false}>
-					{lists.map((list) => (
-						<ListItem
-							list={list}
-							key={list.id}
-						/>
-					))}
-				</AnimatePresence>
-			</div>
+		<>
+			<AnimatePresence initial={false}>
+				{lists.map((list) => (
+					<ListItem
+						list={list}
+						key={list.id}
+					/>
+				))}
+			</AnimatePresence>
 			<CreateList />
-		</div>
+		</>
 	);
 }
 
@@ -214,7 +206,7 @@ function CreateList() {
 	const dispatch = useAppDispatch();
 
 	const [isOpened, toggle] = useToggle(false);
-	const ref = useRef(null);
+	const ref = useRef<HTMLInputElement>(null);
 
 	const form = useFormik({
 		initialValues: {
@@ -236,6 +228,21 @@ function CreateList() {
 		},
 	});
 
+	useEffect(() => {
+		if (ref.current) {
+			const evtListener = (evt: KeyboardEvent) => {
+				if (evt.key === 'Escape') {
+					toggle();
+					form.resetForm();
+				}
+			};
+
+			ref.current.addEventListener('keydown', evtListener);
+
+			return () => ref.current?.removeEventListener('keydown', evtListener);
+		}
+	}, [ref.current]);
+
 	// useClickOutside(ref, toggle);
 
 	return (
@@ -254,7 +261,6 @@ function CreateList() {
 
 			{isOpened && (
 				<form
-					ref={ref}
 					onSubmit={form.handleSubmit}
 					style={{
 						backgroundColor: `var(--${form.values.color}-1)`,
@@ -267,6 +273,7 @@ function CreateList() {
 							onChange={(color) => form.setFieldValue('color', color)}
 						/>
 						<input
+							ref={ref}
 							name={'title'}
 							{...form.getFieldProps('title')}
 							autoFocus
@@ -331,7 +338,7 @@ const ListOptions = (props: {
 	return (
 		<Dropdown>
 			<Dropdown.Trigger>
-				<p className="p-2 opacity-0 rounded-xl hover:bg-surface-1 group-hover:opacity-100">
+				<p className="p-1 rounded-md opacity-0 hover:bg-surface-1 group-hover:opacity-100">
 					<EllipsisVerticalIcon className="w-5 h-5" />
 				</p>
 			</Dropdown.Trigger>
@@ -342,12 +349,7 @@ const ListOptions = (props: {
 						<span>Rename</span>
 					</p>
 				</Dropdown.Item>
-				<Dropdown.Item>
-					<p className="flex items-center gap-4">
-						<TrashIcon className="w-5 h-5" />
-						<span>Change color</span>
-					</p>
-				</Dropdown.Item>
+
 				{props.id !== 'default' && (
 					<Dropdown.Item onClick={props.onDelete}>
 						<p className="flex items-center gap-4">
@@ -362,6 +364,8 @@ const ListOptions = (props: {
 };
 
 function ListItem({ list }: { list: SnackList }) {
+	const router = useRouter();
+	const isActive = router.query.id === list.id;
 	const [disabled, toggle] = useToggle(true);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const prevListDetails = useRef(list);
@@ -400,7 +404,12 @@ function ListItem({ list }: { list: SnackList }) {
 				height: 'auto',
 			}}
 			className="relative flex flex-col justify-center group">
-			<button className="flex items-center gap-4 p-2 font-semibold text-surface-12 rounded-xl hover:bg-surface-3">
+			<Link
+				href={`/list/${list.id}`}
+				className={clsx(
+					'flex items-center gap-4 py-1 px-4 font-semibold text-surface-12 rounded-xl ',
+					isActive ? 'bg-surface-3' : 'hover:bg-surface-4',
+				)}>
 				<p
 					style={{
 						borderColor: `var(--${list.color}-10)`,
@@ -421,7 +430,7 @@ function ListItem({ list }: { list: SnackList }) {
 						</p>
 					)}
 				</p>
-			</button>
+			</Link>
 			{!disabled && (
 				<EditList
 					disabled={disabled}

@@ -13,7 +13,7 @@ const createSnackStorage = async (pre?: {
 	path.dirname = path.dirname || global.path.dirname;
 
 	const appData = await electronAPI.appData;
-	const databasePathname = path.join(appData, 'snack-v1.db');
+	const databasePathname = path.join(appData, pre?.storeOptions || 'snack.db');
 
 	const store = new Nedb({
 		filename: databasePathname,

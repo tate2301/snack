@@ -80,7 +80,7 @@ export const selectTasksByListId = (listId: string) => (state: RootState) => {
 		);
 	});
 
-	return tasksInList;
+	return tasksInList.filter((task) => !!task).reverse();
 };
 
 export const selectOverdueTasksByListID =

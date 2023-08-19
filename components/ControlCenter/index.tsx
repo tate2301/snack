@@ -22,9 +22,6 @@ const ControlCenter = () => {
 				</button>
 				<div className="flex gap-2">
 					<button className="p-2 rounded-xl hover:bg-surface-4">
-						<BellIcon className="w-6 h-6" />
-					</button>
-					<button className="p-2 rounded-xl hover:bg-surface-4">
 						<Cog6ToothIcon className="w-6 h-6" />
 					</button>
 					<button className="p-2 rounded-xl hover:bg-surface-4">

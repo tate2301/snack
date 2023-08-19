@@ -8,7 +8,11 @@ import { PlayIcon } from '@heroicons/react/20/solid';
 import { selectListById, selectTasksByListId } from '../../redux/lists';
 import SelectList from '../../components/create/SelectList';
 import { ReactNode, useEffect, useState } from 'react';
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import {
+	CheckCircleIcon,
+	ListBulletIcon,
+	XCircleIcon,
+} from '@heroicons/react/24/outline';
 import {
 	EllipsisVerticalIcon,
 	PauseIcon,
@@ -19,13 +23,15 @@ import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import InProgressIcon from '../../icons/InProgressIcon';
 import CalendarIcon from '../../icons/CalendarIcon';
+import { useRouter } from 'next/router';
 
 const t = (n: number) => n * 1000;
 
 export default function Page() {
-	const [selectedList, setSelectedList] = useState('default');
-	const listObject = useAppSelector(selectListById(selectedList));
-	const allTasks = useAppSelector(selectTasksByListId(selectedList));
+	const router = useRouter();
+	const { id } = router.query as { id: string };
+	const listObject = useAppSelector(selectListById(id));
+	const allTasks = useAppSelector(selectTasksByListId(id));
 
 	const onTrackTasks = allTasks.filter(
 		(task) =>
@@ -41,35 +47,16 @@ export default function Page() {
 		(task) => !task.complete && task.status === SnackTaskStatus.Blocked,
 	);
 
-	const onChange = (val: string) => {
-		setSelectedList(val);
-	};
-
 	return (
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
-				<CalendarIcon className="w-6 h-6 text-surface-10" />
-
 				<div className="flex-1">
-					<div className="mb-4">
-						<h1 className="text-2xl font-semibold text-surface-12">Today</h1>
+					<div className="flex items-center gap-2 mb-4">
+						<h1 className="text-2xl font-semibold text-surface-12">
+							{listObject.name}
+						</h1>
 					</div>
 					<div className="w-full gap-4 mb-12">
-						<div className="flex items-start justify-between w-full gap-2 mb-2">
-							<h1 className="relative flex items-baseline gap-8 mb-2 font-semibold border w-fit border-surface-6 rounded-xl group">
-								<SelectList
-									defaultListId="default"
-									onChange={onChange}
-								/>
-							</h1>
-
-							<div className="flex items-center justify-between gap-4">
-								<FocusTimerButton />
-								<button className="p-2 rounded-xl hover:bg-surface-1 hover:shadow">
-									<EllipsisVerticalIcon className={'w-6 h-6'} />
-								</button>
-							</div>
-						</div>
 						<div className="flex items-center gap-6">
 							<p className="flex items-center font-semibold">
 								<CheckCircleIcon className="w-5 h-5 text-success-10" />
@@ -91,7 +78,7 @@ export default function Page() {
 							key={listObject.id}
 							initial={false}>
 							<div>
-								<CreateTask />
+								<CreateTask defaultList={id} />
 							</div>
 							<TasksList
 								emptyStateLabel="No tasks yet"
