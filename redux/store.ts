@@ -5,8 +5,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { calendarSlice } from './calendar';
 import { eventsSlice } from './events';
 import { listSlice } from './lists';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
+import { persistReducer } from 'redux-persist';
+import { settingsSlice } from './settings';
+import { BaseAppDispatch, BaseRootState } from './types';
+import createSnackStorage from '../lib/core/redux-storage';
+const { deepParseJson } = require('deep-parse-json');
 
 const remindersReducer = (state = [], action) => {
 	return state;
@@ -16,29 +19,19 @@ const userReducer = (state = {}, action) => {
 	return state;
 };
 
-const settingsReducer = (state = {}, action) => {
-	return state;
-};
-
 const rootReducer = combineReducers({
 	calendars: calendarSlice.reducer,
 	lists: listSlice.reducer,
 	events: eventsSlice.reducer,
 	reminders: remindersReducer,
 	user: userReducer,
-	settings: settingsReducer,
+	settings: settingsSlice.reducer,
 	tasks: tasksSlice.reducer,
 });
 
-const persistConfig = {
-	key: 'root',
-	storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-const store = configureStore({
-	reducer: persistedReducer,
+export const storeConfiguration = {
+	// Allow Typescript to infer the types of the store without persistence
+	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) => {
 		const defaultMiddleware = getDefaultMiddleware({
 			serializableCheck: false,
@@ -50,14 +43,40 @@ const store = configureStore({
 		}
 		return defaultMiddleware;
 	},
-});
+};
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+const createStoreAsync = async (): Promise<
+	ReturnType<typeof configureStore>
+> => {
+	// We need to do this configuration async after the app is ready
+	// and the ElectronAPI has been configured and the globals have
+	// been set.
+
+	// dynamically import createElectronStorage
+
+	const persistConfig = {
+		key: 'root',
+		// storage: storage,
+		storage: await createSnackStorage(),
+		// We are storing deeply serialized object in NeDB, JSON.parse will not be sufficient
+		// so we pass a custom deserializer that does deep parse
+		deserialize: deepParseJson,
+	};
+
+	const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+	const store = configureStore({
+		...storeConfiguration,
+		reducer: persistedReducer,
+	});
+
+	return store;
+};
+
+export type RootState = BaseRootState;
+export type AppDispatch = BaseAppDispatch;
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const persistor = persistStore(store);
-
-export default store;
+export { createStoreAsync };

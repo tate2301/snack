@@ -1,7 +1,7 @@
 import { ReactNode, useCallback } from 'react';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
-import { useAnimate } from 'framer-motion';
+import { AnimatePresence, useAnimate } from 'framer-motion';
 import { useDraggable } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { addTask, updateTask } from '../../redux/tasks';
@@ -133,13 +133,21 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 		: undefined;
 
 	return (
-		<div
+		<motion.div
+			initial={{
+				opacity: 0,
+				height: 0,
+			}}
+			animate={{
+				opacity: 1,
+				height: 'auto',
+			}}
 			style={style}
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
 			className={clsx(
-				'px-4 py-2 relative bg-white rounded-xl group',
+				'px-4 py-2 relative bg-white rounded-xl group transition-all',
 				isDragging && 'z-40 shadow-xl',
 			)}>
 			<div className={clsx('justify-between flex items-start')}>
@@ -155,95 +163,107 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 					<div
 						className="flex-1 h-full"
 						onClick={onToggle}>
-						<p
-							className={clsx(
-								'flex-1 line-clamp-1',
-								isChecked ? 'line-through text-zinc-400 ' : 'text-surface-12',
-							)}>
-							{props.title}
-						</p>
-						<div className="flex items-center gap-4 mt-1">
-							{props.deadline && (
-								<span
-									className={clsx(
-										'p-0.5 rounded px-1 text-sm font-semibold',
-										differenceInDays(props.deadline, new Date()) <= 0
-											? 'bg-danger-4 text-danger-10'
-											: 'bg-primary-4 text-primary-10',
-									)}>
-									{differenceInDays(props.deadline, new Date()) < 0
-										? 'Was due'
-										: differenceInDays(props.deadline, new Date()) === 0
-										? 'Due'
-										: 'Due in'}{' '}
-									{differenceInDays(props.deadline, new Date()) < 0 &&
-										Math.abs(differenceInDays(props.deadline, new Date())) +
-											' days ago'}{' '}
-									{differenceInDays(props.deadline, new Date()) > 0 &&
-										Math.abs(differenceInDays(props.deadline, new Date())) +
-											' days'}{' '}
-									{differenceInDays(props.deadline, new Date()) === 0 &&
-										'today'}
-								</span>
-							)}
-							{props.tags?.map((tag) => (
-								<Tag
-									key={tag}
-									value={tag}
-								/>
-							))}
-						</div>
-						{isOpen && (
-							<motion.div className="flex flex-col gap-2 py-2">
-								<p className="text-surface-12">{props.description}</p>
-								<div className="flex items-center justify-start gap-4">
-									<SelectStatus
-										status={props.status}
-										onChange={changeStatus}
+						<AnimatePresence>
+							<p
+								className={clsx(
+									'flex-1 line-clamp-1',
+									isChecked ? 'line-through text-zinc-400 ' : 'text-surface-12',
+									isOpen && 'font-semibold',
+								)}>
+								{props.title}
+							</p>
+							<div className="flex items-center gap-4 mt-1 transition-transform">
+								{props.deadline && (
+									<span
+										className={clsx(
+											'p-0.5 rounded px-1 text-sm font-semibold',
+											differenceInDays(props.deadline, new Date()) <= 0
+												? 'bg-danger-4 text-danger-10'
+												: 'bg-primary-4 text-primary-10',
+										)}>
+										{differenceInDays(props.deadline, new Date()) < 0
+											? 'Was due'
+											: differenceInDays(props.deadline, new Date()) === 0
+											? 'Due'
+											: 'Due in'}{' '}
+										{differenceInDays(props.deadline, new Date()) < 0 &&
+											Math.abs(differenceInDays(props.deadline, new Date())) +
+												' days ago'}{' '}
+										{differenceInDays(props.deadline, new Date()) > 0 &&
+											Math.abs(differenceInDays(props.deadline, new Date())) +
+												' days'}{' '}
+										{differenceInDays(props.deadline, new Date()) === 0 &&
+											'today'}
+									</span>
+								)}
+								{props.tags?.map((tag) => (
+									<Tag
+										key={tag}
+										value={tag}
 									/>
-									<div className="rounded-xl bg-surface-2">
-										<SelectList
-											onChange={changeList}
-											defaultListId={list.id}
+								))}
+							</div>
+							{isOpen && (
+								<motion.div
+									initial={{
+										opacity: 0,
+									}}
+									animate={{
+										opacity: 1,
+									}}
+									className="flex flex-col gap-2 py-2">
+									<p className="text-surface-12">{props.description}</p>
+									<div className="flex items-center justify-start gap-4">
+										<SelectStatus
+											status={props.status}
+											onChange={changeStatus}
 										/>
-									</div>
+										<div className="rounded-xl bg-surface-2">
+											<SelectList
+												onChange={changeList}
+												defaultListId={list.id}
+											/>
+										</div>
 
-									<SetReminderButton />
-								</div>
-							</motion.div>
-						)}
+										<SetReminderButton />
+									</div>
+								</motion.div>
+							)}
+						</AnimatePresence>
 					</div>
 				</div>
 				<div className="flex items-center gap-2 ">
-					{!isOpen && (
-						<>
-							{props.description && (
-								<PostItNoteIcon className="w-5 h-5 text-surface-8" />
-							)}
-							<p className="flex items-center gap-4 mx-2">
-								<span
-									style={{
-										borderColor: `var(--${list.color}-10)`,
-									}}
-									className="w-4 h-4 border-2 rounded-md"
-								/>
-							</p>
-						</>
-					)}
-					{isOpen && (
-						<>
-							<button className="flex items-center gap-2 p-2 font-normal rounded-xl hover:bg-surface-3">
-								<ArrowsExpand className="w-4 h-4" />
-							</button>
-						</>
-					)}
-					<TaskDropdownOptions
-						{...props}
-						id={props.id}
-					/>
+					<AnimatePresence>
+						{!isOpen && (
+							<>
+								{props.description && (
+									<PostItNoteIcon className="w-5 h-5 text-surface-8" />
+								)}
+								<p className="flex items-center gap-4 mx-2">
+									<span
+										style={{
+											borderColor: `var(--${list.color}-10)`,
+										}}
+										className="w-4 h-4 border-2 rounded-md"
+									/>
+								</p>
+							</>
+						)}
+						{isOpen && (
+							<>
+								<button className="flex items-center gap-2 p-2 font-normal rounded-xl hover:bg-surface-3">
+									<ArrowsExpand className="w-4 h-4" />
+								</button>
+							</>
+						)}
+						<TaskDropdownOptions
+							{...props}
+							id={props.id}
+						/>
+					</AnimatePresence>
 				</div>
 			</div>
-		</div>
+		</motion.div>
 	);
 }
 

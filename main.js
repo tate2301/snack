@@ -15,8 +15,8 @@ function createWindow() {
 		icon: path.join(__dirname, './public/app-logo.png'),
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
-
-			// nodeIntegration: true,
+			enableRemoteModule: true,
+			nodeIntegration: true,
 			// contextIsolation: false,
 			// sandbox: false,
 		},
@@ -79,3 +79,4 @@ ipcMain.handle('save-config', (event, data) => {
 });
 
 require('./electron-src');
+require('./electron-src/utils');

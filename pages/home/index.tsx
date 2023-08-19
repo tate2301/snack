@@ -8,9 +8,11 @@ import { SnackTaskStatus } from '../../redux/tasks/types';
 import { selectTaskByStatus } from '../../redux/tasks';
 import InboxIcon from '../../icons/InboxIcon';
 import {
+	BoltIcon,
 	EllipsisVerticalIcon,
 	Square3Stack3DIcon,
 } from '@heroicons/react/24/outline';
+import { format, startOfDay, startOfToday } from 'date-fns';
 
 export default function Page() {
 	const inProgress = useAppSelector((state) =>
@@ -23,19 +25,22 @@ export default function Page() {
 		<CalendarLayout>
 			<main className={'h-full'}>
 				<div className="flex items-center justify-between mb-4">
-					<div className="flex items-center gap-4 mb-1">
-						<InboxIcon className="w-6 h-6 text-surface-10" />
+					<div>
+						<div className="flex items-center gap-4 mb-1">
+							<InboxIcon className="w-6 h-6 text-surface-10" />
 
-						<h1 className="text-2xl font-semibold text-surface-12">
-							Good evening, Tatenda
-						</h1>
+							<h1 className="text-2xl font-semibold text-surface-12">
+								Good evening, Tatenda
+							</h1>
+						</div>
+						<p className="text-xl text-surface-10">
+							It's {format(startOfToday(), 'EEE dd MMM')}. You have{' '}
+							{inProgress.length} pending tasks
+						</p>
 					</div>
 					<div className="flex gap-2">
-						<button className="p-2 hover:bg-surface-1 rounded-xl">
-							<Square3Stack3DIcon className="w-5 h-5" />
-						</button>
 						<button className="p-2 rounded-xl hover:bg-surface-1">
-							<EllipsisVerticalIcon className="w-5 h-5" />
+							<BoltIcon className="w-5 h-5" />
 						</button>
 					</div>
 				</div>

@@ -1,5 +1,3 @@
-const SnackDatabase = require('./database');
-
 const { ipcMain } = require('electron');
 
 ipcMain.handle('load-database', async (event, pathname) => {

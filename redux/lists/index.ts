@@ -31,6 +31,10 @@ export const listSlice = createSlice({
 			list.color = color;
 			list.icon = icon;
 		},
+		removeList: (state, action) => {
+			const { id } = action.payload;
+			state.items = state.items.filter((list) => list.id !== id);
+		},
 		addTaskToList: (state, action) => {
 			const { listId, taskId } = action.payload;
 			const list = state.items.find((list) => list.id === listId);
@@ -50,14 +54,19 @@ export const listSlice = createSlice({
 
 export default listSlice.reducer;
 
-export const { addListItem, addTaskToList, removeTaskFromList, updateList } =
-	listSlice.actions;
+export const {
+	addListItem,
+	addTaskToList,
+	removeTaskFromList,
+	updateList,
+	removeList,
+} = listSlice.actions;
 
 export const selectAllLists = (state: RootState) => state.lists.items;
 
 export const selectListById = (listId: string) => (state: RootState) => {
 	const list = state.lists.items.find((list) => list.id === listId);
-	if (!list) return state.lists.items[0];
+	if (!list) return state.lists.items.find((list) => list.id === 'default');
 	return list;
 };
 
@@ -94,6 +103,6 @@ export const selectOverdueTasksByListID =
 export const getListContainingTask = (taskId: string) => (state: RootState) => {
 	return (
 		state.lists.items.find((list) => list.tasks.includes(taskId)) ??
-		state.lists[0]
+		state.lists.items[0]
 	);
 };

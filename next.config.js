@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	webpack: (config) => {
-		// Fixes npm packages that depend on `fs` module
-		config.resolve.fallback = {
-			fs: false,
-		};
+	webpack: (config, { isServer }) => {
+		if (!isServer) {
+			config.resolve.fallback.path = false;
+		}
+
 		return config;
 	},
+
 	images: {
 		unoptimized: true,
 	},

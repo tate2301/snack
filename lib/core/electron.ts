@@ -6,6 +6,8 @@ type ElectronAPI = {
 	invoke: (event: string) => Promise<any>;
 	send: (channel: string, ...args: any[]) => void;
 	on: (channel: string, listener: (...args: any[]) => void) => void;
+	require: (module: string) => any;
+	appData: Promise<string>;
 };
 
 const electronAPI: ElectronAPI | undefined =
