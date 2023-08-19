@@ -51,10 +51,13 @@ export default function Page() {
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
-					<div className="flex items-center gap-2 mb-4">
+					<div className="gap-2 mb-4">
 						<h1 className="text-2xl font-semibold text-surface-12">
 							{listObject.name}
 						</h1>
+						<p className="text-xl !outline-none text-surface-10">
+							{listObject.description || 'Add a description'}
+						</p>
 					</div>
 					<div className="w-full gap-4 mb-12">
 						<div className="flex items-center gap-6">

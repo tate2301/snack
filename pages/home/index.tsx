@@ -13,7 +13,12 @@ import {
 	Square3Stack3DIcon,
 } from '@heroicons/react/24/outline';
 import { format, startOfDay, startOfToday } from 'date-fns';
+import PageLayout from '../../layouts/PageLayout';
 
+// <p className="text-xl text-surface-10">
+// 	It's {format(startOfToday(), 'EEE dd MMM')}. You have {inProgress.length}{' '}
+// 	pending tasks
+// </p>;
 export default function Page() {
 	const inProgress = useAppSelector((state) =>
 		selectTaskByStatus(state, SnackTaskStatus.InProgress),
@@ -23,28 +28,12 @@ export default function Page() {
 
 	return (
 		<CalendarLayout>
-			<main className={'h-full'}>
-				<div className="flex items-center justify-between mb-4">
-					<div>
-						<div className="flex items-center gap-4 mb-1">
-							<InboxIcon className="w-6 h-6 text-surface-10" />
-
-							<h1 className="text-2xl font-semibold text-surface-12">
-								Good evening, Tatenda
-							</h1>
-						</div>
-						<p className="text-xl text-surface-10">
-							It's {format(startOfToday(), 'EEE dd MMM')}. You have{' '}
-							{inProgress.length} pending tasks
-						</p>
-					</div>
-					<div className="flex gap-2">
-						<button className="p-2 rounded-xl hover:bg-surface-1">
-							<BoltIcon className="w-5 h-5" />
-						</button>
-					</div>
-				</div>
-				<CreateTask />
+			<PageLayout
+				name="Good morning, Tatenda"
+				description={`It's ${format(startOfToday(), 'EEE dd MMM')}. You have ${
+					inProgress.length
+				} pending tasks`}
+				icon={<InboxIcon className="w-5 h-5" />}>
 				<motion.div className="flex flex-col gap-2 mt-4">
 					<AnimatePresence initial={false}>
 						{inProgress.map((task) => (
@@ -74,7 +63,7 @@ export default function Page() {
 						))}
 					</AnimatePresence>
 				</motion.div>
-			</main>
+			</PageLayout>
 		</CalendarLayout>
 	);
 }

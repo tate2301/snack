@@ -2,12 +2,15 @@ import { DndContext } from '@dnd-kit/core';
 import '../styles/global.css';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AuthContextProvider } from '../context/AuthContext';
 import { electronAPI } from '../lib/core/electron';
 import { PersistGate } from 'redux-persist/integration/react';
-import { createStoreAsync } from '../redux/store';
+import { createStoreAsync, useAppSelector } from '../redux/store';
 import { persistStore } from 'redux-persist';
+import { applicationSettings } from '../redux/settings';
+import { useRouter } from 'next/router';
+import { Toaster } from 'sonner';
 
 export default function App({ Component, pageProps }) {
 	const store = useRef(null);
@@ -75,10 +78,29 @@ const AppContainer = ({ children, store, persistor }) => {
 					<PersistGate
 						loading={null}
 						persistor={persistor}>
-						<DndContext>{children}</DndContext>
+						<Toaster />
+
+						<DndContext>
+							<AppPresenter>{children}</AppPresenter>
+						</DndContext>
 					</PersistGate>
 				</Provider>
 			</div>
 		</AuthContextProvider>
 	);
+};
+
+const AppPresenter = ({ children }) => {
+	const settings = useAppSelector(applicationSettings);
+	const router = useRouter();
+
+	const isHome = useMemo(() => router.asPath === '/', [router]);
+
+	useEffect(() => {
+		if (!isHome && !settings.onboarded) {
+			router.push('/');
+		}
+	}, [isHome]);
+
+	return children;
 };

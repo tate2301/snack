@@ -5,5 +5,6 @@ export type SnackList = {
 	name: string;
 	tasks: string[];
 	color: string;
+	description?: string;
 	icon?: string;
 };

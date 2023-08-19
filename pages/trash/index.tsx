@@ -11,6 +11,7 @@ import InboxIcon from '../../icons/InboxIcon';
 import { useRouter } from 'next/router';
 import CalendarIcon from '../../icons/CalendarIcon';
 import { TrashIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import PageLayout from '../../layouts/PageLayout';
 
 export default function Page() {
 	const router = useRouter();
@@ -33,54 +34,50 @@ export default function Page() {
 
 	return (
 		<CalendarLayout>
-			<main className={'h-full flex gap-4 items-start'}>
-				<XCircleIcon className="w-6 h-6 text-danger-10" />
-				<div className="flex-1">
-					<div className="items-center gap-4 mb-8">
-						<h1 className="text-2xl font-semibold text-surface-12">Blocked</h1>
-						<p>This is the place to procrastinate</p>
-					</div>
-					<motion.div className="flex flex-col gap-2 mt-4">
-						<AnimatePresence initial={false}>
-							{tasks.map((task) => (
-								<motion.div
-									initial={{
-										opacity: 0,
-										height: 0,
-									}}
-									animate={{
-										opacity: 1,
-										height: 'auto',
-										transition: {
-											type: 'spring',
-											bounce: 0.3,
-											opactiy: {
-												delay: t(0.02),
-											},
-										},
-									}}
-									exit={{
-										opacity: 0,
-										height: 0,
-									}}
-									transition={{
+			<PageLayout
+				name={'Blocked tasks'}
+				description="These might have other tasks they depend on. You get back to them!"
+				icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}>
+				<motion.div className="flex flex-col gap-2 mt-4">
+					<AnimatePresence initial={false}>
+						{tasks.map((task) => (
+							<motion.div
+								initial={{
+									opacity: 0,
+									height: 0,
+								}}
+								animate={{
+									opacity: 1,
+									height: 'auto',
+									transition: {
 										type: 'spring',
-										bounce: 0,
-										duration: t(0.15),
+										bounce: 0.3,
 										opactiy: {
-											duration: t(0.03),
+											delay: t(0.02),
 										},
-									}}>
-									<TaskListItem
-										key={task.id}
-										{...task}
-									/>
-								</motion.div>
-							))}
-						</AnimatePresence>
-					</motion.div>
-				</div>
-			</main>
+									},
+								}}
+								exit={{
+									opacity: 0,
+									height: 0,
+								}}
+								transition={{
+									type: 'spring',
+									bounce: 0,
+									duration: t(0.15),
+									opactiy: {
+										duration: t(0.03),
+									},
+								}}>
+								<TaskListItem
+									key={task.id}
+									{...task}
+								/>
+							</motion.div>
+						))}
+					</AnimatePresence>
+				</motion.div>
+			</PageLayout>
 		</CalendarLayout>
 	);
 }

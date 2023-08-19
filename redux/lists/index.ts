@@ -23,13 +23,15 @@ export const listSlice = createSlice({
 			state.items.push(action.payload);
 		},
 		updateList: (state, action) => {
-			const { id, name, color, icon } = action.payload as SnackList;
+			const { id, name, color, icon, description } =
+				action.payload as SnackList;
 			const list = state.items.find((list) => list.id === id);
 			if (!list) return;
 
 			list.name = name;
 			list.color = color;
 			list.icon = icon;
+			list.description = description;
 		},
 		removeList: (state, action) => {
 			const { id } = action.payload;

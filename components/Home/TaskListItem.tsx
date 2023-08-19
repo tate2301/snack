@@ -11,13 +11,7 @@ import {
 	CalendarDaysIcon,
 	EllipsisVerticalIcon,
 } from '@heroicons/react/24/solid';
-import {
-	add,
-	differenceInDays,
-	format,
-	parseISO,
-	startOfToday,
-} from 'date-fns';
+import { add, differenceInDays, format, startOfToday } from 'date-fns';
 import Dropdown from '../ui/dropdown-menu';
 import {
 	CheckCircleIcon,
@@ -28,11 +22,9 @@ import {
 } from '@heroicons/react/24/outline';
 import CalendarIcon from '../../icons/CalendarIcon';
 import { generateUUID } from '../../lib/functions';
-import TargetIcon from '../../icons/TargetIcon';
 import { motion } from 'framer-motion';
 import PostItNoteIcon from '../../icons/PostItNoteIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
-import ArrowsExpand from '../../icons/ArrowsExpand';
 import {
 	Select,
 	SelectContent,
@@ -41,13 +33,12 @@ import {
 	SelectValue,
 } from '../ui/select';
 import TodoIcon from '../../icons/TodoIcon';
-import SelectList from '../create/SelectList';
 import {
 	addTaskToList,
 	getListContainingTask,
 	removeTaskFromList,
 } from '../../redux/lists';
-import React from 'react';
+import { toast } from 'sonner';
 
 const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -62,6 +53,12 @@ const useTaskFunctions = (task: SnackTask) => {
 					complete: status === SnackTaskStatus.Complete,
 				}),
 			);
+
+			if (status === SnackTaskStatus.Complete) {
+				toast('Hurray! Task has been completed.', {
+					description: task.title,
+				});
+			}
 		},
 		[task],
 	);
@@ -100,7 +97,9 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 	const list = useAppSelector(getListContainingTask(props.id));
 	const { changeList, changeStatus } = useTaskFunctions(props);
 	const [isOpen, onToggle] = useToggle(false);
-	const [isChecked, toggle] = useToggle(props.complete);
+	const [isChecked, toggle] = useToggle(
+		props.status === SnackTaskStatus.Complete,
+	);
 	const { attributes, listeners, setNodeRef, transform, isDragging } =
 		useDraggable({
 			id: props.id,
@@ -115,26 +114,9 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 	const onCheck = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-
-		dispatch(
-			updateTask({
-				...props,
-				complete: !isChecked,
-				status: !isChecked
-					? SnackTaskStatus.Complete
-					: SnackTaskStatus.InProgress,
-			}),
+		changeStatus(
+			!isChecked ? SnackTaskStatus.Complete : SnackTaskStatus.InProgress,
 		);
-
-		toggle();
-		animate('input', {
-			scale: [1, 1.15, 1],
-			opacity: [1, 0.5, 1],
-		});
-		animate('p', {
-			opacity: isChecked ? [0.7, 1] : [1, 0.7, 1],
-			textDecorationLine: !isChecked ? 'line-through' : 'none',
-		});
 	};
 
 	const style = transform

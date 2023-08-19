@@ -1,24 +1,25 @@
 'use client';
-import { useAppSelector } from '../redux/store';
-import { SnackTaskStatus } from '../redux/tasks/types';
-import { selectTaskByStatus } from '../redux/tasks';
+import { useAppDispatch, useAppSelector } from '../redux/store';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import AppLogo from '../public/app-logo.png';
 import Image from 'next/image';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { applicationSettings, updateSettings } from '../redux/settings';
 
 export default function Page() {
-	const [loading, setIsLoading] = useState(false);
-
-	const inProgress = useAppSelector((state) =>
-		selectTaskByStatus(state, SnackTaskStatus.InProgress),
-	);
-
-	const t = (n: number) => n * 1000;
+	const dispatch = useAppDispatch();
+	const settings = useAppSelector(applicationSettings);
 	const router = useRouter();
 
-	const onQuickStart = () => router.push('/home');
+	const onQuickStart = () => {
+		dispatch(
+			updateSettings({
+				...settings,
+				onboarded: true,
+			}),
+		);
+		router.push('/home');
+	};
 
 	return (
 		<main className={'h-screen w-screen flex items-center justify-center'}>
