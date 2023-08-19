@@ -65,13 +65,29 @@ export const tasksSlice = createSlice({
 				existingTask.lastUpdated = new Date();
 			}
 		},
+		updateSubtask: (state, action) => {
+			const { id, title, complete, taskId } = action.payload;
+
+			const task = state.items.find((task) => task.id === taskId);
+			if (task) {
+				const subtask = task.subtasks.find((subtask) => subtask.id === id);
+				subtask.complete = complete;
+				subtask.title = title;
+			}
+		},
 	},
 });
 
 export default tasksSlice.reducer;
 
-export const { addTask, updateTask, deleteTask, addSubtask, deleteSubtask } =
-	tasksSlice.actions;
+export const {
+	addTask,
+	updateTask,
+	deleteTask,
+	addSubtask,
+	deleteSubtask,
+	updateSubtask,
+} = tasksSlice.actions;
 
 /** Selectors */
 export const selectAllTasks = (state: RootState) =>
@@ -107,16 +123,3 @@ export const selectTaskByDate = (state: RootState, priority: string) =>
 				task.deadline && isEqual(startOfDay(task.deadline), startOfToday()),
 		)
 		.filter((task) => task.priority === priority);
-
-export const selectOverdueTasksByID = (state: RootState, id: string) => {
-	const task = state.tasks.items.find((task) => task.id === id);
-	if (task) {
-		return task.subtasks.filter(
-			(task) =>
-				task.status !== SnackTaskStatus.Complete &&
-				task.deadline &&
-				task.deadline.getTime() < new Date().getTime(),
-		);
-	}
-	return [];
-};

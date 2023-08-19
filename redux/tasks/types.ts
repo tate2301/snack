@@ -23,9 +23,15 @@ export type SnackTask = {
 	priority: SnackTaskPriority;
 	complete?: boolean;
 	status: SnackTaskStatus;
-	subtasks: SnackTask[];
+	subtasks: SnackSubtask[];
 	tags: string[];
 	createdAt: Date;
 	lastUpdated: Date;
 	trashed?: boolean;
+};
+
+export type SnackSubtask = {
+	id: string;
+	title: string;
+	complete: boolean;
 };

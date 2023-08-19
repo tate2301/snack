@@ -1,11 +1,26 @@
 import { PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
 import CalendarIcon from '../../icons/CalendarIcon';
-import { SnackTask } from '../../redux/tasks/types';
+import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import Textarea from '../ui/input/textarea';
 import Modal from '../ui/modal';
 import Tooltip from '../ui/tooltip';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import {
+	CheckCircleIcon,
+	ExclamationTriangleIcon,
+	XCircleIcon,
+} from '@heroicons/react/24/outline';
 import TargetIcon from '../../icons/TargetIcon';
+import { generateUUID } from '../../lib/functions';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '../ui/select';
+import TodoIcon from '../../icons/TodoIcon';
+import InProgressIcon from '../../icons/InProgressIcon';
+import { useTaskFunctions } from './TaskListItem';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -16,63 +31,74 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 	const handleOnClose = () => {
 		props.onClose();
 	};
+
+	const { changeStatus, onAddSubTask, onUpdateSubTask, onRemoveSubTask } =
+		useTaskFunctions(props);
+
 	return (
 		<Modal
 			isOpen={props.isOpen}
 			onClose={handleOnClose}>
-			<div className="w-[40rem]">
-				<div className="flex gap-2 items-center mb-8">
-					<input
-						className="rounded-xl flex-shrink-0"
-						type="checkbox"
-					/>
-					<h1 className="text-xl text-surface-11 line-clamp-1">
-						{props.title}
-					</h1>
+			<div className="w-[40rem] space-y-8 text-surface-11 font-normal">
+				<div className="mb-2 space-y-4">
+					<div className="flex items-center justify-between">
+						<SelectStatus
+							status={props.status}
+							onChange={changeStatus}
+						/>
+					</div>
+					<div>
+						<h1 className="text-xl font-semibold text-surface-12">
+							{props.title}
+						</h1>
+						{props.description && <p>{props.description}</p>}
+					</div>
 				</div>
-				<div className="mb-8 bg-surface-3 divide-surface-4 rounded-xl divide-y">
-					<Textarea
-						name={'description'}
-						className="w-full bg-transparent !outline-none p-4"
-						placeholder="Add a description"
-					/>
-
-					<div className="flex gap-2 mt-4 p-4">
+				<div className="mb-8 divide-y bg-surface-3 divide-surface-4 rounded-xl">
+					<div className="flex gap-2 p-4 mt-4">
 						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-surface-10">
+							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
 								<CalendarIcon className="w-5 h-5" />
 							</button>
 						</Tooltip>
 						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-surface-10">
-								<div className="w-5 h-5 rounded-xl border-2 border-primary-10" />
+							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
+								<div className="w-5 h-5 border-2 rounded-xl border-primary-10" />
 							</button>
 						</Tooltip>
 						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-surface-10">
+							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
 								<TargetIcon className="w-5 h-5" />
 								<p>In Progress</p>
 							</button>
 						</Tooltip>
 						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 rounded-xl bg-white shadow-sm text-danger-11">
+							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-danger-11">
 								<ExclamationTriangleIcon className="w-5 h-5" />
 							</button>
 						</Tooltip>
 					</div>
 				</div>
 
-				<div className="mb-8 mt-4">
+				<div className="mt-4 mb-8">
 					<div className="flex flex-col gap-2">
-						<div className="flex items-center gap-2">
-							<input
-								className="!rounded-full flex-shrink-0"
-								type="checkbox"
-							/>
-							<p>Add bookmarks control</p>
-						</div>
+						<SubTaskItem
+							title="Add bookmarks control"
+							id={generateUUID()}
+							complete={true}
+						/>
+						<SubTaskItem
+							title="Style the expanded task view"
+							id={generateUUID()}
+							complete={false}
+						/>
+						<SubTaskItem
+							title="Allow users to add and update subtask items at will"
+							id={generateUUID()}
+							complete={true}
+						/>
 					</div>
-					<button className="font-semibold p-2 px-2 rounded-xl bg-transparent hover:bg-surface-4 mt-4">
+					<button className="p-2 px-2 mt-4 font-semibold bg-transparent rounded-xl hover:bg-surface-4">
 						<PlusIcon className="w-5 h-5" />
 						Add a subtask
 					</button>
@@ -86,6 +112,64 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 				</div>
 			</div>
 		</Modal>
+	);
+};
+
+const SubTaskItem = (props: {
+	title: string;
+	complete: boolean;
+	id: string;
+}) => {
+	return (
+		<div className="flex items-center gap-2">
+			<input
+				className="!rounded-full !h-5 !w-5 flex-shrink-0"
+				type="checkbox"
+				checked={props.complete}
+			/>
+			<p className="font-normal text-surface-11">{props.title}</p>
+		</div>
+	);
+};
+
+const SelectStatus = (props: {
+	status: SnackTaskStatus;
+	onChange: (status: SnackTaskStatus) => void;
+}) => {
+	return (
+		<Select
+			defaultValue={props.status ?? SnackTaskStatus.Todo}
+			onValueChange={props.onChange}>
+			<SelectTrigger className="text-surface-12 !font-normal bg-surface-3">
+				<SelectValue placeholder={'Select status'} />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value={SnackTaskStatus.Todo}>
+					<div className="flex items-center gap-2">
+						<TodoIcon className="w-5 h-5" />
+						<p className="flex-1">{SnackTaskStatus.Todo}</p>
+					</div>
+				</SelectItem>
+				<SelectItem value={SnackTaskStatus.InProgress}>
+					<div className="flex items-center gap-2">
+						<InProgressIcon className="w-5 h-5" />
+						<p className="flex-1">{SnackTaskStatus.InProgress}</p>
+					</div>
+				</SelectItem>
+				<SelectItem value={SnackTaskStatus.Complete}>
+					<div className="flex items-center gap-2">
+						<CheckCircleIcon className="w-5 h-5" />
+						<p className="flex-1">{SnackTaskStatus.Complete}</p>
+					</div>
+				</SelectItem>
+				<SelectItem value={SnackTaskStatus.Blocked}>
+					<div className="flex items-center gap-2">
+						<XCircleIcon className="w-5 h-5" />
+						<p className="flex-1">{SnackTaskStatus.Blocked}</p>
+					</div>
+				</SelectItem>
+			</SelectContent>
+		</Select>
 	);
 };
 

@@ -10,6 +10,7 @@ const Textarea = (props: {
 	listeners?: Record<string, any>;
 	[key: string]: any;
 	setRef?: MutableRefObject<HTMLTextAreaElement>;
+	value?: string;
 }) => {
 	const textAreaRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const [value, setValue] = useState('');

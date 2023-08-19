@@ -4,8 +4,19 @@ import clsx from 'clsx';
 import { AnimatePresence, useAnimate } from 'framer-motion';
 import { useDraggable } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { addTask, deleteTask, updateTask } from '../../redux/tasks';
-import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
+import {
+	addSubtask,
+	addTask,
+	deleteSubtask,
+	deleteTask,
+	updateSubtask,
+	updateTask,
+} from '../../redux/tasks';
+import {
+	SnackSubtask,
+	SnackTask,
+	SnackTaskStatus,
+} from '../../redux/tasks/types';
 import {
 	BellIcon,
 	CalendarDaysIcon,
@@ -39,8 +50,10 @@ import {
 	removeTaskFromList,
 } from '../../redux/lists';
 import { toast } from 'sonner';
+import useDisclosure from '../../hooks/useDisclosure';
+import TaskExpandedView from './TaskExpandedView';
 
-const useTaskFunctions = (task: SnackTask) => {
+export const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector(getListContainingTask(task.id));
 
@@ -86,26 +99,62 @@ const useTaskFunctions = (task: SnackTask) => {
 		[task, list],
 	);
 
+	const onAddSubTask = useCallback(
+		(subtask: SnackSubtask) => {
+			dispatch(addSubtask(subtask));
+		},
+		[task],
+	);
+
+	const onUpdateSubTask = useCallback(
+		(subtask: SnackSubtask) => {
+			dispatch(
+				updateSubtask({
+					...subtask,
+					taskId: task.id,
+				}),
+			);
+		},
+		[task],
+	);
+
+	const onRemoveSubTask = useCallback(
+		(subtaskId: string) => {
+			dispatch(
+				deleteSubtask({
+					id: task.id,
+					subtaskId,
+				}),
+			);
+		},
+		[task],
+	);
+
 	return {
 		changeStatus,
 		changeList,
+		onAddSubTask,
+		onUpdateSubTask,
+		onRemoveSubTask,
 	};
 };
 
 export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
-	const dispatch = useAppDispatch();
 	const list = useAppSelector(getListContainingTask(props.id));
-	const { changeList, changeStatus } = useTaskFunctions(props);
-	const [isOpen, onToggle] = useToggle(false);
-	const [isChecked, toggle] = useToggle(
-		props.status === SnackTaskStatus.Complete,
-	);
+	const { changeStatus } = useTaskFunctions(props);
+	const {
+		isOpen: isTaskExpanded,
+		onOpen: onTaskExpanded,
+		onClose: onTaskMinimized,
+	} = useDisclosure();
+
+	const [isChecked] = useToggle(props.status === SnackTaskStatus.Complete);
+
 	const { attributes, listeners, setNodeRef, transform, isDragging } =
 		useDraggable({
 			id: props.id,
 		});
 
-	let [ref, animate] = useAnimate();
 	const deadline = useMemo(
 		() => props.deadline && new Date(props.deadline),
 		[props.deadline],
@@ -131,16 +180,20 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
+			onClick={onTaskExpanded}
 			className={clsx(
 				'px-4 py-2 relative bg-white rounded-xl group',
 				isDragging && 'z-40 shadow-xl',
 			)}>
-			<div
-				ref={ref}
-				className="flex items-center flex-1 h-full">
-				<div
-					className="flex-1 h-full"
-					onClick={onToggle}>
+			{isTaskExpanded && (
+				<TaskExpandedView
+					isOpen={isTaskExpanded}
+					onClose={onTaskMinimized}
+					{...props}
+				/>
+			)}
+			<div className="flex items-center flex-1 h-full">
+				<div className="flex-1 h-full">
 					<AnimatePresence>
 						<div className="flex items-center w-full gap-2">
 							<input
@@ -169,9 +222,7 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 											className="w-4 h-4 border-2 rounded-md"
 										/>
 									</p>
-									<p className="flex items-center gap-4 mx-2">
-										<InProgressIcon className="w-5 h-5" />
-									</p>
+									<TaskStatus status={props.status} />
 
 									<TaskDropdownOptions
 										{...props}
@@ -321,47 +372,6 @@ const SetReminderButton = () => {
 	);
 };
 
-const SelectStatus = (props: {
-	status: SnackTaskStatus;
-	onChange: (status: SnackTaskStatus) => void;
-}) => {
-	return (
-		<Select
-			defaultValue={props.status ?? SnackTaskStatus.Todo}
-			onValueChange={props.onChange}>
-			<SelectTrigger className="text-surface-12 !font-normal">
-				<SelectValue placeholder={'Select status'} />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value={SnackTaskStatus.Todo}>
-					<div className="flex items-center gap-2">
-						<TodoIcon className="w-5 h-5" />
-						<p className="flex-1">{SnackTaskStatus.Todo}</p>
-					</div>
-				</SelectItem>
-				<SelectItem value={SnackTaskStatus.InProgress}>
-					<div className="flex items-center gap-2">
-						<InProgressIcon className="w-5 h-5" />
-						<p className="flex-1">{SnackTaskStatus.InProgress}</p>
-					</div>
-				</SelectItem>
-				<SelectItem value={SnackTaskStatus.Complete}>
-					<div className="flex items-center gap-2">
-						<CheckCircleIcon className="w-5 h-5" />
-						<p className="flex-1">{SnackTaskStatus.Complete}</p>
-					</div>
-				</SelectItem>
-				<SelectItem value={SnackTaskStatus.Blocked}>
-					<div className="flex items-center gap-2">
-						<XCircleIcon className="w-5 h-5" />
-						<p className="flex-1">{SnackTaskStatus.Blocked}</p>
-					</div>
-				</SelectItem>
-			</SelectContent>
-		</Select>
-	);
-};
-
 const SelectPriority = () => {
 	return (
 		<Dropdown>
@@ -411,5 +421,32 @@ function Tag(props: { value: string }) {
 				#{props.value}
 			</p>
 		</div>
+	);
+}
+
+function TaskStatus(props: { status: SnackTaskStatus }) {
+	return (
+		<>
+			{props.status === SnackTaskStatus.Todo && (
+				<p className="flex items-center gap-4 mx-2">
+					<TodoIcon className="w-5 h-5 text-primary-10" />
+				</p>
+			)}
+			{props.status === SnackTaskStatus.InProgress && (
+				<p className="flex items-center gap-4 mx-2">
+					<InProgressIcon className="w-5 h-5 text-primary-10" />
+				</p>
+			)}
+			{props.status === SnackTaskStatus.Complete && (
+				<p className="flex items-center gap-4 mx-2">
+					<CheckCircleIcon className="w-5 h-5 text-success-10" />
+				</p>
+			)}
+			{props.status === SnackTaskStatus.Blocked && (
+				<p className="flex items-center gap-4 mx-2">
+					<XCircleIcon className="w-5 h-5 text-danger-10" />
+				</p>
+			)}
+		</>
 	);
 }
