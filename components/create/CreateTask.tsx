@@ -27,6 +27,7 @@ import { CalendarDaysIcon } from '@heroicons/react/24/solid';
 import Kbd from '../ui/typography/Kbd';
 import useDisclosure from '../../hooks/useDisclosure';
 import TagInput from '../ui/input/TagInput';
+import AddDeadline from './task/AddDeadline';
 
 const CreateTask = (props: { defaultList?: string }) => {
 	const ref = useRef<HTMLButtonElement>(null);
@@ -318,44 +319,3 @@ const CreateTaskForm = (props: {
 };
 
 export default CreateTask;
-
-function AddDeadline(props: {
-	selectDate: (date: Date) => void;
-	selectedDate?: Date;
-}) {
-	const [isOpen, toggle, setIsOpen] = useToggle(false);
-	return (
-		<Popover
-			open={isOpen}
-			onOpenChange={setIsOpen}>
-			<Popover.Trigger>
-				<button
-					type={'button'}
-					className={clsx(
-						'p-2 rounded-xl items-center flex-shrink-0',
-						props.selectedDate
-							? differenceInDays(props.selectedDate, new Date()) > 0
-								? 'bg-primary-4 text-primary-11 border-primary-6'
-								: 'bg-danger-4 text-danger-11 border-primary-6'
-							: 'bg-white border-surface-4 hover:bg-surface-3 hover:text-surface-11 hover:border-surface-6 text-surface-10',
-					)}>
-					<CalendarDaysIcon className="w-6 h-6" />
-					{props.selectedDate
-						? format(props.selectedDate, 'dd MMM yyyy')
-						: null}
-				</button>
-			</Popover.Trigger>
-			<Popover.Content>
-				<div className="p-2">
-					<Datepicker
-						value={props.selectedDate ?? startOfToday()}
-						onChange={(date) => {
-							props.selectDate(date);
-							toggle();
-						}}
-					/>
-				</div>
-			</Popover.Content>
-		</Popover>
-	);
-}

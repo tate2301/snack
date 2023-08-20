@@ -106,7 +106,7 @@ export const selectTaskByStatus = (state: RootState, status: string) =>
 		.filter((task) => task.trashed !== true)
 		.filter((task) => task.status === status);
 
-export const selectTaskById = (state: RootState, id: string) =>
+export const selectTaskById = (id: string) => (state: RootState) =>
 	state.tasks.items
 		.filter((task) => task.trashed !== true)
 		.find((task) => task.id === id);

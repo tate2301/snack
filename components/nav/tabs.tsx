@@ -27,12 +27,6 @@ const tabs: NavItemType[] = [
 		href: '/complete',
 	},
 	{
-		icon: <DocumentIcon className="w-5 h-5 text-surface-12" />,
-		value: 'notes',
-		label: 'Notes',
-		href: '/notes',
-	},
-	{
 		icon: <XCircleIcon className="w-5 h-5 text-surface-12" />,
 
 		value: 'blocked',

@@ -74,7 +74,6 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 						</p>
 					)}
 					<ListOptions
-						onEdit={onEdit}
 						id={list.id}
 						onDelete={onDelete}
 					/>

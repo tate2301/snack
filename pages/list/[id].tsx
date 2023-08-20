@@ -10,7 +10,7 @@ import {
 	selectListById,
 	selectTasksByListId,
 } from '../../redux/lists';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
 	EllipsisVerticalIcon,
@@ -24,16 +24,25 @@ import InProgressIcon from '../../icons/InProgressIcon';
 import { useRouter } from 'next/router';
 import ListOptions from '../../components/Lists/ListOptions';
 import TodoIcon from '../../icons/TodoIcon';
+import TaskExpandedView from '../../components/Home/TaskExpandedView';
+import { selectTaskById } from '../../redux/tasks';
+import { useExpandTaskView } from '../../components/Home/hooks';
 
 const t = (n: number) => n * 1000;
 
 export default function Page() {
 	const router = useRouter();
-	const dispatch = useAppDispatch();
 	const { id } = router.query as { id: string };
+	const dispatch = useAppDispatch();
 	const listObject = useAppSelector(selectListById(id));
 	const allTasks = useAppSelector(selectTasksByListId(id));
-	const [isEditDropdownOpen, toggleEditDropdown] = useToggle(true);
+
+	const {
+		idOfTaskBeingShown,
+		onHideExpandedTaskView,
+		onShowExpandedTaskView,
+		taskBeingShownInExpandedView,
+	} = useExpandTaskView();
 
 	const todoTasks = allTasks.filter(
 		(task) => task.status == SnackTaskStatus.Todo,
@@ -50,16 +59,19 @@ export default function Page() {
 		(task) => !task.complete && task.status === SnackTaskStatus.Blocked,
 	);
 
-	const onEdit = (e) => {
-		toggleEditDropdown();
-	};
-
 	const onDelete = (e) => {
 		dispatch(removeList(id));
 	};
 
 	return (
 		<CalendarLayout>
+			{taskBeingShownInExpandedView && (
+				<TaskExpandedView
+					{...taskBeingShownInExpandedView}
+					isOpen={!!idOfTaskBeingShown}
+					onClose={onHideExpandedTaskView}
+				/>
+			)}
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
 					<div className="mb-12">
@@ -70,7 +82,6 @@ export default function Page() {
 								</h1>
 								<div>
 									<ListOptions
-										onEdit={onEdit}
 										id={id}
 										onDelete={onDelete}
 									/>
@@ -106,24 +117,28 @@ export default function Page() {
 							title="Todo"
 							icon={<TodoIcon className="w-6 h-6 text-primary-10" />}
 							tasks={todoTasks}
+							onExpandTask={onShowExpandedTaskView}
 						/>
 						<TasksList
 							emptyStateLabel="No tasks yet"
 							title="In Progress"
 							icon={<InProgressIcon className="w-6 h-6 text-primary-10" />}
 							tasks={inProgressTasks}
+							onExpandTask={onShowExpandedTaskView}
 						/>
 						<TasksList
 							emptyStateLabel="Finish up your tasks for today!"
 							title="Complete"
 							icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}
 							tasks={completeTasks}
+							onExpandTask={onShowExpandedTaskView}
 						/>
 						<TasksList
 							emptyStateLabel="Yaay! No blocked tasks."
 							title="Blocked"
 							icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}
 							tasks={blockedTasks}
+							onExpandTask={onShowExpandedTaskView}
 						/>
 					</div>
 				</div>
@@ -137,6 +152,7 @@ const TasksList = (props: {
 	icon: ReactNode;
 	tasks: SnackTask[];
 	emptyStateLabel: string;
+	onExpandTask: (id: string) => void;
 }) => {
 	return (
 		<div>
@@ -151,22 +167,19 @@ const TasksList = (props: {
 					{props.tasks.length > 0 ? (
 						props.tasks.map((task) => (
 							<motion.div
-								layoutId={task.id}
 								initial={{
 									opacity: 0,
-									height: 0,
 								}}
 								animate={{
 									opacity: 1,
-									height: 'auto',
 								}}
 								exit={{
 									opacity: 0,
-									height: 0,
 								}}
 								className="my-2">
 								<TaskListItem
 									key={task.id}
+									onExpandTask={() => props.onExpandTask(task.id)}
 									{...task}
 								/>
 							</motion.div>

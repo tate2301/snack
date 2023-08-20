@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useMemo } from 'react';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
-import { AnimatePresence, useAnimate } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useDraggable } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {
@@ -36,13 +36,6 @@ import { generateUUID } from '../../lib/functions';
 import { motion } from 'framer-motion';
 import PostItNoteIcon from '../../icons/PostItNoteIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '../ui/select';
 import TodoIcon from '../../icons/TodoIcon';
 import {
 	addTaskToList,
@@ -56,6 +49,10 @@ import TaskExpandedView from './TaskExpandedView';
 export const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
 	const list = useAppSelector(getListContainingTask(task.id));
+
+	const onUpdateTask = (task: SnackTask) => {
+		dispatch(updateTask(task));
+	};
 
 	const changeStatus = useCallback(
 		(status: SnackTaskStatus) => {
@@ -136,17 +133,16 @@ export const useTaskFunctions = (task: SnackTask) => {
 		onAddSubTask,
 		onUpdateSubTask,
 		onRemoveSubTask,
+		onUpdateTask,
+		list,
 	};
 };
 
-export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
+export default function TaskListItem(
+	props: SnackTask & { icon?: ReactNode; onExpandTask: () => void },
+) {
 	const list = useAppSelector(getListContainingTask(props.id));
 	const { changeStatus } = useTaskFunctions(props);
-	const {
-		isOpen: isTaskExpanded,
-		onOpen: onTaskExpanded,
-		onClose: onTaskMinimized,
-	} = useDisclosure();
 
 	const [isChecked] = useToggle(props.status === SnackTaskStatus.Complete);
 
@@ -180,18 +176,11 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
-			onClick={onTaskExpanded}
+			onClick={props.onExpandTask}
 			className={clsx(
 				'px-4 py-2 bg-white rounded-xl group',
 				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
-			{isTaskExpanded && (
-				<TaskExpandedView
-					isOpen={isTaskExpanded}
-					onClose={onTaskMinimized}
-					{...props}
-				/>
-			)}
 			<div className="flex items-center flex-1 h-full">
 				<div className="flex-1 h-full">
 					<AnimatePresence>

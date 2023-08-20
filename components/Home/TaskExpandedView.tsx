@@ -1,15 +1,19 @@
-import { PlusIcon, TrashIcon } from '@heroicons/react/20/solid';
-import CalendarIcon from '../../icons/CalendarIcon';
-import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
+import { PlusIcon } from '@heroicons/react/20/solid';
+import {
+	SnackTask,
+	SnackTaskPriority,
+	SnackTaskStatus,
+} from '../../redux/tasks/types';
 import Textarea from '../ui/input/textarea';
 import Modal from '../ui/modal';
 import {
 	CheckCircleIcon,
+	CheckIcon,
 	ExclamationTriangleIcon,
+	ListBulletIcon,
 	XCircleIcon,
 	XMarkIcon,
 } from '@heroicons/react/24/outline';
-import TargetIcon from '../../icons/TargetIcon';
 import { generateUUID } from '../../lib/functions';
 import {
 	Select,
@@ -23,6 +27,10 @@ import InProgressIcon from '../../icons/InProgressIcon';
 import { useTaskFunctions } from './TaskListItem';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { useRouter } from 'next/router';
+import SelectList from '../create/SelectList';
+import { SnackList } from '../../redux/lists/types';
+import AddDeadline from '../create/task/AddDeadline';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -30,118 +38,144 @@ type TaskExpandedViewProps = {
 } & SnackTask;
 
 const TaskExpandedView = (props: TaskExpandedViewProps) => {
+	const router = useRouter();
+
 	const handleOnClose = () => {
 		props.onClose();
 	};
 
-	const { changeStatus, onAddSubTask, onUpdateSubTask, onRemoveSubTask } =
-		useTaskFunctions(props);
+	const {
+		changeStatus,
+		onAddSubTask,
+		onUpdateSubTask,
+		onRemoveSubTask,
+		onUpdateTask,
+		changeList,
+		list,
+	} = useTaskFunctions(props);
+
+	const openInPage = () => router.push(`/task/${props.id}`);
+
+	const onDescriptionChange = (e) => {
+		const value = e.target.value;
+		onUpdateTask({
+			...props,
+			description: value,
+		});
+	};
+
+	const onDeadlineChanged = (date: Date) => {
+		onUpdateTask({
+			...props,
+			deadline: date,
+		});
+	};
 
 	return (
 		<Modal
 			isOpen={props.isOpen}
 			onClose={handleOnClose}>
-			<div className="w-full space-y-8 font-normal text-surface-11">
-				<div className="mb-2 space-y-4">
+			<div className="w-full text-base font-normal text-surface-11">
+				<div className="pb-4">
 					<div className="flex items-center justify-between">
-						<SelectStatus
-							status={props.status}
-							onChange={changeStatus}
-						/>
+						<div className="flex gap-4">
+							<SelectStatus
+								status={props.status}
+								onChange={changeStatus}
+							/>
+							<SelectList
+								defaultListId={list.id}
+								onChange={changeList}
+							/>
+						</div>
 						<div className="flex gap-2">
-							<button className="p-2 hover:bg-surface-3 rounded-xl">
-								<ArrowsExpand className="w-5 h-5" />
-							</button>
-							<button
-								onClick={handleOnClose}
-								className="p-2 hover:bg-surface-3 rounded-xl">
-								<XMarkIcon className="w-5 h-5" />
-							</button>
+							<SnackTooltip>
+								<TooltipTrigger>
+									<button
+										onClick={openInPage}
+										className="p-2 hover:bg-surface-3 rounded-xl">
+										<ArrowsExpand className="w-5 h-5" />
+									</button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Open as page</p>
+								</TooltipContent>
+							</SnackTooltip>
+							<SnackTooltip>
+								<TooltipTrigger>
+									<button
+										onClick={handleOnClose}
+										className="p-2 hover:bg-surface-3 rounded-xl">
+										<XMarkIcon className="w-5 h-5" />
+									</button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<p>Close</p>
+								</TooltipContent>
+							</SnackTooltip>
 						</div>
 					</div>
 					<div>
-						<h1 className="text-xl font-medium text-surface-12">
+						<h1 className="p-2 text-xl font-medium text-surface-12">
 							{props.title}
 						</h1>
-						{props.description && <p>{props.description}</p>}
+						<Textarea
+							value={props.description}
+							onChange={onDescriptionChange}
+							name={'description'}
+							placeholder="Add a description"
+							className="w-full p-2 bg-transparent outline-none focus:outline-2 rounded-xl focus:shadow-inner focus:outline-primary-10"
+						/>
 					</div>
 				</div>
-				<div className="mb-8 divide-y bg-surface-3 divide-surface-4 rounded-xl">
-					<div className="flex gap-2 p-4 mt-4">
-						<SnackTooltip>
-							<TooltipTrigger>
-								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-									<CalendarIcon className="w-5 h-5" />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Add a deadline</p>
-							</TooltipContent>
-						</SnackTooltip>
-						<SnackTooltip>
-							<TooltipTrigger>
-								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-									<div className="w-5 h-5 border-2 rounded-xl border-primary-10" />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Transfer to list</p>
-							</TooltipContent>
-						</SnackTooltip>
-						<SnackTooltip>
-							<TooltipTrigger>
-								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-									<TargetIcon className="w-5 h-5" />
-									<p>In Progress</p>
-								</button>
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Change status</p>
-							</TooltipContent>
-						</SnackTooltip>
-						<SnackTooltip>
-							<TooltipTrigger>
-								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-danger-11">
-									<ExclamationTriangleIcon className="w-5 h-5" />
-								</button>
-							</TooltipTrigger>
-							<TooltipContent>
-								<p>Change priority</p>
-							</TooltipContent>
-						</SnackTooltip>
-					</div>
+				<div className="flex items-center gap-2 py-4">
+					<AddDeadline
+						selectDate={onDeadlineChanged}
+						selectedDate={props.deadline}
+					/>
+
+					<SnackTooltip>
+						<TooltipTrigger>
+							<button className="flex items-center gap-2 p-2 rounded-xl text-danger-11 bg-danger-4">
+								<ExclamationTriangleIcon className="w-5 h-5" />
+								{SnackTaskPriority.Urgent}
+							</button>
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Change priority</p>
+						</TooltipContent>
+					</SnackTooltip>
 				</div>
 
-				<div className="mt-4 mb-8">
+				<div className="py-4">
+					<h2 className="flex items-center gap-2 mb-2 font-medium">
+						<ListBulletIcon className="w-5 h-5" />
+						Checklist
+					</h2>
 					<div className="flex flex-col gap-2">
 						<SubTaskItem
-							title="Add bookmarks control"
+							title="Dialog should be triggered in the list parent, only when an ID is set"
 							id={generateUUID()}
 							complete={true}
 						/>
 						<SubTaskItem
-							title="Style the expanded task view"
+							title="Child requesting to launch dialog should provide their ID"
+							id={generateUUID()}
+							complete={true}
+						/>
+						<SubTaskItem
+							title="Dialog should only close as a side-effect of unsetting the ID"
 							id={generateUUID()}
 							complete={false}
-						/>
-						<SubTaskItem
-							title="Allow users to add and update subtask items at will"
-							id={generateUUID()}
-							complete={true}
 						/>
 					</div>
 					<button className="p-2 px-2 mt-4 font-medium bg-transparent rounded-xl hover:bg-surface-4">
 						<PlusIcon className="w-5 h-5" />
-						Add a subtask
+						Add an item
 					</button>
 				</div>
 
-				<div className="flex gap-4">
-					<button className="px-4 py-2 rounded-xl bg-danger-4 text-danger-11">
-						<TrashIcon className="w-5 h-5" />
-						Move to trash
-					</button>
-				</div>
+				<div className="flex gap-4"></div>
 			</div>
 		</Modal>
 	);
@@ -172,7 +206,7 @@ const SelectStatus = (props: {
 		<Select
 			defaultValue={props.status ?? SnackTaskStatus.Todo}
 			onValueChange={props.onChange}>
-			<SelectTrigger className="text-surface-12 !font-normal bg-surface-3">
+			<SelectTrigger className="text-surface-12">
 				<SelectValue placeholder={'Select status'} />
 			</SelectTrigger>
 			<SelectContent>

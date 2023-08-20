@@ -7,11 +7,7 @@ import ManageListForm, { ManageListFormAction } from './forms/CreateList';
 import { selectListById } from '../../redux/lists';
 import { useAppSelector } from '../../redux/store';
 
-const ListOptions = (props: {
-	id: string;
-	onEdit: (e) => void;
-	onDelete: (e) => void;
-}) => {
+const ListOptions = (props: { id: string; onDelete: (e) => void }) => {
 	const list = useAppSelector(selectListById(props.id));
 	const [isEditModalOpen, toggleEditModal, onEditModalOpenChanged] =
 		useToggle(false);
