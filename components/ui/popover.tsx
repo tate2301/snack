@@ -26,7 +26,7 @@ const Content = (props: { children: ReactNode; noClose?: boolean }) => (
 			asChild
 			align="start"
 			side="bottom"
-			className="p-4 transition-all shadow-xl rounded-xl w-fit border-surface-6 bg-surface-12"
+			className="z-50 p-4 transition-all shadow-xl rounded-xl w-fit border-surface-6 bg-surface-12"
 			sideOffset={-5}>
 			{props.children}
 		</RadixPopover.Content>

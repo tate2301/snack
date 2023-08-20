@@ -1,5 +1,12 @@
-import { Dialog } from '@headlessui/react';
 import { motion } from 'framer-motion';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '../dialog';
 
 export type ModalProps = {
 	children: React.ReactNode;
@@ -21,8 +28,7 @@ export default function Modal({
 	return (
 		<Dialog
 			open={isOpen}
-			onClose={onClose}
-			className={'z-[1000] relative'}>
+			onOpenChange={onClose}>
 			<div
 				className="fixed inset-0 bg-black/30"
 				aria-hidden="true"
@@ -34,39 +40,30 @@ export default function Modal({
 				exit={{ opacity: 0, display: 'none' }}
 				className="fixed inset-0 flex items-center justify-center p-4">
 				{/* The actual dialog panel  */}
-				<Dialog.Panel className="min-w-[32rem] mx-auto bg-white rounded-xl overflow-hidden">
+				<DialogContent className="w-auto mx-auto overflow-hidden bg-white rounded-xl">
 					{(title || description) && (
-						<div className="w-full px-8 pt-8 mb-4">
+						<DialogHeader className="w-full mb-4">
 							{title && (
-								<Dialog.Title className={'text-xl font-medium'}>
+								<DialogTitle className={'text-xl font-medium'}>
 									{title}
-								</Dialog.Title>
+								</DialogTitle>
 							)}
 							{description && (
-								<Dialog.Description className={'text-zinc-500'}>
+								<DialogDescription className={'text-zinc-500'}>
 									{description}
-								</Dialog.Description>
+								</DialogDescription>
 							)}
-						</div>
+						</DialogHeader>
 					)}
 
-					<motion.div
-						initial={{
-							height: 0,
-						}}
-						animate={{
-							height: 'auto',
-						}}
-						exit={{
-							height: 0,
-						}}
-						className="px-8 pt-8 mb-4">
-						{children}
-					</motion.div>
+					{children}
+
 					{actionCenter && (
-						<div className="p-8 bg-stone-100">{actionCenter}</div>
+						<DialogFooter className="p-8 bg-stone-100">
+							{actionCenter}
+						</DialogFooter>
 					)}
-				</Dialog.Panel>
+				</DialogContent>
 			</motion.div>
 		</Dialog>
 	);

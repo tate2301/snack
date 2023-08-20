@@ -33,7 +33,7 @@ const SelectList = (props: {
 						<p className="flex items-center gap-4">
 							<span
 								style={{
-									borderColor: `var(--${list.color}-10)`,
+									borderColor: `#${list.color}`,
 								}}
 								className="w-4 h-4 border-2 rounded-md"
 							/>

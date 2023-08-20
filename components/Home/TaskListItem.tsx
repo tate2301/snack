@@ -182,8 +182,8 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 			{...attributes}
 			onClick={onTaskExpanded}
 			className={clsx(
-				'px-4 py-2 relative bg-white rounded-xl group',
-				isDragging && 'z-40 shadow-xl',
+				'px-4 py-2 bg-white rounded-xl group',
+				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
 			{isTaskExpanded && (
 				<TaskExpandedView
@@ -231,7 +231,7 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 								</AnimatePresence>
 							</div>
 						</div>
-						{deadline && (
+						{deadline && props.status !== SnackTaskStatus.Complete && (
 							<div className="flex items-center gap-4 mt-1 transition-transform">
 								<span
 									className={clsx(

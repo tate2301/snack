@@ -3,11 +3,11 @@ import CalendarIcon from '../../icons/CalendarIcon';
 import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import Textarea from '../ui/input/textarea';
 import Modal from '../ui/modal';
-import Tooltip from '../ui/tooltip';
 import {
 	CheckCircleIcon,
 	ExclamationTriangleIcon,
 	XCircleIcon,
+	XMarkIcon,
 } from '@heroicons/react/24/outline';
 import TargetIcon from '../../icons/TargetIcon';
 import { generateUUID } from '../../lib/functions';
@@ -21,6 +21,8 @@ import {
 import TodoIcon from '../../icons/TodoIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
 import { useTaskFunctions } from './TaskListItem';
+import ArrowsExpand from '../../icons/ArrowsExpand';
+import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -39,13 +41,23 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 		<Modal
 			isOpen={props.isOpen}
 			onClose={handleOnClose}>
-			<div className="w-[40rem] space-y-8 text-surface-11 font-normal">
+			<div className="w-full space-y-8 font-normal text-surface-11">
 				<div className="mb-2 space-y-4">
 					<div className="flex items-center justify-between">
 						<SelectStatus
 							status={props.status}
 							onChange={changeStatus}
 						/>
+						<div className="flex gap-2">
+							<button className="p-2 hover:bg-surface-3 rounded-xl">
+								<ArrowsExpand className="w-5 h-5" />
+							</button>
+							<button
+								onClick={handleOnClose}
+								className="p-2 hover:bg-surface-3 rounded-xl">
+								<XMarkIcon className="w-5 h-5" />
+							</button>
+						</div>
 					</div>
 					<div>
 						<h1 className="text-xl font-medium text-surface-12">
@@ -56,27 +68,47 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 				</div>
 				<div className="mb-8 divide-y bg-surface-3 divide-surface-4 rounded-xl">
 					<div className="flex gap-2 p-4 mt-4">
-						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-								<CalendarIcon className="w-5 h-5" />
-							</button>
-						</Tooltip>
-						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-								<div className="w-5 h-5 border-2 rounded-xl border-primary-10" />
-							</button>
-						</Tooltip>
-						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
-								<TargetIcon className="w-5 h-5" />
-								<p>In Progress</p>
-							</button>
-						</Tooltip>
-						<Tooltip content="Add a deadline">
-							<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-danger-11">
-								<ExclamationTriangleIcon className="w-5 h-5" />
-							</button>
-						</Tooltip>
+						<SnackTooltip>
+							<TooltipTrigger>
+								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
+									<CalendarIcon className="w-5 h-5" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Add a deadline</p>
+							</TooltipContent>
+						</SnackTooltip>
+						<SnackTooltip>
+							<TooltipTrigger>
+								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
+									<div className="w-5 h-5 border-2 rounded-xl border-primary-10" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Transfer to list</p>
+							</TooltipContent>
+						</SnackTooltip>
+						<SnackTooltip>
+							<TooltipTrigger>
+								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-surface-10">
+									<TargetIcon className="w-5 h-5" />
+									<p>In Progress</p>
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Change status</p>
+							</TooltipContent>
+						</SnackTooltip>
+						<SnackTooltip>
+							<TooltipTrigger>
+								<button className="flex items-center gap-2 p-2 bg-white shadow-sm rounded-xl text-danger-11">
+									<ExclamationTriangleIcon className="w-5 h-5" />
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Change priority</p>
+							</TooltipContent>
+						</SnackTooltip>
 					</div>
 				</div>
 

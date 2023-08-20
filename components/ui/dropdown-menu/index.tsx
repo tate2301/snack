@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import clsx from 'clsx';
 import { ZINDEX } from '../../../constants/styles';
@@ -14,7 +14,7 @@ const DropdownTrigger = (props: { children: ReactNode }) => {
 const DropdownContent = (props: { children: ReactNode }) => {
 	return (
 		<DropdownMenu.Content
-			className="bg-surface-12 rounded-2xl p-1 shadow-xl min-w-[16rem]"
+			className="bg-surface-12 rounded-2xl p-1 shadow-xl min-w-[16rem] relative"
 			style={{ zIndex: ZINDEX.DROPDOWN }}>
 			{props.children}
 		</DropdownMenu.Content>
@@ -29,7 +29,7 @@ const DropdownItem = ({
 	children: ReactNode;
 	shortcut?: string;
 	className?: string;
-	onClick?: () => void;
+	onClick?: (e?: any) => void;
 }) => {
 	return (
 		<DropdownMenu.Item

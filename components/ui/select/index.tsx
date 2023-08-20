@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import clsx from 'clsx';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { ZINDEX } from '../../../constants/styles';
+import { cn } from '../../../lib/utils';
 
 const Select = SelectPrimitive.Root;
 
@@ -18,7 +18,7 @@ const SelectTrigger = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Trigger
 		ref={ref}
-		className={clsx(
+		className={cn(
 			className,
 			'px-2 py-1 rounded-xl gap-4 flex w-fit items-center justify-between placeholder:text-surface-10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
 		)}
@@ -41,7 +41,7 @@ const SelectContent = React.forwardRef<
 			style={{
 				zIndex: ZINDEX.DROPDOWN + ZINDEX.DROPDOWN,
 			}}
-			className={clsx(
+			className={cn(
 				'relative antialiased min-w-[8rem] p-1 overflow-hidden rounded-xl bg-surface-12 backdrop-blur-sm text-popover-foreground shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
 				position === 'popper' &&
 					'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
@@ -50,7 +50,7 @@ const SelectContent = React.forwardRef<
 			position={position}
 			{...props}>
 			<SelectPrimitive.Viewport
-				className={clsx(
+				className={cn(
 					'p-1',
 					position === 'popper' &&
 						'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
@@ -68,7 +68,7 @@ const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Label
 		ref={ref}
-		className={clsx('py-1.5 pl-8 pr-2  font-medium', className)}
+		className={cn('py-1.5 pl-8 pr-2  font-medium', className)}
 		{...props}
 	/>
 ));
@@ -80,7 +80,7 @@ const SelectItem = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Item
 		ref={ref}
-		className={clsx(
+		className={cn(
 			'relative flex w-full font-normal cursor-default select-none items-center p-2 px-8 hover:bg-white hover:bg-opacity-10 text-white rounded-xl outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
 			className,
 		)}
@@ -102,7 +102,7 @@ const SelectSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Separator
 		ref={ref}
-		className={clsx('-mx-1 my-1 h-px bg-muted', className)}
+		className={cn('-mx-1 my-1 h-px bg-muted', className)}
 		{...props}
 	/>
 ));

@@ -3,16 +3,15 @@ import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import CreateTask from '../../components/create/CreateTask';
-import { useAppSelector } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { PlayIcon } from '@heroicons/react/20/solid';
-import { selectListById, selectTasksByListId } from '../../redux/lists';
-import SelectList from '../../components/create/SelectList';
-import { ReactNode, useEffect, useState } from 'react';
 import {
-	CheckCircleIcon,
-	ListBulletIcon,
-	XCircleIcon,
-} from '@heroicons/react/24/outline';
+	removeList,
+	selectListById,
+	selectTasksByListId,
+} from '../../redux/lists';
+import { ReactNode, useEffect, useState } from 'react';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import {
 	EllipsisVerticalIcon,
 	PauseIcon,
@@ -22,21 +21,25 @@ import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import InProgressIcon from '../../icons/InProgressIcon';
-import CalendarIcon from '../../icons/CalendarIcon';
 import { useRouter } from 'next/router';
+import ListOptions from '../../components/Lists/ListOptions';
+import TodoIcon from '../../icons/TodoIcon';
 
 const t = (n: number) => n * 1000;
 
 export default function Page() {
 	const router = useRouter();
+	const dispatch = useAppDispatch();
 	const { id } = router.query as { id: string };
 	const listObject = useAppSelector(selectListById(id));
 	const allTasks = useAppSelector(selectTasksByListId(id));
+	const [isEditDropdownOpen, toggleEditDropdown] = useToggle(true);
 
-	const onTrackTasks = allTasks.filter(
-		(task) =>
-			task.status !== SnackTaskStatus.Complete &&
-			task.status !== SnackTaskStatus.Blocked,
+	const todoTasks = allTasks.filter(
+		(task) => task.status == SnackTaskStatus.Todo,
+	);
+	const inProgressTasks = allTasks.filter(
+		(task) => task.status === SnackTaskStatus.InProgress,
 	);
 
 	const completeTasks = allTasks.filter(
@@ -47,15 +50,32 @@ export default function Page() {
 		(task) => !task.complete && task.status === SnackTaskStatus.Blocked,
 	);
 
+	const onEdit = (e) => {
+		toggleEditDropdown();
+	};
+
+	const onDelete = (e) => {
+		dispatch(removeList(id));
+	};
+
 	return (
 		<CalendarLayout>
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
 					<div className="mb-12">
 						<div className="gap-2 mb-4">
-							<h1 className="text-2xl font-medium text-surface-12">
-								{listObject.name}
-							</h1>
+							<div className="flex items-center justify-between">
+								<h1 className="text-2xl font-medium text-surface-12">
+									{listObject.name}
+								</h1>
+								<div>
+									<ListOptions
+										onEdit={onEdit}
+										id={id}
+										onDelete={onDelete}
+									/>
+								</div>
+							</div>
 							<p className="text-xl !outline-none text-surface-10">
 								{listObject.description || 'Add a description'}
 							</p>
@@ -69,7 +89,7 @@ export default function Page() {
 								<p className="flex items-center font-medium">
 									<InProgressIcon className="w-5 h-5 text-primary-10" />
 									<span className="ml-2">
-										{onTrackTasks.length} in progress
+										{inProgressTasks.length} in progress
 									</span>
 								</p>
 								<p className="flex items-center font-medium">
@@ -80,30 +100,32 @@ export default function Page() {
 						</div>
 						<CreateTask defaultList={id} />
 					</div>
-					<motion.div className="flex flex-col gap-12 mt-8">
-						<AnimatePresence
-							key={listObject.id}
-							initial={false}>
-							<TasksList
-								emptyStateLabel="No tasks yet"
-								title="In Progress"
-								icon={<InProgressIcon className="w-6 h-6 text-primary-10" />}
-								tasks={onTrackTasks}
-							/>
-							<TasksList
-								emptyStateLabel="Finish up your tasks for today!"
-								title="Complete"
-								icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}
-								tasks={completeTasks}
-							/>
-							<TasksList
-								emptyStateLabel="Yaay! No blocked tasks."
-								title="Blocked"
-								icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}
-								tasks={blockedTasks}
-							/>
-						</AnimatePresence>
-					</motion.div>
+					<div className="flex flex-col gap-12 mt-8">
+						<TasksList
+							emptyStateLabel="All clear. You can never finish if you never start!"
+							title="Todo"
+							icon={<TodoIcon className="w-6 h-6 text-primary-10" />}
+							tasks={todoTasks}
+						/>
+						<TasksList
+							emptyStateLabel="No tasks yet"
+							title="In Progress"
+							icon={<InProgressIcon className="w-6 h-6 text-primary-10" />}
+							tasks={inProgressTasks}
+						/>
+						<TasksList
+							emptyStateLabel="Finish up your tasks for today!"
+							title="Complete"
+							icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}
+							tasks={completeTasks}
+						/>
+						<TasksList
+							emptyStateLabel="Yaay! No blocked tasks."
+							title="Blocked"
+							icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}
+							tasks={blockedTasks}
+						/>
+					</div>
 				</div>
 			</main>
 		</CalendarLayout>
@@ -124,46 +146,35 @@ const TasksList = (props: {
 					{props.title}
 				</h1>
 			</div>
-			<div className="flex flex-col gap-2">
-				{props.tasks.length > 0 ? (
-					props.tasks.map((task) => (
-						<motion.div
-							initial={{
-								opacity: 0,
-								height: 0,
-							}}
-							animate={{
-								opacity: 1,
-								height: 'auto',
-								transition: {
-									type: 'spring',
-									bounce: 0.3,
-									opactiy: {
-										delay: t(0.02),
-									},
-								},
-							}}
-							exit={{
-								opacity: 0,
-								height: 0,
-							}}
-							transition={{
-								type: 'spring',
-								bounce: 0,
-								duration: t(0.15),
-								opactiy: {
-									duration: t(0.03),
-								},
-							}}>
-							<TaskListItem
-								key={task.id}
-								{...task}
-							/>
-						</motion.div>
-					))
-				) : (
-					<p className="px-10 text-surface-10">{props.emptyStateLabel}</p>
-				)}
+			<div>
+				<AnimatePresence initial={false}>
+					{props.tasks.length > 0 ? (
+						props.tasks.map((task) => (
+							<motion.div
+								layoutId={task.id}
+								initial={{
+									opacity: 0,
+									height: 0,
+								}}
+								animate={{
+									opacity: 1,
+									height: 'auto',
+								}}
+								exit={{
+									opacity: 0,
+									height: 0,
+								}}
+								className="my-2">
+								<TaskListItem
+									key={task.id}
+									{...task}
+								/>
+							</motion.div>
+						))
+					) : (
+						<p className="px-10 text-surface-10">{props.emptyStateLabel}</p>
+					)}
+				</AnimatePresence>
 			</div>
 		</div>
 	);

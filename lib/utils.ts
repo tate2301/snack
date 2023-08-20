@@ -1,5 +1,11 @@
 import { add } from 'date-fns';
 import { SnackEvent } from '../redux/events/types';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
 
 export const remToPx = (rem) => {
 	return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);

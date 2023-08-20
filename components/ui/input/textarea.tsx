@@ -15,6 +15,14 @@ const Textarea = (props: {
 	const textAreaRef = useRef() as MutableRefObject<HTMLTextAreaElement>;
 	const [value, setValue] = useState('');
 
+	useEffect(() => {
+		setValue(props.value || ''); // Set the initial value from props.value
+	}, [props.value]);
+
+	useEffect(() => {
+		adjustInputHeight();
+	}, [value]);
+
 	const handleInputChange = (event) => {
 		const inputValue = event.target.value;
 		setValue(inputValue);
