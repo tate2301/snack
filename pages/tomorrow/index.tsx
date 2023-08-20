@@ -24,7 +24,7 @@ export default function Page() {
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
 					<div className="flex gap-4 items-center mb-8">
-						<h1 className="text-3xl font-semibold text-surface-12">Tomorrow</h1>
+						<h1 className="text-3xl font-medium text-surface-12">Tomorrow</h1>
 					</div>
 					<CreateTask />
 					<motion.div className="flex flex-col gap-2 mt-4">

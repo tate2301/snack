@@ -14,7 +14,7 @@ const PageLayout = (props: {
 					<div className="flex items-center gap-4 mb-1">
 						{props.icon}
 
-						<h1 className="text-2xl font-semibold text-surface-12">
+						<h1 className="text-2xl font-medium text-surface-12">
 							{props.name}
 						</h1>
 					</div>

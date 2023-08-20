@@ -86,7 +86,7 @@ export default function FocusTaskItem({
 						className="items-start justify-between w-full cursor-pointer ">
 						<p
 							className={clsx(
-								'transition-all inline font-semibold',
+								'transition-all inline font-medium',
 								isComplete
 									? 'line-through dark:text-zinc-300 text-zinc-400 line-clamp-1'
 									: '',
@@ -102,15 +102,15 @@ export default function FocusTaskItem({
 						get more funding.
 					</p>
 					<div className="flex items-start gap-2 mt-2">
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-medium uppercase rounded-xl w-fit bg-zinc-100">
 							<BoltIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							00:00:00
 						</p>
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-medium uppercase rounded-xl w-fit bg-zinc-100">
 							<ListBulletIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							4/10
 						</p>
-						<p className="flex px-2 py-1 mt-2 text-sm font-semibold uppercase rounded-xl w-fit bg-zinc-100">
+						<p className="flex px-2 py-1 mt-2 text-sm font-medium uppercase rounded-xl w-fit bg-zinc-100">
 							<ArrowPathIcon className="w-4 h-4 mr-2 text-zinc-400" />
 							Repeats yearly
 						</p>
@@ -121,7 +121,7 @@ export default function FocusTaskItem({
 				<FocusPeriod />
 				<div className="flex flex-col mt-2">
 					<div className="flex justify-between mt-4 rounded-xl hover:bg-zinc-50 text-zinc-500">
-						<button className="inline-flex items-center w-full gap-4 px-2 py-2 font-mono text-sm font-semibold uppercase">
+						<button className="inline-flex items-center w-full gap-4 px-2 py-2 font-mono text-sm font-medium uppercase">
 							<ChevronDownIcon className="w-5 h-5" />
 							Burnout 🔥 Session
 						</button>
@@ -142,7 +142,7 @@ export default function FocusTaskItem({
 					<Subtask />
 					<button className="flex gap-4 px-2 py-1 rounded hover:bg-zinc-50">
 						<PlusIcon className="w-5 h-5" />
-						<span className="font-semibold text-zinc-500">Add subtask</span>
+						<span className="font-medium text-zinc-500">Add subtask</span>
 					</button>
 				</div>
 			</div>

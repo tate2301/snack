@@ -58,7 +58,7 @@ export function TaskSectionHeader({
 		<div
 			onClick={toggle}
 			className="flex w-full justify-between items-center  hover:bg-zinc-200 bg-surface-1 mb-1 shadow rounded-xl pr-2 py-0.5 cursor-pointer">
-			<button className="inline-flex items-center flex-1 w-full gap-2 px-4 py-2 font-semibold text-zinc-500">
+			<button className="inline-flex items-center flex-1 w-full gap-2 px-4 py-2 font-medium text-zinc-500">
 				{isExpanded ? (
 					<ChevronDownIcon className="w-4 h-4" />
 				) : (

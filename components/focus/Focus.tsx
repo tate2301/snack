@@ -61,7 +61,7 @@ const FocusPeriod = () => {
 			</button>
 			<div className={'mt-2'}>
 				<div className={'flex items-center py-2 w-full rounded-xl'}>
-					<p className={'text-3xl font-semibold uppercase'}>
+					<p className={'text-3xl font-medium uppercase'}>
 						{remainingTime > 0 ? renderTimeCounter(remainingTime) : '00:00:00'}
 					</p>
 				</div>

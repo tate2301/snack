@@ -34,7 +34,7 @@ const DropdownItem = ({
 	return (
 		<DropdownMenu.Item
 			className={clsx(
-				'p-2 rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-semibold',
+				'p-2 rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-medium',
 			)}
 			onClick={onClick}>
 			{children}

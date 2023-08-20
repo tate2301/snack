@@ -26,7 +26,7 @@ export default function Task() {
 									<PlayIcon className="w-4 h-4" />
 								</button>
 							</div>
-							<p className="text-xl font-semibold mt-2">00:00:00</p>
+							<p className="text-xl font-medium mt-2">00:00:00</p>
 						</div>
 						<p className="text-sm text-zinc-500 mt-4">00:00:00 total</p>
 					</div>
@@ -91,7 +91,7 @@ function TaskHeader({}) {
 				/>
 				<div className="w-full flex pb-2 justify-between items-start gap-8">
 					<div className="flex flex-col flex-1 max-w-sm">
-						<p className="flex gap-2 font-semibold">
+						<p className="flex gap-2 font-medium">
 							<span className="text-red-500 mr-2">!!!</span>
 							Configure Domain Name for the idea factory company
 						</p>

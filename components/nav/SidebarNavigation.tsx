@@ -160,7 +160,7 @@ function NavItem(
 				isActive={isActive}>
 				<p
 					className={clsx(
-						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
+						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-medium rounded-xl items-center',
 						props.active && '',
 					)}>
 					<span className="flex gap-4">
@@ -277,7 +277,7 @@ function CreateList() {
 							name={'title'}
 							{...form.getFieldProps('title')}
 							autoFocus
-							className="flex-1 p-2 font-semibold bg-transparent outline-none"
+							className="flex-1 p-2 font-medium bg-transparent outline-none"
 							placeholder="Enter list name"
 						/>
 					</div>
@@ -407,7 +407,7 @@ function ListItem({ list }: { list: SnackList }) {
 			<Link
 				href={`/list/${list.id}`}
 				className={clsx(
-					'flex items-center gap-4 py-1 px-4 font-semibold text-surface-12 rounded-xl ',
+					'flex items-center gap-4 py-1 px-4 font-medium text-surface-12 rounded-xl ',
 					isActive ? 'bg-surface-3' : 'hover:bg-surface-4',
 				)}>
 				<p
@@ -424,7 +424,7 @@ function ListItem({ list }: { list: SnackList }) {
 					/>
 					{list.tasks.length > 0 && (
 						<p>
-							<span className="p-1 font-semibold rounded text-surface-10">
+							<span className="p-1 font-medium rounded text-surface-10">
 								{list.tasks.length}
 							</span>
 						</p>

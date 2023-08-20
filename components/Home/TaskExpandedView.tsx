@@ -48,7 +48,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 						/>
 					</div>
 					<div>
-						<h1 className="text-xl font-semibold text-surface-12">
+						<h1 className="text-xl font-medium text-surface-12">
 							{props.title}
 						</h1>
 						{props.description && <p>{props.description}</p>}
@@ -98,7 +98,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 							complete={true}
 						/>
 					</div>
-					<button className="p-2 px-2 mt-4 font-semibold bg-transparent rounded-xl hover:bg-surface-4">
+					<button className="p-2 px-2 mt-4 font-medium bg-transparent rounded-xl hover:bg-surface-4">
 						<PlusIcon className="w-5 h-5" />
 						Add a subtask
 					</button>

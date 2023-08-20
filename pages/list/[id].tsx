@@ -53,7 +53,7 @@ export default function Page() {
 				<div className="flex-1">
 					<div className="mb-12">
 						<div className="gap-2 mb-4">
-							<h1 className="text-2xl font-semibold text-surface-12">
+							<h1 className="text-2xl font-medium text-surface-12">
 								{listObject.name}
 							</h1>
 							<p className="text-xl !outline-none text-surface-10">
@@ -62,17 +62,17 @@ export default function Page() {
 						</div>
 						<div className="w-full gap-4 mb-4">
 							<div className="flex items-center gap-6">
-								<p className="flex items-center font-semibold">
+								<p className="flex items-center font-medium">
 									<CheckCircleIcon className="w-5 h-5 text-success-10" />
 									<span className="ml-2">{completeTasks.length} complete</span>
 								</p>
-								<p className="flex items-center font-semibold">
+								<p className="flex items-center font-medium">
 									<InProgressIcon className="w-5 h-5 text-primary-10" />
 									<span className="ml-2">
 										{onTrackTasks.length} in progress
 									</span>
 								</p>
-								<p className="flex items-center font-semibold">
+								<p className="flex items-center font-medium">
 									<XCircleIcon className="w-5 h-5 text-danger-10" />
 									<span className="ml-2">{blockedTasks.length} blocked</span>
 								</p>
@@ -119,7 +119,7 @@ const TasksList = (props: {
 	return (
 		<div>
 			<div className="mb-2">
-				<h1 className="flex items-center gap-2 text-xl font-semibold text-surface-12">
+				<h1 className="flex items-center gap-2 text-xl font-medium text-surface-12">
 					{props.icon}
 					{props.title}
 				</h1>

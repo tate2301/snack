@@ -235,7 +235,7 @@ export default function TaskListItem(props: SnackTask & { icon?: ReactNode }) {
 							<div className="flex items-center gap-4 mt-1 transition-transform">
 								<span
 									className={clsx(
-										'p-0.5 rounded px-1 text-sm font-semibold',
+										'p-0.5 rounded px-1 text-sm font-medium',
 										differenceInDays(deadline, new Date()) <= 0
 											? 'bg-danger-4 text-danger-10'
 											: 'bg-primary-4 text-primary-10',

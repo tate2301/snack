@@ -18,7 +18,7 @@ function NavLink(props: {
 		<Link
 			className={clsx(
 				'relative px-4 py-1 rounded-xl',
-				isActive && 'font-semibold text-surface-12',
+				isActive && 'font-medium text-surface-12',
 			)}
 			style={{
 				WebkitTapHighlightColor: 'transparent',

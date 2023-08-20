@@ -38,7 +38,7 @@ export default function Modal({
 					{(title || description) && (
 						<div className="w-full px-8 pt-8 mb-4">
 							{title && (
-								<Dialog.Title className={'text-xl font-semibold'}>
+								<Dialog.Title className={'text-xl font-medium'}>
 									{title}
 								</Dialog.Title>
 							)}
