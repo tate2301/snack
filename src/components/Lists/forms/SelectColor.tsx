@@ -19,7 +19,7 @@ const SelectColor = (props: {
 					type={'button'}
 					className="p-2 rounded-xl hover:bg-surface-4">
 					<p
-						className="flex items-center h-5 gap-4 font-medium border-2 rounded-md aspect-square"
+						className="flex items-center h-5 gap-4 font-semibold border-2 rounded-md aspect-square"
 						style={{
 							borderColor: `#${props.value}`,
 						}}></p>
@@ -28,7 +28,7 @@ const SelectColor = (props: {
 			<Popover.Content>
 				<div className="space-y-2">
 					<div className="pb-2">
-						<p className="font-medium text-white">Choose a color</p>
+						<p className="font-semibold text-white">Choose a color</p>
 					</div>
 					<div className="grid grid-cols-8 gap-4 w-fit">
 						{colors.map((color) => (

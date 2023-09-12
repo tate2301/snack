@@ -55,19 +55,19 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 			<button
 				onClick={onNavigate}
 				className={cn(
-					'flex items-center gap-4 py-1 px-4 font-medium text-surface-12 rounded-xl ',
+					'flex items-center gap-4 py-1 px-4 font-semibold text-surface-12 rounded-xl ',
 					isActive ? 'bg-surface-3' : 'hover:bg-surface-4',
 				)}>
 				<p
 					style={{
 						borderColor: `#${list.color}`,
 					}}
-					className="flex items-center h-4 gap-4 font-medium border-2 rounded-md aspect-square"></p>
+					className="flex items-center h-4 gap-4 font-semibold border-2 rounded-md aspect-square"></p>
 				<p className="flex-1 text-left">{list.name}</p>
 				<p className="flex items-center gap-2">
 					{list.tasks.length > 0 && (
 						<p>
-							<span className="p-1 font-medium rounded text-surface-10">
+							<span className="p-1 font-semibold rounded text-surface-10">
 								{list.tasks.length}
 							</span>
 						</p>

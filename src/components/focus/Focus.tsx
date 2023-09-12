@@ -58,12 +58,12 @@ const FocusPeriod = () => {
 	return (
 		<div className="p-4 rounded-xl bg-white">
 			<button className="px-4 py-2 bg-surface-4 rounded-xl gap-4">
-				<p className="flex items-center h-4 gap-4 font-medium rounded-md aspect-square ring-2 ring-primary-10"></p>
+				<p className="flex items-center h-4 gap-4 font-semibold rounded-md aspect-square ring-2 ring-primary-10"></p>
 				Math Exam CUIT-103
 			</button>
 			<div className={'mt-2'}>
 				<div className={'flex items-center py-2 w-full rounded-xl'}>
-					<p className={'text-3xl font-medium uppercase'}>
+					<p className={'text-3xl font-semibold uppercase'}>
 						{remainingTime > 0 ? renderTimeCounter(remainingTime) : '00:00:00'}
 					</p>
 				</div>

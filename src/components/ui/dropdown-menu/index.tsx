@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { MouseEvent, ReactNode } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -16,7 +16,7 @@ const DropdownTrigger = (props: { children: ReactNode }) => {
 const DropdownContent = (props: { children: ReactNode }) => {
 	return (
 		<DropdownMenu.Content
-			className="bg-surface-12 rounded-2xl p-1 shadow-xl min-w-[16rem] relative"
+			className="bg-surface-12 rounded-2xl p-1 shadow-2xl min-w-[16rem] relative"
 			style={{ zIndex: ZINDEX.DROPDOWN }}>
 			{props.children}
 		</DropdownMenu.Content>
@@ -36,7 +36,7 @@ const DropdownItem = ({
 	return (
 		<DropdownMenu.Item
 			className={clsx(
-				'p-2 rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-medium',
+				'p-2 rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-semibold',
 			)}
 			onClick={onClick}>
 			{children}

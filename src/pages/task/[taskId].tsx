@@ -116,7 +116,7 @@ function TaskHeader({}) {
 				/>
 				<div className="flex items-start justify-between w-full gap-8 pb-2">
 					<div className="flex flex-col flex-1 max-w-sm">
-						<p className="flex gap-2 font-medium">
+						<p className="flex gap-2 font-semibold">
 							<span className="mr-2 text-red-500">!!!</span>
 							Configure Domain Name for the idea factory company
 						</p>

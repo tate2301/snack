@@ -43,11 +43,10 @@ const TagInput = (props: TagInputProps) => {
 			{props.value.map((tag, index) => (
 				<p
 					key={index}
-					className="flex items-center gap-2 px-2 py-1 text-sm border rounded-xl border-surface-3">
-					#{tag}
-					<button onClick={() => removeTag(index)}>
-						<XMarkIcon className="w-4 h-4" />
-					</button>
+					onClick={() => removeTag(index)}
+					className="flex items-center px-2 py-1 text-sm rounded-xl bg-accent-10 text-white">
+					{tag}
+					
 				</p>
 			))}
 			<input

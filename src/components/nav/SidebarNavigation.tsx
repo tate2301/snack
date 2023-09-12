@@ -21,8 +21,8 @@ import SnackPluginManager from '../../lib/integrations';
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col gap-4 w-96">
-			<div className="flex flex-col gap-4">
+		<div className="sticky flex flex-col flex-1 gap-4 w-96">
+			<div className="flex flex-1 flex-col gap-4">
 				<div className="flex flex-col w-full gap-1 p-2">
 					{tabs.map((tab: NavItemType) => (
 						<NavItem
@@ -36,6 +36,8 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					<Lists />
 				</div>
 			</div>
+			<ManageListForm action={ManageListFormAction.Create} />
+
 		</div>
 	);
 }
@@ -78,7 +80,7 @@ function NavItem(
 				isActive={isActive}>
 				<p
 					className={clsx(
-						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-medium rounded-xl items-center',
+						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
 						props.active && '',
 					)}>
 					<span className="flex gap-4">
@@ -103,7 +105,6 @@ function Lists({}) {
 					/>
 				))}
 			</AnimatePresence>
-			<ManageListForm action={ManageListFormAction.Create} />
 		</>
 	);
 }

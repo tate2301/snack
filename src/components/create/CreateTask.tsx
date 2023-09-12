@@ -74,8 +74,7 @@ const CreateTask = (props: { defaultList?: string }) => {
 							className="w-5 h-5"
 							aria-hidden="true"
 						/>
-						<span className={'text-surface-11'}>Create a new task</span>
-						<Kbd keys={['Ctrl', 'Enter']} />
+						<span className={'text-surface-11'}>Add task</span>
 					</motion.button>
 				)}
 				{isFocused && (
@@ -236,7 +235,7 @@ const CreateTaskForm = (props: {
 						rows={1}
 						placeholder={'Create a new task'}
 						className={
-							'outline-none ring-0 text-surface-12 w-full font-medium h-fit'
+							'outline-none ring-0 text-surface-12 w-full font-semibold h-fit'
 						}
 						name={'title'}
 						autoFocus
@@ -252,7 +251,7 @@ const CreateTaskForm = (props: {
 							placeholder="Additional notes"
 							name={'description'}
 							className={
-								'outline-none ring-0 flex-1 text-surface-10 w-full font-medium'
+								'outline-none ring-0 flex-1 text-surface-10 w-full font-semibold'
 							}
 							autoFocus
 							onChange={form.handleChange}
@@ -280,7 +279,7 @@ const CreateTaskForm = (props: {
 					<button
 						onClick={addTagsField}
 						className={clsx(
-							'p-2 rounded-xl',
+							'p-2 rounded-xl hover:bg-surface-4',
 							hasTags && 'bg-primary-4 text-primary-11 border-primary-6',
 						)}
 						type={'button'}>

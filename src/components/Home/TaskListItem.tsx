@@ -47,6 +47,7 @@ import {
 import { toast } from 'sonner';
 import useDisclosure from '../../hooks/useDisclosure';
 import TaskExpandedView from './TaskExpandedView';
+import { cn } from '../../lib/utils';
 
 export const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -87,7 +88,7 @@ export const useTaskFunctions = (task: SnackTask) => {
 				}),
 			);
 
-			// Add task to new list
+			// Add task to New project
 			dispatch(
 				addTaskToList({
 					listId,
@@ -178,9 +179,9 @@ export default function TaskListItem(
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
-			onClick={props.onExpandTask}
+			onDoubleClick={props.onExpandTask}
 			className={clsx(
-				'px-4 py-2 bg-white rounded-xl group',
+				'px-3 py-0.5 bg-white rounded-xl group',
 				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
 			<div className="flex items-center flex-1 h-full">
@@ -193,6 +194,17 @@ export default function TaskListItem(
 								onChange={onCheck}
 								checked={isChecked}
 							/>
+							{deadline && props.status !== SnackTaskStatus.Complete && (
+								<span
+									className={clsx(
+										'p-0.5 rounded px-1 text-sm font-semibold',
+										differenceInDays(deadline, new Date()) <= 0
+											? 'bg-danger-4 text-danger-10'
+											: 'bg-surface-4 text-surface-11',
+									)}>
+									{format(deadline, 'MMM d')}
+								</span>
+							)}
 							<p
 								className={clsx(
 									'flex-1 line-clamp-1 pr-2',
@@ -208,7 +220,7 @@ export default function TaskListItem(
 									<p className="flex items-center gap-4 mx-2">
 										<span
 											style={{
-												borderColor: `var(--${list.color}-10)`,
+												borderColor: `#${list.color}`,
 											}}
 											className="w-4 h-4 border-2 rounded-md"
 										/>
@@ -220,55 +232,16 @@ export default function TaskListItem(
 										id={props.id}
 									/>
 								</AnimatePresence>
+								<div className="flex gap-1">
+									{props.tags?.slice(0, 3).map((tag) => (
+										<Tag
+											key={tag}
+											value={tag}
+										/>
+									))}
+								</div>
 							</div>
 						</div>
-						{deadline && props.status !== SnackTaskStatus.Complete && (
-							<div className="flex items-center gap-4 mt-1 transition-transform">
-								<span
-									className={clsx(
-										'p-0.5 rounded px-1 text-sm font-medium',
-										differenceInDays(deadline, new Date()) <= 0
-											? 'bg-danger-4 text-danger-10'
-											: 'bg-primary-4 text-primary-10',
-									)}>
-									{differenceInDays(deadline, new Date()) < 0
-										? 'Was due'
-										: differenceInDays(deadline, new Date()) === 0
-										? 'Due'
-										: 'Due in'}{' '}
-									{differenceInDays(deadline, new Date()) < 0 &&
-										Math.abs(differenceInDays(deadline, new Date())) +
-											' days ago'}{' '}
-									{differenceInDays(deadline, new Date()) > 0 &&
-										Math.abs(differenceInDays(deadline, new Date())) +
-											' days'}{' '}
-									{differenceInDays(deadline, new Date()) === 0 && 'today'}
-								</span>
-							</div>
-						)}
-						<motion.div
-							initial={{
-								opacity: 0,
-							}}
-							animate={{
-								opacity: 1,
-							}}
-							className="flex flex-col gap-2">
-							{props.description && (
-								<p className="text-surface-10 line-clamp-2">
-									{props.description}
-								</p>
-							)}
-
-							<div className="flex gap-2">
-								{props.tags?.map((tag) => (
-									<Tag
-										key={tag}
-										value={tag}
-									/>
-								))}
-							</div>
-						</motion.div>
 					</AnimatePresence>
 				</div>
 			</div>
@@ -405,11 +378,16 @@ const SelectPriority = () => {
 	);
 };
 
-function Tag(props: { value: string }) {
+function Tag(props: { value: string; isColor?: boolean }) {
 	return (
 		<div className="flex gap-2">
-			<p className="flex items-center gap-2 p-1 px-2 text-sm rounded-xl bg-surface-2">
-				#{props.value}
+			<p
+				className={cn(
+					'flex items-center gap-2 p-1 px-2 text-sm rounded-xl bg-accent-10 text-white',
+					!props.isColor &&
+						'border text-surface-10 border-surface-4 bg-transparent',
+				)}>
+				{props.value}
 			</p>
 		</div>
 	);

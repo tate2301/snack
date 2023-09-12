@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { EllipsisVerticalIcon, PencilIcon } from '@heroicons/react/24/outline';
 import Dropdown from '../ui/dropdown-menu';
@@ -9,7 +9,7 @@ import ManageListForm, { ManageListFormAction } from './forms/CreateList';
 import { selectListById } from '../../redux/lists';
 import { useAppSelector } from '../../redux/store';
 
-const ListOptions = (props: { id: string; onDelete: (e) => void }) => {
+const ListOptions = (props: { id: string; onDelete: (e) => void; trigger?: ReactNode }) => {
 	const list = useAppSelector(selectListById(props.id));
 	const [isEditModalOpen, toggleEditModal, onEditModalOpenChanged] =
 		useToggle(false);
@@ -31,15 +31,15 @@ const ListOptions = (props: { id: string; onDelete: (e) => void }) => {
 			/>
 			<Dropdown>
 				<Dropdown.Trigger>
-					<p className="p-1 rounded-md text-surface-8 hover:text-surface-12 hover:bg-surface-1">
+					{props.trigger ? props.trigger : <p className="p-1 rounded-md text-surface-8 hover:text-surface-12 hover:bg-surface-1">
 						<EllipsisVerticalIcon className="w-5 h-5" />
-					</p>
+					</p>}
 				</Dropdown.Trigger>
 				<Dropdown.Content>
 					<Dropdown.Item onClick={openEditModal}>
 						<p className="flex items-center gap-4">
 							<PencilIcon className="w-5 h-5" />
-							<span>Edit list</span>
+							<span>Edit project</span>
 						</p>
 					</Dropdown.Item>
 

@@ -53,7 +53,7 @@ const CreateNote = () => {
 								name="note"
 								placeholder={'Insert text or paste a link'}
 								className={
-									'outline-none ring-0 flex-1 text-surface-12 w-full font-medium'
+									'outline-none ring-0 flex-1 text-surface-12 w-full font-semibold'
 								}
 								autoFocus
 							/>

@@ -10,6 +10,9 @@ import { remToPx } from '../../lib/utils';
 
 const PageHeader = (props: { children?: ReactNode }) => {
 	const [width, setWidth] = useState(0);
+	// check if we're on windows. Check from electron
+	const isWindows = process.platform === 'win32';
+	
 	useEffect(() => {
 		const calculateDimensions = () => {
 			const areaWidth =
@@ -37,7 +40,7 @@ const PageHeader = (props: { children?: ReactNode }) => {
 		<header className="w-full bg-surface-3 sticky top-0">
 			<nav
 				style={{
-					width,
+					width: isWindows ? width : '100%',
 				}}
 				id="page-header"
 				className="flex mb-4 sticky top-0 z-10 px-2 py-2 bg-surface-2">

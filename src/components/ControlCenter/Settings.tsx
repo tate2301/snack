@@ -19,7 +19,7 @@ const Settings = () => {
 			</DialogTrigger>
 			<DialogContent>
 				<div>
-					<DialogTitle className="text-xl font-medium">Settings</DialogTitle>
+					<DialogTitle className="text-xl font-semibold">Settings</DialogTitle>
 					<DialogDescription>
 						Configure your global preferences here.
 					</DialogDescription>

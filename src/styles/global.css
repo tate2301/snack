@@ -86,7 +86,7 @@ span {
 }
 
 button {
-	@apply flex items-center gap-2 p-1 font-medium text-surface-11;
+	@apply flex items-center gap-2 p-1 font-semibold text-surface-11;
 }
 
 .grid-day {

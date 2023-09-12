@@ -29,6 +29,7 @@ import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import { useNavigate } from 'react-router-dom';
 import SelectList from '../create/SelectList';
 import AddDeadline from '../create/task/AddDeadline';
+import {parseISO} from 'date-fns';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -76,6 +77,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 			deadline: date,
 		});
 	};
+	
 
 	return (
 		<Modal
@@ -122,10 +124,11 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 						</div>
 					</div>
 					<div>
-						<input
+						<Textarea
+							name={"title"}
 							onChange={onTitleChange}
 							value={props.title}
-							className="p-2 text-xl w-full outline-none ring-0 font-medium text-surface-12"
+							className="p-2 text-xl w-full outline-none ring-0 font-semibold text-surface-12"
 						/>
 						<Textarea
 							value={props.description}
@@ -139,7 +142,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 				<div className="flex items-center gap-2 py-4">
 					<AddDeadline
 						selectDate={onDeadlineChanged}
-						selectedDate={props.deadline}
+						selectedDate={typeof props.deadline === "string" ? parseISO(props.deadline) : props.deadline}
 					/>
 
 					<SnackTooltip>
@@ -156,7 +159,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 				</div>
 
 				<div className="py-4">
-					<h2 className="flex items-center gap-2 mb-2 font-medium">
+					<h2 className="flex items-center gap-2 mb-2 font-semibold">
 						<ListBulletIcon className="w-5 h-5" />
 						Checklist
 					</h2>
@@ -177,7 +180,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 							complete={false}
 						/>
 					</div>
-					<button className="p-2 px-2 mt-4 font-medium bg-transparent rounded-xl hover:bg-surface-4">
+					<button className="p-2 px-2 mt-4 font-semibold bg-transparent rounded-xl hover:bg-surface-4">
 						<PlusIcon className="w-5 h-5" />
 						Add an item
 					</button>

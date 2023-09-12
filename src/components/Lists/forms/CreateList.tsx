@@ -116,10 +116,10 @@ function ManageListForm(
 					<DialogTrigger>
 						<button
 							onClick={toggle}
-							className="flex items-center w-full gap-4 p-4 text-surface-11 hover:bg-surface-3 rounded-xl">
+							className="flex items-center w-full gap-2 px-4 py-2 border border-white hover:border-surface-4 text-surface-11 rounded-xl">
 							<PlusIcon className="w-5 h-5" />
 							<p className="flex items-center justify-between flex-1">
-								<span>New list</span>
+								<span>New project</span>
 								<Kbd keys={['⌘', 'L']} />
 							</p>
 						</button>
@@ -136,15 +136,14 @@ function ManageListForm(
 							{isCreateForm && (
 								<div className="mb-4">
 									<DialogTitle>
-										<p className="text-xl font-medium text-surface-12">
-											Create a new list
+										<p className="text-xl font-semibold text-surface-12">
+											Create a new project
 										</p>
 									</DialogTitle>
 									<DialogDescription>
 										<p className="text-surface-10">
-											Lists are best for managing projects or categories of
-											tasks. Like a list of movies to watch, or a list of
-											restaurants to try.
+											Projects are lists of tasks. You can create as many
+											projects as you need.
 										</p>
 									</DialogDescription>
 								</div>
@@ -152,8 +151,8 @@ function ManageListForm(
 							{!isCreateForm && (
 								<div className="mb-4">
 									<DialogTitle>
-										<p className="text-xl font-medium text-surface-12">
-											Edit list
+										<p className="text-xl font-semibold text-surface-12">
+											Edit project
 										</p>
 									</DialogTitle>
 									<DialogDescription>
@@ -175,14 +174,14 @@ function ManageListForm(
 									name={'title'}
 									{...form.getFieldProps('title')}
 									autoFocus
-									className="p-2 font-medium bg-transparent outline-none"
-									placeholder="List name"
+									className="p-2 font-semibold bg-transparent outline-none"
+									placeholder="Project name"
 								/>
 								<Textarea
 									name={'description'}
 									{...form.getFieldProps('description')}
 									placeholder="Description (optional)"
-									className="p-2 font-medium bg-transparent outline-none"
+									className="p-2 font-semibold bg-transparent outline-none"
 								/>
 							</div>
 						</div>

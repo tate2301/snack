@@ -80,6 +80,10 @@ export default function ListPage() {
 							<PlusIcon className="w-5 h-5" />
 							Add task
 						</button>
+						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
+							<PlusIcon className="w-5 h-5" />
+							Create list
+						</button>
 						<button className="p-2 h-full flex items-center px-2 hover:bg-zinc-900/10 py-1 rounded-lg leading-none">
 							<Square2StackIcon className="w-5 h-5" />
 						</button>
@@ -87,7 +91,11 @@ export default function ListPage() {
 							<TrashIcon className="w-5 h-5" />
 						</button>
 						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<Cog6ToothIcon className="w-5 h-5" />
+							<ListOptions
+										id={id}
+										onDelete={onDelete}
+										trigger={<Cog6ToothIcon className="w-5 h-5" />}
+									/>
 						</button>
 					</div>
 				</div>
@@ -102,71 +110,44 @@ export default function ListPage() {
 			<main className={'h-full flex gap-4 items-start'}>
 				<div className="flex-1">
 					<div className="mb-12">
-						<div className="gap-2 mb-4">
-							<div className="flex items-center justify-between">
-								<h1 className="text-2xl font-medium text-surface-12">
-									{listObject.name}
-								</h1>
-								<div>
-									<ListOptions
-										id={id}
-										onDelete={onDelete}
-									/>
-								</div>
-							</div>
-							<p className="text-xl !outline-none text-surface-10">
-								{listObject.description || 'Add a description'}
-							</p>
-						</div>
-						<div className="w-full gap-4 mb-4">
-							<div className="flex items-center gap-6">
-								<p className="flex items-center font-medium">
+						<div className="flex items-center gap-6 mb-2">
+								<p className="flex items-center font-semibold">
 									<CheckCircleIcon className="w-5 h-5 text-success-10" />
 									<span className="ml-2">{completeTasks.length} complete</span>
 								</p>
-								<p className="flex items-center font-medium">
+								<p className="flex items-center font-semibold">
 									<InProgressIcon className="w-5 h-5 text-primary-10" />
 									<span className="ml-2">
 										{inProgressTasks.length} in progress
 									</span>
 								</p>
-								<p className="flex items-center font-medium">
+								<p className="flex items-center font-semibold">
 									<XCircleIcon className="w-5 h-5 text-danger-10" />
 									<span className="ml-2">{blockedTasks.length} blocked</span>
 								</p>
-							</div>
 						</div>
+						<div className="gap-2 mb-12">
+							<div className="flex items-center justify-between mb-1">
+								<h1 className="text-3xl font-bold text-surface-12 flex items-center gap-2">
+									{listObject.name}
+								</h1>
+							</div>
+							<p className="text-lg !outline-none text-surface-10">
+								{listObject.description || 'Notes about this project'}
+							</p>
+						</div>
+						
 						<CreateTask defaultList={id} />
 					</div>
-					<div className="flex flex-col gap-12 mt-8">
+					<div className="flex flex-col gap-16 mt-8">
 						<TasksList
 							emptyStateLabel="All clear. You can never finish if you never start!"
-							title="Todo"
-							icon={<TodoIcon className="w-6 h-6 text-primary-10" />}
-							tasks={todoTasks}
+							title="Feature board"
+							icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
+							tasks={allTasks}
 							onExpandTask={onShowExpandedTaskView}
 						/>
-						<TasksList
-							emptyStateLabel="No tasks yet"
-							title="In Progress"
-							icon={<InProgressIcon className="w-6 h-6 text-primary-10" />}
-							tasks={inProgressTasks}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-						<TasksList
-							emptyStateLabel="Finish up your tasks for today!"
-							title="Complete"
-							icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}
-							tasks={completeTasks}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-						<TasksList
-							emptyStateLabel="Yaay! No blocked tasks."
-							title="Blocked"
-							icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}
-							tasks={blockedTasks}
-							onExpandTask={onShowExpandedTaskView}
-						/>
+						
 					</div>
 				</div>
 			</main>
@@ -183,9 +164,8 @@ const TasksList = (props: {
 }) => {
 	return (
 		<div>
-			<div className="mb-2">
-				<h1 className="flex items-center gap-2 text-xl font-medium text-surface-12">
-					{props.icon}
+			<div className="pb-2">
+				<h1 className="flex items-center gap-2 text-lg border-b pb-2 border-surface-3 font-semibold text-surface-11">
 					{props.title}
 				</h1>
 			</div>
@@ -212,7 +192,7 @@ const TasksList = (props: {
 							</motion.div>
 						))
 					) : (
-						<p className="px-10 text-surface-10">{props.emptyStateLabel}</p>
+						<p className="text-surface-10">{props.emptyStateLabel}</p>
 					)}
 				</AnimatePresence>
 			</div>
@@ -240,7 +220,7 @@ function FocusTimerButton({}) {
 		<div
 			className={clsx(
 				'p-1 px-4 rounded-xl text-xl hover:shadow items-center',
-				'gap-4 font-medium flex transition-all',
+				'gap-4 font-semibold flex transition-all',
 				isRunning
 					? 'bg-zinc-900 text-white shadow'
 					: 'bg-surface-1 text-surface-12 hover:bg-surface-1',

@@ -82,7 +82,7 @@ export default function Datepicker(props: CalendarPreviewProps) {
 						aria-hidden="true"
 					/>
 				</button>
-				<p className="font-medium text-white uppercase">
+				<p className="font-semibold text-white uppercase">
 					{format(firstDayOfCurrentMonth, 'MMMM yyyy')}
 				</p>
 				<button
@@ -113,7 +113,7 @@ export default function Datepicker(props: CalendarPreviewProps) {
 						onClick={() => selectDate(day)}
 						className={clsx(
 							'py-1.5 hover:bg-white hover:bg-opacity-10 focus:z-10 rounded-xl flex items-center justify-center flex-col gap-1 transition-all',
-							(isEqual(day, selectedDate) || isToday(day)) && 'font-medium',
+							(isEqual(day, selectedDate) || isToday(day)) && 'font-semibold',
 
 							!isEqual(day, selectedDate) &&
 								isSameMonth(day, firstDayOfCurrentMonth) &&

@@ -14,7 +14,7 @@ function NavLink(props: { children: ReactNode; to: string }) {
 		<Link
 			className={clsx(
 				'relative px-4 py-1 rounded-xl',
-				isActive && 'font-medium text-surface-12',
+				isActive && 'font-semibold text-surface-12',
 			)}
 			style={{
 				WebkitTapHighlightColor: 'transparent',
