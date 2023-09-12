@@ -1,0 +1,26 @@
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 400;
+	src: url(../../public/fonts/UntitledSansWeb-Regular.woff2) format('woff2'),
+		url(../../public/fonts/UntitledSansWeb-Regular.woff) format('woff');
+	font-family: 'Untitled Sans';
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 500;
+	src: url(../../public/fonts/UntitledSansWeb-Medium.woff2) format('woff2'),
+		url(../../public/fonts/UntitledSansWeb-Medium.woff) format('woff');
+	font-family: 'Untitled Sans';
+}
+
+@font-face {
+	font-display: auto;
+	font-style: normal;
+	font-weight: 500;
+	src: url(../../public/fonts/soehne-mono-web-buch.woff2) format('woff2'),
+		url(../../public/fonts/soehne-mono-web-buch.woff) format('woff');
+	font-family: 'Soehne Mono';
+}

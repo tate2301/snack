@@ -1,0 +1,49 @@
+:root {
+	--fallback-title-bar-height: 40px;
+}
+
+.horizontal-scroll {
+	overflow-x: auto;
+	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	scrollbar-width: none;
+	-moz-scrollbars-none: none;
+}
+
+.horizontal-scroll:-webkit-scrollbar {
+	display: none;
+}
+
+nav {
+	-webkit-app-region: drag;
+}
+
+nav button {
+	-webkit-app-region: no-drag;
+}
+
+#disable-right-border {
+	border-left: none !important;
+}
+.event-card:hover {
+	height: fit-content !important;
+}
+
+.react-resizable {
+	@apply p-0 pb-3 bg-white border-2 border-white shadow rounded-xl hover:h-fit;
+}
+
+#app-close:active {
+	@apply bg-red-600;
+}
+
+#app-close:hover {
+	@apply bg-red-600;
+}
+
+#page-header {
+	left: env(titlebar-area-x, 0);
+	top: env(titlebar-area-y, 0);
+	height: env(titlebar-area-height, 50px);
+}

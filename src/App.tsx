@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { DndContext } from '@dnd-kit/core';
+import './styles/global.css';
+import { Provider } from 'react-redux';
+import { ReactNode, useEffect, useMemo } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor, useAppSelector } from './redux/store';
+import { applicationSettings } from './redux/settings';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
+import SnackPluginManager, { availablePlugins } from './lib/integrations';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function SnackApplicationProvider(props: {
+	children: ReactNode;
+}) {
+	return (
+		<div
+			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
+			id="app-container">
+			<title>Snack ⏲</title>
+
+			<Provider store={store}>
+				<PersistGate
+					loading={null}
+					persistor={persistor}>
+					<Toaster />
+					<PluginProvider />
+					<DndContext>{props.children}</DndContext>
+				</PersistGate>
+			</Provider>
+		</div>
+	);
 }
 
-export default App;
+function PluginProvider() {
+	useEffect(() => {
+		availablePlugins.map((p) => SnackPluginManager.registerPlugin(p))
+		SnackPluginManager.loadPlugins();
+	}, []);
+
+	return <></>;
+}
+
+export const RedirectIfNotOnboarded = ({ children }) => {
+	const settings = useAppSelector(applicationSettings);
+	const navigate = useNavigate();
+	const path = useLocation();
+
+	const isHome = useMemo(() => path.pathname === '/', [path.pathname]);
+
+	useEffect(() => {
+		if (!isHome && !settings.onboarded) {
+			navigate('/');
+		}
+	}, [isHome, navigate, settings.onboarded]);
+
+	return children;
+};

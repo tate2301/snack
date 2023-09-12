@@ -1,0 +1,12 @@
+/*
+    Styling for the scrollbars
+*/
+
+*::-webkit-scrollbar {
+	border-radius: 0;
+	@apply w-0 h-0 rounded-full bg-zinc-200 dark:bg-zinc-900;
+}
+
+*::-webkit-scrollbar-thumb {
+	@apply rounded-full bg-zinc-500 dark:bg-zinc-500;
+}

@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+node_modules
+.next
+src-tauri
+.out
+out
+dist
+build
+app
+dist
