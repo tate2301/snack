@@ -12,17 +12,11 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const isActive = id === list.id;
-	const [isDropdownOpen, toggleDropdown] = useToggle(true);
+	const [isDropdownOpen, toggleDropdown] = useToggle(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const prevListDetails = useRef(list);
 
 	const dispatch = useAppDispatch();
-
-	const onEdit = (e) => {
-		toggleDropdown();
-		e.preventDefault();
-		e.stopPropagation();
-	};
 
 	const onDelete = (e) => {
 		e.preventDefault();
@@ -51,12 +45,18 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 				opacity: 1,
 				height: 'auto',
 			}}
-			className="relative flex flex-col justify-center group">
+			// onContextMenu={(e) => {
+			// 	// we want a right click
+			// 	toggleDropdown();
+			// 	e.preventDefault();
+			// 	e.stopPropagation();
+			// }}
+			onClick={onNavigate}
+			className="relative flex flex-col justify-center group context-action">
 			<button
-				onClick={onNavigate}
 				className={cn(
-					'flex items-center gap-4 py-1 px-4 font-semibold text-surface-12 rounded-xl ',
-					isActive ? 'bg-surface-3' : 'hover:bg-surface-4',
+					'flex items-center gap-4 py-2 px-4 font-semibold text-surface-12 rounded-xl ',
+					isActive && 'bg-surface-3',
 				)}>
 				<p
 					style={{
@@ -72,10 +72,14 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 							</span>
 						</p>
 					)}
-					<ListOptions
-						id={list.id}
-						onDelete={onDelete}
-					/>
+					{isDropdownOpen && (
+						<ListOptions
+							id={list.id}
+							onDelete={onDelete}
+							isOpen={isDropdownOpen}
+							onClose={toggleDropdown}
+						/>
+					)}
 				</p>
 			</button>
 		</motion.div>

@@ -5,8 +5,21 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import clsx from 'clsx';
 import { ZINDEX } from '../../../constants/styles';
 
-const Dropdown = (props: { children: ReactNode }) => {
-	return <DropdownMenu.Root>{props.children}</DropdownMenu.Root>;
+const Dropdown = (props: {
+	children: ReactNode;
+	open?: boolean;
+	onOpenChange?: (open: boolean) => void;
+}) => {
+	const dropdownOverrides = {
+		open: props.open,
+		onOpenChange: (open: boolean) => props.onOpenChange(open),
+	};
+
+	return (
+		<DropdownMenu.Root {...(props.onOpenChange && { ...dropdownOverrides })}>
+			{props.children}
+		</DropdownMenu.Root>
+	);
 };
 
 const DropdownTrigger = (props: { children: ReactNode }) => {

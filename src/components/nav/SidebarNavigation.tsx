@@ -37,7 +37,6 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 				</div>
 			</div>
 			<ManageListForm action={ManageListFormAction.Create} />
-
 		</div>
 	);
 }
@@ -49,10 +48,7 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="flex flex-col h-full bg-white border border-r border-surface-4">
-				<div className="mb-4">
-					<UserAccount />
-				</div>
+			<div className="flex flex-col h-full bg-white border border-r border-surface-4 pt-16">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -74,13 +70,13 @@ function NavItem(
 	return (
 		<Link
 			to={props.href}
-			className="hover:bg-surface-4 rounded-xl">
+			className="rounded-xl">
 			<ExclusionTab
 				id={'sidebar'}
 				isActive={isActive}>
 				<p
 					className={clsx(
-						'p-2 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
+						'px-2 py-1 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
 						props.active && '',
 					)}>
 					<span className="flex gap-4">

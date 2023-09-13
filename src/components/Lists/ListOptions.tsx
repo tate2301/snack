@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 
 import { EllipsisVerticalIcon, PencilIcon } from '@heroicons/react/24/outline';
 import Dropdown from '../ui/dropdown-menu';
@@ -9,7 +9,13 @@ import ManageListForm, { ManageListFormAction } from './forms/CreateList';
 import { selectListById } from '../../redux/lists';
 import { useAppSelector } from '../../redux/store';
 
-const ListOptions = (props: { id: string; onDelete: (e) => void; trigger?: ReactNode }) => {
+const ListOptions = (props: {
+	id: string;
+	onDelete: (e) => void;
+	trigger?: ReactNode;
+	onClose?: () => void;
+	isOpen?: boolean;
+}) => {
 	const list = useAppSelector(selectListById(props.id));
 	const [isEditModalOpen, toggleEditModal, onEditModalOpenChanged] =
 		useToggle(false);
@@ -18,6 +24,11 @@ const ListOptions = (props: { id: string; onDelete: (e) => void; trigger?: React
 		// e.preventDefault();
 		e.stopPropagation();
 		toggleEditModal();
+	};
+
+	const dropdownOverrides = {
+		open: props.isOpen,
+		onOpenChange: (open: boolean) => props.onClose(),
 	};
 
 	return (
@@ -29,12 +40,18 @@ const ListOptions = (props: { id: string; onDelete: (e) => void; trigger?: React
 				action={ManageListFormAction.Edit}
 				toggle={toggleEditModal}
 			/>
-			<Dropdown>
-				<Dropdown.Trigger>
-					{props.trigger ? props.trigger : <p className="p-1 rounded-md text-surface-8 hover:text-surface-12 hover:bg-surface-1">
-						<EllipsisVerticalIcon className="w-5 h-5" />
-					</p>}
-				</Dropdown.Trigger>
+			<Dropdown {...(props.onClose && { ...dropdownOverrides })}>
+				{!props.onClose && (
+					<Dropdown.Trigger>
+						{props.trigger ? (
+							props.trigger
+						) : (
+							<p className="p-1 rounded-md text-surface-8 hover:text-surface-12 hover:bg-surface-1">
+								<EllipsisVerticalIcon className="w-5 h-5" />
+							</p>
+						)}
+					</Dropdown.Trigger>
+				)}
 				<Dropdown.Content>
 					<Dropdown.Item onClick={openEditModal}>
 						<p className="flex items-center gap-4">
