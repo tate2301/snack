@@ -1,7 +1,9 @@
 'use client';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../../components/Home/TaskListItem';
+import TaskListItem, {
+	TaskListItemView,
+} from '../../components/Home/TaskListItem';
 import CreateTask from '../../components/create/CreateTask';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { PlayIcon } from '@heroicons/react/20/solid';
@@ -10,28 +12,29 @@ import {
 	selectListById,
 	selectTasksByListId,
 } from '../../redux/lists';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import {
 	CheckCircleIcon,
-	ClipboardIcon,
+	ChevronRightIcon,
 	Cog6ToothIcon,
-	PlusIcon,
-	Square2StackIcon,
+	StarIcon,
 	TrashIcon,
 	XCircleIcon,
-} from '@heroicons/react/24/outline';
-import { PauseIcon, PencilIcon, StopIcon } from '@heroicons/react/24/solid';
+} from '@heroicons/react/24/solid';
+import { FolderIcon } from '@heroicons/react/24/solid';
 import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import useToggle from '../../hooks/useToggle';
-import clsx from 'clsx';
 import InProgressIcon from '../../icons/InProgressIcon';
 import ListOptions from '../../components/Lists/ListOptions';
 import TodoIcon from '../../icons/TodoIcon';
 import TaskExpandedView from '../../components/Home/TaskExpandedView';
 import { useExpandTaskView } from '../../components/Home/hooks';
 import { useParams } from 'react-router-dom';
-import PageHeader from '../../components/nav/PageHeader';
-import { BackButton } from '../task/[taskId]';
+import PageHeader, { PageType } from '../../components/nav/PageHeader';
+import { cn } from '../../lib/utils';
+import { generateUUID } from '../../lib/functions';
+import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
+import Column from '../../components/ui/kanban/Column';
 
 const t = (n: number) => n * 1000;
 
@@ -40,6 +43,8 @@ export default function ListPage() {
 	const dispatch = useAppDispatch();
 	const listObject = useAppSelector(selectListById(id));
 	const allTasks = useAppSelector(selectTasksByListId(id));
+
+	const [isCreateTaskFormOpen, toggleCreateTaskForm] = useToggle(false);
 
 	const {
 		idOfTaskBeingShown,
@@ -69,37 +74,27 @@ export default function ListPage() {
 
 	return (
 		<CalendarLayout>
-			<PageHeader>
-				<div className="w-full flex justify-between">
-					<div className="flex gap-4 items-center">
-						<BackButton />
-						<h1 className="font-semibold text-zinc-900">{listObject.name}</h1>
-					</div>
-					<div className="flex gap-2">
-						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<PlusIcon className="w-5 h-5" />
-							Add task
+			<PageHeader
+				actions={
+					<>
+						<button className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
+							<StarIcon className="w-5 h-5" />
 						</button>
-						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<PlusIcon className="w-5 h-5" />
-							Create list
-						</button>
-						<button className="p-2 h-full flex items-center px-2 hover:bg-zinc-900/10 py-1 rounded-lg leading-none">
-							<Square2StackIcon className="w-5 h-5" />
-						</button>
-						<button className="p-2 h-full flex items-center px-2 hover:bg-zinc-900/10 py-1 rounded-lg leading-none">
+						<button className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
 							<TrashIcon className="w-5 h-5" />
 						</button>
 						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
 							<ListOptions
-										id={id}
-										onDelete={onDelete}
-										trigger={<Cog6ToothIcon className="w-5 h-5" />}
-									/>
+								id={id}
+								onDelete={onDelete}
+								trigger={<Cog6ToothIcon className="w-5 h-5" />}
+							/>
 						</button>
-					</div>
-				</div>
-			</PageHeader>
+					</>
+				}
+				title={listObject.name}
+				pageType={PageType.Project}
+			/>
 			{taskBeingShownInExpandedView && (
 				<TaskExpandedView
 					{...taskBeingShownInExpandedView}
@@ -107,48 +102,59 @@ export default function ListPage() {
 					onClose={onHideExpandedTaskView}
 				/>
 			)}
-			<main className={'h-full flex gap-4 items-start'}>
-				<div className="flex-1">
-					<div className="mb-12">
-						<div className="flex items-center gap-6 mb-2">
-								<p className="flex items-center font-semibold">
-									<CheckCircleIcon className="w-5 h-5 text-success-10" />
-									<span className="ml-2">{completeTasks.length} complete</span>
-								</p>
-								<p className="flex items-center font-semibold">
-									<InProgressIcon className="w-5 h-5 text-primary-10" />
-									<span className="ml-2">
-										{inProgressTasks.length} in progress
-									</span>
-								</p>
-								<p className="flex items-center font-semibold">
-									<XCircleIcon className="w-5 h-5 text-danger-10" />
-									<span className="ml-2">{blockedTasks.length} blocked</span>
-								</p>
+			<main
+				className={'h-full gap-4 items-start overflow-x-auto w-full flex-1'}>
+				<div className="flex-1 h-full flex flex-col">
+					{isCreateTaskFormOpen && (
+						<div className="mb-12">
+							<CreateTask
+								overrideOpenState={isCreateTaskFormOpen}
+								overrideToggle={toggleCreateTaskForm}
+								defaultList={id}
+							/>
 						</div>
-						<div className="gap-2 mb-12">
-							<div className="flex items-center justify-between mb-1">
-								<h1 className="text-3xl font-bold text-surface-12 flex items-center gap-2">
-									{listObject.name}
-								</h1>
-							</div>
-							<p className="text-lg !outline-none text-surface-10">
-								{listObject.description || 'Notes about this project'}
-							</p>
-						</div>
-						
-						<CreateTask defaultList={id} />
-					</div>
-					<div className="flex flex-col gap-16 mt-8">
-						<TasksList
-							emptyStateLabel="All clear. You can never finish if you never start!"
-							title="Feature board"
-							icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
-							tasks={allTasks}
+					)}
+					<div className="flex items-start gap-4 h-full overflow-x-auto py-2 px-4">
+						<Column
+							title="Todo"
+							icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
+							tasks={todoTasks}
+							id={id}
 							onExpandTask={onShowExpandedTaskView}
 						/>
-						
+						<Column
+							title="In Progress"
+							icon={<InProgressIcon className="w-5 h-5 text-primary-10" />}
+							tasks={inProgressTasks}
+							id={id}
+							onExpandTask={onShowExpandedTaskView}
+						/>
+						<Column
+							title="Complete"
+							icon={<CheckCircleIcon className="w-5 h-5 text-success-10" />}
+							tasks={completeTasks}
+							id={id}
+							onExpandTask={onShowExpandedTaskView}
+						/>
+						<Column
+							title="Blocked"
+							icon={<XCircleIcon className="w-5 h-5 text-danger-10" />}
+							tasks={blockedTasks}
+							id={id}
+							onExpandTask={onShowExpandedTaskView}
+						/>
 					</div>
+					{false && (
+						<div className="flex flex-col gap-16 mt-8">
+							<TasksList
+								emptyStateLabel="All clear. You can never finish if you never start!"
+								title="Feature board"
+								icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
+								tasks={allTasks}
+								onExpandTask={onShowExpandedTaskView}
+							/>
+						</div>
+					)}
 				</div>
 			</main>
 		</CalendarLayout>
@@ -162,94 +168,71 @@ const TasksList = (props: {
 	emptyStateLabel: string;
 	onExpandTask: (id: string) => void;
 }) => {
+	const [isTasksInFolderShowing, toggleShowTasksInFolder] = useToggle(true);
+
 	return (
-		<div>
-			<div className="pb-2">
-				<h1 className="flex items-center gap-2 text-lg border-b pb-2 border-surface-3 font-semibold text-surface-11">
-					{props.title}
-				</h1>
+		<div className="flex flex-col gap-2">
+			<div
+				onDoubleClick={toggleShowTasksInFolder}
+				className={cn(
+					'flex justify-between text-center items-baseline rounded-xl px-1 py-0.5',
+					isTasksInFolderShowing && 'bg-zinc-900/10',
+				)}>
+				<div className="flex gap-2 items-center">
+					<button
+						onClick={toggleShowTasksInFolder}
+						className="p-2 rounded-xl transition-colors">
+						<ChevronRightIcon
+							className={cn(
+								'w-4 h-4 transition-all duration-200',
+								isTasksInFolderShowing && 'rotate-90',
+							)}
+						/>
+					</button>
+					<FolderIcon className="w-5 h-5" />
+					<input
+						value={props.title}
+						className="flex items-baseline py-0 my-0 gap-2 outline-none bg-transparent font-semibold text-surface-11"
+					/>
+				</div>
+				<div className="flex gap-4 items-center flex-shrink-0">
+					<div className="flex gap-2 px-4 py-2 rounded-full items-center">
+						<PlayIcon className="w-4 h-4" />
+						<p>16:23:09</p>
+					</div>
+				</div>
 			</div>
-			<div>
-				<AnimatePresence initial={false}>
-					{props.tasks.length > 0 ? (
-						props.tasks.map((task) => (
-							<motion.div
-								initial={{
-									opacity: 0,
-								}}
-								animate={{
-									opacity: 1,
-								}}
-								exit={{
-									opacity: 0,
-								}}
-								className="my-2">
-								<TaskListItem
-									key={task.id}
-									onExpandTask={() => props.onExpandTask(task.id)}
-									{...task}
-								/>
-							</motion.div>
-						))
-					) : (
-						<p className="text-surface-10">{props.emptyStateLabel}</p>
-					)}
-				</AnimatePresence>
-			</div>
+			{isTasksInFolderShowing && (
+				<motion.div
+					initial={{ height: 0, opacity: 0 }}
+					animate={{ height: 'auto', opacity: 1 }}>
+					<AnimatePresence initial={false}>
+						{props.tasks.length > 0 ? (
+							props.tasks.map((task) => (
+								<motion.div
+									initial={{
+										opacity: 0,
+									}}
+									animate={{
+										opacity: 1,
+									}}
+									exit={{
+										opacity: 0,
+									}}
+									className="my-2">
+									<TaskListItem
+										key={task.id}
+										onExpandTask={() => props.onExpandTask(task.id)}
+										{...task}
+									/>
+								</motion.div>
+							))
+						) : (
+							<p className="text-surface-10">{props.emptyStateLabel}</p>
+						)}
+					</AnimatePresence>
+				</motion.div>
+			)}
 		</div>
 	);
 };
-
-function FocusTimerButton({}) {
-	const [isRunning, toggle] = useToggle(false);
-	const [seconds, setSeconds] = useState(0);
-
-	useEffect(() => {
-		let timer: NodeJS.Timeout;
-		if (isRunning) {
-			timer = setInterval(() => {
-				setSeconds((prev) => prev + 1);
-			}, 1000);
-		}
-		return () => {
-			clearInterval(timer);
-		};
-	}, [isRunning]);
-
-	return (
-		<div
-			className={clsx(
-				'p-1 px-4 rounded-xl text-xl hover:shadow items-center',
-				'gap-4 font-semibold flex transition-all',
-				isRunning
-					? 'bg-zinc-900 text-white shadow'
-					: 'bg-surface-1 text-surface-12 hover:bg-surface-1',
-			)}>
-			{
-				// Convert seconds to HH:MM:SS
-				new Date(seconds * 1000).toISOString().substr(11, 8)
-			}
-			<p className="flex gap-2">
-				{seconds > 0 && !isRunning && (
-					<button
-						onClick={() => setSeconds(0)}
-						className="p-2 rounded-xl hover:bg-surface-3">
-						<StopIcon className="w-5 h-5 text-danger-10" />
-					</button>
-				)}
-				<button
-					onClick={toggle}
-					className={clsx(
-						'p-2 rounded-xl transition-all',
-						isRunning ? 'hover:bg-danger-12' : 'hover:bg-danger-3',
-					)}>
-					{!isRunning ? (
-						<PlayIcon className={'w-5 h-5'} />
-					) : (
-						<PauseIcon className="w-5 h-5 text-danger-9" />
-					)}
-				</button>
-			</p>
-		</div>
-	);
-}

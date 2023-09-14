@@ -7,6 +7,8 @@ import { SnackTaskStatus } from '../../redux/tasks/types';
 import { selectTaskByStatus } from '../../redux/tasks';
 import InProgressIcon from '../../icons/InProgressIcon';
 import PageLayout from '../../layouts/PageLayout';
+import PageHeader from '../../components/nav/PageHeader';
+import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 export default function InProgressPage() {
 	const inProgress = useAppSelector((state) =>
@@ -17,6 +19,16 @@ export default function InProgressPage() {
 
 	return (
 		<CalendarLayout>
+			<PageHeader
+				title="In Progress"
+				actions={
+					<>
+						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
+							<Cog6ToothIcon className="w-5 h-5" />
+						</button>
+					</>
+				}
+			/>
 			<PageLayout
 				name={'In Progress'}
 				description="Let's get these done with. Keep it up!"

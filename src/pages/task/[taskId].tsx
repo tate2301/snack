@@ -5,13 +5,13 @@ import {
 	ClockIcon,
 	PlusIcon,
 	StarIcon,
-} from '@heroicons/react/24/outline';
+	TrashIcon,
+} from '@heroicons/react/24/solid';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { selectTaskById } from '../../redux/tasks';
-import PageHeader from '../../components/nav/PageHeader';
-import TrashIcon from '../../icons/TrashIcon';
+import PageHeader, { PageType } from '../../components/nav/PageHeader';
 import SelectList from '../../components/create/SelectList';
 import {
 	addTaskToList,
@@ -37,26 +37,21 @@ export default function TaskPage() {
 
 	return (
 		<CalendarLayout>
-			<PageHeader>
-				<div className="w-full flex justify-between">
-					<div className="flex gap-4 items-center">
-						<BackButton />
-						<h1 className="font-semibold text-zinc-900">{task.title}</h1>
-					</div>
-					<div className="flex gap-2">
-						<button className="p-2 h-full flex items-center px-2 hover:bg-zinc-900/10 py-1 rounded-lg leading-none">
-							Share
-						</button>
+			<PageHeader
+				title={task.title}
+				pageType={PageType.Task}
+				actions={
+					<>
 						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
 							<StarIcon className="w-6 h-6" />
 						</button>
 						<button className="hover:bg-zinc-900/10 flex items-center px-3 py-2 rounded-lg leading-none">
 							<TrashIcon className="w-5 h-5" />
 						</button>
-					</div>
-				</div>
-			</PageHeader>
-			<main className="flex flex-col justify-between w-full h-full overflow-y-auto max-w-screen-lg">
+					</>
+				}
+			/>
+			<main className="flex flex-col justify-between w-full h-full overflow-y-auto max-w-screen-lg py-4 px-8">
 				<div className="mt-8">
 					<div className="flex gap-4 mb-4">
 						<button className="px-4 rounded-xl py-1 bg-zinc-900/5">

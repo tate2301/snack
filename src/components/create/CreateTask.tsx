@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import useToggle from '../../hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -31,9 +31,18 @@ import useDisclosure from '../../hooks/useDisclosure';
 import TagInput from '../ui/input/TagInput';
 import AddDeadline from './task/AddDeadline';
 
-const CreateTask = (props: { defaultList?: string }) => {
+const CreateTask = (props: {
+	defaultList?: string;
+	overrideOpenState?: boolean;
+	overrideToggle?: () => void;
+}) => {
 	const ref = useRef<HTMLButtonElement>(null);
-	const [isFocused, toggle, setIsFocused] = useToggle(false);
+	const [isFocused, toggle, setIsFocused] = useToggle(props.overrideOpenState);
+
+	const toggleWithCb = () => {
+		toggle();
+		if (props.overrideToggle) props.overrideToggle();
+	};
 
 	useEffect(() => {
 		if (ref.current) {
@@ -44,7 +53,7 @@ const CreateTask = (props: { defaultList?: string }) => {
 					evt.stopPropagation();
 					evt.cancelBubble = true;
 					evt.stopImmediatePropagation();
-					toggle();
+					toggleWithCb();
 				}
 			};
 
@@ -86,8 +95,7 @@ const CreateTask = (props: { defaultList?: string }) => {
 							'flex flex-col gap-2 items-start bg-white p-4 rounded-xl shadow'
 						}>
 						<CreateTaskForm
-							toggle={toggle}
-							setIsFocused={setIsFocused}
+							toggle={toggleWithCb}
 							defaultList={props.defaultList}
 						/>
 					</motion.div>
@@ -99,7 +107,6 @@ const CreateTask = (props: { defaultList?: string }) => {
 
 const CreateTaskForm = (props: {
 	toggle: () => void;
-	setIsFocused: (t: boolean) => void;
 	defaultList?: string;
 }) => {
 	const {
@@ -147,7 +154,7 @@ const CreateTaskForm = (props: {
 		dispatch(addTask(task));
 		dispatch(addTaskToList({ listId: data.list, taskId: task.id }));
 		form.resetForm();
-		props.setIsFocused(false);
+		props.toggle();
 	};
 
 	const stopAllPropagation = (evt: KeyboardEvent) => {
@@ -186,7 +193,6 @@ const CreateTaskForm = (props: {
 				stopAllPropagation(evt);
 				// Focus back on title field
 				removeDescriptionField();
-				console.log('removing');
 				textAreaRef.current.focus();
 			}
 		},

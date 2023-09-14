@@ -3,8 +3,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import { useAppSelector } from '../../redux/store';
 import { SnackTaskStatus } from '../../redux/tasks/types';
-import { XCircleIcon } from '@heroicons/react/24/outline';
+import {
+	Cog6ToothIcon,
+	PlusIcon,
+	XCircleIcon,
+} from '@heroicons/react/24/outline';
 import PageLayout from '../../layouts/PageLayout';
+import PageHeader from '../../components/nav/PageHeader';
 
 export default function TrashPage() {
 	const tasks = useAppSelector((state) =>
@@ -15,6 +20,16 @@ export default function TrashPage() {
 
 	return (
 		<CalendarLayout>
+			<PageHeader
+				title="Blocked"
+				actions={
+					<>
+						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
+							<Cog6ToothIcon className="w-5 h-5" />
+						</button>
+					</>
+				}
+			/>
 			<PageLayout
 				name={'Blocked tasks'}
 				description="These might have other tasks they depend on. You get back to them!"

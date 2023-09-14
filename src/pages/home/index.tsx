@@ -25,21 +25,16 @@ export default function HomePage() {
 
 	return (
 		<CalendarLayout>
-			<PageHeader>
-				<div className="w-full flex justify-between">
-					<div className="flex gap-4 items-center"></div>
-					<div className="flex gap-2">
-						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<PlusIcon className="w-5 h-5" />
-							Add task
-						</button>
-
+			<PageHeader
+				title="Home"
+				actions={
+					<>
 						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
 							<Cog6ToothIcon className="w-5 h-5" />
 						</button>
-					</div>
-				</div>
-			</PageHeader>
+					</>
+				}
+			/>
 			<PageLayout
 				name="Good morning, Tatenda"
 				description={`It's ${format(startOfToday(), 'EEE dd MMM')}. You have ${

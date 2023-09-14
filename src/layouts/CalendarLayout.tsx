@@ -29,9 +29,7 @@ export default function CalendarLayout(props) {
 						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'
 					}>
 					<NavigationSidebar />
-					<div
-						id="main"
-						className={clsx('h-full flex-1 overflow-y-auto')}>
+					<div className={clsx('h-full flex-1 overflow-y-auto')}>
 						{props.children}
 						<div className="h-16" />
 					</div>

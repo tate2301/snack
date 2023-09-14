@@ -65,7 +65,6 @@ body {
 
 main {
 	padding-bottom: 4rem;
-	@apply container p-8;
 }
 
 /*

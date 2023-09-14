@@ -1,12 +1,16 @@
-('use client');
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import { useAppSelector } from '../../redux/store';
 import { SnackTaskStatus } from '../../redux/tasks/types';
 import { selectTaskByStatus } from '../../redux/tasks';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import {
+	CheckCircleIcon,
+	Cog6ToothIcon,
+	PlusIcon,
+} from '@heroicons/react/24/outline';
 import PageLayout from '../../layouts/PageLayout';
+import PageHeader from '../../components/nav/PageHeader';
 
 export default function CompletePage() {
 	const completeTasks = useAppSelector((state) =>
@@ -17,6 +21,16 @@ export default function CompletePage() {
 
 	return (
 		<CalendarLayout>
+			<PageHeader
+				title="Complete"
+				actions={
+					<>
+						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
+							<Cog6ToothIcon className="w-5 h-5" />
+						</button>
+					</>
+				}
+			/>
 			<PageLayout
 				name={'Complete'}
 				description={`You rock! You have completed ${completeTasks.length} tasks :)`}

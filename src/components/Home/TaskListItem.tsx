@@ -32,7 +32,7 @@ import {
 	SunIcon,
 	TrashIcon,
 	XCircleIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/solid';
 import CalendarIcon from '../../icons/CalendarIcon';
 import { generateUUID } from '../../lib/functions';
 import { motion } from 'framer-motion';
@@ -48,6 +48,7 @@ import { toast } from 'sonner';
 import useDisclosure from '../../hooks/useDisclosure';
 import TaskExpandedView from './TaskExpandedView';
 import { cn } from '../../lib/utils';
+import Clickable from '../ui/utils/Clickable';
 
 export const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -141,8 +142,18 @@ export const useTaskFunctions = (task: SnackTask) => {
 	};
 };
 
+export enum TaskListItemView {
+	Grid = 'Grid',
+	List = 'List',
+	Table = 'Table',
+}
+
 export default function TaskListItem(
-	props: SnackTask & { icon?: ReactNode; onExpandTask: () => void },
+	props: SnackTask & {
+		icon?: ReactNode;
+		onExpandTask: () => void;
+		view?: TaskListItemView;
+	},
 ) {
 	const list = useAppSelector(selectListByTaskId(props.id));
 	const { changeStatus } = useTaskFunctions(props);
@@ -174,78 +185,124 @@ export default function TaskListItem(
 		: undefined;
 
 	return (
-		<motion.div
+		<Clickable
 			style={style}
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
-			onDoubleClick={props.onExpandTask}
+			action={props.onExpandTask}
 			className={clsx(
-				'px-3 py-0.5 bg-white rounded-xl group',
+				'group rounded-xl',
 				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
-			<div className="flex items-center flex-1 h-full">
-				<div className="flex-1 h-full">
-					<AnimatePresence>
-						<div className="flex items-center w-full gap-2">
-							<input
-								className="flex-shrink-0 rounded-xl"
-								type="checkbox"
-								onChange={onCheck}
-								checked={isChecked}
-							/>
+			{props.view === TaskListItemView.Grid && (
+				<div className="h-full px-2 py-2 rounded-xl bg-surface-1">
+					{props.description && (
+						<PostItNoteIcon className="w-5 h-5 text-surface-8" />
+					)}
+					<p className="font-semibold text-surface-12 mt-1 mb-2">
+						{props.title}
+					</p>
+					<div className="flex gap-2">
+						<p className="text-sm text-surface-10">
 							{deadline && props.status !== SnackTaskStatus.Complete && (
 								<span
 									className={clsx(
-										'p-0.5 rounded px-1 text-sm font-semibold',
+										'p-0.5 rounded px-1 text-sm',
 										differenceInDays(deadline, new Date()) <= 0
-											? 'bg-danger-4 text-danger-10'
-											: 'bg-surface-4 text-surface-11',
+											? 'text-danger-10'
+											: 'text-primary-11',
 									)}>
 									{format(deadline, 'MMM d')}
 								</span>
 							)}
-							<p
-								className={clsx(
-									'flex-1 line-clamp-1 pr-2',
-									isChecked ? 'line-through text-zinc-400 ' : 'text-surface-12',
-								)}>
-								{props.title}
-							</p>
-							<div className="flex items-center flex-shrink-0 gap-2 ml-2">
-								<AnimatePresence>
-									{props.description && (
-										<PostItNoteIcon className="w-5 h-5 text-surface-8" />
-									)}
-									<p className="flex items-center gap-4 mx-2">
-										<span
-											style={{
-												borderColor: `#${list.color}`,
-											}}
-											className="w-4 h-4 border-2 rounded-md"
-										/>
-									</p>
-									<TaskStatus status={props.status} />
+						</p>
+					</div>
+					{props.tags && (
+						<div className="flex gap-1 mt-2">
+							{props.tags?.slice(0, 3).map((tag) => (
+								<Tag
+									key={tag}
+									value={tag}
+								/>
+							))}
+						</div>
+					)}
+				</div>
+			)}
+			{(!props.view || props.view === TaskListItemView.List) && (
+				<div className="flex items-center flex-1 h-full px-2 py-1 rounded-xl">
+					<div className="flex-1 h-full">
+						<AnimatePresence>
+							<div className="flex items-center w-full gap-2">
+								<input
+									className="flex-shrink-0 rounded-xl relative z-1"
+									type="checkbox"
+									onChange={onCheck}
+									checked={isChecked}
+								/>
 
-									<TaskDropdownOptions
-										{...props}
-										id={props.id}
-									/>
-								</AnimatePresence>
-								<div className="flex gap-1">
-									{props.tags?.slice(0, 3).map((tag) => (
-										<Tag
-											key={tag}
-											value={tag}
+								<div className="flex-1 pr-2">
+									<p
+										className={clsx(
+											'line-clamp-1 pr-2',
+											isChecked
+												? 'line-through text-zinc-400 '
+												: 'text-surface-12',
+										)}>
+										{props.title}
+									</p>
+									<p className="text-sm text-surface-10">
+										{list.name}
+										{deadline && props.status !== SnackTaskStatus.Complete && (
+											<span
+												className={clsx(
+													'p-0.5 rounded px-1 text-sm',
+													differenceInDays(deadline, new Date()) <= 0
+														? 'text-danger-10'
+														: 'text-primary-11',
+												)}>
+												&bull; {format(deadline, 'MMM d')}
+											</span>
+										)}
+									</p>
+								</div>
+
+								<div className="flex items-center flex-shrink-0 gap-2 ml-2">
+									<AnimatePresence>
+										{props.description && (
+											<PostItNoteIcon className="w-5 h-5 text-surface-8" />
+										)}
+										<p className="flex items-center gap-4 mx-2">
+											<span
+												style={{
+													borderColor: `#${list.color}`,
+												}}
+												className="w-4 h-4 border-2 rounded-md"
+											/>
+										</p>
+										<TaskStatus status={props.status} />
+
+										<TaskDropdownOptions
+											{...props}
+											id={props.id}
 										/>
-									))}
+									</AnimatePresence>
+									<div className="flex gap-1">
+										{props.tags?.slice(0, 3).map((tag) => (
+											<Tag
+												key={tag}
+												value={tag}
+											/>
+										))}
+									</div>
 								</div>
 							</div>
-						</div>
-					</AnimatePresence>
+						</AnimatePresence>
+					</div>
 				</div>
-			</div>
-		</motion.div>
+			)}
+		</Clickable>
 	);
 }
 

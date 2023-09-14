@@ -5,7 +5,7 @@ import Dropdown from '../ui/dropdown-menu';
 import TrashIcon from '../../icons/TrashIcon';
 import EditList from './forms/EditList';
 import useToggle from '../../hooks/useToggle';
-import ManageListForm, { ManageListFormAction } from './forms/CreateList';
+import ManageListForm, { ManageListFormAction } from './forms/CreateProject';
 import { selectListById } from '../../redux/lists';
 import { useAppSelector } from '../../redux/store';
 

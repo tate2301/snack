@@ -1,35 +1,36 @@
-import React from "react";
+import React from 'react';
 
 import {
 	CheckCircleIcon,
 	DocumentIcon,
+	ExclamationCircleIcon,
 	XCircleIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/solid';
 import InProgressIcon from '../../icons/InProgressIcon';
 import InboxIcon from '../../icons/InboxIcon';
 import { NavItem as NavItemType } from './types';
 
 const tabs: NavItemType[] = [
 	{
-		icon: <InboxIcon className="w-5 h-5 text-surface-12" />,
+		icon: <InboxIcon className="w-5 h-5 text-surface-11" />,
 		value: 'inbox',
 		label: 'Home',
 		href: '/home',
 	},
 	{
-		icon: <InProgressIcon className="w-5 h-5 text-surface-12" />,
+		icon: <ExclamationCircleIcon className="w-6 h-6 text-surface-11" />,
 		value: 'in-progress',
-		label: 'In Progress',
+		label: 'Urgent',
 		href: '/in-progress',
 	},
 	{
-		icon: <CheckCircleIcon className="w-5 h-5 text-surface-12" />,
+		icon: <CheckCircleIcon className="w-6 h-6 text-surface-11" />,
 		value: 'notes',
 		label: 'Complete',
 		href: '/complete',
 	},
 	{
-		icon: <XCircleIcon className="w-5 h-5 text-surface-12" />,
+		icon: <XCircleIcon className="w-6 h-6 text-surface-11" />,
 
 		value: 'blocked',
 		label: 'Blocked',

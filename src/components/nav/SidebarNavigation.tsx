@@ -16,7 +16,7 @@ import tabs from './tabs';
 import ListNavigationItem from '../Lists/ListNavigationItem';
 import ManageListForm, {
 	ManageListFormAction,
-} from '../Lists/forms/CreateList';
+} from '../Lists/forms/CreateProject';
 import SnackPluginManager from '../../lib/integrations';
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
