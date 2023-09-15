@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import useToggle from '../../hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -30,6 +30,8 @@ import Kbd from '../ui/typography/Kbd';
 import useDisclosure from '../../hooks/useDisclosure';
 import TagInput from '../ui/input/TagInput';
 import AddDeadline from './task/AddDeadline';
+import { cn } from '../../lib/utils';
+import { electron } from '../../lib/core/electron';
 
 const CreateTask = (props: {
 	defaultList?: string;
@@ -91,9 +93,10 @@ const CreateTask = (props: {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						className={
-							'flex flex-col gap-2 items-start bg-white p-4 rounded-xl shadow'
-						}>
+						className={cn(
+							'flex flex-col gap-2 items-start',
+							!props.overrideOpenState && 'bg-white p-4 rounded-xl shadow',
+						)}>
 						<CreateTaskForm
 							toggle={toggleWithCb}
 							defaultList={props.defaultList}
@@ -223,18 +226,15 @@ const CreateTaskForm = (props: {
 			className="flex flex-col w-full gap-2"
 			ref={formRef}
 			onSubmit={form.handleSubmit}>
-			<div className="flex mb-2 w-fit">
+			<div className="flex mb-2 w-fit border border-surfacce-3 rounded-xl">
 				<SelectList
 					defaultListId={form.values.list}
 					onChange={(val) => form.setFieldValue('list', val)}
 				/>
 			</div>
-			<div className={'flex-1 flex items-start w-full mb-1'}>
-				<input
-					type={'checkbox'}
-					disabled
-					className={'!bg-surface-6 flex-shrink-0'}
-				/>
+			<div className={'flex-1 flex items-start w-full mb-1 gap-4'}>
+				<EmojiPicker />
+
 				<div className="flex-1">
 					<Textarea
 						setRef={textAreaRef}
@@ -322,6 +322,39 @@ const CreateTaskForm = (props: {
 				</div>
 			</div>
 		</form>
+	);
+};
+
+const EmojiPicker = () => {
+	const [value, setvalue] = useState('🚀');
+	const ref = useRef<HTMLInputElement>();
+	const isEmojiPickerSupported = useMemo(() => {
+		return electron.app.isEmojiPanelSupported();
+	}, []);
+
+	const onShowEmojiPicker = async () => {
+		await electron.app.showEmojiPanel();
+		if (!ref.current) return;
+		ref.current.focus();
+	};
+
+	return (
+		<button
+			onClick={onShowEmojiPicker}
+			className="py-1 px-2 flex items-center justify-center relative rounded-xl border border-surface-3">
+			<p className="w-full h-full z-10 absolute" />
+			<p
+				contentEditable
+				onInput={(e) => {
+					// @ts-ignore
+					setvalue(e.nativeEvent.data);
+					return e;
+				}}
+				className="outline-none !w-fit text-2xl relative z-0 caret-transparent"
+				ref={ref}>
+				{value}
+			</p>
+		</button>
 	);
 };
 

@@ -7,6 +7,7 @@ import { removeList } from '../../redux/lists';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import ListOptions from './ListOptions';
+import { FolderIcon } from '@heroicons/react/24/solid';
 
 function ListNavigationItem({ list }: { list: SnackList }) {
 	const { id } = useParams();
@@ -58,11 +59,12 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 					'flex items-center gap-4 py-2 px-4 font-semibold text-surface-12 rounded-xl ',
 					isActive && 'bg-surface-3',
 				)}>
-				<p
+				<FolderIcon
 					style={{
-						borderColor: `#${list.color}`,
+						fill: `#${list.color}`,
 					}}
-					className="flex items-center h-4 gap-4 font-semibold border-2 rounded-md aspect-square"></p>
+					className="w-5 h-5"
+				/>
 				<p className="flex-1 text-left">{list.name}</p>
 				<p className="flex items-center gap-2">
 					{list.tasks.length > 0 && (

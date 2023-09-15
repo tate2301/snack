@@ -90,11 +90,10 @@ export const {
 } = tasksSlice.actions;
 
 /** Selectors */
-export const selectAllTasks = (state: RootState) =>
-	_.sortBy(
-		state.tasks.items.filter((task) => task.trashed !== true),
-		(task) => task.createdAt.getTime(),
-	);
+export const selectAllTasks = (state: RootState) => {
+	console.log(state.tasks.items);
+	return state.tasks.items.filter((task) => task.trashed !== true);
+};
 
 export const selectAllSubtasks = (state: RootState, id: string) =>
 	state.tasks.items

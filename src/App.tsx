@@ -8,6 +8,7 @@ import { applicationSettings } from './redux/settings';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import SnackPluginManager, { availablePlugins } from './lib/integrations';
+import CommandContextProvider from './context/CommandContext';
 
 export default function SnackApplicationProvider(props: {
 	children: ReactNode;
@@ -22,9 +23,11 @@ export default function SnackApplicationProvider(props: {
 				<PersistGate
 					loading={null}
 					persistor={persistor}>
-					<Toaster />
-					<PluginProvider />
-					<DndContext>{props.children}</DndContext>
+					<CommandContextProvider>
+						<Toaster />
+						<PluginProvider />
+						<DndContext>{props.children}</DndContext>
+					</CommandContextProvider>
 				</PersistGate>
 			</Provider>
 		</div>
@@ -33,7 +36,7 @@ export default function SnackApplicationProvider(props: {
 
 function PluginProvider() {
 	useEffect(() => {
-		availablePlugins.map((p) => SnackPluginManager.registerPlugin(p))
+		availablePlugins.map((p) => SnackPluginManager.registerPlugin(p));
 		SnackPluginManager.loadPlugins();
 	}, []);
 

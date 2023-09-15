@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { motion } from 'framer-motion';
 import {
@@ -42,7 +42,9 @@ export default function Modal({
 				exit={{ opacity: 0, display: 'none' }}
 				className="fixed inset-0 flex items-center justify-center p-4">
 				{/* The actual dialog panel  */}
-				<DialogContent className="w-auto mx-auto bg-white rounded-xl">
+				<DialogContent
+					autoFocus={false}
+					className="w-auto mx-auto bg-white rounded-2xl outline-none">
 					{(title || description) && (
 						<DialogHeader className="w-full mb-4">
 							{title && (

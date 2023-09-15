@@ -9,6 +9,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import { settingsSlice } from './settings';
 import { BaseAppDispatch, BaseRootState } from './types';
 import createSnackStorage from '../lib/core/redux-storage';
+import { starredSlice } from './starred';
 const { deepParseJson } = require('deep-parse-json');
 
 const remindersReducer = (state = [], action) => {
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
 	user: userReducer,
 	settings: settingsSlice.reducer,
 	tasks: tasksSlice.reducer,
+	starred: starredSlice.reducer,
 });
 
 export const storeConfiguration = {

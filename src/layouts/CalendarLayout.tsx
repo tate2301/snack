@@ -23,13 +23,16 @@ export default function CalendarLayout(props) {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
-			<div className="relative flex flex-col h-screen overflow-hidden bg-surface-2">
+			<div className="relative flex flex-col h-screen overflow-hidden bg-surface-1">
 				<div
 					className={
 						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'
 					}>
 					<NavigationSidebar />
-					<div className={clsx('h-full flex-1 overflow-y-auto')}>
+					<div
+						className={clsx(
+							'h-full flex-1 overflow-y-auto border-l border-zinc-400/30 shadow-sm',
+						)}>
 						{props.children}
 						<div className="h-16" />
 					</div>

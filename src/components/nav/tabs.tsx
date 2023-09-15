@@ -9,6 +9,8 @@ import {
 import InProgressIcon from '../../icons/InProgressIcon';
 import InboxIcon from '../../icons/InboxIcon';
 import { NavItem as NavItemType } from './types';
+import TargetIcon from '../../icons/TargetIcon';
+import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
 
 const tabs: NavItemType[] = [
 	{
@@ -18,22 +20,15 @@ const tabs: NavItemType[] = [
 		href: '/home',
 	},
 	{
-		icon: <ExclamationCircleIcon className="w-6 h-6 text-surface-11" />,
-		value: 'in-progress',
-		label: 'Urgent',
-		href: '/in-progress',
-	},
-	{
-		icon: <CheckCircleIcon className="w-6 h-6 text-surface-11" />,
+		icon: <TargetIcon className="w-6 h-6 text-surface-11" />,
 		value: 'notes',
-		label: 'Complete',
+		label: 'My work',
 		href: '/complete',
 	},
 	{
-		icon: <XCircleIcon className="w-6 h-6 text-surface-11" />,
-
+		icon: <MaybeLaterIcon className="w-6 h-6 text-surface-11" />,
 		value: 'blocked',
-		label: 'Blocked',
+		label: 'Backlog',
 		href: '/trash',
 	},
 ];

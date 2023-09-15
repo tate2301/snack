@@ -11,6 +11,7 @@ export default function Splash() {
 	const settings = useAppSelector(applicationSettings);
 	const navigate = useNavigate();
 
+
 	const onQuickStart = () => {
 		dispatch(
 			updateSettings({

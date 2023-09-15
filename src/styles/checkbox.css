@@ -10,7 +10,7 @@ input[type='checkbox'] {
 	-webkit-appearance: none;
 	opacity: 0.5;
 
-	@apply flex items-center justify-center w-6 h-6 transition-colors border-2 rounded-lg border-surface-6;
+	@apply flex items-center justify-center w-4 h-4 transition-colors border-2 rounded border-surface-6;
 }
 
 input[type='checkbox']:hover {
@@ -31,9 +31,9 @@ input[type='checkbox']:checked {
 input[type='checkbox']:before {
 	content: '';
 	width: 5px;
-	height: 10px;
+	height: 8px;
 	border: solid #fff;
-	border-width: 0 2px 2px 0;
+	border-width: 0 1.5px 1.5px 0;
 	transform: rotate(45deg);
 	z-index: 2;
 	border-radius: 1px;

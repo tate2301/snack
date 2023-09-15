@@ -19,6 +19,14 @@ import {
 	selectListByTaskId,
 } from '../../redux/lists';
 import { useCallback } from 'react';
+import { TaskChecklist } from '../../components/Home/TaskExpandedView';
+import {
+	addToStarred,
+	removeStarred,
+	selectStarredItemById,
+} from '../../redux/starred';
+import { AppEntity } from '../../redux/starred/types';
+import { cn } from '../../lib/utils';
 
 export default function TaskPage() {
 	const { id } = useParams();
@@ -26,6 +34,7 @@ export default function TaskPage() {
 
 	const task = useAppSelector(selectTaskById(id));
 	const list = useAppSelector(selectListByTaskId(id));
+	const isStarred = useAppSelector(selectStarredItemById(id));
 
 	const onListChanged = useCallback(
 		(listId) => {
@@ -35,6 +44,21 @@ export default function TaskPage() {
 		[list, id],
 	);
 
+	const onStar = () => {
+		if (!isStarred) {
+			dispatch(
+				addToStarred({
+					id,
+					entity: AppEntity.Task,
+				}),
+			);
+		}
+
+		if (isStarred) {
+			dispatch(removeStarred({ id }));
+		}
+	};
+
 	return (
 		<CalendarLayout>
 			<PageHeader
@@ -42,8 +66,15 @@ export default function TaskPage() {
 				pageType={PageType.Task}
 				actions={
 					<>
-						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<StarIcon className="w-6 h-6" />
+						<button
+							onClick={onStar}
+							className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
+							<StarIcon
+								className={cn(
+									'w-5 h-5',
+									isStarred ? 'text-warning-10' : 'text-surface-10',
+								)}
+							/>
 						</button>
 						<button className="hover:bg-zinc-900/10 flex items-center px-3 py-2 rounded-lg leading-none">
 							<TrashIcon className="w-5 h-5" />
@@ -69,32 +100,7 @@ export default function TaskPage() {
 				</div>
 
 				<div className="flex flex-col flex-1 gap-4 mt-4">
-					<div className="flex items-baseline justify-between font-semibold">
-						<p>Subtasks Queue (10)</p>
-					</div>
-					<div className="flex flex-col gap-2">
-						<div className="flex items-center gap-2">
-							<input
-								type="checkbox"
-								className="w-4 h-4"
-							/>
-							<div className="flex items-start justify-between flex-1">
-								<p>Join discovery call with Chris and take feedback</p>
-								<div className="flex items-center flex-shrink-0 gap-4">
-									<p className="text-zinc-500 uppercase">00:00:00</p>
-									<button className="p-1 text-zinc-500">
-										<PlayIcon className="w-5 h-5" />
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<button className="flex items-center gap-2 mt-2 font-semibold bg-zinc-900/5 hover:bg-zinc-900/10 w-fit rounded-xl pr-6 text-zinc-900">
-						<span className="p-2 rounded-full">
-							<PlusIcon className="w-4 h-4" />
-						</span>
-						Add Subtask
-					</button>
+					<TaskChecklist {...task} />
 				</div>
 			</main>
 		</CalendarLayout>

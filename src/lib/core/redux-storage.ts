@@ -1,8 +1,8 @@
 import Nedb from 'nedb';
 import path from 'path';
+import { electron } from './electron';
 const { deepParseJson } = require('deep-parse-json');
-const remote = require('@electron/remote');
-export const userDataPath = remote.app.getPath('userData');
+export const userDataPath = electron.app.getPath('userData');
 
 const createSnackStorage = (pre?: {
 	store?: typeof Nedb;

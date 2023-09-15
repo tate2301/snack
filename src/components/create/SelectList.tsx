@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { ChevronDownIcon, FolderIcon } from '@heroicons/react/20/solid';
 import {
@@ -21,8 +21,8 @@ const SelectList = (props: {
 		<Select
 			defaultValue={props.defaultListId}
 			onValueChange={props.onChange}>
-			<SelectTrigger className="min-w-[120px] w-fit text-surface-12">
-				<div className="flex gap-4">
+			<SelectTrigger className="min-w-[120px] w-fit text-surface-12 p-2">
+				<div className="flex gap-4 p-2">
 					<SelectValue placeholder={'No list'} />
 				</div>
 			</SelectTrigger>

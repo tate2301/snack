@@ -1,7 +1,4 @@
-import React from 'react';
-
 import { ReactNode } from 'react';
-import CreateTask from '../components/create/CreateTask';
 
 const PageLayout = (props: {
 	children: ReactNode;
@@ -10,7 +7,7 @@ const PageLayout = (props: {
 	icon: ReactNode;
 }) => {
 	return (
-		<main className="h-full pb-16 px-2">
+		<main className="h-full pb-16">
 			<div id="createTask" />
 
 			{props.children}

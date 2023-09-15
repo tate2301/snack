@@ -49,6 +49,7 @@ import useDisclosure from '../../hooks/useDisclosure';
 import TaskExpandedView from './TaskExpandedView';
 import { cn } from '../../lib/utils';
 import Clickable from '../ui/utils/Clickable';
+import { FolderIcon, QueueListIcon } from '@heroicons/react/24/solid';
 
 export const useTaskFunctions = (task: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -192,20 +193,19 @@ export default function TaskListItem(
 			{...attributes}
 			action={props.onExpandTask}
 			className={clsx(
-				'group rounded-xl',
+				'group p-1',
+				props.view === TaskListItemView.Grid ? 'rounded-xl' : 'rounded',
 				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
 			{props.view === TaskListItemView.Grid && (
-				<div className="h-full px-2 py-2 rounded-xl bg-surface-1">
+				<div className="h-full px-2 py-2 rounded-xl bg-surface-1 shadow">
 					{props.description && (
 						<PostItNoteIcon className="w-5 h-5 text-surface-8" />
 					)}
-					<p className="font-semibold text-surface-12 mt-1 mb-2">
-						{props.title}
-					</p>
-					<div className="flex gap-2">
-						<p className="text-sm text-surface-10">
-							{deadline && props.status !== SnackTaskStatus.Complete && (
+					<p className="font-semibold text-surface-12 mt-1">{props.title}</p>
+					<div className="flex gap-2 items-center">
+						{deadline && props.status !== SnackTaskStatus.Complete && (
+							<p className="text-sm text-surface-10 mt-2">
 								<span
 									className={clsx(
 										'p-0.5 rounded px-1 text-sm',
@@ -215,8 +215,18 @@ export default function TaskListItem(
 									)}>
 									{format(deadline, 'MMM d')}
 								</span>
-							)}
-						</p>
+							</p>
+						)}
+						{props.subtasks.length > 0 && (
+							<p className="text-sm flex items-center gap-2 mt-2">
+								&bull;
+								<QueueListIcon className="w-4 h-4" />
+								<span className="text-surface-10">
+									{props.subtasks.filter((subtask) => subtask.complete).length}{' '}
+									of {props.subtasks.length}
+								</span>
+							</p>
+						)}
 					</div>
 					{props.tags && (
 						<div className="flex gap-1 mt-2">
@@ -231,7 +241,7 @@ export default function TaskListItem(
 				</div>
 			)}
 			{(!props.view || props.view === TaskListItemView.List) && (
-				<div className="flex items-center flex-1 h-full px-2 py-1 rounded-xl">
+				<div className="flex items-center flex-1 h-full px-2 rounded">
 					<div className="flex-1 h-full">
 						<AnimatePresence>
 							<div className="flex items-center w-full gap-2">
@@ -252,20 +262,45 @@ export default function TaskListItem(
 										)}>
 										{props.title}
 									</p>
-									<p className="text-sm text-surface-10">
-										{list.name}
-										{deadline && props.status !== SnackTaskStatus.Complete && (
-											<span
-												className={clsx(
-													'p-0.5 rounded px-1 text-sm',
-													differenceInDays(deadline, new Date()) <= 0
-														? 'text-danger-10'
-														: 'text-primary-11',
-												)}>
-												&bull; {format(deadline, 'MMM d')}
+									{!props.complete && (
+										<p className="text-sm text-surface-10 flex items-center gap-2">
+											<span className="flex items-center gap-2">
+												<FolderIcon className="w-4 h-4" />
+												{list.name}
 											</span>
-										)}
-									</p>
+											{deadline &&
+												props.status !== SnackTaskStatus.Complete && (
+													<>
+														&bull;
+														<span
+															className={clsx(
+																'p-0.5 rounded px-1 text-sm',
+																differenceInDays(deadline, new Date()) <= 0
+																	? 'text-danger-10'
+																	: 'text-primary-11',
+															)}>
+															{format(deadline, 'MMM d')}
+														</span>
+													</>
+												)}
+											{props.subtasks.length > 0 && (
+												<>
+													&bull;
+													<span className="flex gap-2 items-center">
+														<QueueListIcon className="w-4 h-4" />
+														<span className="text-surface-10">
+															{
+																props.subtasks.filter(
+																	(subtask) => subtask.complete,
+																).length
+															}{' '}
+															of {props.subtasks.length}
+														</span>
+													</span>
+												</>
+											)}
+										</p>
+									)}
 								</div>
 
 								<div className="flex items-center flex-shrink-0 gap-2 ml-2">
@@ -282,20 +317,19 @@ export default function TaskListItem(
 											/>
 										</p>
 										<TaskStatus status={props.status} />
-
+										<div className="flex gap-1">
+											{props.tags?.slice(0, 3).map((tag) => (
+												<Tag
+													key={tag}
+													value={tag}
+												/>
+											))}
+										</div>
 										<TaskDropdownOptions
 											{...props}
 											id={props.id}
 										/>
 									</AnimatePresence>
-									<div className="flex gap-1">
-										{props.tags?.slice(0, 3).map((tag) => (
-											<Tag
-												key={tag}
-												value={tag}
-											/>
-										))}
-									</div>
 								</div>
 							</div>
 						</AnimatePresence>

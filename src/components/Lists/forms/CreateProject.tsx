@@ -116,7 +116,7 @@ function ManageListForm(
 					<DialogTrigger>
 						<button
 							onClick={toggle}
-							className="flex items-center w-full gap-2 px-4 py-2 border border-white hover:border-surface-4 text-surface-11 rounded-xl">
+							className="flex items-center w-full gap-4 px-2 py-2 border border-white hover:border-surface-4 text-surface-11 rounded-xl">
 							<PlusIcon className="w-5 h-5" />
 							<p className="flex items-center justify-between flex-1">
 								<span>New project</span>

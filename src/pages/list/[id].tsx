@@ -16,9 +16,7 @@ import { ReactNode } from 'react';
 import {
 	CheckCircleIcon,
 	ChevronRightIcon,
-	Cog6ToothIcon,
 	StarIcon,
-	TrashIcon,
 	XCircleIcon,
 } from '@heroicons/react/24/solid';
 import { FolderIcon } from '@heroicons/react/24/solid';
@@ -33,8 +31,20 @@ import { useParams } from 'react-router-dom';
 import PageHeader, { PageType } from '../../components/nav/PageHeader';
 import { cn } from '../../lib/utils';
 import { generateUUID } from '../../lib/functions';
-import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
+import {
+	Cog6ToothIcon,
+	EllipsisHorizontalIcon,
+	PlusIcon,
+	TrashIcon,
+} from '@heroicons/react/24/outline';
 import Column from '../../components/ui/kanban/Column';
+import KanbanBoard from '../../components/ui/kanban/KanbanContainer';
+import {
+	addToStarred,
+	removeStarred,
+	selectStarredItemById,
+} from '../../redux/starred';
+import { AppEntity } from '../../redux/starred/types';
 
 const t = (n: number) => n * 1000;
 
@@ -43,6 +53,7 @@ export default function ListPage() {
 	const dispatch = useAppDispatch();
 	const listObject = useAppSelector(selectListById(id));
 	const allTasks = useAppSelector(selectTasksByListId(id));
+	const isStarred = useAppSelector(selectStarredItemById(id));
 
 	const [isCreateTaskFormOpen, toggleCreateTaskForm] = useToggle(false);
 
@@ -72,13 +83,36 @@ export default function ListPage() {
 		dispatch(removeList(id));
 	};
 
+	const onStar = () => {
+		if (!isStarred) {
+			dispatch(
+				addToStarred({
+					id,
+					entity: AppEntity.Project,
+				}),
+			);
+		}
+
+		if (isStarred) {
+			dispatch(removeStarred({ id }));
+		}
+	};
+
 	return (
 		<CalendarLayout>
 			<PageHeader
+				projectId={id}
 				actions={
 					<>
-						<button className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
-							<StarIcon className="w-5 h-5" />
+						<button
+							onClick={onStar}
+							className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
+							<StarIcon
+								className={cn(
+									'w-5 h-5',
+									isStarred ? 'text-warning-10' : 'text-surface-10',
+								)}
+							/>
 						</button>
 						<button className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
 							<TrashIcon className="w-5 h-5" />
@@ -114,7 +148,7 @@ export default function ListPage() {
 							/>
 						</div>
 					)}
-					<div className="flex items-start gap-4 h-full overflow-x-auto py-2 px-4">
+					<KanbanBoard>
 						<Column
 							title="Todo"
 							icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
@@ -143,7 +177,7 @@ export default function ListPage() {
 							id={id}
 							onExpandTask={onShowExpandedTaskView}
 						/>
-					</div>
+					</KanbanBoard>
 					{false && (
 						<div className="flex flex-col gap-16 mt-8">
 							<TasksList

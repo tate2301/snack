@@ -1,23 +1,21 @@
-'use client';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../components/Home/TaskListItem';
 import { useAppSelector } from '../../redux/store';
 import { SnackTaskStatus } from '../../redux/tasks/types';
-import { selectAllTasks, selectTaskByStatus } from '../../redux/tasks';
-import InboxIcon from '../../icons/InboxIcon';
-import { format, startOfToday } from 'date-fns';
+import { selectTaskByStatus } from '../../redux/tasks';
+import {
+	CheckCircleIcon,
+	Cog6ToothIcon,
+	PlusIcon,
+} from '@heroicons/react/24/outline';
 import PageLayout from '../../layouts/PageLayout';
 import PageHeader from '../../components/nav/PageHeader';
-import { BackButton } from '../task/[taskId]';
-import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';
 
-// <p className="text-xl text-surface-10">
-// 	It's {format(startOfToday(), 'EEE dd MMM')}. You have {inProgress.length}{' '}
-// 	pending tasks
-// </p>;
-export default function HomePage() {
-	const allTasks = useAppSelector((state) => selectAllTasks(state));
+export default function CompletePage() {
+	const completeTasks = useAppSelector((state) =>
+		selectTaskByStatus(state, SnackTaskStatus.Complete),
+	);
 
 	const t = (n: number) => n * 1000;
 
@@ -31,19 +29,22 @@ export default function HomePage() {
 							<Cog6ToothIcon className="w-5 h-5" />
 						</button>
 					</>
-				}
-			/>
+				}>
+				<div className="w-auto flex justify-end">
+					<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
+						<PlusIcon className="w-5 h-5" />
+						Add task
+					</button>
+				</div>
+			</PageHeader>
 			<PageLayout
-				name="Good morning, Tatenda"
-				description={`It's ${format(startOfToday(), 'EEE dd MMM')}. You have ${
-					allTasks.length
-				} pending tasks`}
-				icon={<InboxIcon className="w-5 h-5" />}>
-				<motion.div className="flex flex-col divide-y border-b divide-surface-3 border-surface-3">
+				name={'Complete'}
+				description={`You rock! You have completed ${completeTasks.length} tasks :)`}
+				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
+				<motion.div className="flex flex-col gap-2 mt-4">
 					<AnimatePresence initial={false}>
-						{allTasks.map((task) => (
+						{completeTasks.map((task) => (
 							<motion.div
-								key={task.id}
 								initial={{
 									opacity: 0,
 									height: 0,
@@ -62,9 +63,18 @@ export default function HomePage() {
 								exit={{
 									opacity: 0,
 									height: 0,
+								}}
+								transition={{
+									type: 'spring',
+									bounce: 0,
+									duration: t(0.15),
+									opactiy: {
+										duration: t(0.03),
+									},
 								}}>
 								<TaskListItem
 									onExpandTask={() => {}}
+									key={task.id}
 									{...task}
 								/>
 							</motion.div>

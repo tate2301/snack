@@ -34,7 +34,7 @@ const Clickable = (props: ClickableProps) => {
 				console.log('Context menu');
 			}}
 			onClick={toggleFocused}
-			className={cn('', props.className, isFocused && 'ring-2 ring-accent-9')}
+			className={cn('', props.className, isFocused && 'bg-surface-3')}
 			children={props.children}
 			ref={ref}
 		/>

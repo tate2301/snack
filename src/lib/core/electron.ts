@@ -1,3 +1,5 @@
+const electron = require('@electron/remote');
+
 type ElectronAPI = {
 	loadConfig: () => Promise<object>;
 	saveConfig: (data: object) => Promise<void>;
@@ -34,4 +36,4 @@ export default class SnackElectronIPC {
 	}
 }
 
-export { electronAPI };
+export { electronAPI, electron };

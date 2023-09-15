@@ -1,4 +1,5 @@
 import {
+	ChevronDownIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	ListBulletIcon,
@@ -11,16 +12,18 @@ import {
 	ViewColumnsIcon,
 } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import MaximiseIcon from '../../icons/MaximiseIcon';
 import { remToPx } from '../../lib/utils';
 import { type } from 'os';
 import { useNavigate } from 'react-router-dom';
 import {
 	DocumentIcon,
+	FolderIcon,
 	QueueListIcon,
 	Square3Stack3DIcon,
 } from '@heroicons/react/24/solid';
+import { CommandContext } from '../../context/CommandContext';
 
 type ContextMenuOptions = {
 	search?: boolean;
@@ -42,6 +45,7 @@ const PageHeader = (props: {
 	actions?: ReactNode;
 	pageType?: PageType;
 	title?: string;
+	projectId?: string;
 }) => {
 	const [width, setWidth] = useState(0);
 	// check if we're on windows. Check from electron
@@ -71,7 +75,7 @@ const PageHeader = (props: {
 	}, []);
 
 	return (
-		<header className="w-full bg-surface-1 sticky top-0 z-30">
+		<header className="w-full bg-surface-1 sticky top-0 z-10">
 			<nav
 				style={{
 					width: isWindows ? width : '100%',
@@ -81,18 +85,15 @@ const PageHeader = (props: {
 				<NavigationAction />
 				<div className="px-2 flex-1 flex gap-2 items-center">
 					<PageTypeIcon type={props.pageType ?? PageType.Generic} />
-					<p className="text-lg font-bold text-surface-12 truncate text-ellipsis pr-8 w-96">
+					<p className="font-bold truncate text-ellipsis pr-8 w-96">
 						{props.title}
 					</p>
 					{props.children}
 				</div>
 				<div className="flex-shrink-0 flex items-center gap-4">
-					<CreateTaskButton />
+					<CreateTaskButton projectId={props.projectId ?? null} />
 					<ViewStyle />
-					<div className="flex gap-2 items-center">
-						<ShareAction />
-						{props.actions}
-					</div>
+					<div className="flex gap-2 items-center">{props.actions}</div>
 					<SearchField />
 				</div>
 			</nav>
@@ -100,11 +101,18 @@ const PageHeader = (props: {
 	);
 };
 
-const CreateTaskButton = () => {
+const CreateTaskButton = (props: { projectId: string }) => {
+	const { openCreateTask } = useContext(CommandContext);
+
+	const onClick = () => {
+		openCreateTask(props.projectId);
+	};
+
 	return (
-		<button className="bg-primary-10 flex gap-2 items-center rounded-xl px-3 py-1.5 text-white">
+		<button
+			onClick={onClick}
+			className="bg-primary-10 flex gap-2 items-center rounded-xl px-3 py-2 text-white">
 			<PlusIcon className="w-5 h-5" />
-			Add task
 		</button>
 	);
 };
@@ -113,9 +121,7 @@ const PageTypeIcon = (props: { type: PageType }) => {
 	return (
 		<>
 			{props.type === PageType.Generic && <DocumentIcon className="w-5 h-5" />}
-			{props.type === PageType.Project && (
-				<Square3Stack3DIcon className="w-5 h-5" />
-			)}
+			{props.type === PageType.Project && <FolderIcon className="w-5 h-5" />}
 			{props.type === PageType.Task && <QueueListIcon className="w-5 h-5" />}
 		</>
 	);
@@ -151,10 +157,10 @@ const ShareAction = () => {
 const ViewStyle = () => {
 	return (
 		<div className="flex gap-1 rounded-lg bg-surface-3 p-1">
-			<button className="py-1 px-2 rounded-md bg-surface-1 shadow">
+			<button className="py-1 px-2 rounded-md">
 				<ListBulletIcon className="w-5 h-5" />
 			</button>
-			<button className="py-1 px-2 rounded-md">
+			<button className="py-1 px-2 rounded-md bg-surface-1 shadow">
 				<ViewColumnsIcon className="w-5 h-5" />
 			</button>
 		</div>
