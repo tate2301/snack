@@ -1,18 +1,10 @@
 import { DndContext } from '@dnd-kit/core';
 import { ReactNode } from 'react';
 import {
-	closestCenter,
-	KeyboardSensor,
-	PointerSensor,
+	closestCenter, PointerSensor,
 	useSensor,
-	useSensors,
+	useSensors
 } from '@dnd-kit/core';
-import {
-	arrayMove,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
 
 const KanbanBoard = (props: { children: ReactNode }) => {
 	const sensors = useSensors(
