@@ -31,42 +31,52 @@ import {
 import { useMemo } from 'react';
 import { SnackList } from '../../redux/lists/types';
 import ExternalLink from '../../icons/ExternalLink';
+import SearchField from '../ControlCenter/Search';
+import InProgressIcon from '../../icons/InProgressIcon';
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
-		<div className="sticky flex flex-col flex-1 w-80 h-full">
-			<div className="flex flex-col gap-4 bg-white border-b border-zinc-400/30 shadow-xs">
+		<div className="sticky flex flex-col flex-1 w-80 h-full overflow-y-auto">
+			<div className="flex flex-col gap-4 border-b border-zinc-400/10 shadow-xs px-1">
 				<div className="flex flex-col w-full gap-1 p-2">
-					{tabs.map((tab: NavItemType) => (
-						<NavItem
-							key={tab.value}
-							{...tab}
-							active={false}
-							callback={() => {}}
-							href={tab.href}
-						/>
-					))}
+					<SearchField />
+					<div className="mt-4">
+						<p className="text-sm font-semibold text-surface-9 mb-2 px-2">
+							Navigation
+						</p>
+						{tabs.map((tab: NavItemType) => (
+							<NavItem
+								key={tab.value}
+								{...tab}
+								active={false}
+								callback={() => {}}
+								href={tab.href}
+							/>
+						))}
+					</div>
 				</div>
 			</div>
-			<div className="flex-1 p-4 flex flex-col gap-8 overflow-y-auto">
+			<div className="flex-1 py-4 px-3 flex flex-col gap-8">
 				<StarredItems />
 
 				<div className="flex flex-col gap-2">
-					<p className="text-sm font-semibold px-4 text-surface-10">Projects</p>
+					<div className="flex justify-between items-center pr-2">
+						<p className="text-sm font-semibold text-surface-9 px-4">
+							Projects
+						</p>
+						<ManageListForm action={ManageListFormAction.Create} />
+					</div>
 					<div>
 						<Projects />
 					</div>
-					<ManageListForm action={ManageListFormAction.Create} />
 				</div>
 				<div className="flex flex-col gap-2">
-					<p className="text-sm font-semibold px-4 text-surface-10">
-						Your teams
-					</p>
-					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-semibold items-center">
+					<p className="text-sm font-base px-4 text-surface-10">Your teams</p>
+					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-base items-center">
 						<TeamCard name="Innovation Hub" />
 						<p>Innovation Hub</p>
 					</div>
-					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-semibold">
+					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-base">
 						<TeamCard name="Dream" />
 						<p>Dream TEAM @TIF</p>
 					</div>
@@ -79,7 +89,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 						<p className="text-sm text-surface-10">
 							Built with ❤️ at CUT Innovation Hub
 						</p>
-						<div className="flex gap-4 font-semibold mt-4 text-primary-11">
+						<div className="flex gap-4 font-base mt-4 text-primary-11">
 							<a
 								href={'https://ringpro.app/privacy'}
 								target="_blank"
@@ -106,10 +116,10 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 
 const StarredItems = () => {
 	const starredItems = useAppSelector(selectStarredItems);
-	console.log({ starredItems });
+
 	return (
 		<div className="flex flex-col gap-2">
-			<p className="text-sm font-semibold px-4 text-surface-10">Starred</p>
+			<p className="text-sm font-semibold text-surface-9 px-4">Starred</p>
 			<div className="flex flex-col">
 				{starredItems.map((item) => (
 					<StarredListItem
@@ -141,7 +151,7 @@ const StarredListItem = (props: Starred) => {
 	return (
 		<div
 			onClick={onClick}
-			className="rounded-xl flex gap-4 items-center px-4 py-1.5 hover:bg-zinc-900/10">
+			className="rounded-lg flex gap-2 items-center px-4 py-1.5 hover:bg-zinc-900/10">
 			<p className="flex-shrink-0 text-surface-10">
 				{props.entity === AppEntity.Project && (
 					<FolderIcon
@@ -150,25 +160,19 @@ const StarredListItem = (props: Starred) => {
 					/>
 				)}
 				{props.entity === AppEntity.Task && (
-					<input
-						checked={
-							// @ts-ignore
-							starredItem.meta.complete
-						}
-						type="checkbox"
-					/>
+					<InProgressIcon className="w-5 h-5 text-surface-10" />
 				)}
 				{props.entity === AppEntity.Team && (
 					<UserGroupIcon className="w-5 h-5" />
 				)}
 			</p>
-			<p className="font-semibold line-clamp-1">{starredItem.meta?.name}</p>
+			<p className="font-base line-clamp-1">{starredItem.meta?.name}</p>
 		</div>
 	);
 };
 
 const TeamCard = (props: { name: string }) => (
-	<p className="h-7 w-7 rounded-lg text-sm flex items-center text-center justify-center font-semibold text-white bg-surface-11 border border-surface-12">
+	<p className="h-7 w-7 rounded-lg text-sm flex items-center text-center justify-center font-base text-white bg-surface-11 border border-surface-12">
 		{props.name.split(' ')[0][0]}
 		{props.name.split(' ')[1] ? props.name.split(' ')[1][0] : null}
 	</p>
@@ -181,7 +185,7 @@ export default function NavigationSidebar({}) {
 			className={
 				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
 			}>
-			<div className="flex flex-col h-full bg-white pt-16">
+			<div className="flex flex-col h-full pt-12">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -203,16 +207,16 @@ function NavItem(
 	return (
 		<Link
 			to={props.href}
-			className="rounded-xl">
+			className="rounded-lg">
 			<ExclusionTab
 				id={'sidebar'}
 				isActive={isActive}>
 				<p
 					className={clsx(
-						'px-4 py-1 justify-between flex w-full text-surface-12 transition-all text-md font-semibold rounded-xl items-center',
+						'px-2 py-0.5 justify-between flex w-full transition-all text-md !font-base rounded-lg items-center',
 						props.active && '',
 					)}>
-					<span className="flex gap-4 items-center">
+					<span className="flex gap-2 items-center text-surface-12 font-normal">
 						{props.icon}
 						{props.label}
 					</span>

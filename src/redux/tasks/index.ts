@@ -32,6 +32,7 @@ export const tasksSlice = createSlice({
 				tags,
 				link,
 				trashed,
+				emoji,
 			} = action.payload as SnackTask;
 			const existingTask = state.items.find((task) => task.id === id);
 			if (existingTask) {
@@ -45,6 +46,7 @@ export const tasksSlice = createSlice({
 				existingTask.link = link;
 				existingTask.lastUpdated = new Date();
 				existingTask.trashed = trashed;
+				existingTask.emoji = emoji;
 			}
 		},
 		addSubtask: (state, action) => {

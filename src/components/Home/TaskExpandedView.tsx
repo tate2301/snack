@@ -23,16 +23,15 @@ import {
 } from '../ui/select';
 import TodoIcon from '../../icons/TodoIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
-import { useTaskFunctions } from './TaskListItem';
+import useTaskFunctions from './hooks/useTaskFunctions';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
-import { useNavigate } from 'react-router-dom';
 import SelectList from '../create/SelectList';
 import AddDeadline from '../create/task/AddDeadline';
 import { parseISO } from 'date-fns';
 import { useAppDispatch } from '../../redux/store';
 import { addSubtask, deleteSubtask, updateSubtask } from '../../redux/tasks';
-import { TextareaHTMLAttributes, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -40,46 +39,20 @@ type TaskExpandedViewProps = {
 } & SnackTask;
 
 const TaskExpandedView = (props: TaskExpandedViewProps) => {
-	const navigate = useNavigate();
-
 	const handleOnClose = () => {
 		props.onClose();
 	};
 
 	const {
 		changeStatus,
-		onAddSubTask,
-		onUpdateSubTask,
-		onRemoveSubTask,
 		onUpdateTask,
 		changeList,
+		openInPage,
 		list,
+		onDeadlineChanged,
+		onTitleChange,
+		onDescriptionChange,
 	} = useTaskFunctions(props);
-
-	const openInPage = () => navigate(`/task/${props.id}`);
-
-	const onDescriptionChange = (e) => {
-		const value = e.target.value;
-		onUpdateTask({
-			...props,
-			description: value,
-		});
-	};
-
-	const onTitleChange = (e) => {
-		const value = e.target.value;
-		onUpdateTask({
-			...props,
-			title: value,
-		});
-	};
-
-	const onDeadlineChanged = (date: Date) => {
-		onUpdateTask({
-			...props,
-			deadline: date,
-		});
-	};
 
 	return (
 		<Modal
@@ -212,23 +185,21 @@ export const TaskChecklist = (props: SnackTask) => {
 	};
 
 	return (
-		<>
+		<div className="py-4">
+			<h2 className="flex items-center gap-2 mb-4 text-surface-10">
+				<ListBulletIcon className="w-5 h-5" />
+				Subtask queue ({props.subtasks.length})
+			</h2>
 			{props.subtasks.length === 0 && (
-				<div className="py-4">
-					<button
-						onClick={onAddChecklist}
-						className="px-6 py-2 rounded-xl border border-zinc-400/30 shadow-sm hover:bg-surface-1">
-						<PlusIcon className="w-5 h-5" />
-						Add a checklist
-					</button>
-				</div>
+				<button
+					onClick={onAddChecklist}
+					className="px-4 py-1 rounded-xl border border-zinc-400/30 shadow-sm hover:bg-surface-1">
+					<PlusIcon className="w-5 h-5" />
+					Add an item
+				</button>
 			)}
 			{props.subtasks.length !== 0 && (
-				<div className="py-4">
-					<h2 className="flex items-center gap-2 mb-2 font-semibold text-surface-10">
-						<ListBulletIcon className="w-5 h-5" />
-						Subtask queue ({props.subtasks.length})
-					</h2>
+				<>
 					<div className="flex flex-col gap-2">
 						{props.subtasks.map((subtask) => (
 							<SubTaskItem
@@ -244,13 +215,13 @@ export const TaskChecklist = (props: SnackTask) => {
 					</div>
 					<button
 						onClick={onAddNewItem}
-						className="py-1.5 px-4 mt-4 font-semibold rounded-xl border border-zinc-400/30 shadow-sm bg-white hover:bg-surface-1">
+						className="py-1 px-4 mt-4 font-semibold rounded-xl border border-zinc-400/30 shadow-sm bg-white hover:bg-surface-1">
 						<PlusIcon className="w-5 h-5" />
 						Add an item
 					</button>
-				</div>
+				</>
 			)}
-		</>
+		</div>
 	);
 };
 
@@ -318,7 +289,7 @@ export const SubTaskItem = (props: {
 	);
 };
 
-const SelectStatus = (props: {
+export const SelectStatus = (props: {
 	status: SnackTaskStatus;
 	onChange: (status: SnackTaskStatus) => void;
 }) => {

@@ -23,7 +23,7 @@ export default function CalendarLayout(props) {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
-			<div className="relative flex flex-col h-screen overflow-hidden bg-surface-1">
+			<div className="relative flex flex-col w-screen h-screen overflow-hidden bg-surface-3">
 				<div
 					className={
 						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'
@@ -31,10 +31,9 @@ export default function CalendarLayout(props) {
 					<NavigationSidebar />
 					<div
 						className={clsx(
-							'h-full flex-1 overflow-y-auto border-l border-zinc-400/30 shadow-sm',
+							'h-full overflow-y-auto flex-1 border-l border-zinc-400/30 bg-white',
 						)}>
 						{props.children}
-						<div className="h-16" />
 					</div>
 				</div>
 			</div>

@@ -28,6 +28,8 @@ export type SnackTask = {
 	createdAt: Date;
 	lastUpdated: Date;
 	trashed?: boolean;
+	emoji?: string;
+	uuid?: string;
 };
 
 export type SnackSubtask = {

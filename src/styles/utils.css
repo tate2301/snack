@@ -19,7 +19,7 @@ nav {
 	-webkit-app-region: drag;
 }
 
-nav button {
+button {
 	-webkit-app-region: no-drag;
 }
 

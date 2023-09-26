@@ -1,24 +1,11 @@
-import React from 'react';
-
-import { ReactNode, useCallback, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import { useDraggable } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import {
-	addSubtask,
-	addTask,
-	deleteSubtask,
-	deleteTask,
-	updateSubtask,
-	updateTask,
-} from '../../redux/tasks';
-import {
-	SnackSubtask,
-	SnackTask,
-	SnackTaskStatus,
-} from '../../redux/tasks/types';
+import { addTask, deleteTask } from '../../redux/tasks';
+import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import {
 	BellIcon,
 	CalendarDaysIcon,
@@ -35,113 +22,14 @@ import {
 } from '@heroicons/react/24/solid';
 import CalendarIcon from '../../icons/CalendarIcon';
 import { generateUUID } from '../../lib/functions';
-import { motion } from 'framer-motion';
 import PostItNoteIcon from '../../icons/PostItNoteIcon';
 import InProgressIcon from '../../icons/InProgressIcon';
 import TodoIcon from '../../icons/TodoIcon';
-import {
-	addTaskToList,
-	selectListByTaskId,
-	removeTaskFromList,
-} from '../../redux/lists';
-import { toast } from 'sonner';
-import useDisclosure from '../../hooks/useDisclosure';
-import TaskExpandedView from './TaskExpandedView';
+import { selectListByTaskId, removeTaskFromList } from '../../redux/lists';
 import { cn } from '../../lib/utils';
 import Clickable from '../ui/utils/Clickable';
 import { FolderIcon, QueueListIcon } from '@heroicons/react/24/solid';
-
-export const useTaskFunctions = (task: SnackTask) => {
-	const dispatch = useAppDispatch();
-	const list = useAppSelector(selectListByTaskId(task.id));
-
-	const onUpdateTask = (task: SnackTask) => {
-		dispatch(updateTask(task));
-	};
-
-	const changeStatus = useCallback(
-		(status: SnackTaskStatus) => {
-			dispatch(
-				updateTask({
-					...task,
-					status,
-					complete: status === SnackTaskStatus.Complete,
-				}),
-			);
-
-			if (status === SnackTaskStatus.Complete) {
-				toast('Hurray! Task has been completed.', {
-					description: task.title,
-				});
-			}
-		},
-		[task],
-	);
-
-	const changeList = useCallback(
-		(listId: string) => {
-			const oldListId = list.id;
-
-			// Remove task from old list
-			dispatch(
-				removeTaskFromList({
-					listId: oldListId,
-					taskId: task.id,
-				}),
-			);
-
-			// Add task to New project
-			dispatch(
-				addTaskToList({
-					listId,
-					taskId: task.id,
-				}),
-			);
-		},
-		[task, list],
-	);
-
-	const onAddSubTask = useCallback(
-		(subtask: SnackSubtask) => {
-			dispatch(addSubtask(subtask));
-		},
-		[task],
-	);
-
-	const onUpdateSubTask = useCallback(
-		(subtask: SnackSubtask) => {
-			dispatch(
-				updateSubtask({
-					...subtask,
-					taskId: task.id,
-				}),
-			);
-		},
-		[task],
-	);
-
-	const onRemoveSubTask = useCallback(
-		(subtaskId: string) => {
-			dispatch(
-				deleteSubtask({
-					id: task.id,
-					subtaskId,
-				}),
-			);
-		},
-		[task],
-	);
-
-	return {
-		changeStatus,
-		changeList,
-		onAddSubTask,
-		onUpdateSubTask,
-		onRemoveSubTask,
-		onUpdateTask,
-		list,
-	};
-};
+import useTaskFunctions from './hooks/useTaskFunctions';
 
 export enum TaskListItemView {
 	Grid = 'Grid',
@@ -153,6 +41,7 @@ export default function TaskListItem(
 	props: SnackTask & {
 		icon?: ReactNode;
 		onExpandTask: () => void;
+		onSelectTask?: (isFocused: boolean) => void;
 		view?: TaskListItemView;
 	},
 ) {
@@ -191,6 +80,10 @@ export default function TaskListItem(
 			ref={setNodeRef}
 			{...listeners}
 			{...attributes}
+			onFocusCb={
+				// Tell the parent if the task is focused on
+				props.onSelectTask && ((isFocused) => props.onSelectTask(isFocused))
+			}
 			action={props.onExpandTask}
 			className={clsx(
 				'group p-1',
@@ -202,7 +95,10 @@ export default function TaskListItem(
 					{props.description && (
 						<PostItNoteIcon className="w-5 h-5 text-surface-8" />
 					)}
-					<p className="font-semibold text-surface-12 mt-1">{props.title}</p>
+					<p className="font-semibold text-surface-12 mt-1">
+						{props.emoji && <span className="text-xl mr-2">{props.emoji}</span>}{' '}
+						{props.title}
+					</p>
 					<div className="flex gap-2 items-center">
 						{deadline && props.status !== SnackTaskStatus.Complete && (
 							<p className="text-sm text-surface-10 mt-2">
@@ -260,6 +156,9 @@ export default function TaskListItem(
 												? 'line-through text-zinc-400 '
 												: 'text-surface-12',
 										)}>
+										{props.emoji && (
+											<span className="text-xl mr-2">{props.emoji}</span>
+										)}{' '}
 										{props.title}
 									</p>
 									{!props.complete && (
@@ -317,14 +216,7 @@ export default function TaskListItem(
 											/>
 										</p>
 										<TaskStatus status={props.status} />
-										<div className="flex gap-1">
-											{props.tags?.slice(0, 3).map((tag) => (
-												<Tag
-													key={tag}
-													value={tag}
-												/>
-											))}
-										</div>
+
 										<TaskDropdownOptions
 											{...props}
 											id={props.id}
@@ -353,7 +245,9 @@ const TaskDropdownOptions = (props: SnackTask) => {
 		dispatch(addTask(newTask));
 	};
 
-	const handleMoveToTrash = () => {
+	const handleMoveToTrash = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 		dispatch(deleteTask(props.id));
 		dispatch(
 			removeTaskFromList({
@@ -469,12 +363,12 @@ const SelectPriority = () => {
 	);
 };
 
-function Tag(props: { value: string; isColor?: boolean }) {
+export function Tag(props: { value: string; isColor?: boolean }) {
 	return (
 		<div className="flex gap-2">
 			<p
 				className={cn(
-					'flex items-center gap-2 p-1 px-2 text-sm rounded-xl bg-accent-10 text-white',
+					'flex items-center gap-2 p-0.5 px-2 text-sm rounded-full bg-accent-10 text-white',
 					!props.isColor &&
 						'border text-surface-10 border-surface-4 bg-transparent',
 				)}>

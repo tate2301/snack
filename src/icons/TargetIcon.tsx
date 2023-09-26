@@ -12,7 +12,6 @@ function TargetIcon(props: { className?: string }) {
 			<path
 				stroke="currentColor"
 				strokeLinecap="round"
-				strokeWidth="2"
 				d="M13 5.2V1m0 24v-4.2m7.8-7.8H25M1 13h4.2m17.4 0a9.6 9.6 0 11-19.2 0 9.6 9.6 0 0119.2 0z"></path>
 		</svg>
 	);

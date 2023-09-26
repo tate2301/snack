@@ -26,6 +26,14 @@ const Clickable = (props: ClickableProps) => {
 		if (props.action) props.action();
 	};
 
+	const onClick = () => {
+		if (props.onFocusCb) {
+			props.onFocusCb(!isFocused);
+		}
+
+		toggleFocused();
+	};
+
 	return (
 		<motion.div
 			{...getElementProps(props)}
@@ -33,7 +41,7 @@ const Clickable = (props: ClickableProps) => {
 			onContextMenu={() => {
 				console.log('Context menu');
 			}}
-			onClick={toggleFocused}
+			onClick={onClick}
 			className={cn('', props.className, isFocused && 'bg-surface-3')}
 			children={props.children}
 			ref={ref}

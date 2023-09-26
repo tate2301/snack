@@ -102,6 +102,7 @@ export default function ListPage() {
 		<CalendarLayout>
 			<PageHeader
 				projectId={id}
+				options={{ create: true, share: true }}
 				actions={
 					<>
 						<button
@@ -114,7 +115,9 @@ export default function ListPage() {
 								)}
 							/>
 						</button>
-						<button className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
+						<button
+							onClick={onDelete}
+							className="p-2 h-full flex items-center hover:bg-zinc-900/10 rounded-lg leading-none">
 							<TrashIcon className="w-5 h-5" />
 						</button>
 						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
@@ -137,59 +140,50 @@ export default function ListPage() {
 				/>
 			)}
 			<main
-				className={'h-full gap-4 items-start overflow-x-auto w-full flex-1'}>
-				<div className="flex-1 h-full flex flex-col">
-					{isCreateTaskFormOpen && (
-						<div className="mb-12">
-							<CreateTask
-								overrideOpenState={isCreateTaskFormOpen}
-								overrideToggle={toggleCreateTaskForm}
-								defaultList={id}
-							/>
-						</div>
-					)}
-					<KanbanBoard>
-						<Column
-							title="Todo"
-							icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
-							tasks={todoTasks}
-							id={id}
+				className={
+					'h-full gap-4  flex flex-col items-start overflow-x-auto max-w-full'
+				}>
+				<KanbanBoard>
+					<Column
+						title="Todo"
+						icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
+						tasks={todoTasks}
+						id={id}
+						onExpandTask={onShowExpandedTaskView}
+					/>
+					<Column
+						title="In Progress"
+						icon={<InProgressIcon className="w-5 h-5 text-primary-10" />}
+						tasks={inProgressTasks}
+						id={id}
+						onExpandTask={onShowExpandedTaskView}
+					/>
+					<Column
+						title="Complete"
+						icon={<CheckCircleIcon className="w-5 h-5 text-success-10" />}
+						tasks={completeTasks}
+						id={id}
+						onExpandTask={onShowExpandedTaskView}
+					/>
+					<Column
+						title="Blocked"
+						icon={<XCircleIcon className="w-5 h-5 text-danger-10" />}
+						tasks={blockedTasks}
+						id={id}
+						onExpandTask={onShowExpandedTaskView}
+					/>
+				</KanbanBoard>
+				{false && (
+					<div className="flex flex-col gap-16 mt-8">
+						<TasksList
+							emptyStateLabel="All clear. You can never finish if you never start!"
+							title="Feature board"
+							icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
+							tasks={allTasks}
 							onExpandTask={onShowExpandedTaskView}
 						/>
-						<Column
-							title="In Progress"
-							icon={<InProgressIcon className="w-5 h-5 text-primary-10" />}
-							tasks={inProgressTasks}
-							id={id}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-						<Column
-							title="Complete"
-							icon={<CheckCircleIcon className="w-5 h-5 text-success-10" />}
-							tasks={completeTasks}
-							id={id}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-						<Column
-							title="Blocked"
-							icon={<XCircleIcon className="w-5 h-5 text-danger-10" />}
-							tasks={blockedTasks}
-							id={id}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-					</KanbanBoard>
-					{false && (
-						<div className="flex flex-col gap-16 mt-8">
-							<TasksList
-								emptyStateLabel="All clear. You can never finish if you never start!"
-								title="Feature board"
-								icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
-								tasks={allTasks}
-								onExpandTask={onShowExpandedTaskView}
-							/>
-						</div>
-					)}
-				</div>
+					</div>
+				)}
 			</main>
 		</CalendarLayout>
 	);

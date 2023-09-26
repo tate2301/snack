@@ -2,12 +2,12 @@ import { ReactNode } from 'react';
 
 const PageLayout = (props: {
 	children: ReactNode;
-	name: string;
+	name?: string;
 	description?: string;
-	icon: ReactNode;
+	icon?: ReactNode;
 }) => {
 	return (
-		<main className="h-full pb-16">
+		<main className="h-full overflow-y-auto">
 			<div id="createTask" />
 
 			{props.children}

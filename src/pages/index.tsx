@@ -28,7 +28,6 @@ export default function Splash() {
 		}
 	}, [navigate, settings.onboarded]);
 
-	console.log({ settings });
 
 	return (
 		<main className={'h-screen w-screen flex items-center justify-center'}>
