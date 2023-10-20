@@ -5,18 +5,14 @@ import {
 } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import ArrowsExpand from '../../icons/ArrowsExpand';
-import { SnackTaskPriority } from '../../redux/tasks/types';
-import Textarea from '../ui/input/textarea';
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
 import SelectList from '../create/SelectList';
-import AddDeadline from '../create/task/AddDeadline';
-import { parseISO } from 'date-fns';
-import { SelectStatus, TaskChecklist } from './TaskExpandedView';
+import { SelectStatus } from './TaskExpandedView';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import { useAppSelector } from '../../redux/store';
 import { selectTaskById } from '../../redux/tasks';
 import TaskPageView from './TaskPageView';
+import { useEffect } from 'react';
 
 export default function TaskSidebar(props: {
 	onSelectTask: (id: string) => void;
@@ -25,6 +21,26 @@ export default function TaskSidebar(props: {
 	selectedTask: string;
 }) {
 	const task = useAppSelector(selectTaskById(props.selectedTask));
+
+	useEffect(() => {
+		const kbdListener = (event: KeyboardEvent) => {
+			// Close
+			if(event.key === "Escape") props.onSelectTask(null)
+
+			// Next and previous item
+			if(event.key === "ArrowUp") props.onPrevItem()
+			if(event.key === "ArrowDown") props.onNextItem()
+
+			event.preventDefault()
+			event.stopPropagation()
+
+		}
+
+		window.addEventListener("keydown", kbdListener)
+
+		return () => window.removeEventListener("keydown", kbdListener)
+
+	}, [props.onSelectTask, props.onPrevItem, props.onNextItem])
 
 	const {
 		changeStatus,

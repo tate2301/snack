@@ -17,6 +17,7 @@ export type SnackList = {
 	billing?: SnackBilling;
 	owner?: SnackProjectOwner;
 	timer?: SnackProjectTimer;
+	columns: Array<SnackProjectKanbanBoard>
 };
 
 export type SnackProjectTimer = {
@@ -37,3 +38,9 @@ export type SnackProjectOwner = {
 	email_address?: string;
 	display_picture?: string;
 };
+
+export type SnackProjectKanbanBoard = {
+	id: string
+	title: string
+	items: Array<string>
+}

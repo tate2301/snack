@@ -77,13 +77,6 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	return (
 		<>
 			<div
-				style={{
-					backgroundImage: `url('https://images.unsplash.com/photo-1694845482539-373728496364?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80')`,
-					backgroundSize: 'cover',
-					backgroundRepeat: 'no-repeat',
-				}}
-				className="h-96 w-full"></div>
-			<div
 				className={cn(
 					'container mx-auto max-w-screen-md',
 					props.addPadding && 'px-8',

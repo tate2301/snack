@@ -25,6 +25,7 @@ export default function SnackApplicationProvider(props: {
 					persistor={persistor}>
 					<CommandContextProvider>
 						<Toaster />
+                        
 						<PluginProvider />
 						<DndContext>{props.children}</DndContext>
 					</CommandContextProvider>

@@ -8,6 +8,7 @@ import CreateTask from '../../components/create/CreateTask';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { PlayIcon } from '@heroicons/react/20/solid';
 import {
+	defaultKanbanBoards,
 	removeList,
 	selectListById,
 	selectTasksByListId,
@@ -143,35 +144,17 @@ export default function ListPage() {
 				className={
 					'h-full gap-4  flex flex-col items-start overflow-x-auto max-w-full'
 				}>
-				<KanbanBoard>
-					<Column
-						title="Todo"
-						icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
-						tasks={todoTasks}
-						id={id}
-						onExpandTask={onShowExpandedTaskView}
-					/>
-					<Column
-						title="In Progress"
-						icon={<InProgressIcon className="w-5 h-5 text-primary-10" />}
-						tasks={inProgressTasks}
-						id={id}
-						onExpandTask={onShowExpandedTaskView}
-					/>
-					<Column
-						title="Complete"
-						icon={<CheckCircleIcon className="w-5 h-5 text-success-10" />}
-						tasks={completeTasks}
-						id={id}
-						onExpandTask={onShowExpandedTaskView}
-					/>
-					<Column
-						title="Blocked"
-						icon={<XCircleIcon className="w-5 h-5 text-danger-10" />}
-						tasks={blockedTasks}
-						id={id}
-						onExpandTask={onShowExpandedTaskView}
-					/>
+				<KanbanBoard projectId={id}>
+					{(listObject.columns ?? defaultKanbanBoards).map((board) => (
+						<Column
+							title={board.title}
+							icon={<TodoIcon className="w-5 h-5 text-primary-10" />}
+							items={board.items}
+							id={board.id}
+							projectId={id}
+							onExpandTask={onShowExpandedTaskView}
+						/>
+					))}
 				</KanbanBoard>
 				{false && (
 					<div className="flex flex-col gap-16 mt-8">

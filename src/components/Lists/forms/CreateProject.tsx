@@ -7,7 +7,11 @@ import { useFormik } from 'formik';
 import { getRandomColor } from '../constants';
 import { SnackList } from '../../../redux/lists/types';
 import { generateUUID } from '../../../lib/functions';
-import { addListItem, updateList } from '../../../redux/lists';
+import {
+	addListItem,
+	defaultKanbanBoards,
+	updateList,
+} from '../../../redux/lists';
 import {
 	Dialog,
 	DialogContent,
@@ -76,6 +80,7 @@ function ManageListForm(
 				id: isCreateForm ? generateUUID() : props.list.id,
 				tasks: [],
 				description: values.description,
+				columns: defaultKanbanBoards,
 			};
 
 			if (isCreateForm) {
