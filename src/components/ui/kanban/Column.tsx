@@ -7,12 +7,15 @@ import { SnackTask } from '../../../redux/tasks/types';
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {
 	SortableContext,
+	useSortable,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CommandContext } from '../../../context/CommandContext';
 import { useAppSelector } from '../../../redux/store';
 import { selectTaskById } from '../../../redux/tasks';
 import { selectTasksByListId } from '../../../redux/lists';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 const Column = (props: {
 	title: string;
@@ -25,15 +28,38 @@ const Column = (props: {
 	const { openCreateTask } = useContext(CommandContext);
 	const tasks = useAppSelector(selectTasksByListId(props.projectId));
 	const onAddTask = () => openCreateTask(props.id);
-
 	const columnTasks = tasks.filter((task) => task.status === props.title);
+
+	const {
+		active,
+		attributes,
+		isDragging,
+		listeners,
+		over,
+		setNodeRef,
+		transition,
+		transform,
+	} = useSortable({
+		id: props.id,
+		data: {
+			type: 'container',
+			children: columnTasks.map((task) => task.id),
+		},
+	});
 
 	return (
 		<SortableContext
 			id={props.id}
-			items={props.items}
+			items={columnTasks.map((task) => task.id)}
 			strategy={verticalListSortingStrategy}>
-			<div className="w-96 flex-shrink-0 rounded-xl px-2 py-2 bg-surface-3">
+			<div
+				ref={setNodeRef}
+				style={{
+					transition,
+					transform: CSS.Translate.toString(transform),
+					opacity: isDragging ? 0.5 : undefined,
+				}}
+				className="w-96 flex-shrink-0 rounded-xl px-2 py-2 bg-surface-3">
 				<div className="flex justify-between px-2">
 					<div className="flex gap-2 items-center">
 						{props.icon}
@@ -69,29 +95,32 @@ const Column = (props: {
 	);
 };
 
-const ColumnItem = (props: {
+export const ColumnItem = (props: {
 	id: string;
 	onExpandTask: (id: string) => void;
 }) => {
 	const task = useAppSelector(selectTaskById(props.id));
+	const { attributes, listeners, setNodeRef, transform, transition } =
+		useSortable({ id: props.id });
+
+	const style = {
+		transform: CSS.Translate.toString(transform),
+		transition,
+	};
+
 	return (
-		<motion.div
-			initial={{
-				opacity: 0,
-			}}
-			animate={{
-				opacity: 1,
-			}}
-			exit={{
-				opacity: 0,
-			}}>
+		<div
+			ref={setNodeRef}
+			style={style}
+			{...attributes}
+			{...listeners}>
 			<TaskListItem
 				key={task.id}
 				view={TaskListItemView.Grid}
 				onExpandTask={() => props.onExpandTask(task.id)}
 				{...task}
 			/>
-		</motion.div>
+		</div>
 	);
 };
 

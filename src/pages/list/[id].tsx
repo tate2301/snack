@@ -99,6 +99,8 @@ export default function ListPage() {
 		}
 	};
 
+	console.log({ listObject });
+
 	return (
 		<CalendarLayout>
 			<PageHeader
@@ -144,7 +146,9 @@ export default function ListPage() {
 				className={
 					'h-full gap-4  flex flex-col items-start overflow-x-auto max-w-full'
 				}>
-				<KanbanBoard projectId={id}>
+				<KanbanBoard
+					onExpandTask={onShowExpandedTaskView}
+					projectId={id}>
 					{(listObject.columns ?? defaultKanbanBoards).map((board) => (
 						<Column
 							title={board.title}

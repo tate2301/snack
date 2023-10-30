@@ -2,7 +2,6 @@ import { ReactNode, useMemo } from 'react';
 import useToggle from '../../hooks/useToggle';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
-import { useDraggable } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { addTask, deleteTask } from '../../redux/tasks';
 import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
@@ -50,11 +49,6 @@ export default function TaskListItem(
 
 	const [isChecked] = useToggle(props.status === SnackTaskStatus.Complete);
 
-	const { attributes, listeners, setNodeRef, transform, isDragging } =
-		useDraggable({
-			id: props.id,
-		});
-
 	const deadline = useMemo(
 		() => props.deadline && new Date(props.deadline),
 		[props.deadline],
@@ -68,18 +62,8 @@ export default function TaskListItem(
 		);
 	};
 
-	const style = transform
-		? {
-				transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-		  }
-		: undefined;
-
 	return (
 		<Clickable
-			style={style}
-			ref={setNodeRef}
-			{...listeners}
-			{...attributes}
 			onFocusCb={
 				// Tell the parent if the task is focused on
 				props.onSelectTask && ((isFocused) => props.onSelectTask(isFocused))
@@ -88,7 +72,6 @@ export default function TaskListItem(
 			className={clsx(
 				'group p-1',
 				props.view === TaskListItemView.Grid ? 'rounded-xl' : 'rounded',
-				isDragging ? 'z-40 relative shadow-xl' : 'z-0 static',
 			)}>
 			{props.view === TaskListItemView.Grid && (
 				<div className="h-full px-2 py-2 rounded-xl bg-surface-1 shadow">
