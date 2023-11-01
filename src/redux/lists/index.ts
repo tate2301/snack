@@ -53,6 +53,10 @@ export const listSlice = createSlice({
 			const project = state.items.find((project) => project.id === projectId);
 			if (!project) return;
 
+			if (!project.columns) {
+				project.columns = defaultKanbanBoards;
+			}
+
 			// Find the columns
 			const fromColumn = project.columns.find(
 				(column) => column.id === fromColumnId,
@@ -71,19 +75,30 @@ export const listSlice = createSlice({
 			toColumn.items.push(taskId);
 		},
 		changeIndexOfTaskInColumn: (state, action) => {
-			const { columnId, sourceIndex, destinationIndex, projectId } =
-				action.payload;
+			const { columnId, taskId, newIndex, projectId } = action.payload;
+
 			const project = state.items.find((project) => project.id === projectId);
 			if (!project) return;
 
-			// Find the column
-			const column = project.columns.find((column) => column.id === columnId);
+			const taskIndex = project.tasks.indexOf(taskId);
+			if (taskIndex === -1) return;
 
-			if (!column) return;
+			const [removed] = project.tasks.splice(taskIndex, 1);
+			project.tasks.splice(newIndex, 0, removed);
 
-			// Reorder the tasks
-			const [removed] = column.items.splice(sourceIndex, 1);
-			column.items.splice(destinationIndex, 0, removed);
+			return;
+
+			// // Find the column
+			// const column = project.columns.find((column) => column.id === columnId);
+
+			// if (!column) return;
+
+			// // Reorder the tasks
+			// const taskIndex = column.items.indexOf(taskId);
+			// if (taskIndex === -1) return;
+
+			// const [removed] = column.items.splice(taskIndex, 1);
+			// column.items.splice(newIndex, 0, removed);
 		},
 		updateList: (state, action) => {
 			const { id, name, color, icon, description } =
@@ -126,6 +141,7 @@ export const {
 	updateList,
 	removeList,
 	moveTaskBetweenColumns,
+	changeIndexOfTaskInColumn,
 } = listSlice.actions;
 
 export const selectAllLists = (state: RootState) => state.lists.items;

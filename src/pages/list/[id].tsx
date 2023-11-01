@@ -8,12 +8,13 @@ import CreateTask from '../../components/create/CreateTask';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { PlayIcon } from '@heroicons/react/20/solid';
 import {
+	changeIndexOfTaskInColumn,
 	defaultKanbanBoards,
 	removeList,
 	selectListById,
 	selectTasksByListId,
 } from '../../redux/lists';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import {
 	CheckCircleIcon,
 	ChevronRightIcon,
@@ -80,6 +81,22 @@ export default function ListPage() {
 		(task) => !task.complete && task.status === SnackTaskStatus.Blocked,
 	);
 
+	const onChangeIndex = useCallback(
+		(taskId: string, idx: number, columnId: string) => {
+			dispatch(
+				changeIndexOfTaskInColumn({
+					columnId: columnId,
+					taskId: taskId,
+					newIndex: idx,
+					projectId: id,
+				}),
+			);
+		},
+		[id],
+	);
+
+	const onChangeBoard = (id: string, newBoard: string, oldBoard: string) => {};
+
 	const onDelete = (e) => {
 		dispatch(removeList(id));
 	};
@@ -98,8 +115,6 @@ export default function ListPage() {
 			dispatch(removeStarred({ id }));
 		}
 	};
-
-	console.log({ listObject });
 
 	return (
 		<CalendarLayout>
@@ -148,6 +163,8 @@ export default function ListPage() {
 				}>
 				<KanbanBoard
 					onExpandTask={onShowExpandedTaskView}
+					onChangeBoard={onChangeBoard}
+					onChangeIndex={onChangeIndex}
 					projectId={id}>
 					{(listObject.columns ?? defaultKanbanBoards).map((board) => (
 						<Column

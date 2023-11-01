@@ -37,7 +37,6 @@ const Column = (props: {
 		listeners,
 		over,
 		setNodeRef,
-		transition,
 		transform,
 	} = useSortable({
 		id: props.id,
@@ -55,7 +54,6 @@ const Column = (props: {
 			<div
 				ref={setNodeRef}
 				style={{
-					transition,
 					transform: CSS.Translate.toString(transform),
 					opacity: isDragging ? 0.5 : undefined,
 				}}
@@ -100,12 +98,12 @@ export const ColumnItem = (props: {
 	onExpandTask: (id: string) => void;
 }) => {
 	const task = useAppSelector(selectTaskById(props.id));
-	const { attributes, listeners, setNodeRef, transform, transition } =
-		useSortable({ id: props.id });
+	const { attributes, listeners, setNodeRef, transform } = useSortable({
+		id: props.id,
+	});
 
 	const style = {
 		transform: CSS.Translate.toString(transform),
-		transition,
 	};
 
 	return (

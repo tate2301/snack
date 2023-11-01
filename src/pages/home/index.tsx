@@ -89,6 +89,7 @@ export default function HomePage() {
 						<AnimatePresence initial={false}>
 							{allTasks.map((task) => (
 								<motion.div
+									className="border-b border-zinc-200"
 									key={task.id}
 									initial={{
 										opacity: 0,

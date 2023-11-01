@@ -15,7 +15,11 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import { moveTaskBetweenColumns, selectListById } from '../../../redux/lists';
+import {
+	changeIndexOfTaskInColumn,
+	moveTaskBetweenColumns,
+	selectListById,
+} from '../../../redux/lists';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { ColumnItem } from './Column';
 
@@ -25,6 +29,8 @@ const KanbanBoard = (props: {
 	children: ReactNode;
 	projectId: string;
 	onExpandTask: (id: string) => void;
+	onChangeBoard: (id: string, newBoard: string, oldBoard: string) => void;
+	onChangeIndex: (id: string, idx: number, columnId: string) => void;
 }) => {
 	const dispatch = useAppDispatch();
 	const project = useAppSelector(selectListById(props.projectId));
@@ -37,27 +43,33 @@ const KanbanBoard = (props: {
 		}),
 	);
 
-	const handleDragOver = (event) => {
-		const { over, active } = event;
-		const { id: activeItemId } = active;
-		const { id: overColumnId } = over;
+	// const handleDragOver = (event) => {
+	// 	const { over, active } = event;
+	// 	const { id: activeItemId } = active;
+	// 	const { id: overColumnId } = over;
 
-		if (!activeItemId || !overColumnId) return;
+	// 	if (!activeItemId || !overColumnId) return;
 
-		console.log({ event });
+	// 	console.log({ event });
 
-		dispatch(
-			moveTaskBetweenColumns({
-				taskId: activeItemId,
-				toColumnId: over.data.current.sortable.containerId,
-				fromColumnId: active.data.current.sortable.containerId,
-				projectId: props.projectId,
-			}),
-		);
-	};
+	// 	dispatch(
+	// 		moveTaskBetweenColumns({
+	// 			taskId: activeItemId,
+	// 			toColumnId: over.data.current.sortable.containerId,
+	// 			fromColumnId: active.data.current.sortable.containerId,
+	// 			projectId: props.projectId,
+	// 		}),
+	// 	);
+	// };
 
 	const onDragEnd = (event) => {
-		console.log({ event });
+		const { over } = event;
+		const newIndex = over.data.current.sortable.index;
+		const containerId = over.data.current.sortable.containerId;
+
+		const { id: itemId } = over;
+
+		props.onChangeIndex(itemId, newIndex, containerId);
 	};
 
 	return (
@@ -65,7 +77,6 @@ const KanbanBoard = (props: {
 			<DndContext
 				onDragEnd={onDragEnd}
 				collisionDetection={closestCorners}
-				onDragOver={handleDragOver}
 				sensors={sensors}>
 				{props.children}
 			</DndContext>
