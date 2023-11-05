@@ -77,6 +77,13 @@ export const tasksSlice = createSlice({
 				subtask.title = title;
 			}
 		},
+		changeTaskStatus: (state, action) => {
+			const { id, status } = action.payload;
+
+			const existingTask = state.items.find((task) => task.id === id);
+
+			existingTask.status = status;
+		},
 	},
 });
 
@@ -89,6 +96,7 @@ export const {
 	addSubtask,
 	deleteSubtask,
 	updateSubtask,
+	changeTaskStatus,
 } = tasksSlice.actions;
 
 /** Selectors */

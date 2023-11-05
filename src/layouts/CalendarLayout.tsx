@@ -1,5 +1,3 @@
-import React from 'react';
-
 import NavigationSidebar from '../components/nav/SidebarNavigation';
 import {
 	DndContext,

@@ -1,27 +1,9 @@
-import {
-	DndContext,
-	DragOverlay,
-	KeyboardSensor,
-	MouseSensor,
-	TouchSensor,
-	closestCorners,
-	useDroppable,
-} from '@dnd-kit/core';
-import { ReactNode, useCallback, useState } from 'react';
-import {
-	closestCenter,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from '@dnd-kit/core';
+import { DndContext, KeyboardSensor, closestCorners } from '@dnd-kit/core';
+import { ReactNode, useState } from 'react';
+import { PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import {
-	changeIndexOfTaskInColumn,
-	moveTaskBetweenColumns,
-	selectListById,
-} from '../../../redux/lists';
+import { selectListById, selectTasksByListId } from '../../../redux/lists';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { ColumnItem } from './Column';
 
 const findColumn = (id: string) => id.split('-')[1];
 
@@ -34,6 +16,9 @@ const KanbanBoard = (props: {
 }) => {
 	const dispatch = useAppDispatch();
 	const project = useAppSelector(selectListById(props.projectId));
+	const allTasksInProject = useAppSelector(
+		selectTasksByListId(props.projectId),
+	);
 	const [items, setItems] = useState(project.tasks);
 	const [activeId, setActiveId] = useState(null);
 	const sensors = useSensors(
@@ -43,54 +28,53 @@ const KanbanBoard = (props: {
 		}),
 	);
 
-	// const handleDragOver = (event) => {
-	// 	const { over, active } = event;
-	// 	const { id: activeItemId } = active;
-	// 	const { id: overColumnId } = over;
+	const handleDragOver = (event) => {
+		const { over, active } = event;
+		const { id: activeItemId } = active;
+		const { id: overId } = over;
 
-	// 	if (!activeItemId || !overColumnId) return;
+		if (!activeItemId || !overId || activeItemId === overId) return;
 
-	// 	console.log({ event });
+		if (overId.split('-')[0] !== 'column') {
+			// TODO: Check which column the item thats over is contained in
+			const task = allTasksInProject.find((task) => task.id === overId);
+			props.onChangeBoard(
+				activeItemId,
+				task.status,
+				active.data.current.sortable.containerId,
+			);
+			return;
+		}
 
-	// 	dispatch(
-	// 		moveTaskBetweenColumns({
-	// 			taskId: activeItemId,
-	// 			toColumnId: over.data.current.sortable.containerId,
-	// 			fromColumnId: active.data.current.sortable.containerId,
-	// 			projectId: props.projectId,
-	// 		}),
-	// 	);
-	// };
+		props.onChangeBoard(
+			activeItemId,
+			overId.split('-')[1],
+			active.data.current.sortable.containerId,
+		);
+	};
 
 	const onDragEnd = (event) => {
 		const { over } = event;
-		const newIndex = over.data.current.sortable.index;
-		const containerId = over.data.current.sortable.containerId;
+		if (over.data.current) {
+			const newIndex = over.data.current.sortable.index;
+			const containerId = over.data.current.sortable.containerId;
 
-		const { id: itemId } = over;
+			const { id: itemId } = over;
 
-		props.onChangeIndex(itemId, newIndex, containerId);
+			props.onChangeIndex(itemId, newIndex, containerId);
+		}
 	};
 
 	return (
 		<div className="flex items-start gap-4 h-full overflow-x-auto py-2 px-4">
 			<DndContext
 				onDragEnd={onDragEnd}
+				onDragOver={handleDragOver}
 				collisionDetection={closestCorners}
 				sensors={sensors}>
 				{props.children}
 			</DndContext>
 		</div>
-	);
-};
-
-const DD = () => {
-	const { setNodeRef, over, isOver, active } = useDroppable({ id: 'myid' });
-	console.log({ over, isOver, active });
-	return (
-		<div
-			className="w-96 h-96 border"
-			ref={setNodeRef}></div>
 	);
 };
 

@@ -1,13 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { SnackList } from '../../redux/lists/types';
 import useToggle from '../../hooks/useToggle';
-import { useEffect, useRef } from 'react';
-import { useAppDispatch } from '../../redux/store';
-import { removeList } from '../../redux/lists';
+import { useEffect, useMemo, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { removeList, selectTasksByListId } from '../../redux/lists';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 import ListOptions from './ListOptions';
-import { FolderIcon } from '@heroicons/react/24/solid';
+import CircleProgress from '../ui/progress/CircleProgress';
+import { SnackTaskStatus } from '../../redux/tasks/types';
 
 function ListNavigationItem({ list }: { list: SnackList }) {
 	const { id } = useParams();
@@ -16,6 +17,14 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 	const [isDropdownOpen, toggleDropdown] = useToggle(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const prevListDetails = useRef(list);
+	const tasksInList = useAppSelector(selectTasksByListId(list.id));
+
+	const progress = useMemo(
+		() =>
+			tasksInList.filter((task) => task.status === SnackTaskStatus.Complete)
+				.length / tasksInList.length,
+		[tasksInList, list.id],
+	);
 
 	const dispatch = useAppDispatch();
 
@@ -35,6 +44,8 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 			inputRef.current?.focus();
 		}
 	}, [isDropdownOpen, list]);
+
+	console.log({ progress });
 
 	return (
 		<motion.div
@@ -59,12 +70,11 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 					'flex items-center gap-2 py-1.5 px-4 font-normal rounded-lg ',
 					isActive && 'bg-surface-3',
 				)}>
-				<FolderIcon
-					style={{
-						fill: `#${list.color}`,
-					}}
-					className="w-5 h-5"
+				<CircleProgress
+					progress={progress}
+					color="blue"
 				/>
+
 				<p className="flex-1 text-left">{list.name}</p>
 				<p className="flex items-center gap-2">
 					{list.tasks.length > 0 && (

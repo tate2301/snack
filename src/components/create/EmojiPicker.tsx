@@ -1,5 +1,6 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
 import { electron } from '../../lib/core/electron';
+import { ipcRenderer } from 'electron';
 
 const EmojiPicker = (props: {
 	onChange: (emoji: string) => void;
@@ -12,7 +13,7 @@ const EmojiPicker = (props: {
 	}, []);
 
 	const onShowEmojiPicker = async () => {
-		await electron.app.showEmojiPanel();
+		ipcRenderer.send('show-emoji-picker');
 		if (!ref.current) return;
 		ref.current.focus();
 	};
@@ -24,6 +25,8 @@ const EmojiPicker = (props: {
 	useEffect(() => {
 		setvalue(props.value);
 	}, [props.value]);
+
+	if (!isEmojiPickerSupported) return null;
 
 	return (
 		<button

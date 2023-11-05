@@ -10,24 +10,15 @@ import clsx from 'clsx';
 import ExclusionTab from '../Tabs/ExlusionTab';
 import { useAppSelector } from '../../redux/store';
 import { selectAllLists as selectAllLists } from '../../redux/lists';
-import { UserAccount } from '../ControlCenter';
 import { AnimatePresence } from 'framer-motion';
 import tabs from './tabs';
 import ListNavigationItem from '../Lists/ListNavigationItem';
 import ManageListForm, {
 	ManageListFormAction,
 } from '../Lists/forms/CreateProject';
-import SnackPluginManager from '../../lib/integrations';
-import starred, {
-	selectStarredItemById,
-	selectStarredItems,
-} from '../../redux/starred';
+import { selectStarredItemById, selectStarredItems } from '../../redux/starred';
 import { AppEntity, Starred } from '../../redux/starred/types';
-import {
-	QueueListIcon,
-	UserGroupIcon,
-	FolderIcon,
-} from '@heroicons/react/20/solid';
+import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
 import { useMemo } from 'react';
 import { SnackList } from '../../redux/lists/types';
 import ExternalLink from '../../icons/ExternalLink';

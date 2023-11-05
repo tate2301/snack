@@ -5,22 +5,22 @@ import { SnackTaskStatus } from '../tasks/types';
 
 export const defaultKanbanBoards = [
 	{
-		id: 'todo',
+		id: SnackTaskStatus.Todo,
 		items: [],
 		title: SnackTaskStatus.Todo,
 	},
 	{
-		id: 'in-progress',
+		id: SnackTaskStatus.InProgress,
 		items: [],
 		title: SnackTaskStatus.InProgress,
 	},
 	{
-		id: 'complete',
+		id: SnackTaskStatus.Complete,
 		items: [],
 		title: SnackTaskStatus.Complete,
 	},
 	{
-		id: 'blocked',
+		id: SnackTaskStatus.Blocked,
 		items: [],
 		title: SnackTaskStatus.Blocked,
 	},
@@ -56,23 +56,6 @@ export const listSlice = createSlice({
 			if (!project.columns) {
 				project.columns = defaultKanbanBoards;
 			}
-
-			// Find the columns
-			const fromColumn = project.columns.find(
-				(column) => column.id === fromColumnId,
-			);
-			const toColumn = project.columns.find(
-				(column) => column.id === toColumnId,
-			);
-
-			if (!fromColumn || !toColumn) return;
-
-			// Remove the task from the original column
-			const taskIndex = fromColumn.items.indexOf(taskId);
-			fromColumn.items.splice(taskIndex, 1);
-
-			// Add the task to the new column
-			toColumn.items.push(taskId);
 		},
 		changeIndexOfTaskInColumn: (state, action) => {
 			const { columnId, taskId, newIndex, projectId } = action.payload;
@@ -194,3 +177,20 @@ export const selectListByTaskId = (taskId: string) => (state: RootState) => {
 		state.lists.items[0]
 	);
 };
+
+export const selectTasksByColumnInList =
+	(projectId: string, columnId: string) => (state: RootState) => {
+		const project = state.lists.items.find(
+			(project) => project.id === projectId,
+		);
+
+		if (!project) return [];
+
+		const tasks = project.tasks.map((item) =>
+			state.tasks.items.find((task) => item === task.id),
+		);
+
+		const tasksInColumn = tasks.filter((task) => task.status === columnId);
+
+		return tasksInColumn;
+	};

@@ -25,6 +25,8 @@ import TagsIcon from '../../icons/TagsIcon';
 import { Tag } from './TaskListItem';
 import { TaskChecklist } from './TaskExpandedView';
 import { cn } from '../../lib/utils';
+import { MyEditor } from '../ui/editor/Remirror';
+import BlockEditor from '../ui/editor/BlockEditor';
 
 const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	const { id } = props;
@@ -76,12 +78,8 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	};
 	return (
 		<>
-			<div
-				className={cn(
-					'container mx-auto max-w-screen-md',
-					props.addPadding && 'px-8',
-				)}>
-				<div className="mt-8 py-2">
+			<div className={cn('container mx-auto max-w-screen-md px-2')}>
+				<div className="mt-8 py-2 px-8">
 					<div className="flex gap-4 mb-4">
 						{false && (
 							<button className="px-4 rounded-lg py-1 bg-zinc-900/5">
@@ -110,7 +108,7 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 						</div>
 					</div>
 				</div>
-				<div className="flex flex-col py-2 gap-1">
+				<div className="flex flex-col py-2 gap-1 mx-12">
 					<TaskDetailItem
 						label="ID"
 						icon={<HashtagIcon className="w-5 h-5" />}>
@@ -144,11 +142,11 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 						</p>
 					</TaskDetailItem>
 				</div>
-				<div className="flex flex-col gap-2 py-2 border-t">
+				<div className="flex flex-col gap-2 py-2 border-t border-b mx-12">
 					<TaskChecklist {...task} />
 				</div>
-				<div className="flex flex-col py-2 border-t">
-					<p className="p-2 rounded-lg">Welcome</p>
+				<div className="flex flex-col py-2">
+					<BlockEditor />
 				</div>
 			</div>
 		</>

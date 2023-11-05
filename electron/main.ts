@@ -113,4 +113,10 @@ ipcMain.handle('app-data', () => {
 	return appDataDir;
 });
 
+ipcMain.on('show-emoji-picker', () => {
+	if (app.isEmojiPanelSupported()) {
+		app.showEmojiPanel();
+	}
+});
+
 require('./lib/index');
