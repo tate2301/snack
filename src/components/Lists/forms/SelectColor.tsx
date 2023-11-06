@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import useToggle from '../../../hooks/useToggle';
 import { cn } from '../../../lib/utils';
@@ -21,7 +21,7 @@ const SelectColor = (props: {
 					<p
 						className="flex items-center h-5 gap-4 font-semibold border-2 rounded-md aspect-square"
 						style={{
-							borderColor: `#${props.value}`,
+							borderColor: `var(--${props.value}-10)`,
 						}}></p>
 				</button>
 			</Popover.Trigger>
@@ -39,7 +39,7 @@ const SelectColor = (props: {
 									toggle();
 								}}
 								style={{
-									backgroundColor: `#${color}`,
+									backgroundColor: `var(--${color}-10)`,
 								}}
 								className={cn(
 									'rounded-lg',

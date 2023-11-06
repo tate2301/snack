@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { differenceInDays, format, startOfToday } from 'date-fns';
 import useToggle from '../../../hooks/useToggle';
@@ -21,11 +21,7 @@ function AddDeadline(props: {
 					type={'button'}
 					className={cn(
 						'p-2 rounded-xl items-center flex-shrink-0',
-						props.selectedDate
-							? differenceInDays(props.selectedDate, new Date()) > 0
-								? 'bg-primary-4 text-primary-11 border-primary-6'
-								: 'bg-danger-4 text-danger-11 border-primary-6'
-							: 'bg-white border-surface-4 hover:bg-surface-3 hover:text-surface-11 hover:border-surface-6 text-surface-10',
+						'bg-white border-surface-4 hover:bg-surface-3 hover:text-surface-12 hover:border-surface-6 text-surface-10',
 					)}>
 					<CalendarDaysIcon className="w-6 h-6" />
 					{props.selectedDate ? (

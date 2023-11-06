@@ -58,13 +58,7 @@ export default function HomePage() {
 				options={{
 					create: true,
 				}}
-				actions={
-					<>
-						<button className="hover:bg-zinc-900/10 flex items-center px-2 py-1 rounded-lg">
-							<Cog6ToothIcon className="w-5 h-5" />
-						</button>
-					</>
-				}
+				actions={<></>}
 			/>
 			<motion.div className="flex flex-1 h-full items-start overflow-y-auto">
 				<AnimatePresence>

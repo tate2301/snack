@@ -17,20 +17,36 @@ const AddColumn = () => {
 			{isOpen && (
 				<Modal
 					title="Create new column"
+					description="A column can be used to group tasks together, by status or some criteria"
 					isOpen={isOpen}
 					onClose={toggle}>
 					<form className="space-y-4">
-						<div className="space-y-1 flex flex-col rounded-xl">
-							<input
-								name="title"
-								className="p-2 font-semibold bg-transparent outline-none"
-								placeholder="Category title"
-							/>
-							<Textarea
-								name={'description'}
-								placeholder="Description (optional)"
-								className="p-2 font-semibold bg-transparent outline-none"
-							/>
+						<div className="space-y-8 flex flex-col rounded-xl">
+							<div className="space-y-2">
+								<label
+									htmlFor="title"
+									className="font-medium text-surface-10">
+									Title
+								</label>
+								<input
+									name="title"
+									className="p-2 font-semibold w-full outline outline-zinc-400/20 focus:outline-zinc-400/30 rounded-lg focus:bg-white bg-surface-2 focus:shadow-sm"
+									placeholder="Category title"
+								/>
+							</div>
+							<div className="space-y-2">
+								<label
+									htmlFor="description"
+									className="font-medium text-surface-10">
+									Description
+								</label>
+								<Textarea
+									name={'description'}
+									placeholder="Description (optional)"
+									className="p-2 font-semibold bg-surface-2 focus:bg-white outline outline-zinc-400/20 focus:outline-zinc-400/20 w-full rounded-lg focus:shadow-sm"
+									rows={3}
+								/>
+							</div>
 						</div>
 						<div className="w-full flex justify-end space-x-4">
 							<button className="border rounded-lg px-2 py-1 shadow-sm border-zinc-400/30">

@@ -43,7 +43,7 @@ const EmojiPicker = (props: {
 				}}
 				className="outline-none !w-fit text-2xl relative z-0 caret-transparent"
 				ref={ref}>
-				{value}
+				{value ?? '🎃'}
 			</p>
 		</button>
 	);

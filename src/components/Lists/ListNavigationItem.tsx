@@ -21,8 +21,10 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 
 	const progress = useMemo(
 		() =>
-			tasksInList.filter((task) => task.status === SnackTaskStatus.Complete)
-				.length / tasksInList.length,
+			tasksInList.length === 0
+				? 0
+				: tasksInList.filter((task) => task.status === SnackTaskStatus.Complete)
+						.length / tasksInList.length,
 		[tasksInList, list.id],
 	);
 
@@ -72,7 +74,7 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 				)}>
 				<CircleProgress
 					progress={progress}
-					color="blue"
+					color={list.color as any}
 				/>
 
 				<p className="flex-1 text-left">{list.name}</p>

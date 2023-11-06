@@ -61,17 +61,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 						<Projects />
 					</div>
 				</div>
-				<div className="flex flex-col gap-2">
-					<p className="text-sm font-base px-4 text-surface-10">Your teams</p>
-					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-base items-center">
-						<TeamCard name="Innovation Hub" />
-						<p>Innovation Hub</p>
-					</div>
-					<div className="py-0.5 px-4 flex gap-4 text-surface-12 font-base">
-						<TeamCard name="Dream" />
-						<p>Dream TEAM @TIF</p>
-					</div>
-				</div>
+
 				<div className="flex flex-col gap-2">
 					<div className="p-4">
 						<p className="text-surface-10">

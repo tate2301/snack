@@ -27,6 +27,9 @@ import { TaskChecklist } from './TaskExpandedView';
 import { cn } from '../../lib/utils';
 import { MyEditor } from '../ui/editor/Remirror';
 import BlockEditor from '../ui/editor/BlockEditor';
+import Datepicker from '../ui/datepicker';
+import AddDeadline from '../create/task/AddDeadline';
+import { add } from 'date-fns';
 
 const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	const { id } = props;
@@ -81,12 +84,10 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 			<div className={cn('container mx-auto max-w-screen-md px-2')}>
 				<div className="mt-8 py-2 px-8">
 					<div className="flex gap-4 mb-4">
-						{false && (
-							<button className="px-4 rounded-lg py-1 bg-zinc-900/5">
-								<CameraIcon className="w-5 h-5" />
-								Cover
-							</button>
-						)}
+						<button className="px-4 rounded-lg py-1 bg-zinc-900/5">
+							<CameraIcon className="w-5 h-5" />
+							Cover
+						</button>
 						<p className="rounded-lg border border-zinc-400/30 hover:shadow-sm hover:bg-shadow">
 							<SelectList
 								onChange={onListChanged}
@@ -129,7 +130,10 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 					<TaskDetailItem
 						label="When"
 						icon={<CalendarIcon className="w-5 h-5" />}>
-						<p>Tomorrow</p>
+						<AddDeadline
+							selectedDate={add(new Date(), { days: 12 })}
+							selectDate={() => null}
+						/>
 					</TaskDetailItem>
 					<TaskDetailItem
 						label="Tags"
@@ -160,11 +164,9 @@ const TaskDetailItem = (props: {
 }) => {
 	return (
 		<div className="flex gap-4 items-center">
-			{props.icon}
-			<p className="w-40">{props.label}</p>
-			<div className="flex-1 rounded-lg hover:bg-zinc-900/5 p-2">
-				{props.children}
-			</div>
+			<p className="text-surface-12">{props.icon}</p>
+			<p className="w-40 text-surface-12">{props.label}</p>
+			<div className="flex-1 rounded-lg p-1">{props.children}</div>
 		</div>
 	);
 };
