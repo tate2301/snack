@@ -34,7 +34,7 @@ export default function TrashPage() {
 				name={'Blocked tasks'}
 				description="These might have other tasks they depend on. You get back to them!"
 				icon={<XCircleIcon className="w-6 h-6 text-danger-10" />}>
-				<motion.div className="flex flex-col gap-2 mt-4">
+				<motion.div className="flex flex-col divide-y border-b">
 					<AnimatePresence initial={false}>
 						{tasks.map((task) => (
 							<motion.div

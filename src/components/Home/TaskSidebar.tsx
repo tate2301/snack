@@ -6,7 +6,7 @@ import {
 import { motion } from 'framer-motion';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
-import SelectList from '../create/SelectList';
+import ProjectList from '../misc/lists/ProjectsList';
 import { SelectStatus } from './TaskExpandedView';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import { useAppSelector } from '../../redux/store';
@@ -25,22 +25,20 @@ export default function TaskSidebar(props: {
 	useEffect(() => {
 		const kbdListener = (event: KeyboardEvent) => {
 			// Close
-			if(event.key === "Escape") props.onSelectTask(null)
+			if (event.key === 'Escape') props.onSelectTask(null);
 
 			// Next and previous item
-			if(event.key === "ArrowUp") props.onPrevItem()
-			if(event.key === "ArrowDown") props.onNextItem()
+			if (event.key === 'ArrowUp') props.onPrevItem();
+			if (event.key === 'ArrowDown') props.onNextItem();
 
-			event.preventDefault()
-			event.stopPropagation()
+			event.preventDefault();
+			event.stopPropagation();
+		};
 
-		}
+		window.addEventListener('keydown', kbdListener);
 
-		window.addEventListener("keydown", kbdListener)
-
-		return () => window.removeEventListener("keydown", kbdListener)
-
-	}, [props.onSelectTask, props.onPrevItem, props.onNextItem])
+		return () => window.removeEventListener('keydown', kbdListener);
+	}, [props.onSelectTask, props.onPrevItem, props.onNextItem]);
 
 	const {
 		changeStatus,
@@ -113,7 +111,7 @@ export default function TaskSidebar(props: {
 						status={task.status}
 						onChange={changeStatus}
 					/>
-					<SelectList
+					<ProjectList
 						defaultListId={list.id}
 						onChange={changeList}
 					/>

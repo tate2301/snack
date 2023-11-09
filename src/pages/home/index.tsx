@@ -62,7 +62,7 @@ export default function HomePage() {
 			/>
 			<motion.div className="flex flex-1 h-full items-start overflow-y-auto">
 				<AnimatePresence>
-					<motion.div className="flex flex-1 flex-col divide-y divide-surface-3 border-surface-3">
+					<motion.div className="flex flex-1 flex-col divide-y divide-surface-3 border-surface-3 border-b">
 						<div className="flex p-2 gap-2">
 							<button className="rounded-full border px-2 py-1 text-sm font-normal">
 								<TargetIcon className="w-4 h-4" />
@@ -83,7 +83,6 @@ export default function HomePage() {
 						<AnimatePresence initial={false}>
 							{allTasks.map((task) => (
 								<motion.div
-									className="border-b border-zinc-200"
 									key={task.id}
 									initial={{
 										opacity: 0,

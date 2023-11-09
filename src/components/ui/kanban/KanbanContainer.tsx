@@ -22,7 +22,11 @@ const KanbanBoard = (props: {
 	const [items, setItems] = useState(project.tasks);
 	const [activeId, setActiveId] = useState(null);
 	const sensors = useSensors(
-		useSensor(PointerSensor),
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 4,
+			},
+		}),
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		}),

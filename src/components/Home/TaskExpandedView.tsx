@@ -26,7 +26,7 @@ import InProgressIcon from '../../icons/InProgressIcon';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import ArrowsExpand from '../../icons/ArrowsExpand';
 import SnackTooltip, { TooltipContent, TooltipTrigger } from '../ui/tooltip';
-import SelectList from '../create/SelectList';
+import ProjectList from '../misc/lists/ProjectsList';
 import AddDeadline from '../create/task/AddDeadline';
 import { parseISO } from 'date-fns';
 import { useAppDispatch } from '../../redux/store';
@@ -66,7 +66,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 								status={props.status}
 								onChange={changeStatus}
 							/>
-							<SelectList
+							<ProjectList
 								defaultListId={list.id}
 								onChange={changeList}
 							/>
@@ -125,18 +125,6 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 								: props.deadline
 						}
 					/>
-
-					<SnackTooltip>
-						<TooltipTrigger>
-							<button className="flex items-center gap-2 p-2 rounded-xl text-danger-11 bg-danger-4">
-								<ExclamationTriangleIcon className="w-5 h-5" />
-								{SnackTaskPriority.Urgent}
-							</button>
-						</TooltipTrigger>
-						<TooltipContent>
-							<p>Change priority</p>
-						</TooltipContent>
-					</SnackTooltip>
 				</div>
 
 				<TaskChecklist {...props} />

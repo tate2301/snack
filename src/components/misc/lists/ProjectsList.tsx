@@ -1,17 +1,14 @@
-import React from 'react';
-
-import { ChevronDownIcon, FolderIcon } from '@heroicons/react/20/solid';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '../ui/select';
-import { useAppSelector } from '../../redux/store';
-import { selectAllLists } from '../../redux/lists';
+} from '../../ui/select';
+import { useAppSelector } from '../../../redux/store';
+import { selectAllLists } from '../../../redux/lists';
 
-const SelectList = (props: {
+const ProjectList = (props: {
 	defaultListId?: string;
 	onChange: (val: string) => void;
 }) => {
@@ -48,4 +45,4 @@ const SelectList = (props: {
 	);
 };
 
-export default SelectList;
+export default ProjectList;

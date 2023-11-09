@@ -70,7 +70,7 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 			<button
 				className={cn(
 					'flex items-center gap-2 py-1.5 px-4 font-normal rounded-lg ',
-					isActive && 'bg-surface-3',
+					isActive && 'bg-surface-5',
 				)}>
 				<CircleProgress
 					progress={progress}

@@ -2,8 +2,10 @@ import { ArrowLeftIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import {
 	CameraIcon,
 	ChevronLeftIcon,
+	ChevronRightIcon,
 	ClockIcon,
 	ExclamationCircleIcon,
+	FolderIcon,
 	HashtagIcon,
 	PlusIcon,
 	TrashIcon,
@@ -14,7 +16,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { selectTaskById, updateTask } from '../../redux/tasks';
 import PageHeader, { PageType } from '../../components/nav/PageHeader';
-import SelectList from '../../components/create/SelectList';
+import ProjectList from '../../components/misc/lists/ProjectsList';
 import {
 	addTaskToList,
 	removeTaskFromList,
@@ -92,9 +94,13 @@ export default function TaskPage() {
 		<CalendarLayout>
 			<PageHeader
 				title={
-					<p className="flex items-center gap-4">
-						<button className="text-sm rounded-lg bg-surface-3 px-2">
-							RNG-901
+					<p className="flex items-center gap-2">
+						<button className="rounded-lg p-1">
+							<FolderIcon className="w-4 h-4" />
+							{list.name}
+						</button>
+						<button className="p-1">
+							<ChevronRightIcon className="w-4 h-4" />
 						</button>
 						<span className="truncate">{task.title}</span>
 					</p>

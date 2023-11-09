@@ -18,7 +18,7 @@ import {
 import { generateUUID } from '../../lib/functions';
 import { addTask } from '../../redux/tasks';
 import { useFormik } from 'formik';
-import SelectList from './SelectList';
+import ProjectList from '../misc/lists/ProjectsList';
 import { addTaskToList } from '../../redux/lists';
 import Kbd from '../ui/typography/Kbd';
 import useDisclosure from '../../hooks/useDisclosure';
@@ -223,7 +223,7 @@ const CreateTaskForm = (props: {
 			ref={formRef}
 			onSubmit={form.handleSubmit}>
 			<div className="flex mb-2 w-fit border border-surfacce-3 rounded-xl">
-				<SelectList
+				<ProjectList
 					defaultListId={form.values.list}
 					onChange={(val) => form.setFieldValue('list', val)}
 				/>
@@ -263,12 +263,6 @@ const CreateTaskForm = (props: {
 							}}
 						/>
 					)}
-					{hasTags && (
-						<TagInput
-							value={form.values.tags ?? []}
-							onChange={(tags) => form.setFieldValue('tags', tags)}
-						/>
-					)}
 				</div>
 			</div>
 
@@ -278,15 +272,6 @@ const CreateTaskForm = (props: {
 						selectDate={(date) => form.setFieldValue('deadline', date)}
 						selectedDate={form.values.deadline}
 					/>
-					<button
-						onClick={addTagsField}
-						className={clsx(
-							'p-2 rounded-xl hover:bg-surface-4',
-							hasTags && 'bg-primary-4 text-primary-11 border-primary-6',
-						)}
-						type={'button'}>
-						<HashtagIcon className={'w-5 h-5'} />
-					</button>
 				</div>
 				{false && (
 					<button

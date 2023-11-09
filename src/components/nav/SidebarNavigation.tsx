@@ -164,7 +164,7 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col'
+				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col bg-surface-2'
 			}>
 			<div className="flex flex-col h-full pt-12">
 				<SidebarNavigation

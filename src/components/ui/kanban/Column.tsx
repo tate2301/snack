@@ -24,7 +24,7 @@ const Column = (props: {
 }) => {
 	const { openCreateTask } = useContext(CommandContext);
 	const tasks = useAppSelector(selectTasksByListId(props.projectId));
-	const onAddTask = () => openCreateTask(props.id);
+	const onAddTask = () => openCreateTask(props.projectId);
 	const columnTasks = tasks.filter((task) => task.status === props.title);
 
 	const { setNodeRef } = useDroppable({
@@ -98,6 +98,7 @@ export const ColumnItem = (props: {
 			<TaskListItem
 				key={task.id}
 				view={TaskListItemView.Grid}
+				onSelectTask={() => props.onExpandTask(task.id)}
 				onExpandTask={() => props.onExpandTask(task.id)}
 				{...task}
 			/>

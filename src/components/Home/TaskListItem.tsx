@@ -132,18 +132,23 @@ export default function TaskListItem(
 								/>
 
 								<div className="flex-1 pr-2">
-									<p
-										className={clsx(
-											'line-clamp-1 pr-2',
-											isChecked
-												? 'line-through text-zinc-400 '
-												: 'text-surface-12',
-										)}>
-										{props.emoji && (
-											<span className="text-xl mr-2">{props.emoji}</span>
-										)}{' '}
-										{props.title}
-									</p>
+									<div className="flex items-center">
+										<p>
+											{props.emoji && (
+												<span className="text-xl mr-2">{props.emoji}</span>
+											)}
+										</p>
+										<p
+											className={clsx(
+												'line-clamp-1 pr-2',
+												isChecked
+													? 'line-through text-zinc-400 '
+													: 'text-surface-12',
+											)}>
+											{' '}
+											{props.title}
+										</p>
+									</div>
 									{!props.complete && (
 										<p className="text-sm text-surface-10 flex items-center gap-2">
 											<span className="flex items-center gap-2">
@@ -260,89 +265,6 @@ const TaskDropdownOptions = (props: SnackTask) => {
 				</Dropdown.Content>
 			</Dropdown>
 		</>
-	);
-};
-
-const SetReminderButton = () => {
-	return (
-		<Dropdown>
-			<Dropdown.Trigger>
-				<button className="flex items-center gap-2 px-2 py-1 text-surface-10 rounded-xl">
-					<BellIcon className="w-5 h-5" />
-				</button>
-			</Dropdown.Trigger>
-			<Dropdown.Content>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<SunIcon className="w-5 h-5" />
-						<p className="flex-1">Later today</p>
-						<p>
-							{format(
-								add(startOfToday(), { hours: 17, minutes: 30 }),
-								'EEE HH:MM',
-							)}
-						</p>
-					</div>
-				</Dropdown.Item>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<CalendarIcon className="w-5 h-5" />
-						<p className="flex-1">Tomorrow</p>
-						<p>
-							{format(add(startOfToday(), { days: 1, hours: 9 }), 'EEE HH:MM')}
-						</p>
-					</div>
-				</Dropdown.Item>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<CalendarDaysIcon className="w-5 h-5" />
-						<p className="flex-1">Pick Date & Time</p>
-					</div>
-				</Dropdown.Item>
-			</Dropdown.Content>
-		</Dropdown>
-	);
-};
-
-const SelectPriority = () => {
-	return (
-		<Dropdown>
-			<Dropdown.Trigger>
-				<button className="flex items-center gap-2 px-2 py-1 font-normal text-surface-12 rounded-xl bg-surface-3">
-					<BellIcon className="w-5 h-5" />
-					Set reminder
-				</button>
-			</Dropdown.Trigger>
-			<Dropdown.Content>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<SunIcon className="w-5 h-5" />
-						<p className="flex-1">Later today</p>
-						<p>
-							{format(
-								add(startOfToday(), { hours: 17, minutes: 30 }),
-								'EEE HH:MM',
-							)}
-						</p>
-					</div>
-				</Dropdown.Item>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<CalendarIcon className="w-5 h-5" />
-						<p className="flex-1">Tomorrow</p>
-						<p>
-							{format(add(startOfToday(), { days: 1, hours: 9 }), 'EEE HH:MM')}
-						</p>
-					</div>
-				</Dropdown.Item>
-				<Dropdown.Item>
-					<div className="flex items-center w-64 gap-4 text-surface-1">
-						<CalendarDaysIcon className="w-5 h-5" />
-						<p className="flex-1">Pick Date & Time</p>
-					</div>
-				</Dropdown.Item>
-			</Dropdown.Content>
-		</Dropdown>
 	);
 };
 

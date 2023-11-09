@@ -35,7 +35,7 @@ export default function CompletePage() {
 				name={'Complete'}
 				description={`You rock! You have completed ${completeTasks.length} tasks :)`}
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
-				<motion.div className="flex flex-col gap-2 mt-4">
+				<motion.div className="flex flex-col divide-y border-b">
 					<AnimatePresence initial={false}>
 						{completeTasks.map((task) => (
 							<motion.div

@@ -1,4 +1,5 @@
 import {
+	ArrowLeftIcon,
 	ChevronLeftIcon,
 	ListBulletIcon,
 	PlusIcon,
@@ -6,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { remToPx } from '../../lib/utils';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useNavigation } from 'react-router-dom';
 import {
 	DocumentIcon,
 	FolderIcon,
@@ -76,7 +77,7 @@ const PageHeader = (props: {
 				className="flex sticky top-0 px-2 bg-white border-b hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
 				<NavigationAction />
 				<div className="px-2 flex-1 flex gap-2 items-center">
-					<p className="font-bold truncate text-ellipsis pr-8 w-96">
+					<p className="font-bold truncate text-ellipsis pr-8 w-96 text-surface-12">
 						{props.title}
 					</p>
 					{props.children}
@@ -122,13 +123,15 @@ const PageTypeIcon = (props: { type: PageType }) => {
 
 const NavigationAction = () => {
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 
 	return (
 		<div className="flex gap-1 items-center">
 			<button
+				disabled={pathname === '/home'}
 				onClick={() => navigate(-1)}
-				className="p-1 rounded-xl ">
-				<ChevronLeftIcon className="w-5 h-5" />
+				className="p-1 rounded-lg hover:bg-surface-4 disabled:hover:bg-transparent disabled:text-surface-8">
+				<ArrowLeftIcon className="w-5 h-5" />
 			</button>
 		</div>
 	);

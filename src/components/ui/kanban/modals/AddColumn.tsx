@@ -30,7 +30,7 @@ const AddColumn = () => {
 								</label>
 								<input
 									name="title"
-									className="p-2 font-semibold w-full outline outline-zinc-400/20 focus:outline-zinc-400/30 rounded-lg focus:bg-white bg-surface-2 focus:shadow-sm"
+									className="p-2 font-semibold w-full outline outline-zinc-400/20 focus:outline-zinc-400/30 rounded-lg focus:bg-white bg-surface-3 focus:shadow"
 									placeholder="Category title"
 								/>
 							</div>
@@ -43,16 +43,16 @@ const AddColumn = () => {
 								<Textarea
 									name={'description'}
 									placeholder="Description (optional)"
-									className="p-2 font-semibold bg-surface-2 focus:bg-white outline outline-zinc-400/20 focus:outline-zinc-400/20 w-full rounded-lg focus:shadow-sm"
+									className="p-2 font-semibold bg-surface-3 focus:bg-white outline outline-zinc-400/20 focus:outline-zinc-400/20 w-full rounded-lg focus:shadow"
 									rows={3}
 								/>
 							</div>
 						</div>
 						<div className="w-full flex justify-end space-x-4">
-							<button className="border rounded-lg px-2 py-1 shadow-sm border-zinc-400/30">
+							<button className="border rounded-xl px-6 py-2 shadow-sm border-zinc-400/30">
 								Cancel
 							</button>
-							<button className="border rounded-lg px-2 py-1 border-zinc-400/30 bg-primary-10 shadow-sm text-white">
+							<button className="rounded-xl px-6 py-2 bg-primary-10 shadow-sm text-white">
 								Done
 							</button>
 						</div>

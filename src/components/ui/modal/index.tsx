@@ -31,10 +31,12 @@ export default function Modal({
 		<Dialog
 			open={isOpen}
 			onOpenChange={onClose}>
-			<div
-				className="fixed inset-0 bg-black/30"
-				aria-hidden="true"
-			/>
+			{isOpen && (
+				<div
+					className="fixed inset-0 bg-black/30 z-40"
+					aria-hidden="true"
+				/>
+			)}
 
 			<motion.div
 				initial={{ opacity: 0, display: 'none' }}
