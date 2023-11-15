@@ -43,7 +43,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
-	@apply bg-white select-none;
+	@apply  select-none;
 }
 
 .app-noise {
@@ -102,4 +102,12 @@ button {
 
 input {
 	@apply focus:border-0 focus:ring-0 active:border-0 active:ring-0;
+}
+
+.ProseMirror {
+	@apply focus:outline-none focus:ring-0;
+}
+
+.prose :where(p):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+	@apply !my-0;
 }

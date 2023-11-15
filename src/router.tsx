@@ -1,12 +1,12 @@
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import Splash from './pages';
-import HomePage from './pages/home';
+import Splash from './features';
+import HomePage from './features/inbox';
 import SnackApplicationProvider from './App';
-import InProgressPage from './pages/in-progress';
-import CompletePage from './pages/complete';
-import TrashPage from './pages/trash';
-import ListPage from './pages/list/[id]';
-import TaskPage from './pages/task/[taskId]';
+import InProgressPage from './features/in-progress';
+import CompletePage from './features/task/complete';
+import TrashPage from './features/task/backlog';
+import ListPage from './features/project/[id]';
+import TaskPage from './features/task/[taskId]';
 
 const SnackRouter = () => {
 	return (

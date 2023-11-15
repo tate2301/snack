@@ -9,13 +9,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import SnackPluginManager, { availablePlugins } from './lib/integrations';
 import CommandContextProvider from './context/CommandContext';
+import { ToastProvider } from './context/ToastProvider';
 
 export default function SnackApplicationProvider(props: {
 	children: ReactNode;
 }) {
 	return (
 		<div
-			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11"
+			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11 bg-zinc-100/90 backdrop-blur"
 			id="app-container">
 			<title>Snack ⏲</title>
 
@@ -23,12 +24,14 @@ export default function SnackApplicationProvider(props: {
 				<PersistGate
 					loading={null}
 					persistor={persistor}>
-					<CommandContextProvider>
-						<Toaster />
-                        
-						<PluginProvider />
-						<DndContext>{props.children}</DndContext>
-					</CommandContextProvider>
+					<ToastProvider>
+						<CommandContextProvider>
+							<Toaster />
+
+							<PluginProvider />
+							<DndContext>{props.children}</DndContext>
+						</CommandContextProvider>
+					</ToastProvider>
 				</PersistGate>
 			</Provider>
 		</div>

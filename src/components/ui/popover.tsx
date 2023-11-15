@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import * as RadixPopover from '@radix-ui/react-popover';
@@ -23,16 +23,17 @@ const Popover = (props: {
 };
 
 const Content = (props: { children: ReactNode; noClose?: boolean }) => (
-	<RadixPopover.Portal>
-		<RadixPopover.Content
-			asChild
-			align="start"
-			side="bottom"
-			className="z-50 p-4 transition-all shadow-xl rounded-xl w-fit border-surface-6 bg-surface-12"
-			sideOffset={-5}>
-			{props.children}
-		</RadixPopover.Content>
-	</RadixPopover.Portal>
+	<RadixPopover.Content
+		asChild
+		align="start"
+		side="bottom"
+		className="z-50 shadow-xl rounded-xl w-fit"
+		sideOffset={-5}>
+		<div className="border-surface-6 flex justify-between min-w-[2rem] space-x-4 bg-surface-12 text-surface-1 p-2 transition-all z-50 shadow-xl rounded-xl items-start">
+			<div className="p-2">{props.children}</div>
+			<Close />
+		</div>
+	</RadixPopover.Content>
 );
 
 const Trigger = (props: { children: ReactNode }) => (
@@ -40,13 +41,11 @@ const Trigger = (props: { children: ReactNode }) => (
 );
 
 const Close = () => (
-	<div className="flex justify-end w-full mb-4">
-		<RadixPopover.Close
-			className="inline-flex items-center justify-center rounded-full outline-none cursor-default top-1 right-1"
-			aria-label="Close">
-			<XMarkIcon className="w-6 h-6" />
-		</RadixPopover.Close>
-	</div>
+	<RadixPopover.Close
+		className="inline-flex items-center justify-center rounded-full outline-none cursor-default hover:bg-surface-11 hover:text-white mt-1"
+		aria-label="Close">
+		<XMarkIcon className="w-5 h-5" />
+	</RadixPopover.Close>
 );
 
 Popover.Content = Content;

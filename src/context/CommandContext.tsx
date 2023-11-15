@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState } from 'react';
 import useToggle from '../hooks/useToggle';
-import CreateTask from '../components/create/CreateTask';
+import CreateTask from '../components/Task/CreateTask';
 import Modal from '../components/ui/modal';
 
 export const CommandContext = createContext({

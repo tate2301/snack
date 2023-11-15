@@ -7,16 +7,23 @@ import {
 } from '../../ui/select';
 import { useAppSelector } from '../../../redux/store';
 import { selectAllLists } from '../../../redux/lists';
+import { useEffect, useState } from 'react';
 
 const ProjectList = (props: {
 	defaultListId?: string;
 	onChange: (val: string) => void;
 }) => {
+	const [defaultValue, setDefaultValue] = useState(props.defaultListId);
+
 	const lists = useAppSelector(selectAllLists);
+
+	useEffect(() => {
+		setDefaultValue(defaultValue);
+	}, [props.defaultListId]);
 
 	return (
 		<Select
-			defaultValue={props.defaultListId}
+			defaultValue={defaultValue}
 			onValueChange={props.onChange}>
 			<SelectTrigger className="min-w-[120px] w-fit text-surface-12 p-2">
 				<div className="flex gap-4">

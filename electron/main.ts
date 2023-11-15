@@ -24,6 +24,8 @@ function createWindow() {
 		},
 		titleBarStyle: 'hidden',
 		maximizable: true,
+		transparent: true,
+		icon: './logo512.png',
 	});
 
 	require('@electron/remote/main').enable(win.webContents);

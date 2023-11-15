@@ -10,12 +10,12 @@ input[type='checkbox'] {
 	-webkit-appearance: none;
 	opacity: 0.5;
 
-	@apply flex items-center justify-center w-5 h-5 transition-colors border-2  border-surface-6 rounded-lg;
+	@apply flex items-center justify-center w-5 h-5 transition-colors border-2 border-surface-6 rounded-full;
 }
 
 input[type='checkbox']:hover {
 	opacity: 1;
-	@apply bg-surface-6;
+	@apply bg-surface-1;
 }
 
 input[type='checkbox']:focus {
@@ -25,16 +25,12 @@ input[type='checkbox']:focus {
 
 input[type='checkbox']:checked {
 	opacity: 1;
-	@apply bg-primary-10 border-primary-10;
+	@apply bg-white border-primary-10;
 }
 
-input[type='checkbox']:before {
+input[type='checkbox']:checked:before {
 	content: '';
-	width: 5px;
-	height: 8px;
-	border: solid #fff;
-	border-width: 0 1.5px 1.5px 0;
-	transform: rotate(45deg);
+	
 	z-index: 2;
-	border-radius: 1px;
+	@apply bg-primary-10 h-3 w-3 rounded-full;
 }

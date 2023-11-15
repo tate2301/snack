@@ -1,4 +1,4 @@
-import NavigationSidebar from '../components/nav/SidebarNavigation';
+import NavigationSidebar from '../components/navigation/Sidebar';
 import {
 	DndContext,
 	PointerSensor,
@@ -21,7 +21,7 @@ export default function CalendarLayout(props) {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
-			<div className="relative flex flex-col w-screen h-screen overflow-hidden bg-surface-3">
+			<div className="relative flex flex-col w-screen h-screen overflow-hidden">
 				<div
 					className={
 						'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'

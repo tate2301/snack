@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
@@ -26,7 +26,7 @@ type Day = {
 	isToday?: boolean;
 };
 
-type CalendarPreviewProps = {
+type DatepickerProps = {
 	value?: Date;
 	onChange: (date: Date) => void;
 };
@@ -40,7 +40,7 @@ const colStartClasses = [
 	'col-start-6',
 ];
 
-export default function Datepicker(props: CalendarPreviewProps) {
+export default function Datepicker(props: DatepickerProps) {
 	let today = props.value ?? startOfToday();
 	const { prevMonth, nextMonth, month, firstDayOfCurrentMonth, selectedDate } =
 		useCalendarDates(today);

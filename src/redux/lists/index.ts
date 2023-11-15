@@ -178,6 +178,24 @@ export const selectListByTaskId = (taskId: string) => (state: RootState) => {
 	);
 };
 
+export const selectProjectProgress =
+	(projectId: string) => (state: RootState) => {
+		const project = state.lists.items.find(
+			(project) => project.id === projectId,
+		);
+
+		if (!project) return 0;
+
+		if (project.tasks.length === 0) return 1;
+
+		const completeTasks = state.tasks.items.filter(
+			(task) => project.tasks.includes(task.id) && task.complete,
+		);
+
+		// completeTasks/project.tasks.length
+		return completeTasks.length / project.tasks.length;
+	};
+
 export const selectTasksByColumnInList =
 	(projectId: string, columnId: string) => (state: RootState) => {
 		const project = state.lists.items.find(

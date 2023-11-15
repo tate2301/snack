@@ -1,5 +1,5 @@
 'use client';
-import TaskListItem, { TaskListItemView } from '../../Home/TaskListItem';
+import TaskListItem, { TaskListItemView } from '../../Task/TaskListItem';
 import { ReactNode, useContext } from 'react';
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {

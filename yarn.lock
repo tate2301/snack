@@ -2377,12 +2377,46 @@
   dependencies:
     tslib "^2.5.0"
 
+"@milkdown/plugin-block@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@milkdown/plugin-block/-/plugin-block-7.3.1.tgz#1f415ccfc0425c41cf9f24ea2387243a5a265088"
+  integrity sha512-u5YmpR4LtY/V1T5gHQfZxGEs8OhEv19WavJboAJQdMIcach9uOBBYU0yMVWHSrAjPD/l7IVtywq3ls++tVGJtw==
+  dependencies:
+    "@milkdown/exception" "7.3.1"
+    "@milkdown/utils" "7.3.1"
+    "@types/lodash.debounce" "^4.0.7"
+    lodash.debounce "^4.0.8"
+    tippy.js "^6.3.7"
+    tslib "^2.5.0"
+
 "@milkdown/plugin-history@^7.3.1":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@milkdown/plugin-history/-/plugin-history-7.3.1.tgz#1cba832c5d1673a6d78ab2ec16de78584e8d2503"
   integrity sha512-GizezQO+GuiLh3rjshnV7RqZzsVauev/5mT3C8+Y3YEblRCiPTOmEbMCf6CBG2896xcJCUOvIDKAUrnVAdnCog==
   dependencies:
     "@milkdown/utils" "7.3.1"
+    tslib "^2.5.0"
+
+"@milkdown/plugin-listener@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@milkdown/plugin-listener/-/plugin-listener-7.3.1.tgz#f2496d3c6e1a8bff6e6d0f9bfbe3bbb35b132679"
+  integrity sha512-A3054CnaZNYWUUbAd3F+1MKq9fJOpRNkECiQ+RxcXzxFGGUkX/+KOCfZqHUTGAXo+vlohg6Df2+PiunsjweJAg==
+  dependencies:
+    "@milkdown/utils" "7.3.1"
+    "@types/lodash.debounce" "^4.0.7"
+    lodash.debounce "^4.0.8"
+    tslib "^2.5.0"
+
+"@milkdown/plugin-slash@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@milkdown/plugin-slash/-/plugin-slash-7.3.1.tgz#93c1dc37defd61912dbdbe85565e323122d42fba"
+  integrity sha512-7djiqpp/7CZ64XZo5tyDA1kXl+1StZXBe7IQ3wBx8u84ObhSr/bcBP7EHlENshovjZD3thseFUdYsFXsPTGjug==
+  dependencies:
+    "@milkdown/exception" "7.3.1"
+    "@milkdown/utils" "7.3.1"
+    "@types/lodash.debounce" "^4.0.7"
+    lodash.debounce "^4.0.8"
+    tippy.js "^6.3.7"
     tslib "^2.5.0"
 
 "@milkdown/preset-commonmark@^7.3.1":
@@ -2589,10 +2623,26 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@popperjs/core@^2.11.8":
+"@popperjs/core@^2.11.8", "@popperjs/core@^2.9.0":
   version "2.11.8"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
+
+"@prosemirror-adapter/core@0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@prosemirror-adapter/core/-/core-0.2.6.tgz#7f14bf568ef30a6d085bffdb1112de7426b42452"
+  integrity sha512-7GXWQBR/bd6ngvek8SgtlEVC0x3KL7LKZ5cxyZl4IBAlRDbITQWsuKLChEXNan9A6+9Ry4a46crbDGTQlzooOg==
+  dependencies:
+    tslib "^2.5.0"
+
+"@prosemirror-adapter/react@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@prosemirror-adapter/react/-/react-0.2.6.tgz#2375f74d42dad1373f139af2053810ef8fd89ed9"
+  integrity sha512-JdDqAJV7FnRyIlnXPP+E0Iu80BQPvHeB+7c0ZfdcHLfVb2BLTNHk6iOoqJmBJmqqHt/KjxXXTmxRUS4EEsjVlg==
+  dependencies:
+    "@prosemirror-adapter/core" "0.2.6"
+    nanoid "^4.0.2"
+    tslib "^2.5.0"
 
 "@radix-ui/colors@^2.0.1":
   version "2.1.0"
@@ -4742,6 +4792,18 @@
   integrity sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==
   dependencies:
     "@types/node" "*"
+
+"@types/lodash.debounce@^4.0.7":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.9.tgz#0f5f21c507bce7521b5e30e7a24440975ac860a5"
+  integrity sha512-Ma5JcgTREwpLRwMM+XwBR7DaWe96nC38uCBDFKZWbNKD+osjVzdpnUSwBcqCptrp16sSOLBAUb50Car5I0TCsQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.201"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.201.tgz#76f47cb63124e806824b6c18463daf3e1d480239"
+  integrity sha512-y9euML0cim1JrykNxADLfaG0FgD1g/yTHwUs/Jg9ZIU7WKj2/4IW9Lbb1WZbvck78W/lfGXFfe+u2EGfIJXdLQ==
 
 "@types/lodash@^4.14.197":
   version "4.14.197"
@@ -11309,6 +11371,11 @@ nanoid@^3.3.6:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
+nanoid@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-4.0.2.tgz#140b3c5003959adbebf521c170f282c5e7f9fb9e"
+  integrity sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==
+
 nanoid@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.3.tgz#6c97f53d793a7a1de6a38ebb46f50f95bf9793c7"
@@ -14529,6 +14596,13 @@ tinycolor2@^1.4.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.6.0.tgz#f98007460169b0263b97072c5ae92484ce02d09e"
   integrity sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==
+
+tippy.js@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
+  dependencies:
+    "@popperjs/core" "^2.9.0"
 
 tmp-promise@^3.0.2:
   version "3.0.3"

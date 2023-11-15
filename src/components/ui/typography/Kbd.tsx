@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type KbdProps = {
 	keys: string[];
@@ -9,7 +9,7 @@ const Kbd = (props: KbdProps) => {
 			{props.keys.map((key, index) => (
 				<kbd
 					key={index}
-					className="px-2 py-0.5 text-sm font-semibold bg-surface-2 mix-blend-luminosity text-surface-11 rounded-md inline-flex ml-1 w-fit gap-2">
+					className="px-2 py-0.5 text-sm font-semibold bg-surface-4 text-surface-11 rounded-md inline-flex ml-1 w-fit gap-2">
 					<span>{key}</span>
 				</kbd>
 			))}

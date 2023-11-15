@@ -5,10 +5,10 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from '../dialog';
+import clsx from 'clsx';
 
 export type ModalProps = {
 	children: React.ReactNode;
@@ -17,6 +17,7 @@ export type ModalProps = {
 	title?: string;
 	description?: string;
 	actionCenter?: React.ReactNode;
+	noPadding?: boolean;
 };
 
 export default function Modal({
@@ -26,6 +27,7 @@ export default function Modal({
 	title,
 	description,
 	actionCenter,
+	noPadding,
 }: ModalProps) {
 	return (
 		<Dialog
@@ -33,44 +35,52 @@ export default function Modal({
 			onOpenChange={onClose}>
 			{isOpen && (
 				<div
-					className="fixed inset-0 bg-black/30 z-40"
+					className="fixed inset-0 bg-black/10 z-40"
 					aria-hidden="true"
 				/>
 			)}
 
-			<motion.div
-				initial={{ opacity: 0, display: 'none' }}
-				animate={{ opacity: 1, display: 'flex' }}
-				exit={{ opacity: 0, display: 'none' }}
-				className="fixed inset-0 flex items-center justify-center p-4">
-				{/* The actual dialog panel  */}
-				<DialogContent
-					autoFocus={false}
-					className="w-auto mx-auto bg-white rounded-2xl outline-none">
-					{(title || description) && (
-						<DialogHeader className="w-full mb-4">
-							{title && (
-								<DialogTitle className={'text-xl font-semibold'}>
-									{title}
-								</DialogTitle>
-							)}
-							{description && (
-								<DialogDescription className={'text-zinc-500'}>
-									{description}
-								</DialogDescription>
-							)}
-						</DialogHeader>
-					)}
+			{isOpen && (
+				<motion.div
+					initial={{ opacity: 0, display: 'none' }}
+					animate={{ opacity: 1, display: 'flex' }}
+					exit={{ opacity: 0, display: 'none' }}
+					className={clsx(
+						'fixed inset-0 flex items-center justify-center overflow-y-auto',
+						!noPadding && 'p-6 pb-2',
+					)}>
+					{/* The actual dialog panel  */}
+					<DialogContent
+						autoFocus={false}
+						className={clsx(
+							'w-auto mx-auto bg-white rounded-2xl outline-none',
+							!noPadding && 'p-6 pb-2',
+						)}>
+						{(title || description) && (
+							<DialogHeader className="w-full mb-4">
+								{title && (
+									<DialogTitle className={'text-xl font-semibold'}>
+										{title}
+									</DialogTitle>
+								)}
+								{description && (
+									<DialogDescription className={'text-zinc-500'}>
+										{description}
+									</DialogDescription>
+								)}
+							</DialogHeader>
+						)}
 
-					{children}
+						{children}
 
-					{actionCenter && (
-						<DialogFooter className="p-8 bg-stone-100">
-							{actionCenter}
-						</DialogFooter>
-					)}
-				</DialogContent>
-			</motion.div>
+						{actionCenter && (
+							<div className="p-2 bg-surface-1 border-t border-surface-4 rounded-b-lg">
+								{actionCenter}
+							</div>
+						)}
+					</DialogContent>
+				</motion.div>
+			)}
 		</Dialog>
 	);
 }

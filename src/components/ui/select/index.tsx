@@ -37,7 +37,7 @@ const SelectContent = React.forwardRef<
 		<SelectPrimitive.Content
 			ref={ref}
 			style={{
-				zIndex: ZINDEX.DROPDOWN + ZINDEX.DROPDOWN,
+				zIndex: ZINDEX.MODAL + ZINDEX.DROPDOWN,
 			}}
 			className={cn(
 				'relative antialiased min-w-[8rem] p-1 overflow-hidden rounded-xl bg-surface-12 backdrop-blur-sm text-popover-foreground shadow-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',

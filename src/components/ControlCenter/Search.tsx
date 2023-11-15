@@ -2,10 +2,13 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const SearchField = () => {
 	return (
-		<button className="w-full hover:bg-zinc-900/5 border border-zinc-900/10 py-1.5 px-2 gap-2 rounded-lg font-normal flex">
-			<MagnifyingGlassIcon className="w-5 h-5" />
-			Search
-		</button>
+		<div className="w-72 font-normal flex relative">
+			<MagnifyingGlassIcon className="w-5 h-5 absolute left-2 top-[50%] -translate-y-[50%] " />
+			<input
+				placeholder="Search"
+				className="w-full h-full rounded-lg pl-8 py-2 bg-surface-3 focus:shadow-sm focus:ring-2 focus:bg-white outline outline-zinc-900/10"
+			/>
+		</div>
 	);
 };
 
