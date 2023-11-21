@@ -29,7 +29,7 @@ type DefaultTaskListItemProps = {
 
 export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 	return (
-		<div className="flex items-center flex-1 h-full px-2 rounded">
+		<div className="flex items-center flex-1 h-full p-2 rounded-xl bg-surface-2">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-center w-full gap-2">
@@ -47,7 +47,7 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 										<span className="text-xl mr-2">{props.emoji}</span>
 									)}
 								</p>
-								<p>
+								<p className="flex-shrink-0">
 									{props.deadline &&
 										props.status !== SnackTaskStatus.Complete && (
 											<>
@@ -65,12 +65,11 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 								</p>
 								<p
 									className={clsx(
-										'line-clamp-1 pr-2',
+										'line-clamp-1 pr-2 truncate text-ellipsis max-w-full',
 										props.isChecked
 											? 'line-through text-zinc-400 '
 											: 'text-surface-12',
 									)}>
-									{' '}
 									{props.title}
 								</p>
 							</div>

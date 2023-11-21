@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode, useCallback, useMemo } from 'react';
 import {
 	addTaskToList,
 	removeTaskFromList,
@@ -15,6 +15,7 @@ import { selectTaskById, updateTask } from '../../redux/tasks';
 import {
 	CalendarDaysIcon,
 	ExclamationCircleIcon,
+	PlusIcon,
 	UserIcon,
 } from '@heroicons/react/24/outline';
 import ProjectList from '../misc/lists/ProjectsList';
@@ -35,6 +36,8 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	const task = useAppSelector(selectTaskById(id));
 	const list = useAppSelector(selectListByTaskId(id));
 	const isStarred = useAppSelector(selectStarredItemById(id));
+
+	const description = useMemo(() => task.description, [task]);
 
 	const onStar = useCallback(() => {
 		if (!isStarred) {
@@ -109,7 +112,7 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 
 	return (
 		<>
-			<div className={cn('container mx-auto max-w-screen-md px-2')}>
+			<div className={cn('container mx-auto max-w-screen-md')}>
 				<div className="mt-8 py-2 px-6">
 					<div className="mb-4">
 						<p className="text-7xl p-1 rounded-lg hover:bg-surface-3 w-fit">
@@ -165,13 +168,19 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 						/>
 					</TaskDetailItem>
 				</div>
-				<div className="flex flex-col gap-2 py-2 border-t border-b mx-6">
+				<div className="mx-4 mb-4">
+					<button className="px-2 py-1 rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12">
+						<PlusIcon className="w-5 h-5" />
+						Add a property
+					</button>
+				</div>
+				<div className="flex flex-col gap-2 py-2 border-t border-b border-surface-3 px-6">
 					<TaskChecklist {...task} />
 				</div>
 				<div className="flex flex-col !w-full !max-w-screen-xl px-6 prose prose-zinc prose-h1:font-semibold prose-headings:font-semibold py-4">
 					<MilkdownEditorWrapper
 						onChange={onDescriptionChanged}
-						value={task.description}
+						value={description}
 					/>
 				</div>
 			</div>

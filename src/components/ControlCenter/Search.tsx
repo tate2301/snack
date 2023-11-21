@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const SearchField = () => {
 	return (
-		<div className="w-72 font-normal flex relative">
+		<div className="font-normal flex relative">
 			<MagnifyingGlassIcon className="w-5 h-5 absolute left-2 top-[50%] -translate-y-[50%] " />
 			<input
 				placeholder="Search"

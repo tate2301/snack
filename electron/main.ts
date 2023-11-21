@@ -4,9 +4,15 @@ import installExtension, {
 	REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 
+const windowStateKeeper = require('electron-window-state');
+
 require('@electron/remote/main').initialize();
 
 function createWindow() {
+	const mainWindowState = windowStateKeeper({
+		defaultWidth: 1000,
+		defaultHeight: 800,
+	});
 	const win = new BrowserWindow({
 		width: 1080,
 		height: 720,
@@ -24,9 +30,24 @@ function createWindow() {
 		},
 		titleBarStyle: 'hidden',
 		maximizable: true,
-		transparent: true,
 		icon: './logo512.png',
+		show: false,
 	});
+
+	/** Window Events */
+	win.once('ready-to-show', () => {
+		win.show();
+	});
+
+	win.on('focus', () => {
+		win.webContents.send('focus');
+	});
+
+	win.on('blur', () => {
+		win.webContents.send('blur');
+	});
+
+	/**End Window Events */
 
 	require('@electron/remote/main').enable(win.webContents);
 
@@ -50,6 +71,8 @@ function createWindow() {
 			hardResetMethod: 'exit',
 		});
 	}
+
+	mainWindowState.manage(win);
 }
 
 app.whenReady().then(() => {

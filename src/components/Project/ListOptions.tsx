@@ -35,7 +35,7 @@ const ProjectOptions = (props: { id: string; onDelete: (e) => void }) => {
 
 			<button
 				onClick={openEditModal}
-				className="hover:bg-zinc-900/10 flex items-center p-2 rounded-lg">
+				className="hover:bg-zinc-900/10 flex items-center p-1.5 rounded-lg">
 				<PencilIcon className="w-5 h-5" />
 			</button>
 

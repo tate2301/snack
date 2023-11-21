@@ -19,11 +19,11 @@ import ManageListForm, {
 import { selectStarredItemById, selectStarredItems } from '../../redux/starred';
 import { AppEntity, Starred } from '../../redux/starred/types';
 import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { SnackList } from '../../redux/lists/types';
-import ExternalLink from '../../icons/ExternalLink';
 import InProgressIcon from '../../icons/InProgressIcon';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
+import { CommandContext } from '../../context/CommandContext';
 
 export default function NavigationSidebar({}) {
 	const [isExpanded, toggle, expand] = useToggle(true);
@@ -44,6 +44,12 @@ export default function NavigationSidebar({}) {
 }
 
 function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
+	const { openCreateTask } = useContext(CommandContext);
+
+	const onCreateTask = () => {
+		openCreateTask('default');
+	};
+
 	return (
 		<div className="sticky flex flex-col flex-1 w-80 h-full overflow-y-auto">
 			<div className="flex flex-col gap-4 border-b border-zinc-400/10 shadow-xs px-1">
@@ -62,10 +68,10 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 							/>
 						))}
 						<NavItem
-							icon={<PlusCircleIcon className="w-5 h-5 text-primary-10" />}
+							icon={<PlusCircleIcon className="w-6 h-6 text-primary-10" />}
 							label="Add new task"
 							value={'create'}
-							callback={() => null}
+							action={onCreateTask}
 						/>
 					</div>
 				</div>
@@ -90,11 +96,27 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 function NavItem(
 	props: NavItemType & {
 		active?: boolean;
-		callback: (v: Tab) => void;
+		callback?: (v: Tab) => void;
+		action?: () => void;
 	},
 ) {
 	const path = useLocation();
 	const isActive = props.active || path.pathname === props.href;
+	if (props.action)
+		return (
+			<button
+				onClick={props.action}
+				className={clsx(
+					'px-3 py-0.5 justify-between flex w-full transition-all text-md !font-base rounded-lg items-center',
+					props.active && '',
+				)}>
+				<span className="flex gap-2 items-center text-surface-12 font-normal">
+					{props.icon}
+					{props.label}
+				</span>
+			</button>
+		);
+
 	return (
 		<Link
 			to={props.href}

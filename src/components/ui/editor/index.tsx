@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Editor, rootCtx } from '@milkdown/core';
 import { nord } from '@milkdown/theme-nord';
 import { Milkdown, MilkdownProvider, useEditor } from '@milkdown/react';
@@ -15,27 +15,40 @@ const MilkdownEditor: React.FC<{
 	onChange: (value: string) => void;
 }> = (props) => {
 	const pluginViewFactory = usePluginViewFactory();
+	const [defaultValue, setDefaultValue] = useState(props.value);
 
-	const { get } = useEditor((root) =>
-		Editor.make()
-			.config((ctx) => {
-				ctx.set(rootCtx, root);
-				ctx.set(defaultValueCtx, props.value);
+	useEffect(() => {
+		setDefaultValue(props.value);
+	}, [props.value]);
 
-				ctx.get(listenerCtx).markdownUpdated((ctx, markdown, prevMarkdown) => {
-					props.onChange(markdown);
-				});
+	const getEditor = useCallback(
+		(root) =>
+			Editor.make()
+				.config((ctx) => {
+					ctx.set(rootCtx, root);
+					ctx.set(defaultValueCtx, defaultValue);
 
-				// ctx.set(block.key, {
-				// 	view: pluginViewFactory({
-				// 		component: BlockView,
-				// 	}),
-				// });
-			})
-			.use(listener)
-			// .use(block)
-			.use(commonmark),
+					ctx
+						.get(listenerCtx)
+						.markdownUpdated((ctx, markdown, prevMarkdown) => {
+							props.onChange(markdown);
+						});
+
+					// ctx.set(block.key, {
+					// 	view: pluginViewFactory({
+					// 		component: BlockView,
+					// 	}),
+					// });
+				})
+				.use(listener)
+				// .use(block)
+				.use(commonmark),
+		[defaultValue],
 	);
+
+	const { get } = useEditor(getEditor);
+
+	console.log({ props: props.value, defaultValue });
 
 	return <Milkdown />;
 };

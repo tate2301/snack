@@ -31,7 +31,7 @@ const tabs: NavItemType[] = [
 		icon: <BookOpenIcon className="w-5 h-5 text-primary-10" />,
 		value: 'later',
 		label: 'Logbook',
-		href: '/log',
+		href: '/logbook',
 	},
 ];
 

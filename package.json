@@ -19,12 +19,19 @@
 		"eject": "react-app-rewired eject"
 	},
 	"build": {
+		"appId": "xyz.atipamara.snack",
+		"productName": "Snack",
 		"directories": {
-			"buildResources": "build"
+			"buildResources": "public/assets"
 		},
 		"win": {
 			"icon": "build/icon.png"
+		},
+		"mac": {
+			"category": "xyz.atipamara.productivity",
+			"icon": "build/icon.png"
 		}
+
 	},
 	"dependencies": {
 		"@calumk/editorjs-codeflask": "^1.0.9",
@@ -96,6 +103,7 @@
 		"electron-devtools-installer": "^3.2.0",
 		"electron-is-dev": "^2.0.0",
 		"electron-reload": "^2.0.0-alpha.1",
+		"electron-window-state": "^5.0.3",
 		"formik": "^2.4.3",
 		"framer-motion": "^10.13.0",
 		"inspx": "^0.0.1-alpha.6",

@@ -74,7 +74,7 @@ const PageHeader = (props: {
 					width: isWindows ? width : '100%',
 				}}
 				id="page-header"
-				className="flex sticky top-0 px-2 bg-white border-b hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
+				className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
 				<NavigationAction />
 				<div className="px-2 flex-1 flex gap-2 items-center">
 					<p className="font-bold truncate text-ellipsis pr-8 w-96 text-surface-12">

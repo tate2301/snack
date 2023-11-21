@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { SnackTask, SnackTaskStatus } from './types';
 import { RootState } from '../store';
 import _ from 'lodash';
-import { isEqual, startOfDay, startOfToday } from 'date-fns';
+import { differenceInDays, isEqual, startOfDay, startOfToday } from 'date-fns';
 
 const initialState: {
 	items: SnackTask[];
@@ -125,10 +125,18 @@ export const selectTaskByPriority = (state: RootState, priority: string) =>
 		.filter((task) => task.trashed !== true)
 		.filter((task) => task.priority === priority);
 
-export const selectTaskByDate = (state: RootState, priority: string) =>
-	state.tasks.items
-		.filter(
-			(task) =>
-				task.deadline && isEqual(startOfDay(task.deadline), startOfToday()),
-		)
-		.filter((task) => task.priority === priority);
+export const selectTasksOfToday = (state: RootState, date: Date) =>
+	state.tasks.items.filter((task) =>
+		isEqual(
+			startOfDay(new Date(task.deadline ?? task.createdAt)),
+			startOfToday(),
+		),
+	);
+
+export const selectBacklogTasks = (state: RootState) =>
+	state.tasks.items.filter(
+		(task) =>
+			!task.complete &&
+			!!task.deadline &&
+			differenceInDays(startOfDay(new Date(task.deadline)), startOfToday()) < 0,
+	);

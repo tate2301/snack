@@ -14,6 +14,17 @@ export enum SnackTaskStatus {
 	Blocked = 'Blocked',
 }
 
+export enum SnackTaskCategory {
+	Design = 'Design',
+	Development = 'Development',
+	Marketing = 'Marketing',
+}
+
+export type SnackTaskSession = {
+	startTime: Date;
+	endTime: Date;
+};
+
 export type SnackTask = {
 	id: string;
 	title: string;
@@ -30,6 +41,12 @@ export type SnackTask = {
 	trashed?: boolean;
 	emoji?: string;
 	uuid?: string;
+	billingRate?: {
+		period: string;
+		amount: number;
+	};
+	category?: SnackTaskCategory;
+	sessions?: Array<SnackTaskSession>;
 };
 
 export type SnackSubtask = {

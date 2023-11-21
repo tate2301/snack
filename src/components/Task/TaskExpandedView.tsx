@@ -176,14 +176,14 @@ export const TaskChecklist = (props: SnackTask) => {
 		<div className="py-4">
 			<h2 className="flex items-center gap-2 mb-4 text-surface-10">
 				<ListBulletIcon className="w-5 h-5" />
-				Subtask queue ({props.subtasks.length})
+				Subtasks ({props.subtasks.length})
 			</h2>
 			{props.subtasks.length === 0 && (
 				<button
 					onClick={onAddChecklist}
-					className="px-4 py-1 rounded-xl border border-zinc-400/30 shadow-sm hover:bg-surface-1">
+					className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12 transition-all">
 					<PlusIcon className="w-5 h-5" />
-					Add an item
+					Add subtask
 				</button>
 			)}
 			{props.subtasks.length !== 0 && (
@@ -203,9 +203,9 @@ export const TaskChecklist = (props: SnackTask) => {
 					</div>
 					<button
 						onClick={onAddNewItem}
-						className="py-1 px-4 mt-4 font-semibold rounded-xl border border-zinc-400/30 shadow-sm bg-white hover:bg-surface-1">
+						className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12 transition-all">
 						<PlusIcon className="w-5 h-5" />
-						Add an item
+						Add subtask
 					</button>
 				</>
 			)}
