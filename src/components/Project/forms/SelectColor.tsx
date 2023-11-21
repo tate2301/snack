@@ -2,7 +2,7 @@ import React from 'react';
 
 import useToggle from '../../../hooks/useToggle';
 import { cn } from '../../../lib/utils';
-import Popover from '../../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../../ui/popover';
 import { colors } from '../constants';
 
 const SelectColor = (props: {
@@ -14,7 +14,7 @@ const SelectColor = (props: {
 		<Popover
 			open={isOpened}
 			onOpenChange={(open) => onChange(open)}>
-			<Popover.Trigger>
+			<PopoverTrigger>
 				<button
 					type={'button'}
 					className="p-2 rounded-xl hover:bg-surface-4">
@@ -24,8 +24,8 @@ const SelectColor = (props: {
 							borderColor: `var(--${props.value}-10)`,
 						}}></p>
 				</button>
-			</Popover.Trigger>
-			<Popover.Content>
+			</PopoverTrigger>
+			<PopoverContent>
 				<div className="space-y-2">
 					<div className="pb-2">
 						<p className="font-semibold text-white">Choose a color</p>
@@ -51,7 +51,7 @@ const SelectColor = (props: {
 						))}
 					</div>
 				</div>
-			</Popover.Content>
+			</PopoverContent>
 		</Popover>
 	);
 };

@@ -101,7 +101,7 @@ export default function ListPage() {
 		<CalendarLayout>
 			<PageHeader
 				projectId={id}
-				options={{ create: true, share: true }}
+				options={{ create: true, share: true, back: true }}
 				actions={
 					<>
 						<ProjectOptions

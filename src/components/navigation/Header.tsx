@@ -24,6 +24,7 @@ type ContextMenuOptions = {
 	share?: boolean;
 	sort?: boolean;
 	create?: boolean;
+	back?: boolean;
 };
 
 export enum PageType {
@@ -75,20 +76,20 @@ const PageHeader = (props: {
 				}}
 				id="page-header"
 				className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
-				<NavigationAction />
+				{props.options?.back && <NavigationAction />}
 				<div className="px-2 flex-1 flex gap-2 items-center">
 					<p className="font-bold truncate text-ellipsis pr-8 w-96 text-surface-12">
 						{props.title}
 					</p>
 					{props.children}
 				</div>
-				<div className="flex-shrink-0 flex items-center gap-3">
+				<div className="flex-shrink-0 flex items-center gap-4">
 					{props.options?.create && (
 						<CreateTaskButton projectId={props.projectId ?? null} />
 					)}
-					{props.options?.share && <ShareAction />}
-					{props.options?.listingStyle && <ViewStyle />}
 					<div className="flex gap-2 items-center">{props.actions}</div>
+					{props.options?.listingStyle && <ViewStyle />}
+					{props.options?.share && <ShareAction />}
 					<SearchField />
 				</div>
 			</nav>

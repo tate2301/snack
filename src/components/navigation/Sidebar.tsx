@@ -12,7 +12,7 @@ import { useAppSelector } from '../../redux/store';
 import { selectAllLists as selectAllLists } from '../../redux/lists';
 import { AnimatePresence } from 'framer-motion';
 import tabs from './tabs';
-import ListNavigationItem from '../Project/ListNavigationItem';
+import ProjectSidebarItem from '../Project/ProjectSidebarItem';
 import ManageListForm, {
 	ManageListFormAction,
 } from '../Project/forms/CreateProject';
@@ -208,7 +208,7 @@ function Projects({}) {
 		<>
 			<AnimatePresence initial={false}>
 				{projects.map((list) => (
-					<ListNavigationItem
+					<ProjectSidebarItem
 						list={list}
 						key={list.id}
 					/>

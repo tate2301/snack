@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import Popover from '../popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 
 type DestructiveActionButtonProps = {
 	action: () => void;
@@ -10,8 +10,8 @@ type DestructiveActionButtonProps = {
 const DestructiveActionButton = (props: DestructiveActionButtonProps) => {
 	return (
 		<Popover>
-			<Popover.Trigger>{props.children}</Popover.Trigger>
-			<Popover.Content>
+			<PopoverTrigger>{props.children}</PopoverTrigger>
+			<PopoverContent>
 				{props.message}
 				<div className="flex space-x-4 mt-2">
 					<button
@@ -20,7 +20,7 @@ const DestructiveActionButton = (props: DestructiveActionButtonProps) => {
 						Continue
 					</button>
 				</div>
-			</Popover.Content>
+			</PopoverContent>
 		</Popover>
 	);
 };

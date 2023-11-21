@@ -31,7 +31,6 @@
 			"category": "xyz.atipamara.productivity",
 			"icon": "build/icon.png"
 		}
-
 	},
 	"dependencies": {
 		"@calumk/editorjs-codeflask": "^1.0.9",
@@ -50,6 +49,8 @@
 		"@editorjs/table": "^2.2.2",
 		"@editorjs/warning": "^1.3.0",
 		"@electron/remote": "^2.0.11",
+		"@emoji-mart/data": "^1.1.2",
+		"@emoji-mart/react": "^1.1.1",
 		"@headlessui/react": "^1.7.15",
 		"@heroicons/react": "^2.0.18",
 		"@milkdown/core": "^7.3.1",
@@ -104,6 +105,7 @@
 		"electron-is-dev": "^2.0.0",
 		"electron-reload": "^2.0.0-alpha.1",
 		"electron-window-state": "^5.0.3",
+		"emoji-mart": "^5.5.2",
 		"formik": "^2.4.3",
 		"framer-motion": "^10.13.0",
 		"inspx": "^0.0.1-alpha.6",

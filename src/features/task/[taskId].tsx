@@ -25,6 +25,7 @@ import { AppEntity } from '../../redux/starred/types';
 import { cn } from '../../lib/utils';
 import StarIcon from '../../icons/StarIcon';
 import TaskPageView from '../../components/Task/TaskPageView';
+import StartTimerButton from '../time-tracking/components/StartTimerButton';
 
 export default function TaskPage() {
 	const { id } = useParams();
@@ -98,9 +99,13 @@ export default function TaskPage() {
 					</p>
 				}
 				pageType={PageType.Task}
-				options={{ share: true }}
+				options={{ share: true, back: true }}
 				actions={
 					<>
+						<StartTimerButton
+							taskId={id}
+							sessionId={null}
+						/>
 						<button
 							onClick={onStar}
 							className="p-1 h-full flex items-center hover:bg-zinc-900/5 rounded-lg leading-none">

@@ -1,9 +1,9 @@
 import { format, startOfToday } from 'date-fns';
 import useToggle from '../../hooks/useToggle';
 import { cn } from '../../lib/utils';
-import Popover from '../ui/popover';
 import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Datepicker from '../ui/datepicker';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 function AddDeadline(props: {
 	selectDate: (date?: Date) => void;
@@ -14,7 +14,7 @@ function AddDeadline(props: {
 		<Popover
 			open={isOpen}
 			onOpenChange={setIsOpen}>
-			<Popover.Trigger>
+			<PopoverTrigger>
 				<button
 					type={'button'}
 					className={cn(
@@ -35,8 +35,8 @@ function AddDeadline(props: {
 						</>
 					) : null}
 				</button>
-			</Popover.Trigger>
-			<Popover.Content>
+			</PopoverTrigger>
+			<PopoverContent>
 				<div className="p-2">
 					<Datepicker
 						value={props.selectedDate ?? startOfToday()}
@@ -46,7 +46,7 @@ function AddDeadline(props: {
 						}}
 					/>
 				</div>
-			</Popover.Content>
+			</PopoverContent>
 		</Popover>
 	);
 }

@@ -1,55 +1,30 @@
-import React from 'react';
+'use client';
 
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import * as RadixPopover from '@radix-ui/react-popover';
-import { ReactNode } from 'react';
+import * as React from 'react';
+import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { cn } from '../../lib/utils';
 
-const Popover = (props: {
-	children: ReactNode;
-	open?: boolean;
-	onOpenChange?: (open: boolean) => void;
-}) => {
-	if (props.onOpenChange) {
-		return (
-			<RadixPopover.Root
-				open={props.open}
-				onOpenChange={props.onOpenChange}>
-				{props.children}
-			</RadixPopover.Root>
-		);
-	}
+const Popover = PopoverPrimitive.Root;
 
-	return <RadixPopover.Root>{props.children}</RadixPopover.Root>;
-};
+const PopoverTrigger = PopoverPrimitive.Trigger;
 
-const Content = (props: { children: ReactNode; noClose?: boolean }) => (
-	<RadixPopover.Content
-		asChild
-		align="start"
-		side="bottom"
-		className="z-50 shadow-xl rounded-xl w-fit"
-		sideOffset={-5}>
-		<div className="border-surface-6 flex justify-between min-w-[2rem] space-x-4 bg-surface-12 text-surface-1 p-2 transition-all z-50 shadow-xl rounded-xl items-start">
-			<div className="p-2">{props.children}</div>
-			<Close />
-		</div>
-	</RadixPopover.Content>
-);
+const PopoverContent = React.forwardRef<
+	React.ElementRef<typeof PopoverPrimitive.Content>,
+	React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
+	<PopoverPrimitive.Portal>
+		<PopoverPrimitive.Content
+			ref={ref}
+			align={align}
+			sideOffset={sideOffset}
+			className={cn(
+				'z-50 min-w-72 rounded-xl bg-surface-12 p-0 text-surface-1 outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+				className,
+			)}
+			{...props}
+		/>
+	</PopoverPrimitive.Portal>
+));
+PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-const Trigger = (props: { children: ReactNode }) => (
-	<RadixPopover.Trigger asChild>{props.children}</RadixPopover.Trigger>
-);
-
-const Close = () => (
-	<RadixPopover.Close
-		className="inline-flex items-center justify-center rounded-full outline-none cursor-default hover:bg-surface-11 hover:text-white mt-1"
-		aria-label="Close">
-		<XMarkIcon className="w-5 h-5" />
-	</RadixPopover.Close>
-);
-
-Popover.Content = Content;
-Popover.Trigger = Trigger;
-Popover.Close = Close;
-
-export default Popover;
+export { Popover, PopoverTrigger, PopoverContent };

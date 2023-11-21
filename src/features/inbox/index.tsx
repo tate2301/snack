@@ -68,8 +68,11 @@ export default function HomePage() {
 	return (
 		<CalendarLayout>
 			<PageHeader
+				options={{
+					back: false,
+				}}
 				actions={
-					<div className="rounded-xl border p-0.5 border-surface-5 text-sm flex gap-1">
+					<div className="rounded-xl text-sm flex gap-1">
 						<button
 							className={cn(
 								'rounded-lg px-1 py-1 text-surface-9',
@@ -92,7 +95,6 @@ export default function HomePage() {
 			/>
 			<div className=" flex-1 h-full items-start overflow-y-auto">
 				<div className="py-4 px-3 flex space-x-2 items-center">
-					<InboxIcon className="w-6 h-6" />
 					<h1 className="font-semibold text-2xl text-surface-12">Inbox</h1>
 				</div>
 				<motion.div className="flex flex-1 flex-col pb-8 space-y-8">

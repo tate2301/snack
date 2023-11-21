@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import TaskListItem from '../../../components/Task/TaskListItem';
 import { useAppSelector } from '../../../redux/store';
 import { selectTasksOfToday } from '../../../redux/tasks';
-import { CalendarDaysIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import PageLayout from '../../../layouts/PageLayout';
 import PageHeader from '../../../components/navigation/Header';
 import { format, startOfToday } from 'date-fns';
@@ -24,7 +24,6 @@ export default function TodayPage() {
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
 				<div className="py-4 px-3 space-y-1">
 					<div className="flex space-x-2 items-center">
-						<CalendarDaysIcon className="w-6 h-6" />
 						<h1 className="font-semibold text-2xl text-surface-12">Today</h1>
 					</div>
 					<p>

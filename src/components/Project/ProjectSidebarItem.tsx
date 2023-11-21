@@ -10,7 +10,7 @@ import ProjectOptions from './ListOptions';
 import CircleProgress from '../ui/progress/CircleProgress';
 import { SnackTaskStatus } from '../../redux/tasks/types';
 
-function ListNavigationItem({ list }: { list: SnackList }) {
+function ProjectSidebarItem({ list }: { list: SnackList }) {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const isActive = id === list.id;
@@ -64,7 +64,7 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 			// 	e.stopPropagation();
 			// }}
 			onClick={onNavigate}
-			className="relative flex flex-col justify-center group context-action">
+			className="relative flex flex-col justify-center group context-action group">
 			<button
 				className={cn(
 					'flex items-center gap-2 py-1.5 px-4 font-normal rounded-lg ',
@@ -79,7 +79,7 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 				<p className="flex items-center gap-2">
 					{list.tasks.length > 0 && (
 						<p>
-							<span className="p-1 font-semibold rounded text-surface-10">
+							<span className="py-1 px-2 font-semibold rounded-lg text-surface-10 bg-surface-2">
 								{list.tasks.length}
 							</span>
 						</p>
@@ -96,4 +96,4 @@ function ListNavigationItem({ list }: { list: SnackList }) {
 	);
 }
 
-export default ListNavigationItem;
+export default ProjectSidebarItem;

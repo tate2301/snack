@@ -2,6 +2,10 @@ import { useState, useRef, useMemo, useEffect } from 'react';
 import { electron } from '../../lib/core/electron';
 import { ipcRenderer } from 'electron';
 import clsx from 'clsx';
+import data from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { cn } from '../../lib/utils';
 
 const EmojiPicker = (props: {
 	onChange: (emoji: string) => void;
@@ -9,16 +13,6 @@ const EmojiPicker = (props: {
 	size?: 'xl' | 'md' | 'sm';
 }) => {
 	const [value, setvalue] = useState(props.value ? props.value : '🚀');
-	const ref = useRef<HTMLInputElement>();
-	const isEmojiPickerSupported = useMemo(() => {
-		return electron.app.isEmojiPanelSupported();
-	}, []);
-
-	const onShowEmojiPicker = async () => {
-		ipcRenderer.send('show-emoji-picker');
-		if (!ref.current) return;
-		ref.current.focus();
-	};
 
 	useEffect(() => {
 		props.onChange(value);
@@ -34,29 +28,25 @@ const EmojiPicker = (props: {
 		normal: '',
 	};
 
-	if (!isEmojiPickerSupported) return null;
-
 	return (
-		<button
-			type="button"
-			onClick={onShowEmojiPicker}
-			className="py-1 px-2 flex items-center justify-center relative rounded-xl">
-			<p className="w-full h-full z-10 absolute" />
-			<p
-				contentEditable
-				onInput={(e) => {
-					// @ts-ignore
-					setvalue(e.nativeEvent.data);
-					return e;
-				}}
-				className={clsx(
-					'outline-none !w-fit text-2xl relative z-0 caret-transparent',
-					props.size && sizes[props.size],
-				)}
-				ref={ref}>
-				{value ?? '🎃'}
-			</p>
-		</button>
+		<Popover>
+			<PopoverTrigger
+				className={cn(
+					'rounded-xl py-1 px-2 hover:bg-surface-4',
+					props.size ? sizes[props.size] : 'text-lg',
+				)}>
+				{props.value ?? '😊'}
+			</PopoverTrigger>
+			<PopoverContent>
+				<Picker
+					data={data}
+					onEmojiSelect={props.onChange}
+					native={true}
+					theme="dark"
+					previewPosition="none"
+				/>
+			</PopoverContent>
+		</Popover>
 	);
 };
 

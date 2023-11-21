@@ -24,7 +24,6 @@ export default function BacklogPage() {
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
 				<div className="py-4 px-3 space-y-1">
 					<div className="flex space-x-2 items-center">
-						<ExclamationCircleIcon className="w-6 h-6" />
 						<h1 className="font-semibold text-2xl text-surface-12">Backlog</h1>
 					</div>
 					<p>

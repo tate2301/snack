@@ -115,7 +115,7 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 			<div className={cn('container mx-auto max-w-screen-md')}>
 				<div className="mt-8 py-2 px-6">
 					<div className="mb-4">
-						<p className="text-7xl p-1 rounded-lg hover:bg-surface-3 w-fit">
+						<p className="text-7xl w-fit">
 							<EmojiPicker
 								size="xl"
 								value={task.emoji}
