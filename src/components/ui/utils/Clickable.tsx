@@ -6,7 +6,7 @@ import useClickOutside from '../../../hooks/useClickOutside';
 
 type ClickableProps = {
 	children: ReactNode;
-	menu?: ReactNode;
+	menu?: (isOpen: boolean, onClose: () => void) => ReactNode;
 	className?: string;
 	action?: () => void;
 	[key: string]: any;
@@ -14,6 +14,7 @@ type ClickableProps = {
 
 const Clickable = (props: ClickableProps) => {
 	const [isFocused, toggleFocused, setIsFocused] = useToggle(false);
+	const [isContextMenuOpen, toggleIsContextMenuOpen] = useToggle(false);
 
 	// Use ref to remove focus when clicked outside
 	const ref = useRef();
@@ -35,17 +36,18 @@ const Clickable = (props: ClickableProps) => {
 	};
 
 	return (
-		<motion.div
-			{...getElementProps(props)}
-			onDoubleClick={onDoubleClick}
-			onContextMenu={() => {
-				console.log('Context menu');
-			}}
-			onClick={onClick}
-			className={cn('', props.className, isFocused && 'bg-surface-3')}
-			children={props.children}
-			ref={ref}
-		/>
+		<>
+			<motion.div
+				{...getElementProps(props)}
+				onDoubleClick={onDoubleClick}
+				onContextMenu={toggleIsContextMenuOpen}
+				onClick={onClick}
+				className={cn('', props.className, isFocused && 'bg-surface-3')}
+				ref={ref}>
+				{props.menu && props.menu(isContextMenuOpen, toggleIsContextMenuOpen)}
+				{props.children}
+			</motion.div>
+		</>
 	);
 };
 

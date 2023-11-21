@@ -20,7 +20,7 @@ import { useCallback, useMemo, useState } from 'react';
 import TargetIcon from '../../icons/TargetIcon';
 import TaskQuickPreview from '../../components/Task/TaskQuickPreview';
 import InboxIcon from '../../icons/InboxIcon';
-import { groupTasksByPeriod } from '../../lib/core/tasks';
+import { groupTasksByPeriod, groupTasksByStatus } from '../../lib/core/tasks';
 import { format } from 'date-fns';
 import { cn } from '../../lib/utils';
 
@@ -30,7 +30,9 @@ import { cn } from '../../lib/utils';
 // </p>;
 export default function HomePage() {
 	const [selectedTask, setSelectedTask] = useState<string>();
-	const [period, setPeriod] = useState<'day' | 'week' | 'month'>('day');
+	const [period, setPeriod] = useState<'day' | 'week' | 'month' | 'status'>(
+		'day',
+	);
 
 	const allTasks = useAppSelector((state) => selectAllTasks(state));
 	const navigate = useNavigate();
@@ -60,8 +62,11 @@ export default function HomePage() {
 		if (indexOfCurrent > 0) onSelectTask(allTasks[indexOfCurrent - 1].id);
 	};
 
-	const tasksWithDates = useMemo(
-		() => groupTasksByPeriod(allTasks.reverse(), period),
+	const groupedTasks = useMemo(
+		() =>
+			period !== 'status'
+				? groupTasksByPeriod(allTasks.reverse(), period)
+				: groupTasksByStatus(allTasks.reverse()),
 		[allTasks],
 	);
 
@@ -81,7 +86,14 @@ export default function HomePage() {
 							onClick={() => setPeriod('day')}>
 							<HCalendarIcon className="w-6 h-6" />
 						</button>
-
+						<button
+							className={cn(
+								'rounded-lg px-2 py-1 text-surface-9',
+								period === 'status' && 'bg-surface-4 text-surface-12',
+							)}
+							onClick={() => setPeriod('status')}>
+							<TargetIcon className="w-5 h-5" />
+						</button>
 						<button
 							className={cn(
 								'rounded-lg px-1 py-1 text-surface-9',
@@ -94,15 +106,19 @@ export default function HomePage() {
 				}
 			/>
 			<div className=" flex-1 h-full items-start overflow-y-auto">
-				<div className="py-4 px-3 flex space-x-2 items-center">
+				<div className="py-4 px-3">
 					<h1 className="font-semibold text-2xl text-surface-12">Inbox</h1>
+					<p>
+						{allTasks.length} tasks,{' '}
+						{allTasks.filter((task) => !task.complete).length} still pending
+					</p>
 				</div>
 				<motion.div className="flex flex-1 flex-col pb-8 space-y-8">
 					<AnimatePresence initial={false}>
-						{Object.keys(tasksWithDates).map((key) => (
-							<div>
-								<div className="p-4">
-									<p className="font-medium text-sm text-surface-10 ">
+						{Object.keys(groupedTasks).map((key) => (
+							<div className="px-2">
+								<div className="py-4 px-2">
+									<p className="font-medium text-sm text-surface-10">
 										{period === 'day' &&
 											format(new Date(key), 'EEE do MMM yyyy')}
 										{period === 'week' &&
@@ -111,10 +127,18 @@ export default function HomePage() {
 												'MMM yyyy',
 											)}, Week ${key.split('-W')[1]}`}
 										{period === 'month' && format(new Date(key), 'MMM yyyy')}
+										{period === 'status' && (
+											<>
+												{key}
+												<span className="ml-2 rounded-lg bg-surface-4 py-0.5 px-1.5">
+													{groupedTasks[key].length}
+												</span>
+											</>
+										)}
 									</p>
 								</div>
-								{tasksWithDates[key].length > 0 &&
-									tasksWithDates[key].map((task) => (
+								{groupedTasks[key].length > 0 &&
+									groupedTasks[key].map((task) => (
 										<motion.div
 											key={task.id}
 											initial={{

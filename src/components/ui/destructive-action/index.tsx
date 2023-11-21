@@ -11,7 +11,7 @@ const DestructiveActionButton = (props: DestructiveActionButtonProps) => {
 	return (
 		<Popover>
 			<PopoverTrigger>{props.children}</PopoverTrigger>
-			<PopoverContent>
+			<PopoverContent className="p-4">
 				{props.message}
 				<div className="flex space-x-4 mt-2">
 					<button

@@ -35,6 +35,7 @@ import { FolderIcon, QueueListIcon } from '@heroicons/react/24/solid';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import GridTaskListItem from './ListItem/Grid';
 import DefaultTaskListItem from './ListItem';
+import ContextMenu from './ListItem/components/ContextMenu';
 
 export enum TaskListItemView {
 	Grid = 'Grid',
@@ -80,6 +81,12 @@ export default function TaskListItem(
 				props.onSelectTask && ((isFocused) => props.onSelectTask(isFocused))
 			}
 			action={props.onExpandTask}
+			menu={(isOpen, onClose) => (
+				<ContextMenu
+					isOpen={isOpen}
+					onClose={onClose}
+				/>
+			)}
 			className={clsx(
 				'group p-1',
 				props.view === TaskListItemView.Grid ? 'rounded-xl' : 'rounded',

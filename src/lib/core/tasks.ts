@@ -43,3 +43,23 @@ export const groupTasksByPeriod = (
 	});
 	return sortedGroupedTasks;
 };
+
+/** Takes a list of tasks and separates them into an array of objects, separated by status */
+export const groupTasksByStatus = (tasks: Array<SnackTask>) => {
+	const groupedTasks = tasks.reduce((grouped, task) => {
+		if (!grouped[task.status]) {
+			grouped[task.status] = [];
+		}
+
+		grouped[task.status].push(task);
+
+		return grouped;
+	}, {});
+
+	return {
+		'In Progress': groupedTasks['In Progress'] || [],
+		Todo: groupedTasks['Todo'] || [],
+		Complete: groupedTasks['Complete'] || [],
+		Blocked: groupedTasks['Blocked'] || [],
+	};
+};
