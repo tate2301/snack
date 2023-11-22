@@ -58,7 +58,7 @@ export default function BacklogPage() {
 				name={'Complete'}
 				description={`You rock! You have completed ${backlogTasks.length} tasks :)`}
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
-				<div className="py-4 px-3 space-y-1">
+				<div className="py-4 px-3 space-y-1 sticky top-0 w-full bg-white z-30 border-b border-zinc-400/10">
 					<div className="flex space-x-2 items-center">
 						<h1 className="font-semibold text-2xl text-surface-12">Backlog</h1>
 					</div>

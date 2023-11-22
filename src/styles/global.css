@@ -42,7 +42,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-x: hidden;
-	@apply select-none;
+	@apply select-none scroll-smooth;
 }
 
 .app-noise {

@@ -219,7 +219,7 @@ const CreateTaskForm = (props: {
 
 	return (
 		<form
-			className="flex flex-col w-full gap-2"
+			className="flex flex-col w-full gap-2 pb-2"
 			ref={formRef}
 			onSubmit={form.handleSubmit}>
 			<div className="flex mb-2 w-fit border border-surfacce-3 rounded-xl">
@@ -290,18 +290,13 @@ const CreateTaskForm = (props: {
 					<button
 						type={'button'}
 						onClick={props.toggle}
-						className={'p-2 px-4 rounded-xl text-surface-10'}>
+						className={'py-1 px-3 rounded-lg text-surface-10'}>
 						Cancel
-						<Kbd keys={['Esc']} />
 					</button>
 					<button
 						type={'submit'}
-						className={'p-2 px-4 rounded-xl bg-primary-10 text-white'}>
-						<p className="p-1 bg-white rounded-full">
-							<ArrowUpIcon className="w-4 h-4 stroke-2 text-primary-11" />
-						</p>
-						Add task
-						<Kbd keys={['Enter']} />
+						className={'py-1 px-3 rounded-lg bg-primary-10 text-white'}>
+						Create task
 					</button>
 				</div>
 			</div>

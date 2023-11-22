@@ -151,15 +151,14 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 						</div>
 					</div>
 				</div>
-
-				<div className="flex flex-col gap-2 py-2 mt-4 border-b border-surface-3 px-6">
-					<TaskChecklist {...task} />
-				</div>
 				<div className="flex flex-col !w-full !max-w-screen-xl px-6 prose prose-zinc prose-h1:font-semibold prose-headings:font-semibold py-4">
 					<MilkdownEditorWrapper
 						onChange={onDescriptionChanged}
-						value={description}
+						value={description ?? 'Type a description'}
 					/>
+				</div>
+				<div className="flex flex-col gap-2 py-2 mt-4 border-t border-surface-3 px-6">
+					<TaskChecklist {...task} />
 				</div>
 			</div>
 		</>

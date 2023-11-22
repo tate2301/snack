@@ -20,7 +20,7 @@ function AddDeadline(props: {
 					'py-0.5 px-2 rounded-lg items-center flex-shrink-0 w-full text-sm',
 					'bg-white border-surface-4 text-surface-10',
 				)}>
-				<button>
+				<button type="button">
 					<CalendarDaysIcon className="w-5 h-5" />
 					{props.selectedDate ? (
 						<>

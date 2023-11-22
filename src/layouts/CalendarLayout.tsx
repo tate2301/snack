@@ -22,7 +22,7 @@ export default function CalendarLayout(props) {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
-			<CommandBar />
+			{false && <CommandBar />}{' '}
 			<div className="relative flex flex-col w-screen h-screen overflow-hidden">
 				<div
 					className={

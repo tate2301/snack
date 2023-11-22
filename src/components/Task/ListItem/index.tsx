@@ -29,7 +29,7 @@ type DefaultTaskListItemProps = {
 
 export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 	return (
-		<div className="flex items-center flex-1 h-full p-2 rounded-xl bg-surface-2">
+		<div className="flex items-center flex-1 h-full p-1 rounded-xl">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-center w-full gap-2">

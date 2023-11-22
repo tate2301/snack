@@ -18,7 +18,12 @@ import ManageListForm, {
 } from '../Project/forms/CreateProject';
 import { selectStarredItemById, selectStarredItems } from '../../redux/starred';
 import { AppEntity, Starred } from '../../redux/starred/types';
-import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
+import {
+	UserGroupIcon,
+	FolderIcon,
+	ClockIcon,
+	BoltIcon,
+} from '@heroicons/react/20/solid';
 import { useContext, useMemo } from 'react';
 import { SnackList } from '../../redux/lists/types';
 import InProgressIcon from '../../icons/InProgressIcon';

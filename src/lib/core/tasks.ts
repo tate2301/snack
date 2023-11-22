@@ -1,3 +1,4 @@
+import { SnackList } from '../../redux/lists/types';
 import { SnackTask } from '../../redux/tasks/types';
 
 /** Takes a list of tasks and separates them into an array of objects, separated by date or week or month */
@@ -34,9 +35,22 @@ export const groupTasksByPeriod = (
 		return grouped;
 	}, {});
 
-	const sortedKeys = Object.keys(groupedTasks).sort(
+	let sortedKeys = Object.keys(groupedTasks).sort(
 		(a, b) => new Date(b).getTime() - new Date(a).getTime(),
 	);
+
+	if (period === 'day') {
+		const date = new Date();
+
+		const index = sortedKeys.indexOf(
+			`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+		);
+		sortedKeys.splice(index, 1);
+		sortedKeys.unshift(
+			`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+		);
+	}
+
 	const sortedGroupedTasks = {};
 	sortedKeys.forEach((key) => {
 		sortedGroupedTasks[key] = groupedTasks[key];
@@ -62,4 +76,33 @@ export const groupTasksByStatus = (tasks: Array<SnackTask>) => {
 		Complete: groupedTasks['Complete'] || [],
 		Blocked: groupedTasks['Blocked'] || [],
 	};
+};
+
+export const groupTasksByProject = (
+	tasks: Array<SnackTask>,
+	projects: Array<SnackList>,
+) => {
+	const tasksWithProjects = tasks.map((task) => {
+		let project = projects.find((project) => project.tasks.includes(task.id));
+		if (!project)
+			project = projects.find((project) => project.id === 'default');
+
+		return {
+			...task,
+			project: project.name,
+		};
+	});
+
+	// group tasks by project
+	const groupedTasks = tasksWithProjects.reduce((grouped, task) => {
+		if (!grouped[task.project]) {
+			grouped[task.project] = [];
+		}
+
+		grouped[task.project].push(task);
+
+		return grouped;
+	}, {});
+
+	return groupedTasks;
 };
