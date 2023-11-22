@@ -4,6 +4,7 @@ import { cn } from '../../lib/utils';
 import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Datepicker from '../ui/datepicker';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { MinusCircleIcon } from '@heroicons/react/20/solid';
 
 function AddDeadline(props: {
 	selectDate: (date?: Date) => void;
@@ -14,26 +15,27 @@ function AddDeadline(props: {
 		<Popover
 			open={isOpen}
 			onOpenChange={setIsOpen}>
-			<PopoverTrigger>
-				<button
-					type={'button'}
-					className={cn(
-						'p-2 rounded-xl items-center flex-shrink-0 w-full',
-						'bg-white border-surface-4 hover:bg-surface-3 hover:text-surface-12 hover:border-surface-6 text-surface-10',
-					)}>
-					<CalendarDaysIcon className="w-6 h-6" />
+			<PopoverTrigger
+				className={cn(
+					'py-0.5 px-2 rounded-lg items-center flex-shrink-0 w-full text-sm',
+					'bg-white border-surface-4 text-surface-10',
+				)}>
+				<button>
+					<CalendarDaysIcon className="w-5 h-5" />
 					{props.selectedDate ? (
 						<>
 							{format(props.selectedDate, 'dd MMM yyyy')}
-							<XMarkIcon
+							<MinusCircleIcon
 								onClick={(e) => {
 									props.selectDate(undefined);
 									e.stopPropagation();
 								}}
-								className="w-5 h-5 ml-auto"
+								className="w-5 h-5 ml-2"
 							/>
 						</>
-					) : null}
+					) : (
+						'When'
+					)}
 				</button>
 			</PopoverTrigger>
 			<PopoverContent>

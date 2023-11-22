@@ -121,7 +121,7 @@ export default function TaskQuickPreview(props: {
 			isOpen={props.isOpen}
 			onClose={props.onClose}>
 			<div>
-				<div className="flex gap-8 w-full rounded-t-lg sticky border-b p-2 justify-between bg-white top-0 z-30 overflow-hidden">
+				<div className="flex gap-8 w-full rounded-t-lg sticky p-2 justify-between bg-white top-0 z-30 overflow-hidden">
 					<div className="flex gap-4">
 						<SelectStatus
 							status={task.status}

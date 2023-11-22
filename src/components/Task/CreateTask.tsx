@@ -229,8 +229,11 @@ const CreateTaskForm = (props: {
 				/>
 			</div>
 			<div className={'flex-1 flex items-start w-full mb-1 gap-4'}>
-				<EmojiPicker onChange={(emoji) => form.setFieldValue('emoji', emoji)} />
-
+				{false && (
+					<EmojiPicker
+						onChange={(emoji) => form.setFieldValue('emoji', emoji)}
+					/>
+				)}
 				<div className="flex-1">
 					<Textarea
 						setRef={textAreaRef}
@@ -267,7 +270,7 @@ const CreateTaskForm = (props: {
 			</div>
 
 			<div className={'flex items-center justify-between gap-2 mt-2'}>
-				<div className="flex gap-2">
+				<div className="flex gap-2 border border-zinc-400/30 hover:shadow-sm rounded-lg">
 					<AddDeadline
 						selectDate={(date) => form.setFieldValue('deadline', date)}
 						selectedDate={form.values.deadline}

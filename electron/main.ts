@@ -32,6 +32,7 @@ function createWindow() {
 		maximizable: true,
 		icon: './logo512.png',
 		show: false,
+		title: 'Snack',
 	});
 
 	/** Window Events */

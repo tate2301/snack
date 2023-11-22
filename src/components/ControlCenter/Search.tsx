@@ -1,15 +1,11 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
-const SearchField = () => {
+const ControlCentre = () => {
 	return (
-		<div className="font-normal flex relative">
-			<MagnifyingGlassIcon className="w-5 h-5 absolute left-2 top-[50%] -translate-y-[50%] " />
-			<input
-				placeholder="Search"
-				className="w-full h-full rounded-lg pl-8 py-2 bg-surface-3 focus:shadow-sm focus:ring-2 focus:bg-white outline outline-zinc-900/10"
-			/>
-		</div>
+		<button className="font-normal flex relative p-1.5 hover:bg-surface-4 hover:text-surface-12 rounded-lg">
+			<MagnifyingGlassIcon className="w-5 h-5" />
+		</button>
 	);
 };
 
-export default SearchField;
+export default ControlCentre;

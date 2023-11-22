@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/solid';
 import { CommandContext } from '../../context/CommandContext';
 import ShareIcon from '../../icons/ShareIcon';
-import SearchField from '../ControlCenter/Search';
+import ControlCentre from '../ControlCenter/Search';
 
 type ContextMenuOptions = {
 	search?: boolean;
@@ -78,19 +78,19 @@ const PageHeader = (props: {
 				className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
 				{props.options?.back && <NavigationAction />}
 				<div className="px-2 flex-1 flex gap-2 items-center">
-					<p className="font-bold truncate text-ellipsis pr-8 w-96 text-surface-12">
+					<p className="font-bold truncate text-ellipsis pr-8 text-surface-12">
 						{props.title}
 					</p>
 					{props.children}
 				</div>
-				<div className="flex-shrink-0 flex items-center gap-4">
+				<div className="flex-shrink-0 flex items-center space-x-8 transition-all">
 					{props.options?.create && (
 						<CreateTaskButton projectId={props.projectId ?? null} />
 					)}
 					<div className="flex gap-2 items-center">{props.actions}</div>
 					{props.options?.listingStyle && <ViewStyle />}
 					{props.options?.share && <ShareAction />}
-					<SearchField />
+					<ControlCentre />
 				</div>
 			</nav>
 		</header>

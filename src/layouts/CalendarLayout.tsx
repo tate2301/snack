@@ -6,6 +6,7 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import clsx from 'clsx';
+import CommandBar from '../components/commandbar';
 
 export default function CalendarLayout(props) {
 	const sensors = useSensors(
@@ -21,6 +22,7 @@ export default function CalendarLayout(props) {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
+			<CommandBar />
 			<div className="relative flex flex-col w-screen h-screen overflow-hidden">
 				<div
 					className={

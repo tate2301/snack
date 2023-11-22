@@ -67,12 +67,14 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 								href={tab.href}
 							/>
 						))}
-						<NavItem
-							icon={<PlusCircleIcon className="w-6 h-6 text-primary-10" />}
-							label="Add new task"
-							value={'create'}
-							action={onCreateTask}
-						/>
+						<div className="hover:shadow-md hover:outline mt-1 hover:outline-zinc-400/30 rounded-lg hover:bg-white transition-shadows py-1">
+							<NavItem
+								icon={<PlusCircleIcon className="w-6 h-6 text-primary-10" />}
+								label="Add new task"
+								value={'create'}
+								action={onCreateTask}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

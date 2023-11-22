@@ -65,7 +65,7 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 								</p>
 								<p
 									className={clsx(
-										'line-clamp-1 pr-2 truncate text-ellipsis max-w-full',
+										'line-clamp-1 pr-2 overflow-hidden text-ellipsis max-w-full',
 										props.isChecked
 											? 'line-through text-zinc-400 '
 											: 'text-surface-12',

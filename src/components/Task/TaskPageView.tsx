@@ -114,25 +114,17 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 		<>
 			<div className={cn('container mx-auto max-w-screen-md')}>
 				<div className="mt-8 py-2 px-6">
-					<div className="mb-4">
-						<p className="text-7xl w-fit">
-							<EmojiPicker
-								size="xl"
-								value={task.emoji}
-								onChange={onChangeEmoji}
-							/>
-						</p>
-					</div>
-					<div className="flex gap-4 mb-4">
-						<p className="rounded-lg border border-zinc-400/30 hover:shadow-sm hover:bg-shadow">
-							<ProjectList
-								onChange={onListChanged}
-								defaultListId={list.id}
-							/>
-						</p>
-					</div>
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col">
 						<div className="flex items-start gap-4 w-full">
+							{false && (
+								<p className="text-7xl w-fit">
+									<EmojiPicker
+										size="md"
+										value={task.emoji}
+										onChange={onChangeEmoji}
+									/>
+								</p>
+							)}
 							<Textarea
 								onChange={(e) => {
 									onTitleChanged(e.target.value);
@@ -143,38 +135,24 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 								className="text-3xl bg-transparent font-semibold text-zinc-900 w-full outline-none flex-1"
 							/>
 						</div>
+						<div className="flex space-x-4 items-center mt-2 !text-sm">
+							<div className="border border-surface-4 rounded-lg hover:shadow-sm">
+								<AddDeadline
+									selectedDate={task.deadline && new Date(task.deadline)}
+									selectDate={onDeadlineChanged}
+								/>
+							</div>
+							<div className="rounded-lg hover:shadow-sm p-0.5 border border-surface-4">
+								<PriorityList
+									onChange={() => null}
+									priority={task.priority}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div className="flex flex-col py-2 gap-1 mx-6">
-					<TaskDetailItem
-						label="Assignee"
-						icon={<UserIcon className="w-5 h-5" />}>
-						<AssigneeList onChange={() => null} />
-					</TaskDetailItem>
-					<TaskDetailItem
-						label="Priority"
-						icon={<ExclamationCircleIcon className="w-5 h-5" />}>
-						<PriorityList
-							onChange={() => null}
-							priority={task.priority}
-						/>
-					</TaskDetailItem>
-					<TaskDetailItem
-						label="When"
-						icon={<CalendarDaysIcon className="w-5 h-5" />}>
-						<AddDeadline
-							selectedDate={new Date(task.deadline || new Date())}
-							selectDate={onDeadlineChanged}
-						/>
-					</TaskDetailItem>
-				</div>
-				<div className="mx-4 mb-4">
-					<button className="px-2 py-1 rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12">
-						<PlusIcon className="w-5 h-5" />
-						Add a property
-					</button>
-				</div>
-				<div className="flex flex-col gap-2 py-2 border-t border-b border-surface-3 px-6">
+
+				<div className="flex flex-col gap-2 py-2 mt-4 border-b border-surface-3 px-6">
 					<TaskChecklist {...task} />
 				</div>
 				<div className="flex flex-col !w-full !max-w-screen-xl px-6 prose prose-zinc prose-h1:font-semibold prose-headings:font-semibold py-4">

@@ -27,12 +27,6 @@ const tabs: NavItemType[] = [
 		label: 'Backlog',
 		href: '/backlog',
 	},
-	{
-		icon: <BookOpenIcon className="w-5 h-5 text-primary-10" />,
-		value: 'later',
-		label: 'Logbook',
-		href: '/logbook',
-	},
 ];
 
 export default tabs;

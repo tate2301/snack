@@ -24,7 +24,7 @@ const EmojiPicker = (props: {
 
 	const sizes = {
 		xl: 'text-7xl',
-		md: 'text-4xl',
+		md: 'text-3xl',
 		normal: '',
 	};
 

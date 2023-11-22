@@ -21,7 +21,7 @@ import TargetIcon from '../../icons/TargetIcon';
 import TaskQuickPreview from '../../components/Task/TaskQuickPreview';
 import InboxIcon from '../../icons/InboxIcon';
 import { groupTasksByPeriod, groupTasksByStatus } from '../../lib/core/tasks';
-import { format } from 'date-fns';
+import { format, isEqual, startOfDay } from 'date-fns';
 import { cn } from '../../lib/utils';
 
 // <p className="text-xl text-surface-10">
@@ -30,7 +30,7 @@ import { cn } from '../../lib/utils';
 // </p>;
 export default function HomePage() {
 	const [selectedTask, setSelectedTask] = useState<string>();
-	const [period, setPeriod] = useState<'day' | 'week' | 'month' | 'status'>(
+	const [groupBy, setGroupBy] = useState<'day' | 'week' | 'month' | 'status'>(
 		'day',
 	);
 
@@ -64,8 +64,8 @@ export default function HomePage() {
 
 	const groupedTasks = useMemo(
 		() =>
-			period !== 'status'
-				? groupTasksByPeriod(allTasks.reverse(), period)
+			groupBy !== 'status'
+				? groupTasksByPeriod(allTasks.reverse(), groupBy)
 				: groupTasksByStatus(allTasks.reverse()),
 		[allTasks],
 	);
@@ -81,25 +81,25 @@ export default function HomePage() {
 						<button
 							className={cn(
 								'rounded-lg px-1 py-1 text-surface-9',
-								period === 'day' && 'bg-surface-4 text-surface-12',
+								groupBy === 'day' && 'bg-surface-4 text-surface-12',
 							)}
-							onClick={() => setPeriod('day')}>
+							onClick={() => setGroupBy('day')}>
 							<HCalendarIcon className="w-6 h-6" />
 						</button>
 						<button
 							className={cn(
 								'rounded-lg px-2 py-1 text-surface-9',
-								period === 'status' && 'bg-surface-4 text-surface-12',
+								groupBy === 'status' && 'bg-surface-4 text-surface-12',
 							)}
-							onClick={() => setPeriod('status')}>
+							onClick={() => setGroupBy('status')}>
 							<TargetIcon className="w-5 h-5" />
 						</button>
 						<button
 							className={cn(
 								'rounded-lg px-1 py-1 text-surface-9',
-								period === 'month' && 'bg-surface-4 text-surface-12',
+								groupBy === 'month' && 'bg-surface-4 text-surface-12',
 							)}
-							onClick={() => setPeriod('month')}>
+							onClick={() => setGroupBy('month')}>
 							<CalendarDaysIcon className="w-6 h-6" />
 						</button>
 					</div>
@@ -119,15 +119,15 @@ export default function HomePage() {
 							<div className="px-2">
 								<div className="py-4 px-2">
 									<p className="font-medium text-sm text-surface-10">
-										{period === 'day' &&
+										{groupBy === 'day' &&
 											format(new Date(key), 'EEE do MMM yyyy')}
-										{period === 'week' &&
+										{groupBy === 'week' &&
 											`${format(
 												new Date(key.split('-W')[0]),
 												'MMM yyyy',
 											)}, Week ${key.split('-W')[1]}`}
-										{period === 'month' && format(new Date(key), 'MMM yyyy')}
-										{period === 'status' && (
+										{groupBy === 'month' && format(new Date(key), 'MMM yyyy')}
+										{groupBy === 'status' && (
 											<>
 												{key}
 												<span className="ml-2 rounded-lg bg-surface-4 py-0.5 px-1.5">
@@ -135,6 +135,15 @@ export default function HomePage() {
 												</span>
 											</>
 										)}
+										{groupBy === 'day' &&
+											isEqual(
+												startOfDay(new Date(key)),
+												startOfDay(new Date()),
+											) && (
+												<span className="py-1 px-1.5 rounded-lg bg-accent-10 text-white text-sm font-medium ml-2">
+													Today
+												</span>
+											)}
 									</p>
 								</div>
 								{groupedTasks[key].length > 0 &&
