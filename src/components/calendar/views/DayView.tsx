@@ -17,9 +17,10 @@ import { CalendarView, DayCalendarProps } from '../types';
 import clsx from 'clsx';
 import useTimestampPosition from '../../../hooks/useTimestampPosition';
 import EventsTrack from '../events/Track';
+import { EventCardProps } from '../events/EventCard';
 
 export default function DayView(props: DayCalendarProps) {
-	const { container, containerNav, timeIntervals, timePosition, currentTime } =
+	const { container, containerNav, timeIntervals, timePosition } =
 		useCalendarTime();
 	const timestampPosition = useTimestampPosition();
 
@@ -55,13 +56,21 @@ export default function DayView(props: DayCalendarProps) {
 				}}>
 				<Timezone
 					zone="est"
-					currentTime={currentTime}
 					timeIntervals={timeIntervals}
 				/>
 
 				<div className="relative grid flex-auto grid-cols-1 grid-rows-1 divide-y">
 					<Timestamp />
-					<EventsTrack date={props.selectedDate} />
+					<EventsTrack
+						date={props.selectedDate}
+						events={[]}
+						updateEvent={function (event: EventCardProps): void {
+							throw new Error('Function not implemented.');
+						}}
+						createEvent={function (event: EventCardProps): void {
+							throw new Error('Function not implemented.');
+						}}
+					/>
 					{timeIntervals.map((time, idx) => (
 						<>
 							<div

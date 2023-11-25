@@ -8,6 +8,7 @@ import {
 	startOfDay,
 	startOfToday,
 } from 'date-fns';
+// @ts-ignore
 import { faker } from '@faker-js/faker';
 import { Collision } from '@dnd-kit/core';
 import { EventCardProps } from './EventCard';

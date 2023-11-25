@@ -1,7 +1,7 @@
 import { pointerWithin, rectIntersection } from '@dnd-kit/core';
 import { add, isEqual, startOfDay } from 'date-fns';
-import { getCoordinatesOfEvent } from '../components/calendar/events/utils';
 import { HOUR_HEIGHT } from '../constants/dimensions';
+import { getCoordinatesOfEvent } from '../components/calendar/events/utils';
 
 // infer type from pointerWithin params
 export type CollisionsArgs = Parameters<typeof pointerWithin>[0];
