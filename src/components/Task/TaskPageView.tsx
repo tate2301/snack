@@ -13,7 +13,7 @@ import { AppEntity } from '../../redux/starred/types';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { selectTaskById, updateTask } from '../../redux/tasks';
 import {
-	CalendarDaysIcon,
+	CalendarDaysIcon, ClockIcon,
 	ExclamationCircleIcon,
 	PlusIcon,
 	UserIcon,
@@ -28,6 +28,10 @@ import PriorityList from '../misc/lists/PriorityList';
 import AssigneeList from '../misc/lists/AssigneeList';
 import { MilkdownEditorWrapper } from '../ui/editor';
 import Datepicker from '../ui/datepicker';
+import { format } from 'date-fns';
+import { ArrowLongRightIcon, PlayIcon, StopIcon } from '@heroicons/react/20/solid';
+import { PauseIcon } from '@heroicons/react/24/solid';
+import TargetIcon from '../../icons/TargetIcon';
 
 const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 	const { id } = props;
@@ -157,7 +161,82 @@ const TaskPageView = (props: { id: string; addPadding?: boolean }) => {
 						value={description ?? 'Type a description'}
 					/>
 				</div>
-				<div className="flex flex-col gap-2 py-2 mt-4 border-t border-surface-3 px-6">
+				<div className={"mx-6 flex flex-col mt-4 py-4 gap-4 bg-surface-3 rounded-xl p-4"}>
+					<div className={"flex mb-2 space-x-2 items-center text-surface-12"}>
+						<ClockIcon className={"w-5 h-5"} />
+						<p className={"font-semibold"}>Time tracking</p>
+					</div>
+					<div className={"flex justify-between items-center"}>
+						<div>
+							<p className={"text-5xl font-semibold text-surface-12 mb-1"}>
+								00:00:00
+							</p>
+							<p className={"text-surface-10"}> Total time tracked today: 5hr 10min</p>
+						</div>
+						<div className={"flex items-center justify-center space-x-4"}>
+							<button className={"rounded-lg p-2 bg-surface-12 hover:ring-4 transition-all ring-surface-8 text-white pr-4"}>
+								<TargetIcon className={"w-5 h-5"} />
+								Add manual time
+							</button>
+							<button className={"rounded-lg p-2 bg-primary-10 hover:ring-4 transition-all ring-blue-600/20 text-white pr-4"}>
+								<PlayIcon className={"w-5 h-5"} />
+								Clock in
+							</button>
+							{false && (
+								<>
+									<button className={"rounded-lg py-1 px-3 bg-surface-12 text-white"}>
+										Reset
+									</button>
+									<button className={"rounded-full p-2 bg-surface-12 text-white"}>
+										<StopIcon className={"w-8 h-8"} />
+									</button>
+									<button className={"rounded-full p-2 bg-surface-12 text-white"}>
+										<PauseIcon className={"w-8 h-8"} />
+									</button>
+								</>
+							)}
+						</div>
+					</div>
+
+					<div className={"rounded-xl bg-white p-4 flex justify-between mt-2 shadow items-center space-x-4"}>
+						<div className={"p-3 rounded-xl bg-surface-4"}>
+							<ClockIcon className={"w-6 h-6"} />
+						</div>
+						<div className={"flex-1"}>
+							<p className={"font-medium"}>
+								Latest session
+							</p>
+							<div className={"flex space-x-4 font-medium text-xl"}>
+								<p className={cn("text-surface-12")}>
+									00:00:00
+								</p>
+								<p>
+									&bull;
+								</p>
+								<p className={"inline-flex items-center text-surface-12"}>
+									13:02 <ArrowLongRightIcon className={"w-5 h-5 mx-2 text-surface-10"} /> 13:44
+								</p>
+							</div>
+						</div>
+						<div className={"flex gap-2 items-center"}>
+							<button className={"rounded-lg py-1 px-3 bg-primary-10 text-primary-1"}>
+								Continue session
+							</button>
+						</div>
+					</div>
+
+				</div>
+				<div className="flex flex-col py-2 border-surface-3 px-6 mt-8">
+					<div className={"flex items-baseline justify-between"}>
+						<p className={"tetx-surface-10"}>
+							{format(new Date(), "EEE, dd MMM")}
+						</p>
+						<p>
+							Total: <span className={"font-medium text-surface-12"}>
+							05:34:23
+						</span>
+						</p>
+					</div>
 					<TaskChecklist {...task} />
 				</div>
 			</div>

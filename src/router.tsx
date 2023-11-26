@@ -7,6 +7,7 @@ import ListPage from './features/project/[id]';
 import TaskPage from './features/task/[taskId]';
 import TodayPage from './features/task/today';
 import BacklogPage from './features/task/backlog';
+import CalendarPage from './features/calendar';
 
 const SnackRouter = () => {
 	return (
@@ -30,9 +31,10 @@ const SnackRouter = () => {
 						path={'/backlog'}
 						element={<BacklogPage />}
 					/>
+
 					<Route
-						path={'/logbook'}
-						element={<TrashPage />}
+						path={'/calendar'}
+						element={<CalendarPage />}
 					/>
 					<Route
 						path={'/list/:id'}

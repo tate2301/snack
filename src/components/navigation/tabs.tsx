@@ -4,7 +4,7 @@ import TargetIcon from '../../icons/TargetIcon';
 import MaybeLaterIcon from '../../icons/MaybeLaterIcon';
 import {
 	BookOpenIcon,
-	CalendarDaysIcon,
+	CalendarDaysIcon, CalendarIcon,
 	ExclamationCircleIcon,
 } from '@heroicons/react/24/outline';
 
@@ -26,6 +26,12 @@ const tabs: NavItemType[] = [
 		value: 'blocked',
 		label: 'Backlog',
 		href: '/backlog',
+	},
+	{
+		icon: <CalendarIcon className="w-5 h-5 text-primary-10" />,
+		value: 'calendar',
+		label: 'Calendar',
+		href: '/calendar',
 	},
 ];
 

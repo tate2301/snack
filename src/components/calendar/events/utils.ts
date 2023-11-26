@@ -8,10 +8,10 @@ import {
 	startOfDay,
 	startOfToday,
 } from 'date-fns';
-// @ts-ignore
-import { faker } from '@faker-js/faker';
 import { Collision } from '@dnd-kit/core';
 import { EventCardProps } from './EventCard';
+
+
 
 export const colorMap = [
 	'red',
@@ -106,11 +106,13 @@ export const getRandomColorForEvent = (): string => {
 };
 
 export const generateEventTitle = (): string => {
-	return faker.company.catchPhrase();
+	return "A random catch phrase"
+	// return faker.company.catchPhrase();
 };
 
 export const generateEventDescription = (): string => {
-	return faker.lorem.words(Math.floor(Math.random() * (20 - 5 + 1) + 5));
+	return "imagine in the future Lotus could award you points for completing notifications"
+	// return faker.lorem.words(Math.floor(Math.random() * (20 - 5 + 1) + 5));
 };
 
 export const onlyAlldayEvents = (events: EventCardProps[]) => {

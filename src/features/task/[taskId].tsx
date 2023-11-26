@@ -103,13 +103,6 @@ export default function TaskPage() {
 				options={{ share: true, back: true }}
 				actions={
 					<>
-						<StartTimerButton
-							taskId={id}
-							sessionId={null}
-						/>
-						<button className="hover:bg-surface-3 flex items-center p-1.5 rounded-lg leading-none">
-							<CurrencyDollarIcon className="w-5 h-5" />
-						</button>
 						<button
 							onClick={onStar}
 							className="p-1 h-full flex items-center hover:bg-zinc-900/5 rounded-lg leading-none">

@@ -173,22 +173,29 @@ export const TaskChecklist = (props: SnackTask) => {
 	};
 
 	return (
-		<div className="py-4">
-			<h2 className="flex items-center gap-2 mb-4 text-surface-10">
-				<ListBulletIcon className="w-5 h-5" />
-				Subtasks ({props.subtasks.length})
-			</h2>
+		<div>
+
 			{props.subtasks.length === 0 && (
-				<button
-					onClick={onAddChecklist}
-					className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12 transition-all">
-					<PlusIcon className="w-5 h-5" />
-					Add subtask
-				</button>
+				<div className={"py-4"}>
+					<div className={"inline-flex items-center space-x-2 mb-2"}>
+						<p>
+							<ExclamationTriangleIcon className={"w-5 h-5"} />
+						</p>
+						<p className={"text-surface-10"}>
+							Oops, couldn't find anything here. You can add a new subtask below.
+						</p>
+					</div>
+					<button
+						onClick={onAddChecklist}
+						className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg bg-surface-12 text-surface-1 hover:text-white transition-all">
+						<PlusIcon className="w-5 h-5" />
+						Add subtask list
+					</button>
+				</div>
 			)}
 			{props.subtasks.length !== 0 && (
 				<>
-					<div className="flex flex-col gap-2">
+					<div className="flex flex-col gap-2 py-4">
 						{props.subtasks.map((subtask) => (
 							<SubTaskItem
 								key={subtask.id}
@@ -273,6 +280,9 @@ export const SubTaskItem = (props: {
 					});
 				}}
 			/>
+			<p className={"flex-shrink-0"}>
+				00:00:00
+			</p>
 		</div>
 	);
 };

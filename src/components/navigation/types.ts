@@ -13,6 +13,7 @@ export type Tab =
 	| 'tomorrow'
 	| 'later'
 	| 'trash'
+	| "calendar"
 	| 'blocked'
 	| 'in-progress'
 	| 'create'

@@ -8,6 +8,7 @@ import { ReactNode, useContext, useEffect, useState } from 'react';
 import { remToPx } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
+	ClockIcon,
 	DocumentIcon,
 	FolderIcon,
 	QueueListIcon,
@@ -69,7 +70,7 @@ const PageHeader = (props: {
 	}, []);
 
 	return (
-		<header className="w-full bg-white sticky top-0 z-10">
+		<header className="w-full bg-white sticky top-0 z-10 border-b border-zinc-400/10">
 			<nav
 				style={{
 					width: isWindows ? width : '100%',
@@ -83,7 +84,7 @@ const PageHeader = (props: {
 					</p>
 					{props.children}
 				</div>
-				<div className="flex-shrink-0 flex items-center space-x-8 transition-all">
+				<div className="flex-shrink-0 flex items-center space-x-4 transition-all">
 					{props.options?.create && (
 						<CreateTaskButton projectId={props.projectId ?? null} />
 					)}
@@ -128,6 +129,8 @@ const NavigationAction = () => {
 		</div>
 	);
 };
+
+
 
 const ShareAction = () => {
 	return (

@@ -7,75 +7,34 @@ import DayView from './views/DayView';
 import { startOfToday } from 'date-fns';
 import useCalendarDates from '../../hooks/useCalendarDates';
 
-type CalendarProps = {
+const Calendar = (props: {
+	selectedDate: Date;
 	view: CalendarView;
-};
-
-const Calendar = (props: CalendarProps) => {
-	const [calendarView, setCalendarView] = useState<CalendarView>(
-		props.view ?? CalendarView.Week,
-	);
-
-	const {
-		week,
-		nextWeek,
-		prevWeek,
-		selectDate,
-		selectedDate,
-		nextMonth,
-		prevMonth,
-		nextDate,
-		prevDate,
-	} = useCalendarDates(startOfToday());
-
-	const next = () => {
-		if (calendarView === CalendarView.Day) {
-			nextDate();
-		} else if (calendarView === CalendarView.Week) {
-			nextWeek();
-		} else if (calendarView === CalendarView.Month) {
-			nextMonth();
-		}
-	};
-
-	const prev = () => {
-		if (calendarView === CalendarView.Day) {
-			prevDate();
-		} else if (calendarView === CalendarView.Week) {
-			prevWeek();
-		} else if (calendarView === CalendarView.Month) {
-			prevMonth();
-		}
-	};
+	week: Date[];
+	selectDate: (date: Date) => void;
+}) => {
 
 	return (
-		<div className={'flex-1 h-full w-full flex flex-col p-4'}>
-			<div className="flex flex-col justify-between w-full h-full p-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-200">
-				<CalendarHeader
-					view={calendarView}
-					setView={setCalendarView}
-					selectDate={selectDate}
-					selectedDate={selectedDate}
-					next={next}
-					prev={prev}
-				/>
+		<div className={'flex-1 h-full w-full flex flex-col'}>
+			<div className="flex flex-col justify-between w-full h-full px-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-400/10">
+
 				<AnimatePresence>
-					{calendarView === CalendarView.Day && (
+					{props.view === CalendarView.Day && (
 						<DayView
-							week={week}
-							selectedDate={selectedDate}
-							selectDate={selectDate}
+							week={props.week}
+							selectedDate={props.selectedDate}
+							selectDate={props.selectDate}
 						/>
 					)}
-					{calendarView === CalendarView.Week && (
+					{props.view === CalendarView.Week && (
 						<WeekView
-							selectedDate={selectedDate}
-							week={week}
+							selectedDate={props.selectedDate}
+							week={props.week}
 							daysToDisplay={7}
-							selectDate={selectDate}
+							selectDate={props.selectDate}
 						/>
 					)}
-					{calendarView === CalendarView.Month && (
+					{props.view === CalendarView.Month && (
 						<div className="flex items-center justify-center w-full h-full">
 							<button className="p-4 uppercase transition-all bg-danger-4 text-danger-11 hover:text-white hover:bg-danger-10 rounded-xl">
 								Not implemented
