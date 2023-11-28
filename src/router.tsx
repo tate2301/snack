@@ -2,11 +2,11 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Splash from './features';
 import HomePage from './features/inbox';
 import SnackApplicationProvider from './App';
-import TrashPage from './features/task/backlog';
+import TrashPage from './features/task/pages/backlog';
 import ListPage from './features/project/[id]';
-import TaskPage from './features/task/[taskId]';
-import TodayPage from './features/task/today';
-import BacklogPage from './features/task/backlog';
+import TaskPage from './features/task/pages/[taskId]';
+import TodayPage from './features/task/pages/today';
+import BacklogPage from './features/task/pages/backlog';
 import CalendarPage from './features/calendar';
 
 const SnackRouter = () => {
@@ -33,7 +33,7 @@ const SnackRouter = () => {
 					/>
 
 					<Route
-						path={'/calendar'}
+						path={'/components'}
 						element={<CalendarPage />}
 					/>
 					<Route

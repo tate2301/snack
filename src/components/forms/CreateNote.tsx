@@ -1,13 +1,13 @@
 import React from "react";
 
-import useToggle from '../../hooks/useToggle';
+import useToggle from '../../lib/hooks/useToggle';
 import { useRef } from 'react';
-import useClickOutside from '../../hooks/useClickOutside';
+import useClickOutside from '../../lib/hooks/useClickOutside';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ClockIcon, PlusIcon } from '@heroicons/react/24/outline';
 import Textarea from '../ui/input/textarea';
 import Kbd from '../ui/typography/Kbd';
-import ExternalLink from '../../icons/ExternalLink';
+import ExternalLink from '../../assets/icons/ExternalLink';
 
 const CreateNote = () => {
 	const [isFocused, toggle] = useToggle(false);

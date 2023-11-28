@@ -1,4 +1,4 @@
-import NavigationSidebar from '../components/navigation/Sidebar';
+import NavigationSidebar from '../components/navigation/sidebar/Sidebar';
 import {
 	DndContext,
 	PointerSensor,
@@ -8,13 +8,16 @@ import {
 import clsx from 'clsx';
 import CommandBar from '../components/commandbar';
 import CalendarPage from '../features/calendar';
-import { useState } from 'react';
-import { CalendarView } from '../components/calendar/types';
-import useCalendarDates from '../hooks/useCalendarDates';
+import { ReactNode, useState } from 'react';
+import { CalendarView } from '../features/calendar/components/types';
+import useCalendarDates from '../lib/hooks/useCalendarDates';
 import { startOfToday } from 'date-fns';
-import Calendar from '../components/calendar';
+import Calendar from '../features/calendar/components';
 
-export default function CalendarLayout(props) {
+export default function CalendarLayout(props:{
+	hasCalendar?: boolean
+	children: ReactNode
+}) {
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -57,9 +60,9 @@ export default function CalendarLayout(props) {
 						)}>
 						{props.children}
 					</div>
-					<div className={"w-96 border-l border-zinc-400/10 h-screen overflow-y-auto bg-surface-2"}>
+					{props.hasCalendar && <div className={'w-96 border-l border-zinc-400/10 h-screen overflow-y-auto bg-surface-2'}>
 						<Calendar minimal week={week} selectedDate={selectedDate} selectDate={selectDate} view={calendarView} />
-					</div>
+					</div>}
 				</div>
 			</div>
 		</DndContext>

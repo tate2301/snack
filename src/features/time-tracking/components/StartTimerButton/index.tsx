@@ -1,4 +1,4 @@
-import TimerIcon from '../../../../icons/Timer';
+import TimerIcon from '../../../../assets/icons/Timer';
 import { TimerButtonProps } from '../../types';
 
 export default function StartTimerButton(props: TimerButtonProps) {

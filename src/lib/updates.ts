@@ -1,3 +1,3 @@
 export const getApplicationVersion = () => {
-	return '1.0.0';
+	return process.env.VERSION || "1.0.0";
 };

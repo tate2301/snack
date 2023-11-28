@@ -1,11 +1,11 @@
 ('use client');
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../../components/Task/TaskListItem';
+import TaskListItem from '../task/components/TaskListItem';
 import { useAppSelector } from '../../redux/store';
 import { SnackTaskStatus } from '../../redux/tasks/types';
 import { selectTaskByStatus } from '../../redux/tasks';
-import InProgressIcon from '../../icons/InProgressIcon';
+import InProgressIcon from '../../assets/icons/InProgressIcon';
 import PageLayout from '../../layouts/PageLayout';
 import PageHeader from '../../components/navigation/Header';
 import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/24/outline';

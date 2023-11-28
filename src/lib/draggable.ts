@@ -1,7 +1,7 @@
 import { pointerWithin, rectIntersection } from '@dnd-kit/core';
 import { add, isEqual, startOfDay } from 'date-fns';
 import { HOUR_HEIGHT } from '../constants/dimensions';
-import { getCoordinatesOfEvent } from '../components/calendar/events/utils';
+import { getCoordinatesOfEvent } from '../features/calendar/components/events/utils';
 
 // infer type from pointerWithin params
 export type CollisionsArgs = Parameters<typeof pointerWithin>[0];
@@ -18,7 +18,7 @@ export const pointerCollisions = (args: CollisionsArgs) => {
 };
 
 // This function detects if a draggable element is colliding with droppables
-// It is used in the 5 minute interval calendar
+// It is used in the 5 minute interval components
 // Uses dnd-kit's collision detection algorithms
 // TODO: Calculate the actual new time based on the top of the collisionRect, use that as the new upper bound instead of collision rect
 export const custom5MinuteCollisions = (args: CollisionsArgs) => {

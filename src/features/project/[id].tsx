@@ -1,7 +1,7 @@
 'use client';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../../components/Task/TaskListItem';
+import TaskListItem from '../task/components/TaskListItem';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { PlayIcon } from '@heroicons/react/20/solid';
 import {
@@ -16,11 +16,11 @@ import { ReactNode, useCallback } from 'react';
 import { ChevronRightIcon, StarIcon } from '@heroicons/react/24/solid';
 import { FolderIcon } from '@heroicons/react/24/solid';
 import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
-import useToggle from '../../hooks/useToggle';
-import ProjectOptions from '../../components/Project/ListOptions';
-import TodoIcon from '../../icons/TodoIcon';
-import TaskExpandedView from '../../components/Task/TaskExpandedView';
-import { useExpandTaskView } from '../../components/Task/hooks';
+import useToggle from '../../lib/hooks/useToggle';
+import ProjectOptions from './components/ListOptions';
+import TodoIcon from '../../assets/icons/TodoIcon';
+import TaskExpandedView from '../task/components/TaskExpandedView';
+import { useExpandTaskView } from '../task/components/hooks';
 import { useParams } from 'react-router-dom';
 import PageHeader, { PageType } from '../../components/navigation/Header';
 import { cn } from '../../lib/utils';

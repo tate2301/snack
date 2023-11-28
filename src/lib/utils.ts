@@ -13,9 +13,9 @@ export const remToPx = (rem) => {
 
 /**
  *
- * @param event The event to be added to the calendar.
+ * @param event The event to be added to the components.
  * @returns The event's grid meta data.
- * @description This hook is used to render an event on the calendar.
+ * @description This hook is used to render an event on the components.
  */
 export const getEventPosition = (event: SnackEvent) => {
 	const start = new Date(event.startTime);

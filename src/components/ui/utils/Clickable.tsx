@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { ReactNode, useRef } from 'react';
-import useToggle from '../../../hooks/useToggle';
+import useToggle from '../../../lib/hooks/useToggle';
 import { cn } from '../../../lib/utils';
-import useClickOutside from '../../../hooks/useClickOutside';
+import useClickOutside from '../../../lib/hooks/useClickOutside';
 
 type ClickableProps = {
 	children: ReactNode;

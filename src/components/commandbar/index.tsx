@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Command } from 'cmdk';
-import useDisclosure from '../../hooks/useDisclosure';
+import useDisclosure from '../../lib/hooks/useDisclosure';
 import { useEffect } from 'react';
 
 const CommandBar = () => {

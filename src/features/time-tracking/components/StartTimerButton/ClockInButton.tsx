@@ -1,11 +1,11 @@
 import { startOfToday } from 'date-fns';
-import useToggle from '../../../../hooks/useToggle';
+import useToggle from '../../../../lib/hooks/useToggle';
 import { PlayIcon, StopIcon } from '@heroicons/react/20/solid';
 import { cn } from '../../../../lib/utils';
 import { useEffect, useState } from 'react';
 import { setInterval } from 'timers';
 import { CurrencyDollarIcon, EllipsisHorizontalIcon, PauseIcon } from '@heroicons/react/24/solid';
-import ExternalLink from '../../../../icons/ExternalLink';
+import ExternalLink from '../../../../assets/icons/ExternalLink';
 
 export default function ClockInButton() {
 	const today = startOfToday();

@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useState } from 'react';
-import TodoIcon from '../icons/TodoIcon';
-import InProgressIcon from '../icons/InProgressIcon';
+import TodoIcon from '../assets/icons/TodoIcon';
+import InProgressIcon from '../assets/icons/InProgressIcon';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { SnackTaskStatus } from '../redux/tasks/types';
 

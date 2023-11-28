@@ -18,7 +18,7 @@ import {
 	startOfWeek,
 } from 'date-fns';
 import { useMemo, useState } from 'react';
-import useCalendarDates from '../../../hooks/useCalendarDates';
+import useCalendarDates from '../../../lib/hooks/useCalendarDates';
 
 type Day = {
 	date: string;

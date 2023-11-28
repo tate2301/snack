@@ -1,7 +1,7 @@
 import CalendarLayout from '../../layouts/CalendarLayout';
 import CreateNote from '../../components/forms/CreateNote';
 import { motion } from 'framer-motion';
-import PostItNoteIcon from '../../icons/PostItNoteIcon';
+import PostItNoteIcon from '../../assets/icons/PostItNoteIcon';
 
 const NotesPage = () => {
 	return (

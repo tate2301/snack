@@ -1,7 +1,7 @@
 'use client';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../../components/Task/TaskListItem';
+import TaskListItem from '../task/components/TaskListItem';
 import { useAppSelector } from '../../redux/store';
 import { selectAllTasks } from '../../redux/tasks';
 import PageHeader from '../../components/navigation/Header';
@@ -17,9 +17,9 @@ import {
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useMemo, useState } from 'react';
-import TargetIcon from '../../icons/TargetIcon';
-import TaskQuickPreview from '../../components/Task/TaskQuickPreview';
-import InboxIcon from '../../icons/InboxIcon';
+import TargetIcon from '../../assets/icons/TargetIcon';
+import TaskQuickPreview from '../task/components/TaskQuickPreview';
+import InboxIcon from '../../assets/icons/InboxIcon';
 import {
 	groupTasksByPeriod,
 	groupTasksByProject,
@@ -77,7 +77,7 @@ export default function HomePage() {
 	}, [allTasks]);
 
 	return (
-		<CalendarLayout>
+		<CalendarLayout hasCalendar>
 			<PageHeader
 				options={{
 					back: false,
@@ -122,10 +122,10 @@ export default function HomePage() {
 			/>
 			<div className=" flex-1 h-full items-start overflow-y-auto">
 
-				<div className="flex flex-1 flex-col pb-8 space-y-8">
+				<div className="flex flex-1 flex-col pb-8 space-y-12">
 					{Object.keys(groupedTasks).map((key) => (
-						<div className="px-2">
-							<div className="py-4 px-2">
+						<div className="p-4">
+							<div>
 								<p className="font-bold text-xl text-surface-12">
 									{groupBy === 'day' &&
 										format(new Date(key), 'EEE do MMM yyyy')}

@@ -14,8 +14,8 @@ import {
 	QueueListIcon,
 } from '@heroicons/react/24/solid';
 import { CommandContext } from '../../context/CommandContext';
-import ShareIcon from '../../icons/ShareIcon';
-import ControlCentre from '../ControlCenter/Search';
+import ShareIcon from '../../assets/icons/ShareIcon';
+import ControlCentre from './ControlCenter/Search';
 
 type ContextMenuOptions = {
 	search?: boolean;
@@ -70,7 +70,7 @@ const PageHeader = (props: {
 	}, []);
 
 	return (
-		<header className="bg-white sticky w-full top-0 right-0 z-30 border-b border-zinc-400/10 h-10">
+		<header className="bg-white sticky w-full top-0 right-0 z-30 border-b border-zinc-400/10">
 			<nav
 
 				className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">

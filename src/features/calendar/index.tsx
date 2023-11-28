@@ -1,15 +1,15 @@
 import CalendarLayout from '../../layouts/CalendarLayout';
 import PageHeader from '../../components/navigation/Header';
-import Calendar from '../../components/calendar';
-import { CalendarView } from '../../components/calendar/types';
+import Calendar from './components';
+import { CalendarView } from './components/types';
 import { useState } from 'react';
-import CalendarHeader from '../../components/calendar/CalendarHeader';
-import useCalendarDates from '../../hooks/useCalendarDates';
+import CalendarHeader from './components/CalendarHeader';
+import useCalendarDates from '../../lib/hooks/useCalendarDates';
 import { format, startOfToday } from 'date-fns';
 
 export default function CalendarPage() {
 	const [calendarView, setCalendarView] = useState<CalendarView>(
-		CalendarView.Day,
+		CalendarView.Week,
 	);
 
 	const {

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useToggle from '../../hooks/useToggle';
+import useToggle from '../../lib/hooks/useToggle';
 import {
 	ArrowPathIcon,
 	ClockIcon,
