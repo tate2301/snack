@@ -36,7 +36,6 @@ export default function TodayPage() {
 				title={format(startOfToday(), 'EEEE, dd MMMM yyyy')}
 				actions={
 					<div className="flex items-center space-x-4">
-						<ClockInButton />
 						<div className="rounded-xl text-sm flex gap-1">
 							<button
 								className={cn(

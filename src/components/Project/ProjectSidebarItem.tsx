@@ -79,7 +79,7 @@ function ProjectSidebarItem({ list }: { list: SnackList }) {
 				<p className="flex items-center gap-2">
 					{list.tasks.length > 0 && (
 						<p>
-							<span className="py-1 px-2 font-semibold rounded-lg text-surface-10 bg-surface-2">
+							<span className="py-1 px-2 font-semibold rounded-lg text-surface-10 bg-surface-3">
 								{list.tasks.length}
 							</span>
 						</p>

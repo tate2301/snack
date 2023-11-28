@@ -5,11 +5,11 @@ import { CalendarView } from '../../components/calendar/types';
 import { useState } from 'react';
 import CalendarHeader from '../../components/calendar/CalendarHeader';
 import useCalendarDates from '../../hooks/useCalendarDates';
-import { startOfToday } from 'date-fns';
+import { format, startOfToday } from 'date-fns';
 
 export default function CalendarPage() {
 	const [calendarView, setCalendarView] = useState<CalendarView>(
-		CalendarView.Week,
+		CalendarView.Day,
 	);
 
 	const {
@@ -47,7 +47,7 @@ export default function CalendarPage() {
 
 	return(
 		<CalendarLayout>
-			<PageHeader title={"Calendar"} actions={<CalendarHeader
+			<PageHeader title={format(selectedDate, "MMMM yyyy")} actions={<CalendarHeader
 				view={calendarView}
 				setView={setCalendarView}
 				selectDate={selectDate}

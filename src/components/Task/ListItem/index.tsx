@@ -40,7 +40,7 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 							checked={props.isChecked}
 						/>
 
-						<div className="flex-1 pr-2">
+						<div className="pr-2">
 							<div className="flex items-center">
 								<p>
 									{props.emoji && (
@@ -65,7 +65,7 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 								</p>
 								<p
 									className={clsx(
-										'line-clamp-1 pr-2 overflow-hidden text-ellipsis max-w-full',
+										'line-clamp-1 overflow-hidden text-ellipsis max-w-full',
 										props.isChecked
 											? 'line-through text-zinc-400 '
 											: 'text-surface-12',
@@ -75,18 +75,18 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 							</div>
 						</div>
 
-						<div className="flex items-center flex-shrink-0 gap-2 ml-2">
+						<div className="flex items-center flex-shrink-0 gap-1">
 							<AnimatePresence>
 								{props.description && (
-									<PostItNoteIcon className="w-5 h-5 text-surface-8" />
+									<PostItNoteIcon className="w-4 h-4 text-surface-8" />
 								)}
 								{props.list.name !== 'Personal' && (
-									<p className="flex items-center gap-4 mx-2">
+									<p className="flex items-center gap-4 mx-1">
 										<span
 											style={{
 												borderColor: `var(--${props.list.color}-10)`,
 											}}
-											className="w-4 h-4 border-2 rounded-md"
+											className="w-3 h-3 border-2 shadow-inner rounded"
 										/>
 									</p>
 								)}

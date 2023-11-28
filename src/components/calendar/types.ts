@@ -17,6 +17,7 @@ export enum CalendarViewDirection {
 
 export type CalendarProps = {
 	selectedDate: Date;
+	minimal?: boolean;
 	selectDate: (d: Date) => void;
 };
 
@@ -31,4 +32,5 @@ export type WeekCalendarProps = {
 
 export type CalendarDayTimeProps = {
 	timeIntervals: Date[];
+	minimal?: boolean
 };

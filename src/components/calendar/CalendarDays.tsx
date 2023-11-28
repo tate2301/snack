@@ -23,15 +23,15 @@ const CalendarDays = (
 					onClick={() => props.selectDate(day)}
 					type="button"
 					className={clsx(
-						'flex flex-col items-center py-2 gap-px text-zinc-500 uppercase rounded-xl',
-						isEqual(activeDay, day) && 'bg-white text-zinc-900 px-2 shadow-lg',
+						'flex justify-center items-center py-1 gap-1 text-zinc-500 rounded-xl !font-normal',
+						isEqual(activeDay, day) && 'text-surface-12 px-2',
 					)}>
 					<span>{format(day, 'EEE')}</span>
 					<span
 						className={clsx(
-							'flex items-start justify-center font-semibold py-0.5 rounded-lg',
-						)}>
-						{format(day, 'dd')}, {format(day, 'MMM')}
+							'flex items-start justify-center font-semibold px-1 rounded-lg',
+							isEqual(activeDay, day) && 'text-surface-1 bg-primary-10 px-1')}>
+						{format(day, 'dd')}
 					</span>
 				</button>
 			))}

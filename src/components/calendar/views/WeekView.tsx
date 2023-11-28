@@ -53,7 +53,7 @@ export default function WeekView(props: WeekCalendarProps) {
 			className="flex flex-col flex-auto h-full overflow-auto bg-white">
 			<div
 				ref={containerNav}
-				className="sticky top-0 z-30 grid flex-1 p-2 mx-2 mb-2 border bg-zinc-900 bg-opacity-10 rounded-xl border-zinc-400/10 backdrop-blur"
+				className="sticky top-0 z-30 grid flex-1 p-2 mb-0 border-b border-zinc-400/10 bg-white"
 				style={{
 					gridTemplateColumns: '7rem repeat(7, minmax(6rem, 1fr))',
 				}}>

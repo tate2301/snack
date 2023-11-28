@@ -9,6 +9,7 @@ import useCalendarDates from '../../hooks/useCalendarDates';
 
 const Calendar = (props: {
 	selectedDate: Date;
+	minimal?: boolean
 	view: CalendarView;
 	week: Date[];
 	selectDate: (date: Date) => void;
@@ -16,11 +17,12 @@ const Calendar = (props: {
 
 	return (
 		<div className={'flex-1 h-full w-full flex flex-col'}>
-			<div className="flex flex-col justify-between w-full h-full px-2 pb-0 overflow-hidden bg-white shadow rounded-xl border-zinc-400/10">
+			<div className="flex flex-col justify-between w-full h-full px-2 pb-0 overflow-hidden rounded-xl border-zinc-400/10">
 
 				<AnimatePresence>
 					{props.view === CalendarView.Day && (
 						<DayView
+							minimal={props.minimal}
 							week={props.week}
 							selectedDate={props.selectedDate}
 							selectDate={props.selectDate}

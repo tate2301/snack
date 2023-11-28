@@ -70,12 +70,9 @@ const PageHeader = (props: {
 	}, []);
 
 	return (
-		<header className="w-full bg-white sticky top-0 z-10 border-b border-zinc-400/10">
+		<header className="bg-white sticky w-full top-0 right-0 z-30 border-b border-zinc-400/10 h-10">
 			<nav
-				style={{
-					width: isWindows ? width : '100%',
-				}}
-				id="page-header"
+
 				className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
 				{props.options?.back && <NavigationAction />}
 				<div className="px-2 flex-1 flex gap-2 items-center">

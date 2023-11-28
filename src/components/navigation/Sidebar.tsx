@@ -35,9 +35,9 @@ export default function NavigationSidebar({}) {
 	return (
 		<div
 			className={
-				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col bg-zinc-100/90 '
+				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col bg-surface-2 z-40 border-r border-zinc-400/10'
 			}>
-			<div className="flex flex-col h-full pt-8 backdrop-blur-xl">
+			<div className="flex flex-col h-full pt-6 backdrop-blur-xl">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -56,13 +56,11 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	};
 
 	return (
-		<div className="sticky flex flex-col flex-1 w-80 h-full overflow-y-auto">
-			<div className="flex flex-col gap-4 border-b border-zinc-400/10 shadow-xs px-1">
+		<div className="sticky flex flex-col flex-1 w-80 h-full overflow-y-auto gap-8">
+			<div className="flex flex-col gap-4 shadow-xs px-1">
 				<div className="flex flex-col w-full gap-1 p-2">
 					<div className="mt-4">
-						<p className="text-sm font-semibold text-surface-9 mb-2">
-							Navigation
-						</p>
+
 						{tabs.map((tab: NavItemType) => (
 							<NavItem
 								key={tab.value}
@@ -83,19 +81,19 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					</div>
 				</div>
 			</div>
-			<div className="flex-1 py-4 px-3 flex flex-col gap-8">
+			<div className="px-3 flex flex-col">
 				<StarredItems />
-
-				<div className="flex flex-col gap-2">
-					<div className="flex justify-between items-center pr-2">
-						<p className="text-sm font-semibold text-surface-9">Projects</p>
-						<ManageListForm action={ManageListFormAction.Create} />
-					</div>
-					<div>
-						<Projects />
-					</div>
+				</div>
+			<div className="flex flex-col px-3 gap-2">
+				<div className="flex justify-between items-center pr-2">
+					<p className="text-sm font-semibold text-surface-9 px-4">Projects</p>
+					<ManageListForm action={ManageListFormAction.Create} />
+				</div>
+				<div>
+					<Projects />
 				</div>
 			</div>
+
 		</div>
 	);
 }
@@ -151,7 +149,7 @@ const StarredItems = () => {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<p className="text-sm font-semibold text-surface-9">Favorites</p>
+			<p className="text-sm font-semibold text-surface-9 px-4">Favorites</p>
 			<div className="flex flex-col">
 				{starredItems.map((item) => (
 					<StarredListItem
@@ -190,6 +188,8 @@ const StarredListItem = (props: Starred) => {
 				'rounded-lg flex gap-2 items-center px-4 py-1.5 hover:bg-surface-3',
 				isActive && 'bg-surface-5',
 			)}>
+
+			<p className="font-base line-clamp-1 flex-1">{starredItem.meta?.name}</p>
 			<p className="flex-shrink-0 text-surface-10">
 				{props.entity === AppEntity.Project && (
 					<FolderIcon
@@ -204,7 +204,6 @@ const StarredListItem = (props: Starred) => {
 					<UserGroupIcon className="w-5 h-5" />
 				)}
 			</p>
-			<p className="font-base line-clamp-1">{starredItem.meta?.name}</p>
 		</div>
 	);
 };

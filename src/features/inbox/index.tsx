@@ -121,18 +121,12 @@ export default function HomePage() {
 				}
 			/>
 			<div className=" flex-1 h-full items-start overflow-y-auto">
-				<div className="py-4 px-3 sticky top-0 w-full bg-white z-30 border-b border-zinc-400/10">
-					<h1 className="font-bold text-3xl text-surface-12">Inbox</h1>
-					<p>
-						{allTasks.length} tasks,{' '}
-						{allTasks.filter((task) => !task.complete).length} still pending
-					</p>
-				</div>
+
 				<div className="flex flex-1 flex-col pb-8 space-y-8">
 					{Object.keys(groupedTasks).map((key) => (
 						<div className="px-2">
 							<div className="py-4 px-2">
-								<p className="font-medium text-sm text-surface-10">
+								<p className="font-bold text-xl text-surface-12">
 									{groupBy === 'day' &&
 										format(new Date(key), 'EEE do MMM yyyy')}
 									{groupBy === 'week' &&
