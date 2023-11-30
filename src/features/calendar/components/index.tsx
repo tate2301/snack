@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { CalendarView } from './types';
 import WeekView from './views/WeekView';
 import CalendarHeader from './CalendarHeader';
 import { AnimatePresence } from 'framer-motion';
 import DayView from './views/DayView';
-import { startOfToday } from 'date-fns';
+import { add, startOfToday } from 'date-fns';
 import useCalendarDates from '../../../lib/hooks/useCalendarDates';
+import { EventCardProps } from './events/EventCard';
+import { generateEventDescription, generateEventTitle, getRandomColorForEvent } from './events/utils';
+import { generateUUID } from '../../../lib/functions';
 
 const Calendar = (props: {
 	selectedDate: Date;
@@ -14,6 +17,34 @@ const Calendar = (props: {
 	week: Date[];
 	selectDate: (date: Date) => void;
 }) => {
+
+	const [events, setEvents] = useState<EventCardProps[]>([]);
+	const updateEvent = (event: EventCardProps) => {
+		setEvents((events) => {
+			const index = events.findIndex((e) => e.id === event.id);
+			const newEvents = [...events];
+			newEvents[index] = event;
+			return newEvents;
+		});
+	};
+
+	const createEvent = (event: EventCardProps) => {
+		setEvents((events) => [...events, event]);
+	};
+
+	useEffect(() => {
+		setEvents([
+			{
+				color: getRandomColorForEvent(),
+				description: generateEventDescription(),
+				title: generateEventTitle(),
+				location: '',
+				startTime: add(startOfToday(), { hours: 1, minutes: 30 }),
+				endTime: add(startOfToday(), { hours: 2, minutes: 0 }),
+				id: generateUUID(),
+			},
+		]);
+	}, []);
 
 	return (
 		<div className={'flex-1 h-full w-full flex flex-col'}>
@@ -26,6 +57,9 @@ const Calendar = (props: {
 							week={props.week}
 							selectedDate={props.selectedDate}
 							selectDate={props.selectDate}
+							events={events}
+							createEvent={createEvent}
+							updateEvent={updateEvent}
 						/>
 					)}
 					{props.view === CalendarView.Week && (
@@ -34,6 +68,9 @@ const Calendar = (props: {
 							week={props.week}
 							daysToDisplay={7}
 							selectDate={props.selectDate}
+							events={events}
+							createEvent={createEvent}
+							updateEvent={updateEvent}
 						/>
 					)}
 					{props.view === CalendarView.Month && (
@@ -49,4 +86,4 @@ const Calendar = (props: {
 	);
 };
 
-export default Calendar;
+export default memo(Calendar);

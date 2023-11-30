@@ -22,7 +22,6 @@ import { EventCardProps } from '../events/EventCard';
 export default function DayView(props: DayCalendarProps) {
 	const { container, containerNav, timeIntervals, timePosition } =
 		useCalendarTime();
-	const timestampPosition = useTimestampPosition();
 
 	return (
 		<div
@@ -64,13 +63,9 @@ export default function DayView(props: DayCalendarProps) {
 					<Timestamp />
 					<EventsTrack
 						date={props.selectedDate}
-						events={[]}
-						updateEvent={function (event: EventCardProps): void {
-							throw new Error('Function not implemented.');
-						}}
-						createEvent={function (event: EventCardProps): void {
-							throw new Error('Function not implemented.');
-						}}
+						events={props.events}
+						updateEvent={props.updateEvent}
+						createEvent={props.createEvent}
 					/>
 					{timeIntervals.map((time, idx) => (
 						<>

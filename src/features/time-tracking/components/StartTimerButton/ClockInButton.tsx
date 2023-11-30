@@ -42,19 +42,19 @@ export default function ClockInButton() {
 		<div className="flex space-x-2 items-center">
 			<div
 				className={cn(
-					'rounded-lg flex space-x-2 text-sm transition-all',
-					isRunning ? 'bg-danger-10 text-white py-1' : 'bg-surface-12 py-1 text-white',
+					'rounded-lg flex space-x-2 text-sm',
+					isRunning ? 'bg-danger-10 text-surface-12 py-1.5 border-surface-10' : 'bg-surface-1 py-1.5 px-3 shadow-sm shadow-surface-2 rounded-lg border border-surface-4 text-surface-12',
 				)}>
 				{!isRunning && (
-					<button className={"text-white px-2 py-0"} onClick={toggle}>
+					<button className={"text-surface-12 px-2 py-0"} onClick={toggle}>
 						<PlayIcon className={'w-5 h-5'} />
 						{seconds > 0 ? "Continue session" : "Clock in"}
 					</button>
 				)}
 				{isRunning && (
 					<p className={"text-white py-0 flex items-center gap-2 font-medium"}>
-						<button onClick={toggle} className={"p-1 text-white"}>
-							<PauseIcon className="w-4 h-4" />
+						<button onClick={toggle} className={"p-0 px-2 text-white"}>
+							<PauseIcon className="w-5 h-5" />
 						</button>
 
 						<span>

@@ -1,3 +1,5 @@
+import { EventCardProps } from './events/EventCard';
+
 export enum CalendarDefs {
 	TimezoneWidth = 'w-24',
 	BorderColor = 'border-zinc-100',
@@ -18,7 +20,10 @@ export enum CalendarViewDirection {
 export type CalendarProps = {
 	selectedDate: Date;
 	minimal?: boolean;
+	events: Array<EventCardProps>
 	selectDate: (d: Date) => void;
+	updateEvent: (event: EventCardProps) => void
+	createEvent: (event: EventCardProps) => void
 };
 
 export type DayCalendarProps = {

@@ -13,10 +13,10 @@ import {
 	FolderIcon,
 	UserGroupIcon,
 	Square2StackIcon,
-	Square3Stack3DIcon,
+	Square3Stack3DIcon, Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import TargetIcon from '../../assets/icons/TargetIcon';
 import TaskQuickPreview from '../task/components/TaskQuickPreview';
 import InboxIcon from '../../assets/icons/InboxIcon';
@@ -25,9 +25,11 @@ import {
 	groupTasksByProject,
 	groupTasksByStatus,
 } from '../../lib/core/tasks';
-import { format, isEqual, startOfDay } from 'date-fns';
+import { differenceInDays, format, isEqual, startOfDay, startOfToday, sub, subDays } from 'date-fns';
 import { cn } from '../../lib/utils';
 import { selectAllLists } from '../../redux/lists';
+import DropdownMenu from '../../components/ui/dropdown-menu';
+import { difference } from 'lodash';
 
 // <p className="text-xl text-surface-10">
 // 	It's {format(startOfToday(), 'EEE dd MMM')}. You have {inProgress.length}{' '}
@@ -43,7 +45,9 @@ export default function HomePage() {
 	const allProjects = useAppSelector(selectAllLists);
 	const navigate = useNavigate();
 
-	const t = (n: number) => n * 1000;
+	useEffect(() => {
+		document.title = "Inbox - Snack"
+	}, []);
 
 	const onNavigate = (id: string) => {
 		navigate(`/task/${id}`);
@@ -76,6 +80,45 @@ export default function HomePage() {
 			return groupTasksByProject(allTasks.reverse(), allProjects);
 	}, [allTasks]);
 
+	const FilterOptions = () => (
+		<DropdownMenu>
+			<DropdownMenu.Trigger className={"hover:bg-surface-1 text-surface-12 font-medium shadow-sm shadow-surface-2 rounded-lg py-1.5 px-3 border border-surface-4"}>
+				<Squares2X2Icon className={"w-5 h-5"} />
+				Group by
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				<DropdownMenu.Item onClick={() => setGroupBy("day")} className={cn(
+					'rounded-lg text-surface-1',
+					groupBy === 'day' && '!bg-surface-4 !text-surface-12',
+				)}>
+						<HCalendarIcon className="w-6 h-6" />
+						Day
+				</DropdownMenu.Item>
+				<DropdownMenu.Item onClick={() => setGroupBy("month")} className={cn(
+					'rounded-lg text-surface-1',
+					groupBy === 'month' && '!bg-surface-4 !text-surface-12',
+				)}>
+					<CalendarDaysIcon className={"w-5 h-5"} />
+						Month
+				</DropdownMenu.Item>
+				<DropdownMenu.Item onClick={() => setGroupBy("status")} className={cn(
+					'rounded-lg text-surface-1',
+					groupBy === 'status' && '!bg-surface-4 !text-surface-12',
+				)}>
+						<TargetIcon className="w-5 h-5" />
+						Status
+				</DropdownMenu.Item>
+				<DropdownMenu.Item onClick={() => setGroupBy("project")} className={cn(
+					'rounded-lg text-surface-1',
+					groupBy === 'project' && '!bg-surface-4 !text-surface-12',
+				)}>
+						<FolderIcon className="w-5 h-5" />
+						Project
+				</DropdownMenu.Item>
+			</DropdownMenu.Content>
+		</DropdownMenu>
+	)
+
 	return (
 		<CalendarLayout hasCalendar>
 			<PageHeader
@@ -84,48 +127,22 @@ export default function HomePage() {
 				}}
 				actions={
 					<div className="rounded-xl text-sm flex gap-1">
-						<button
-							className={cn(
-								'rounded-lg px-1 py-1 text-surface-9',
-								groupBy === 'day' && 'bg-surface-4 text-surface-12',
-							)}
-							onClick={() => setGroupBy('day')}>
-							<HCalendarIcon className="w-6 h-6" />
-						</button>
-
-						<button
-							className={cn(
-								'rounded-lg px-1 py-1 text-surface-9',
-								groupBy === 'month' && 'bg-surface-4 text-surface-12',
-							)}
-							onClick={() => setGroupBy('month')}>
-							<CalendarDaysIcon className="w-6 h-6" />
-						</button>
-						<button
-							className={cn(
-								'rounded-lg px-2 py-1 text-surface-9',
-								groupBy === 'status' && 'bg-surface-4 text-surface-12',
-							)}
-							onClick={() => setGroupBy('status')}>
-							<TargetIcon className="w-5 h-5" />
-						</button>
-						<button
-							className={cn(
-								'rounded-lg px-2 py-1 text-surface-9',
-								groupBy === 'project' && 'bg-surface-4 text-surface-12',
-							)}
-							onClick={() => setGroupBy('project')}>
-							<FolderIcon className="w-5 h-5" />
-						</button>
+						<FilterOptions />
 					</div>
 				}
 			/>
-			<div className=" flex-1 h-full items-start overflow-y-auto">
+			<div className=" flex-1 h-full items-start overflow-y-auto pt-8">
 
 				<div className="flex flex-1 flex-col pb-8 space-y-12">
-					{Object.keys(groupedTasks).map((key) => (
-						<div className="p-4">
-							<div>
+					{Object.keys(groupedTasks).filter((key) => {
+						if(groupBy === "status" || groupBy === "project") return true
+						return differenceInDays(startOfDay(new Date(key)), startOfToday()) < 0 || differenceInDays(startOfDay(new Date(key)), startOfToday()) === 0
+					}).map((key) => (
+						<div className={cn('p-4', isEqual(
+							startOfDay(new Date(key)),
+							startOfDay(new Date()),
+						) && "border-b border-surface-2")}>
+							<div className={"py-1"}>
 								<p className="font-bold text-xl text-surface-12">
 									{groupBy === 'day' &&
 										format(new Date(key), 'EEE do MMM yyyy')}

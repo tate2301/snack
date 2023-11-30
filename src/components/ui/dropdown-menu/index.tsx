@@ -4,6 +4,7 @@ import { MouseEvent, ReactNode } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import clsx from 'clsx';
 import { ZINDEX } from '../../../constants/styles';
+import { cn } from '../../../lib/utils';
 
 const Dropdown = (props: {
 	children: ReactNode;
@@ -22,8 +23,8 @@ const Dropdown = (props: {
 	);
 };
 
-const DropdownTrigger = (props: { children: ReactNode }) => {
-	return <DropdownMenu.Trigger>{props.children}</DropdownMenu.Trigger>;
+const DropdownTrigger = (props: { children: ReactNode; className?: string }) => {
+	return <DropdownMenu.Trigger className={props.className}>{props.children}</DropdownMenu.Trigger>;
 };
 
 const DropdownContent = (props: { children: ReactNode }) => {
@@ -48,8 +49,9 @@ const DropdownItem = ({
 }) => {
 	return (
 		<DropdownMenu.Item
-			className={clsx(
-				'p-2 rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-semibold',
+			className={cn(
+				'p-2 !rounded-xl hover:bg-white hover:bg-opacity-10 focus:outline-none focus:bg-white focus:bg-opacity-10 text-white flex items-center gap-4 font-semibold',
+				className
 			)}
 			onClick={onClick}>
 			{children}

@@ -1,11 +1,12 @@
 import { FolderIcon, QueueListIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, format, isEqual, startOfDay, startOfToday } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
 import PostItNoteIcon from '../../../../assets/icons/PostItNoteIcon';
 import { TaskStatus } from '../TaskListItem';
 import { SnackTaskStatus } from '../../../../redux/tasks/types';
 import CircleProgress from '../../../../components/ui/progress/CircleProgress';
+import { cn } from '../../../../lib/utils';
 
 type DefaultTaskListItemProps = {
 	onCheck: (e) => void;
@@ -25,11 +26,12 @@ type DefaultTaskListItemProps = {
 	}[];
 	description?: string;
 	id: string;
+	createdAt?: Date
 };
 
 export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 	return (
-		<div className="flex items-center flex-1 h-full p-1 rounded-xl">
+		<div className="flex items-center flex-1 h-full p-0.5 rounded-xl group">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-center w-full gap-2">
@@ -42,11 +44,6 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 
 						<div className="pr-2">
 							<div className="flex items-center">
-								<p>
-									{props.emoji && (
-										<span className="text-xl mr-2">{props.emoji}</span>
-									)}
-								</p>
 								<p className="flex-shrink-0">
 									{props.deadline &&
 										props.status !== SnackTaskStatus.Complete && (
@@ -64,11 +61,12 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 										)}
 								</p>
 								<p
-									className={clsx(
-										'line-clamp-1 overflow-hidden text-ellipsis max-w-full',
+									className={cn(
+										'line-clamp-1 overflow-hidden text-ellipsis max-w-full group-hover:text-surface-12 transition-all',
 										props.isChecked
-											? 'line-through text-zinc-400 '
-											: 'text-surface-12',
+											? 'line-through text-surface-8'
+											: 'text-surface-10',
+										isEqual(startOfToday(), startOfDay(props.deadline || props.createdAt)) && "text-surface-12"
 									)}>
 									{props.title}
 								</p>
