@@ -10,9 +10,19 @@ export default class ClientTimer {
 		ipcRenderer.send('start-tracking');
 	}
 
-	pause() {
+	stop() {
 		this.isRunning = false;
-		ipcRenderer.send(`pause-tracking`);
+		ipcRenderer.send(`stop-tracking`);
+	}
+
+	break() {
+		this.isRunning = false;
+		ipcRenderer.send(`start-break`);
+	}
+
+	continue() {
+		this.isRunning = false;
+		ipcRenderer.send(`end-break`);
 	}
 
 	getTime() {

@@ -12,6 +12,7 @@ export interface TimeTrackerObserver {
 class TimeTracker extends TimeEventLogger {
 	timer: NodeJS.Timer | null;
 	isPaused: boolean;
+	isStopped: boolean = true;
 	idleTimeThreshold: number;
 	idleTimer: NodeJS.Timer | null;
 	totalIdleTime: number;
@@ -49,12 +50,12 @@ class TimeTracker extends TimeEventLogger {
 		});
 
 		ipcMain.on('start-tracking', () => {
-			if (!this.isPaused && this.totalTrackedTime !== 0) return;
+			if (!this.isStopped) return;
 			this.startTracking();
 		});
 
-		ipcMain.on('pause-tracking', () => {
-			this.pauseTracking();
+		ipcMain.on('stop-tracking', () => {
+			this.stopTracking();
 		});
 
 		ipcMain.on('resume-tracking', () => {
@@ -70,9 +71,8 @@ class TimeTracker extends TimeEventLogger {
 		});
 
 		// read state from the class
-		ipcMain.on('request-log', (event) => {
-			event.returnValue = this.getEvents();
-			console.log(this.getEvents());
+		ipcMain.handle('request-log', (event) => {
+			return this.getEvents();
 		});
 
 		ipcMain.on('request-total-tracked-time', (event) => {
@@ -95,8 +95,10 @@ class TimeTracker extends TimeEventLogger {
 	startTracking() {
 		this.notifyObservers('action', 'start');
 		this.trackingStartTime = new Date();
+		this.isStopped = false;
 
 		this.timer = setInterval(() => {
+			if (this.isStopped) return;
 			if (!this.isPaused) {
 				// Simulate time tracking by logging the current time
 				console.log(new Date());
@@ -106,11 +108,20 @@ class TimeTracker extends TimeEventLogger {
 		}, 1000);
 	}
 
-	pauseTracking() {
-		if (this.isPaused) return;
+	private pauseTracking() {
+		if (this.isStopped) return;
 
 		this.isPaused = true;
 		this.notifyObservers('action', 'pause');
+	}
+
+	stopTracking(): void {
+		if (this.isStopped && this.timer) return;
+
+		if (this.timer) clearInterval(this.timer);
+
+		this.isStopped = true;
+		this.isPaused = false;
 
 		if (this.trackingStartTime) {
 			this.logTrackedTime(
@@ -118,6 +129,8 @@ class TimeTracker extends TimeEventLogger {
 				new Date().getTime(),
 			);
 		}
+
+		if (this.breakStartTime) this.endBreak();
 	}
 
 	resumeTracking() {
@@ -126,10 +139,9 @@ class TimeTracker extends TimeEventLogger {
 	}
 
 	startBreak() {
+		this.breakStartTime = new Date();
 		this.pauseTracking();
 		this.notifyObservers('action', 'start-break');
-
-		// Additional break logic can be added here
 	}
 
 	endBreak() {
@@ -143,6 +155,8 @@ class TimeTracker extends TimeEventLogger {
 				'USER_INITIATED',
 			);
 		}
+
+		this.breakStartTime = undefined;
 	}
 
 	startMonitoringIdleTime() {
@@ -188,7 +202,7 @@ class TimeTracker extends TimeEventLogger {
 		if (this.idleTimer) clearTimeout(this.idleTimer);
 		this.notifyObservers('action', 'stop-idle');
 		if (this.idleStartTime) {
-			this.logTrackedTime(this.idleStartTime.getTime(), new Date().getTime());
+			this.logIdleTime(this.idleStartTime.getTime(), new Date().getTime(), 0);
 		}
 	}
 
