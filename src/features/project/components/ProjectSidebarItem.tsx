@@ -67,7 +67,7 @@ function ProjectSidebarItem({ list }: { list: SnackList }) {
 			className="relative flex flex-col justify-center group context-action group">
 			<button
 				className={cn(
-					'flex items-center gap-2 py-1.5 px-4 font-normal rounded-lg ',
+					'flex items-center gap-2 py-1.5 px-2 font-normal rounded-lg ',
 					isActive && 'bg-surface-5',
 				)}>
 				<CircleProgress

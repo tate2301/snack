@@ -16,28 +16,35 @@ import ProjectSidebarItem from '../../../features/project/components/ProjectSide
 import ManageListForm, {
 	ManageListFormAction,
 } from '../../../features/project/components/forms/CreateProject';
-import { selectStarredItemById, selectStarredItems } from '../../../redux/starred';
-import { AppEntity, Starred } from '../../../redux/starred/types';
 import {
-	UserGroupIcon,
-	FolderIcon,
-	ClockIcon,
-	BoltIcon,
-} from '@heroicons/react/20/solid';
+	selectStarredItemById,
+	selectStarredItems,
+} from '../../../redux/starred';
+import { AppEntity, Starred } from '../../../redux/starred/types';
+import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
 import { useContext, useMemo } from 'react';
 import { SnackList } from '../../../redux/lists/types';
 import InProgressIcon from '../../../assets/icons/InProgressIcon';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { CommandContext } from '../../../context/CommandContext';
+import Search from '../ControlCenter/Search';
+import useWindowFocus from '../../../lib/hooks/useWindowFocus';
+import { cn } from '../../../lib/utils';
+import StarIcon from '../../../assets/icons/StarIcon';
+import StartTimerButton from '../../../features/time-tracking/components/StartTimerButton';
 
-export default function NavigationSidebar({}) {
+export default function NavigationSidebar() {
 	const [isExpanded, toggle, expand] = useToggle(true);
+	const { isWindowFocused } = useWindowFocus();
+
 	return (
 		<div
-			className={
-				'overflow-y-hidden justify-between h-full flex-shrink-0 flex-grow-0 flex flex-col bg-surface-2 z-40 border-r border-zinc-400/10'
-			}>
-			<div className="flex flex-col h-full pt-6 backdrop-blur-xl">
+			className={cn(
+				'overflow-y-hidden w-72 justify-between h-full transition-all ',
+				'flex-shrink-0 flex-grow-0 flex flex-col bg-surface-3 z-40 border-r border-zinc-400/30 shadow-sm',
+				!isWindowFocused && 'opacity-60',
+			)}>
+			<div className="flex flex-col h-full pt-12 backdrop-blur-xl">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -56,11 +63,16 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	};
 
 	return (
-		<div className="sticky flex flex-col flex-1 w-80 h-full overflow-y-auto gap-8">
-			<div className="flex flex-col gap-4 shadow-xs px-1">
-				<div className="flex flex-col w-full gap-1 p-2">
-					<div className="mt-4">
-
+		<div className="sticky flex flex-col flex-1 h-full overflow-y-auto gap-8">
+			<div className="flex flex-col gap-4 shadow-xs px-1 mt-4">
+				<div className="p-2">
+					<Search />
+				</div>
+				<div className={'p-2'}>
+					<StartTimerButton taskId={'123'} />
+				</div>
+				<div className="flex flex-col w-full gap-1 px-2">
+					<div>
 						{tabs.map((tab: NavItemType) => (
 							<NavItem
 								key={tab.value}
@@ -83,17 +95,16 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 			</div>
 			<div className="px-3 flex flex-col">
 				<StarredItems />
-				</div>
+			</div>
 			<div className="flex flex-col px-3 gap-2">
 				<div className="flex justify-between items-center pr-2">
-					<p className="text-sm font-semibold text-surface-9 px-4">Projects</p>
+					<p className="text-sm font-semibold text-surface-9 px-2">Projects</p>
 					<ManageListForm action={ManageListFormAction.Create} />
 				</div>
 				<div>
 					<Projects />
 				</div>
 			</div>
-
 		</div>
 	);
 }
@@ -149,7 +160,7 @@ const StarredItems = () => {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<p className="text-sm font-semibold text-surface-9 px-4">Favorites</p>
+			<p className="text-sm font-semibold text-surface-9 px-2">Favorites</p>
 			<div className="flex flex-col">
 				{starredItems.map((item) => (
 					<StarredListItem
@@ -185,25 +196,29 @@ const StarredListItem = (props: Starred) => {
 		<div
 			onClick={onClick}
 			className={clsx(
-				'rounded-lg flex gap-2 items-center px-4 py-1.5 hover:bg-surface-3',
+				'rounded-lg flex gap-2 items-center px-2 py-1.5 hover:bg-surface-6 mb-1',
 				isActive && 'bg-surface-5',
 			)}>
-
-			<p className="font-base line-clamp-1 flex-1">{starredItem.meta?.name}</p>
-			<p className="flex-shrink-0 text-surface-10">
-				{props.entity === AppEntity.Project && (
-					<FolderIcon
-						style={{ fill: `#${(starredItem.meta as SnackList).color}` }}
-						className="w-5 h-5"
-					/>
-				)}
-				{props.entity === AppEntity.Task && (
-					<InProgressIcon className="w-5 h-5 text-surface-10" />
-				)}
-				{props.entity === AppEntity.Team && (
-					<UserGroupIcon className="w-5 h-5" />
-				)}
+			<p>
+				<StarIcon className="w-6 h-6 text-primary-10" />
 			</p>
+			<p className="font-base line-clamp-1 flex-1">{starredItem.meta?.name}</p>
+			{false && (
+				<p className="flex-shrink-0 text-surface-10">
+					{props.entity === AppEntity.Project && (
+						<FolderIcon
+							style={{ fill: `#${(starredItem.meta as SnackList).color}` }}
+							className="w-5 h-5"
+						/>
+					)}
+					{props.entity === AppEntity.Task && (
+						<InProgressIcon className="w-5 h-5 text-surface-10" />
+					)}
+					{props.entity === AppEntity.Team && (
+						<UserGroupIcon className="w-5 h-5" />
+					)}
+				</p>
+			)}
 		</div>
 	);
 };

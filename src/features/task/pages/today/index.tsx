@@ -61,17 +61,8 @@ export default function TodayPage() {
 				name={'Complete'}
 				description={`You rock! You have completed ${todayTasks.length} tasks :)`}
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
-				<div className="py-4 px-3 space-y-1 sticky top-0 w-full bg-white z-30 border-b border-zinc-400/10">
-					<div className="flex space-x-2 items-center">
-						<h1 className="font-bold text-3xl text-surface-12">Today</h1>
-					</div>
-					<p>
-						It's {format(startOfToday(), 'EEE, dd MMM')}. You have{' '}
-						{todayTasks.length} task
-						{(todayTasks.length === 0 || todayTasks.length > 1) && 's'}.
-					</p>
-				</div>
-				<motion.div className="flex flex-col">
+
+				<motion.div className="flex flex-col px-2">
 					<AnimatePresence initial={false}>
 						{Object.keys(groupedTasks).map((key) => (
 							<div
@@ -79,7 +70,7 @@ export default function TodayPage() {
 								key={key}>
 								{groupBy !== 'all' && (
 									<div className="py-2">
-										<p className="font-medium text-surface-10 text-sm">{key}</p>
+										<p className="bold text-surface-12 text-xl font-bold">{key}</p>
 									</div>
 								)}
 								{groupedTasks[key].map((task) => (

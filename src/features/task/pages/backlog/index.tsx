@@ -32,7 +32,7 @@ export default function BacklogPage() {
 	return (
 		<CalendarLayout>
 			<PageHeader
-				title=""
+				title="Backlog"
 				actions={
 					<div className="rounded-xl text-sm flex gap-1">
 						<button
@@ -55,20 +55,9 @@ export default function BacklogPage() {
 				}
 			/>
 			<PageLayout
-				name={'Complete'}
 				description={`You rock! You have completed ${backlogTasks.length} tasks :)`}
 				icon={<CheckCircleIcon className="w-6 h-6 text-success-10" />}>
-				<div className="py-4 px-3 space-y-1 sticky top-0 w-full bg-white z-30 border-b border-zinc-400/10">
-					<div className="flex space-x-2 items-center">
-						<h1 className="font-semibold text-2xl text-surface-12">Backlog</h1>
-					</div>
-					<p>
-						You have {backlogTasks.length} task
-						{(backlogTasks.length === 0 || backlogTasks.length > 1) && 's'} in
-						your backlog
-					</p>
-				</div>
-				<motion.div className="flex flex-col">
+				<motion.div className="flex flex-col px-2">
 					<AnimatePresence initial={false}>
 						{Object.keys(groupedTasks)
 							.filter((key) => key !== 'Complete')
@@ -78,7 +67,7 @@ export default function BacklogPage() {
 									key={key}>
 									{groupBy !== 'all' && (
 										<div className="py-2">
-											<p className="font-medium text-surface-10 text-sm">
+											<p className="bold text-surface-12 text-xl font-bold">
 												{key}
 											</p>
 										</div>

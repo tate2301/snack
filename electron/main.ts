@@ -1,8 +1,10 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import * as path from 'path';
 import installExtension, {
 	REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
+import CustomMenu from './lib/Menu';
+import initTimeTracker from './lib/time-tracking/Timer';
 
 const windowStateKeeper = require('electron-window-state');
 
@@ -74,6 +76,30 @@ function createWindow() {
 	}
 
 	mainWindowState.manage(win);
+
+	let menu = Menu.buildFromTemplate(CustomMenu);
+	if (process.platform === 'darwin') {
+		menu = Menu.buildFromTemplate([
+			{
+				label: app.name,
+				submenu: [
+					{ role: 'about' },
+					{ type: 'separator' },
+					{ role: 'services' },
+					{ type: 'separator' },
+					{ role: 'hide' },
+					{ role: 'hideOthers' },
+					{ role: 'unhide' },
+					{ type: 'separator' },
+					{ role: 'quit' },
+				],
+			},
+			...CustomMenu,
+		]);
+	}
+	//TODO: update to Menu.setApplicationMenu(menu);
+
+	initTimeTracker(win);
 }
 
 app.whenReady().then(() => {
@@ -119,8 +145,7 @@ ipcMain.handle('load-config', () => {
 		fs.writeFileSync(snackPath, JSON.stringify(snackTemplate));
 	}
 
-	let snackConfig = JSON.parse(fs.readFileSync(snackPath));
-	return snackConfig;
+	return JSON.parse(fs.readFileSync(snackPath));
 });
 
 ipcMain.handle('save-config', (event, data) => {
@@ -135,14 +160,7 @@ ipcMain.handle('save-config', (event, data) => {
 
 ipcMain.handle('app-data', () => {
 	// @ts-ignore
-	const appDataDir = app.getAppPath('appData');
-	return appDataDir;
-});
-
-ipcMain.on('show-emoji-picker', () => {
-	if (app.isEmojiPanelSupported()) {
-		app.showEmojiPanel();
-	}
+	return app.getAppPath('appData');
 });
 
 require('./lib/index');

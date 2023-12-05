@@ -27,6 +27,7 @@ const SelectTrigger = React.forwardRef<
 		</SelectPrimitive.Icon>
 	</SelectPrimitive.Trigger>
 ));
+
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectContent = React.forwardRef<

@@ -280,9 +280,7 @@ export const SubTaskItem = (props: {
 					});
 				}}
 			/>
-			<p className={"flex-shrink-0"}>
-				00:00:00
-			</p>
+		
 		</div>
 	);
 };

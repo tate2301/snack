@@ -136,19 +136,7 @@ export default function ListPage() {
 							onShowExpandedTaskView={onShowExpandedTaskView}
 						/>
 					))}
-					<AddColumn />
 				</KanbanBoard>
-				{false && (
-					<div className="flex flex-col gap-16 mt-8">
-						<TasksList
-							emptyStateLabel="All clear. You can never finish if you never start!"
-							title="Feature board"
-							icon={<TodoIcon className="w-4 h-4 text-primary-10" />}
-							tasks={allTasks}
-							onExpandTask={onShowExpandedTaskView}
-						/>
-					</div>
-				)}
 			</main>
 		</CalendarLayout>
 	);

@@ -45,7 +45,7 @@ const createSnackStorage = (pre?: {
 				);
 			});
 		},
-		removeItem: (key) => {
+		removeItem: (key: any) => {
 			return new Promise((resolve) => {
 				resolve(store.remove({ key }));
 			});

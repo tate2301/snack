@@ -10,6 +10,7 @@ import { Toaster } from 'sonner';
 import SnackPluginManager, { availablePlugins } from './lib/integrations';
 import CommandContextProvider from './context/CommandContext';
 import { ToastProvider } from './context/ToastProvider';
+import { WindowFocusProvider } from './context/WindowFocusContext';
 
 export default function SnackApplicationProvider(props: {
 	children: ReactNode;
@@ -19,21 +20,22 @@ export default function SnackApplicationProvider(props: {
 			className="flex flex-col w-screen h-screen mx-auto overflow-hidden overflow-y-auto text-base subpixel-antialiased font-normal text-surface-11 bg-zinc-100/90 backdrop-blur"
 			id="app-container">
 			<title>Snack ⏲</title>
+			<WindowFocusProvider>
+				<Provider store={store}>
+					<PersistGate
+						loading={null}
+						persistor={persistor}>
+						<ToastProvider>
+							<CommandContextProvider>
+								<Toaster />
 
-			<Provider store={store}>
-				<PersistGate
-					loading={null}
-					persistor={persistor}>
-					<ToastProvider>
-						<CommandContextProvider>
-							<Toaster />
-
-							<PluginProvider />
-							<DndContext>{props.children}</DndContext>
-						</CommandContextProvider>
-					</ToastProvider>
-				</PersistGate>
-			</Provider>
+								<PluginProvider />
+								<DndContext>{props.children}</DndContext>
+							</CommandContextProvider>
+						</ToastProvider>
+					</PersistGate>
+				</Provider>
+			</WindowFocusProvider>
 		</div>
 	);
 }
