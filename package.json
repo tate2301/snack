@@ -30,7 +30,16 @@
 		"mac": {
 			"category": "xyz.atipamara.productivity",
 			"icon": "build/icon.png"
-		}
+		},
+		"extraResources": [
+			{
+				"from": "node_modules/electron-sfsymbols/lib/bin/sfsymbol",
+				"to": "bin/sfsymbol",
+				"filter": [
+					"./resources/**"
+				]
+			}
+		]
 	},
 	"dependencies": {
 		"@calumk/editorjs-codeflask": "^1.0.9",
@@ -109,6 +118,7 @@
 		"electron-devtools-installer": "^3.2.0",
 		"electron-is-dev": "^2.0.0",
 		"electron-reload": "^2.0.0-alpha.1",
+		"electron-sfsymbols": "^1.0.0-alpha.4",
 		"electron-window-state": "^5.0.3",
 		"emoji-mart": "^5.5.2",
 		"formik": "^2.4.3",
@@ -129,6 +139,7 @@
 		"react-dom": "^18.2.0",
 		"react-draggable": "^4.4.5",
 		"react-hook-form": "^7.45.4",
+		"react-ios-icons": "^1.1.1",
 		"react-redux": "^8.1.1",
 		"react-resizable": "^3.0.5",
 		"react-router-dom": "^6.15.0",

@@ -10,7 +10,7 @@ import clsx from 'clsx';
 import ExclusionTab from '../../ui/ExlusionTab';
 import { useAppSelector } from '../../../redux/store';
 import { selectAllLists as selectAllLists } from '../../../redux/lists';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import tabs from '../header/tabs';
 import ProjectSidebarItem from '../../../features/project/components/ProjectSidebarItem';
 import ManageListForm, {
@@ -22,7 +22,7 @@ import {
 } from '../../../redux/starred';
 import { AppEntity, Starred } from '../../../redux/starred/types';
 import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { SnackList } from '../../../redux/lists/types';
 import InProgressIcon from '../../../assets/icons/InProgressIcon';
 import { PlusCircleIcon } from '@heroicons/react/24/solid';
@@ -31,7 +31,9 @@ import Search from '../ControlCenter/Search';
 import useWindowFocus from '../../../lib/hooks/useWindowFocus';
 import { cn } from '../../../lib/utils';
 import StarIcon from '../../../assets/icons/StarIcon';
-import StartTimerButton from '../../../features/time-tracking/components/StartTimerButton';
+import TimeTracker from '../../../features/time-tracking';
+import { iconColors } from '../../../styles/constants';
+import SFSymbol from '../../../assets/icons/SFSymbol';
 
 export default function NavigationSidebar() {
 	const [isExpanded, toggle, expand] = useToggle(true);
@@ -40,11 +42,11 @@ export default function NavigationSidebar() {
 	return (
 		<div
 			className={cn(
-				'overflow-y-hidden w-72 justify-between h-full transition-all ',
-				'flex-shrink-0 flex-grow-0 flex flex-col bg-surface-3 z-40 border-r border-zinc-400/30 shadow-sm',
+				'overflow-y-hidden w-64 justify-between h-full transition-all bg-white/20',
+				'flex-shrink-0 flex-grow-0 flex flex-col z-40 border-r border-zinc-400/30 shadow-sm',
 				!isWindowFocused && 'opacity-60',
 			)}>
-			<div className="flex flex-col h-full pt-12 backdrop-blur-xl">
+			<div className="flex flex-col h-full pt-12">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -65,45 +67,43 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
 		<div className="sticky flex flex-col flex-1 h-full overflow-y-auto gap-8">
 			<div className="flex flex-col gap-4 shadow-xs px-1 mt-4">
-				<div className="p-2">
-					<Search />
-				</div>
-				<div className={'p-2'}>
-					<StartTimerButton taskId={'123'} />
-				</div>
-				<div className="flex flex-col w-full gap-1 px-2">
-					<div>
+				<div className="flex flex-col w-full gap-2 px-2">
+					<div className={'space-y-1 font-semibold'}>
 						{tabs.map((tab: NavItemType) => (
-							<NavItem
-								key={tab.value}
-								{...tab}
-								active={false}
-								callback={() => {}}
-								href={tab.href}
-							/>
+							<div key={tab.value}>
+								<NavItem
+									{...tab}
+									active={false}
+									callback={() => {}}
+									href={tab.href}
+								/>
+							</div>
 						))}
-						<div className="hover:shadow-md hover:outline mt-1 hover:outline-zinc-400/30 rounded-lg hover:bg-white transition-shadows py-1">
-							<NavItem
-								icon={<PlusCircleIcon className="w-6 h-6 text-primary-10" />}
-								label="Add new task"
-								value={'create'}
-								action={onCreateTask}
-							/>
-						</div>
 					</div>
 				</div>
 			</div>
-			<div className="px-3 flex flex-col">
-				<StarredItems />
-			</div>
-			<div className="flex flex-col px-3 gap-2">
-				<div className="flex justify-between items-center pr-2">
-					<p className="text-sm font-semibold text-surface-9 px-2">Projects</p>
+			<div className="flex flex-col px-3">
+				<div className="flex justify-between items-center">
+					<p className="subheadline text-surface-9 px-2">Boards</p>
 					<ManageListForm action={ManageListFormAction.Create} />
 				</div>
 				<div>
 					<Projects />
 				</div>
+			</div>
+			<div className="hover:shadow-md absolute bottom-0 left-0 w-full border-t border-surface-8 px-2 py-1 rounded-none">
+				<NavItem
+					icon={
+						<SFSymbol
+							color={'#404040'}
+							name={'plus'}
+							className="!w-5 !h-5 text-primary-11"
+						/>
+					}
+					label="New task"
+					value={'create'}
+					action={onCreateTask}
+				/>
 			</div>
 		</div>
 	);
@@ -122,11 +122,10 @@ function NavItem(
 		return (
 			<button
 				onClick={props.action}
-				className={clsx(
-					'px-3 py-0.5 justify-between flex w-full transition-all text-md !font-base rounded-lg items-center',
-					props.active && '',
+				className={cn(
+					'px-2 py-1 relative justify-between flex w-full transition-all text-md !font-base rounded-lg items-center',
 				)}>
-				<span className="flex gap-2 items-center text-surface-12 font-normal">
+				<span className="flex gap-3 items-center text-surface-12 font-normal">
 					{props.icon}
 					{props.label}
 				</span>
@@ -137,20 +136,20 @@ function NavItem(
 		<Link
 			to={props.href}
 			className="rounded-lg">
-			<ExclusionTab
-				id={'sidebar'}
-				isActive={isActive}>
-				<p
-					className={clsx(
-						'px-2 py-0.5 justify-between flex w-full transition-all text-md !font-base rounded-lg items-center',
-						props.active && '',
-					)}>
-					<span className="flex gap-2 items-center text-surface-12 font-normal">
-						{props.icon}
-						{props.label}
-					</span>
-				</p>
-			</ExclusionTab>
+			<p
+				className={cn(
+					'px-2 py-1 justify-between relative overflow-hidden flex w-full transition-all text-md !font-base rounded-lg items-center',
+				)}>
+				{isActive && (
+					<span className="w-full absolute h-full top-0 left-0 bg-surface-11 opacity-20 mix-blend-overlay" />
+				)}
+
+				<span
+					className={cn('flex gap-3 items-center text-surface-12 font-normal')}>
+					{props.icon}
+					{props.label}
+				</span>
+			</p>
 		</Link>
 	);
 }
@@ -195,10 +194,20 @@ const StarredListItem = (props: Starred) => {
 	return (
 		<div
 			onClick={onClick}
+			style={{
+				WebkitTapHighlightColor: 'transparent',
+			}}
 			className={clsx(
-				'rounded-lg flex gap-2 items-center px-2 py-1.5 hover:bg-surface-6 mb-1',
-				isActive && 'bg-surface-5',
+				'rounded-lg flex gap-2 relative items-center px-2 py-1.5 hover:bg-surface-6 mb-1',
+				isActive && 'bg-surface-7',
 			)}>
+			{isActive && (
+				<motion.span
+					layoutId={'starred'}
+					className="absolute top-0 left-0 z-10 w-full h-full rounded-lg bg-surface-7"
+					transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+				/>
+			)}
 			<p>
 				<StarIcon className="w-6 h-6 text-primary-10" />
 			</p>

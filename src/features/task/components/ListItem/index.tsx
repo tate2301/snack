@@ -1,6 +1,12 @@
 import { FolderIcon, QueueListIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
-import { differenceInDays, format, isEqual, startOfDay, startOfToday } from 'date-fns';
+import {
+	differenceInDays,
+	format,
+	isEqual,
+	startOfDay,
+	startOfToday,
+} from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
 import PostItNoteIcon from '../../../../assets/icons/PostItNoteIcon';
 import { TaskStatus } from '../TaskListItem';
@@ -26,7 +32,7 @@ type DefaultTaskListItemProps = {
 	}[];
 	description?: string;
 	id: string;
-	createdAt?: Date
+	createdAt?: Date;
 };
 
 export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
@@ -60,16 +66,22 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 											</>
 										)}
 								</p>
-								<p
-									className={cn(
-										'line-clamp-1 overflow-hidden text-ellipsis max-w-full group-hover:text-surface-12 transition-all',
-										props.isChecked
-											? 'line-through text-surface-8'
-											: 'text-surface-10',
-										isEqual(startOfToday(), startOfDay(props.deadline || props.createdAt)) && "text-surface-12"
-									)}>
-									{props.title}
-								</p>
+
+								<div className={'max-w-full'}>
+									<p
+										className={cn(
+											'line-clamp-1 overflow-hidden text-ellipsis max-w-full group-hover:text-surface-12 transition-all',
+											props.isChecked
+												? 'line-through text-surface-8'
+												: 'text-surface-10',
+											isEqual(
+												startOfToday(),
+												startOfDay(props.deadline || props.createdAt),
+											) && 'text-surface-12',
+										)}>
+										{props.title}
+									</p>
+								</div>
 							</div>
 						</div>
 

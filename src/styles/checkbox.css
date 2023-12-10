@@ -15,7 +15,7 @@ input[type='checkbox'] {
 
 input[type='checkbox']:hover {
 	opacity: 1;
-	@apply bg-surface-1;
+	@apply bg-transparent;
 }
 
 input[type='checkbox']:focus {
@@ -25,7 +25,7 @@ input[type='checkbox']:focus {
 
 input[type='checkbox']:checked {
 	opacity: 1;
-	@apply bg-white border-primary-10;
+	@apply bg-transparent border-primary-10;
 }
 
 input[type='checkbox']:checked:before {

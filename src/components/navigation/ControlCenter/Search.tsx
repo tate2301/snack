@@ -7,7 +7,7 @@ import ClockInButton from '../../../features/time-tracking/components/StartTimer
 const Search = () => {
 	return (
 		<div className={'flex items-center space-x-4'}>
-			<button className="font-normal flex relative px-2 group group-focus:bg-white w-full border border-surface-6 bg-surface-5 hover:bg-surface-4 hover:text-surface-12 rounded-lg">
+			<button className="font-normal flex relative px-2 group group-focus:bg-white w-full border border-surface-6 bg-surface-7 hover:bg-surface-1 hover:text-surface-12 rounded-lg">
 				<MagnifyingGlassIcon className="w-5 h-5 text-surface-12" />
 				<input
 					placeholder="Search"

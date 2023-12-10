@@ -26,7 +26,9 @@ import { AppEntity } from '../../../redux/starred/types';
 import { cn } from '../../../lib/utils';
 import StarIcon from '../../../assets/icons/StarIcon';
 import TaskPageView from '../components/TaskPageView';
-import StartTimerButton from '../../time-tracking/components/StartTimerButton';
+import TimeTracker from '../../time-tracking';
+import SFSymbol from '../../../assets/icons/SFSymbol';
+import { iconColors } from '../../../styles/constants';
 
 export default function TaskPage() {
 	const { id } = useParams();
@@ -90,7 +92,10 @@ export default function TaskPage() {
 						<button
 							onClick={onNavigateToProject}
 							className="rounded-lg py-1 px-2 hover:bg-surface-3">
-							<FolderIcon className="w-4 h-4" />
+							<SFSymbol
+								name={'folder'}
+								color={'#121212'}
+							/>
 							{list.name}
 						</button>
 						<button className="p-1">
@@ -105,23 +110,18 @@ export default function TaskPage() {
 					<>
 						<button
 							onClick={onStar}
-							className="p-1 h-full flex items-center hover:bg-zinc-900/5 rounded-lg leading-none">
+							className="flex items-center rounded-lg leading-none">
 							{!isStarred && (
-								<HeartIcon
-									className={cn(
-										'w-6 h-6',
-										isStarred ? 'text-warning-10' : 'text-surface-10',
-									)}
+								<SFSymbol
+									name={'heart'}
+									color={'#121212'}
 								/>
 							)}
 							{isStarred && (
-								<HeartIcon
-									className={cn(
-										'w-6 h-6',
-										isStarred
-											? 'text-warning-10 !fill-danger-10 !stroke-none'
-											: 'text-surface-10',
-									)}
+								<SFSymbol
+									name={'heart.fill'}
+									color={iconColors.danger}
+									className={'w-6 h-6'}
 								/>
 							)}
 						</button>

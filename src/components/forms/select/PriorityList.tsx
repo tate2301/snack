@@ -8,11 +8,11 @@ import {
 import SnoozeIcon from '../../../assets/icons/Snooze';
 import TomorrowIcon from '../../../assets/icons/TomorrowIcon';
 import * as HighPriorityFlagIcon from '../../../assets/icons/FlagIcon';
-import UrgentIcon from '../../../assets/icons/UrgentIcon';
+import BacklogIcon from '../../../assets/icons/BacklogIcon';
 import { FlagIcon } from '@heroicons/react/24/outline';
 
 const priorities = [
-	{ id: 'Urgent', icon: <UrgentIcon className="w-5 h-5" /> },
+	{ id: 'Urgent', icon: <BacklogIcon className="w-5 h-5" /> },
 	{ id: 'High', icon: <HighPriorityFlagIcon.default className="w-5 h-5" /> },
 	{ id: 'Low', icon: <FlagIcon className="w-5 h-5" /> },
 	{ id: 'Maybe', icon: <TomorrowIcon className="w-5 h-5" /> },

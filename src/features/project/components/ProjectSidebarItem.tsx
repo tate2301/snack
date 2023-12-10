@@ -9,6 +9,7 @@ import { cn } from '../../../lib/utils';
 import ProjectOptions from './ListOptions';
 import CircleProgress from '../../../components/ui/progress/CircleProgress';
 import { SnackTaskStatus } from '../../../redux/tasks/types';
+import SFSymbol from '../../../assets/icons/SFSymbol';
 
 function ProjectSidebarItem({ list }: { list: SnackList }) {
 	const { id } = useParams();
@@ -70,20 +71,14 @@ function ProjectSidebarItem({ list }: { list: SnackList }) {
 					'flex items-center gap-2 py-1.5 px-2 font-normal rounded-lg ',
 					isActive && 'bg-surface-5',
 				)}>
-				<CircleProgress
-					progress={progress}
-					color={list.color as any}
+				<SFSymbol
+					name={'folder'}
+					color={'#808080'}
 				/>
-
-				<p className="flex-1 text-left">{list.name}</p>
-				<p className="flex items-center gap-2">
-					{list.tasks.length > 0 && (
-						<p>
-							<span className="py-1 px-2 font-semibold rounded-lg text-surface-10 bg-surface-3">
-								{list.tasks.length}
-							</span>
-						</p>
-					)}
+				<p className="flex-1 text-left overflow-hidden text-ellipsis truncate text-surface-12">
+					{list.name}
+				</p>
+				<p className="flex flex-shrink-0 items-center gap-2">
 					{isDropdownOpen && (
 						<ProjectOptions
 							id={list.id}

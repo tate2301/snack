@@ -16,7 +16,7 @@ import { useMemo, useState } from 'react';
 import { cn } from '../../../../lib/utils';
 import TargetIcon from '../../../../assets/icons/TargetIcon';
 
-export default function BacklogPage() {
+export default function SilencedPage() {
 	const [groupBy, setGroupBy] = useState<'all' | 'status'>('status');
 
 	const backlogTasks = useAppSelector((state) => selectBacklogTasks(state));

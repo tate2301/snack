@@ -2,6 +2,7 @@
 
 import { BrowserWindow, ipcMain } from 'electron';
 import { TimeEventLogger } from './event-logger';
+import { isEqual, startOfDay, startOfToday } from 'date-fns';
 
 type TimeTrackerEvent = 'ticker' | 'action';
 
@@ -75,8 +76,9 @@ class TimeTracker extends TimeEventLogger {
 			return this.getEvents();
 		});
 
-		ipcMain.on('request-total-tracked-time', (event) => {
-			event.returnValue = this.getTotalTrackedTime();
+		ipcMain.handle('request-ticker', (event) => {
+			if (this.isStopped) return null;
+			return this.getTotalTrackedTime();
 		});
 
 		ipcMain.on('request-is-tracking', (event) => {
@@ -101,8 +103,12 @@ class TimeTracker extends TimeEventLogger {
 			if (this.isStopped) return;
 			if (!this.isPaused) {
 				// Simulate time tracking by logging the current time
-				console.log(new Date());
-				this.totalTrackedTime += 1000; // Increment total tracked time by 1 second
+				if (isEqual(startOfDay(this.trackingStartTime!), startOfToday())) {
+					this.totalTrackedTime += 1000; // Increment total tracked time by 1 second
+				} else {
+					this.totalTrackedTime = 1000; // Increment total tracked time by 1 second
+					this.trackingStartTime = new Date(); // Reset trackingStartTime to the current time
+				}
 				this.notifyObservers('ticker', this.totalTrackedTime);
 			}
 		}, 1000);
@@ -233,7 +239,11 @@ class TimeTracker extends TimeEventLogger {
 
 		// Send to renderer process
 		if (this.mainWindow) {
-			this.mainWindow.webContents.send('time-tracker-event', { event, data });
+			try {
+				this.mainWindow.webContents.send('time-tracker-event', { event, data });
+			} catch (e) {
+				console.log(e);
+			}
 		}
 	}
 }

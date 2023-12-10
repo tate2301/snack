@@ -103,12 +103,12 @@ export default function ListPage() {
 				projectId={id}
 				options={{ create: true, share: true, back: true }}
 				actions={
-					<>
+					<div className={'space-x-0.5 flex items-center'}>
 						<ProjectOptions
 							id={id}
 							onDelete={onDelete}
 						/>
-					</>
+					</div>
 				}
 				title={listObject.name}
 				pageType={PageType.Project}

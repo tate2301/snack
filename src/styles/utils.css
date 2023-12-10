@@ -15,10 +15,6 @@
 	display: none;
 }
 
-nav {
-	-webkit-app-region: drag;
-}
-
 button, input {
 	-webkit-app-region: no-drag;
 }
@@ -58,4 +54,64 @@ button, input {
 *, a, button {
     cursor: default;
     user-select: none;
+}
+
+progress {
+	/* Removes default styles */
+	-webkit-appearance: none;
+	appearance: none;
+
+	/* Sets the background color */
+	@apply h-2 w-full rounded-full m-0;
+}
+
+/* Styles the progress bar */
+progress::-webkit-progress-bar {
+	@apply bg-surface-10 rounded-full;
+}
+
+progress::-webkit-progress-value {
+	@apply bg-surface-1 rounded-full;
+}
+
+.text-primary {
+	color: var(--apple-blue);
+}
+
+.bg-primary {
+	background-color: var(--apple-blue);
+}
+
+.text-warning {
+	color: var(--apple-yellow)
+}
+
+.title-2 {
+	/* Title 2/Emphasized */
+	font-size: 17px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 22px; /* 129.412% */
+}
+
+.title-3 {
+	/* Title 3/Emphasized */
+	font-size: 15px;
+	font-style: normal;
+	font-weight: 590;
+	line-height: 20px; /* 133.333% */
+}
+.headline {
+	/* Headline/Emphasized */
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 860;
+	line-height: 16px; /* 123.077% */
+}
+
+.subheadline {
+	font-size: 11px;
+	font-style: normal;
+	font-weight: 590;
+	line-height: 14px; /* 127.273% */
 }

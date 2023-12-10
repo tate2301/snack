@@ -25,6 +25,7 @@ import Kbd from '../../../../components/ui/typography/Kbd';
 import { Form } from '../../../../components/ui/input/form';
 import SelectColor from './SelectColor';
 import Textarea from '../../../../components/ui/input/textarea';
+import SFSymbol from '../../../../assets/icons/SFSymbol';
 
 export enum ManageListFormAction {
 	Create,
@@ -121,8 +122,11 @@ function ManageListForm(
 					<DialogTrigger>
 						<button
 							onClick={toggle}
-							className="flex items-center w-full gap-4 p-0.5 hover:bg-zinc-900/10 text-surface-11 rounded-lg">
-							<PlusIcon className="w-5 h-5" />
+							className="flex items-center w-full gap-4 text-surface-11 rounded-lg">
+							<SFSymbol
+								name={'plus.circle.fill'}
+								color={'#808080'}
+							/>
 						</button>
 					</DialogTrigger>
 				)}

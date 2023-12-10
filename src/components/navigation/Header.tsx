@@ -4,8 +4,8 @@ import {
 	PlusIcon,
 	ViewColumnsIcon,
 } from '@heroicons/react/24/outline';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { remToPx } from '../../lib/utils';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { cn, remToPx } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
 	ClockIcon,
@@ -16,6 +16,10 @@ import {
 import { CommandContext } from '../../context/CommandContext';
 import ShareIcon from '../../assets/icons/ShareIcon';
 import Search from './ControlCenter/Search';
+import { motion, useAnimation } from 'framer-motion';
+import TimeTracker from '../../features/time-tracking';
+import SFSymbol from '../../assets/icons/SFSymbol';
+import { iconColors } from '../../styles/constants';
 
 type ContextMenuOptions = {
 	search?: boolean;
@@ -44,7 +48,25 @@ const PageHeader = (props: {
 }) => {
 	const [width, setWidth] = useState(0);
 	// check if we're on windows. Check from electron
-	const isWindows = process.platform === 'win32';
+	const [showBorder, setShowBorder] = useState(false);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			console.log({ showBorder });
+
+			if (window.scrollY > 2 * 16) {
+				setShowBorder(true);
+			} else {
+				setShowBorder(false);
+			}
+		};
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
+	}, []);
 
 	useEffect(() => {
 		const calculateDimensions = () => {
@@ -70,24 +92,32 @@ const PageHeader = (props: {
 	}, []);
 
 	return (
-		<header className="bg-white sticky w-full top-0 right-0 z-30 border-b border-zinc-400/10">
-			<nav className="flex sticky top-0 px-2 bg-white hover:shadow-sm transition-all border-zinc-400/30 items-center py-2 gap-1">
+		<motion.header
+			className={cn(
+				'bg-white/10 backdrop-blur sticky w-full top-0 right-0 z-30',
+				showBorder && 'border-zinc-400/20 shadow',
+			)}>
+			<nav className="flex sticky top-0 px-2 drag border-b transition-all border-zinc-400/20 shadow-xs items-center py-2 gap-1">
 				{props.options?.back && <NavigationAction />}
 				<div className="px-2 flex-1 flex gap-2 items-center">
-					<p className="font-bold truncate text-ellipsis pr-8 text-surface-12">
+					<p className="font-bold truncate text-ellipsis pr-8 text-surface-12 headline">
 						{props.title}
 					</p>
 					{props.children}
 				</div>
-				<div className="flex-shrink-0 flex items-center space-x-4 transition-all">
+				<div className="flex-shrink-0 flex items-center space-x-8 transition-all">
 					{props.options?.create && (
 						<CreateTaskButton projectId={props.projectId ?? null} />
 					)}
 					<div className="flex gap-2 items-center">{props.actions}</div>
+					<TimeTracker
+						taskId={'33'}
+						variant={'compact'}
+					/>
 					{props.options?.listingStyle && <ViewStyle />}
 				</div>
 			</nav>
-		</header>
+		</motion.header>
 	);
 };
 
@@ -101,8 +131,11 @@ const CreateTaskButton = (props: { projectId: string }) => {
 	return (
 		<button
 			onClick={onClick}
-			className="hover:bg-zinc-900/5 flex gap-2 items-center rounded-lg p-1.5 text-surface-12 bg-surface-2">
-			<PlusIcon className="w-5 h-5" />
+			className="hover:bg-zinc-900/5 flex gap-2 items-center rounded-lg p-1.5 text-surface-12 hover:bg-surface-6">
+			<SFSymbol
+				name={'plus.circle.fill'}
+				color={iconColors.primary}
+			/>
 		</button>
 	);
 };

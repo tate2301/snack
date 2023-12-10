@@ -1,10 +1,11 @@
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, nativeImage } from 'electron';
 import * as path from 'path';
 import installExtension, {
 	REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import CustomMenu from './lib/Menu';
 import initTimeTracker from './lib/time-tracking/Timer';
+import { getSfSymbolAsNativeImage } from 'electron-sfsymbols';
 
 const windowStateKeeper = require('electron-window-state');
 
@@ -35,6 +36,10 @@ function createWindow() {
 		icon: './logo512.png',
 		show: false,
 		title: 'Snack',
+		visualEffectState: 'followWindow',
+		vibrancy: 'sidebar',
+		backgroundColor: 'rgba(255,255,255,0.5)',
+		transparent: true,
 	});
 
 	/** Window Events */
@@ -161,6 +166,15 @@ ipcMain.handle('save-config', (event, data) => {
 ipcMain.handle('app-data', () => {
 	// @ts-ignore
 	return app.getAppPath('appData');
+});
+
+ipcMain.handle('get-icon', async (event, { name: symbolName, color }) => {
+	const image = await getSfSymbolAsNativeImage(symbolName, {
+		mode: 'monochrome',
+		weight: 'regular',
+		primary: color || '#121212',
+	});
+	return image.toDataURL();
 });
 
 require('./lib/index');

@@ -6,19 +6,7 @@ export type SidebarToggleProps = {
 	expand?: (v: boolean) => void;
 };
 
-export type Tab =
-	| 'inbox'
-	| 'timers'
-	| 'settings'
-	| 'tomorrow'
-	| 'later'
-	| 'trash'
-	| "calendar"
-	| 'blocked'
-	| 'in-progress'
-	| 'create'
-	| 'today'
-	| 'notes';
+export type Tab = string;
 
 export type NavItem = {
 	icon: ReactNode;
