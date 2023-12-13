@@ -115,3 +115,15 @@ progress::-webkit-progress-value {
 	font-weight: 590;
 	line-height: 14px; /* 127.273% */
 }
+
+.vibrant-container {
+	-webkit-backdrop-filter: blur(10px) saturate(180%);
+	backdrop-filter: blur(10px) saturate(180%);
+	-webkit-app-region: drag;
+
+}
+
+.vibrant-element {
+	background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
+	padding: 20px;
+}

@@ -126,11 +126,11 @@ export default function QuickTimeTracker(props: TimeTrackerProps) {
 							'flex space-x-4 items-center justify-center bg-white rounded-lg shadow pr-4 text-surface-12'
 						}>
 						<SFSymbol
-							name={'plus.square.fill.on.square.fill'}
+							name={'timer.circle.fill'}
 							color={'#121212'}
 							className={'w-6 h-6'}
 						/>
-						3 tasks
+						0 tasks
 					</motion.button>
 				</AnimatePresence>
 			</motion.div>

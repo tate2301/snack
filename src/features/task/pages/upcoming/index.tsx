@@ -1,38 +1,28 @@
-import CalendarLayout from '../../../../layouts/CalendarLayout';
-import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../../components/TaskListItem';
 import { useAppSelector } from '../../../../redux/store';
-import { selectBacklogTasks } from '../../../../redux/tasks';
 import {
-	CheckCircleIcon,
-	ExclamationCircleIcon,
-	QueueListIcon,
-} from '@heroicons/react/24/outline';
-import PageLayout from '../../../../layouts/PageLayout';
-import PageHeader from '../../../../components/navigation/Header';
-import {
-	groupTasksByPeriod,
-	groupTasksByStatus,
-} from '../../../../lib/core/tasks';
-import { groupBy } from 'lodash';
+	selectBacklogTasks,
+	selectUpcomingTasks,
+} from '../../../../redux/tasks';
+import { groupTasksByPeriod } from '../../../../lib/core/tasks';
 import { useMemo, useState } from 'react';
 import { cn } from '../../../../lib/utils';
-import TargetIcon from '../../../../assets/icons/TargetIcon';
 import TaskListPage from '../../../../components/page/TaskPageLayout';
 import SFSymbol from '../../../../assets/icons/SFSymbol';
 
-export default function SilencedPage() {
+export default function UpcomingPage() {
 	const [grouping, setGrouping] = useState<string>('day');
 
-	const backlogTasks = useAppSelector((state) => selectBacklogTasks(state));
+	const upcomingTasks = useAppSelector((state) => selectUpcomingTasks(state));
 
 	const groupedTasks = useMemo(
 		() =>
 			grouping === 'all'
-				? { all: backlogTasks }
-				: groupTasksByPeriod(backlogTasks.reverse(), 'day'),
-		[backlogTasks],
+				? { all: upcomingTasks }
+				: groupTasksByPeriod(upcomingTasks, 'day'),
+		[upcomingTasks],
 	);
+
+	console.log({ tasks: groupedTasks });
 
 	return (
 		<TaskListPage
@@ -46,8 +36,9 @@ export default function SilencedPage() {
 			groups={['day', 'all']}
 			grouping={grouping}
 			setGrouping={setGrouping}
-			documentTitle="Silenced"
+			documentTitle="Upcoming"
 			excludeToday
+			showUpComing
 			HeaderActions={
 				<div className="flex items-center space-x-4">
 					<div className="rounded-xl text-sm flex gap-1">

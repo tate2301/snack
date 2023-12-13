@@ -14,6 +14,7 @@ const tabs: NavItemType[] = [
 		value: 'today',
 		label: 'Today',
 		href: '/today',
+		shortcut: 'T',
 	},
 	{
 		icon: (
@@ -26,19 +27,33 @@ const tabs: NavItemType[] = [
 		value: 'inbox',
 		label: 'Inbox',
 		href: '/home',
+		shortcut: 'A',
 	},
-
 	{
 		icon: (
 			<SFSymbol
 				color={iconColors.primary}
-				name={'moon'}
+				name={'calendar.badge.clock'}
 				className="w-6 h-6 text-primary-11"
 			/>
 		),
-		value: 'silenced',
-		label: 'Silenced',
+		value: 'future',
+		label: 'Upcoming',
+		href: '/future',
+		shortcut: 'U',
+	},
+	{
+		icon: (
+			<SFSymbol
+				color={iconColors.primary}
+				name={'clock.badge.xmark'}
+				className="w-6 h-6 text-primary-11"
+			/>
+		),
+		value: 'backlog',
+		label: 'Backlog',
 		href: '/silenced',
+		shortcut: 'B',
 	},
 	{
 		icon: (
@@ -50,7 +65,8 @@ const tabs: NavItemType[] = [
 		),
 		value: 'personal',
 		label: 'Personal',
-		href: '/personal',
+		href: '/list/default',
+		shortcut: 'P',
 	},
 	{
 		icon: (
@@ -62,7 +78,8 @@ const tabs: NavItemType[] = [
 		),
 		value: 'work',
 		label: 'Work',
-		href: '/work',
+		href: '/list/work',
+		shortcut: 'W',
 	},
 ];
 

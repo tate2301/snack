@@ -9,7 +9,7 @@ const Kbd = (props: KbdProps) => {
 			{props.keys.map((key, index) => (
 				<kbd
 					key={index}
-					className="px-2 py-0.5 text-sm font-semibold bg-surface-4 text-surface-11 rounded-md inline-flex ml-1 w-fit gap-2">
+					className="px-2 py-0.5 text-sm font-semibold mix-blend-overlay bg-opacity-5 text-surface-9 rounded-md inline-flex ml-1 w-fit gap-2">
 					<span>{key}</span>
 				</kbd>
 			))}

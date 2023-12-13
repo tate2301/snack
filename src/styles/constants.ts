@@ -8,4 +8,6 @@ export const iconColors = {
 	danger: '#FF3B30',
 	teal: '#64D2FF',
 	yellow: '#FFCC00',
+	labelTertiary: '#EBEBF0',
+	labelPrimary: '#3C3C43',
 };

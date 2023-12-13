@@ -1,15 +1,8 @@
-import { PlusIcon } from '@heroicons/react/20/solid';
-import {
-	SnackTask,
-	SnackTaskPriority,
-	SnackTaskStatus,
-} from '../../../redux/tasks/types';
+import { SnackTask, SnackTaskStatus } from '../../../redux/tasks/types';
 import Textarea from '../../../components/ui/input/textarea';
 import Modal from '../../../components/ui/modal';
 import {
 	CheckCircleIcon,
-	ExclamationTriangleIcon,
-	ListBulletIcon,
 	XCircleIcon,
 	XMarkIcon,
 } from '@heroicons/react/24/outline';
@@ -25,13 +18,19 @@ import TodoIcon from '../../../assets/icons/TodoIcon';
 import InProgressIcon from '../../../assets/icons/InProgressIcon';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import ArrowsExpand from '../../../assets/icons/ArrowsExpand';
-import SnackTooltip, { TooltipContent, TooltipTrigger } from '../../../components/ui/tooltip';
+import SnackTooltip, {
+	TooltipContent,
+	TooltipTrigger,
+} from '../../../components/ui/tooltip';
 import ProjectList from '../../../components/forms/select/ProjectsList';
 import AddDeadline from '../../../components/forms/Deadline';
 import { parseISO } from 'date-fns';
 import { useAppDispatch } from '../../../redux/store';
 import { addSubtask, deleteSubtask, updateSubtask } from '../../../redux/tasks';
 import { useCallback, useEffect, useRef } from 'react';
+import { iconColors } from '../../../styles/constants';
+import SFSymbol from '../../../assets/icons/SFSymbol';
+import { useKeyboardListeners } from '../../../context/KeyboardNavigationContext';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -136,6 +135,7 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 
 export const TaskChecklist = (props: SnackTask) => {
 	const dispatch = useAppDispatch();
+	const { registerListeners, unregisterListeners } = useKeyboardListeners();
 
 	const onAddChecklist = () => {
 		onAddNewItem();
@@ -172,49 +172,51 @@ export const TaskChecklist = (props: SnackTask) => {
 		);
 	};
 
+	const checklistListener = () => {
+		if (props.subtasks.length === 0) {
+			onAddNewItem();
+		}
+	};
+
+	useEffect(() => {
+		const listener = [{ key: 'i', callback: checklistListener }];
+		registerListeners(listener);
+		return () => unregisterListeners(listener);
+	}, [registerListeners, unregisterListeners]);
+
 	return (
-		<div>
+		<div className={'py-4'}>
+			<p className="subheadline text-surface-10 mb-2">
+				Checklist ({props.subtasks.length})
+			</p>
 
 			{props.subtasks.length === 0 && (
-				<div className={"py-4"}>
-					<div className={"inline-flex items-center space-x-2 mb-2"}>
-						<p>
-							<ExclamationTriangleIcon className={"w-5 h-5"} />
-						</p>
-						<p className={"text-surface-10"}>
-							Oops, couldn't find anything here. You can add a new subtask below.
-						</p>
-					</div>
+				<div>
 					<button
 						onClick={onAddChecklist}
-						className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg bg-surface-12 text-surface-1 hover:text-white transition-all">
-						<PlusIcon className="w-5 h-5" />
-						Add subtask list
+						className="px-0 py-1 pr-4 rounded-lg font-semibold transition-all">
+						<SFSymbol
+							name="plus.square.fill.on.square.fill"
+							color={'#808080'}
+						/>
+						Add checklist item
 					</button>
 				</div>
 			)}
 			{props.subtasks.length !== 0 && (
-				<>
-					<div className="flex flex-col gap-2 py-4">
-						{props.subtasks.map((subtask) => (
-							<SubTaskItem
-								key={subtask.id}
-								title={subtask.title}
-								id={subtask.id}
-								complete={subtask.complete}
-								onChange={onChange}
-								onDelete={onDelete}
-								onNewLine={onAddNewItem}
-							/>
-						))}
-					</div>
-					<button
-						onClick={onAddNewItem}
-						className="py-1 px-2 -mx-1 mt-2 font-semibold rounded-lg hover:bg-surface-4 text-surface-9 hover:text-surface-12 transition-all">
-						<PlusIcon className="w-5 h-5" />
-						Add subtask
-					</button>
-				</>
+				<div className="flex flex-col gap-2">
+					{props.subtasks.map((subtask) => (
+						<SubTaskItem
+							key={subtask.id}
+							title={subtask.title}
+							id={subtask.id}
+							complete={subtask.complete}
+							onChange={onChange}
+							onDelete={onDelete}
+							onNewLine={onAddNewItem}
+						/>
+					))}
+				</div>
 			)}
 		</div>
 	);
@@ -280,7 +282,6 @@ export const SubTaskItem = (props: {
 					});
 				}}
 			/>
-		
 		</div>
 	);
 };

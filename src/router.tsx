@@ -11,51 +11,59 @@ import CalendarPage from './features/calendar';
 import NavigationSidebar from './components/navigation/sidebar/Sidebar';
 import { DailyPlanner } from './layouts/CalendarLayout';
 import { featureFlags } from './lib/core/config';
+import KeyboardNavigationContextProvider from './context/KeyboardNavigationContext';
+import UpcomingPage from './features/task/pages/upcoming';
 
 const SnackRouter = () => {
 	return (
 		<div className="relative flex flex-col w-screen h-screen overflow-hidden">
 			<SnackApplicationProvider>
 				<MemoryRouter basename="/">
-					<div
-						className={
-							'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'
-						}>
-						<NavigationSidebar />
-						<Routes>
-							<Route
-								index
-								path="/"
-								element={<Splash />}
-							/>
-							<Route
-								path="/home"
-								element={<HomePage />}
-							/>
-							<Route
-								path={'/today'}
-								element={<TodayPage />}
-							/>
-							<Route
-								path={'/silenced'}
-								element={<SilencedPage />}
-							/>
+					<KeyboardNavigationContextProvider>
+						<div
+							className={
+								'w-full flex flex-1 items-start h-[calc(100vh-2.5rem)] justify-between'
+							}>
+							<NavigationSidebar />
+							<Routes>
+								<Route
+									index
+									path="/"
+									element={<Splash />}
+								/>
+								<Route
+									path="/home"
+									element={<HomePage />}
+								/>
+								<Route
+									path={'/today'}
+									element={<TodayPage />}
+								/>
+								<Route
+									path={'/silenced'}
+									element={<SilencedPage />}
+								/>
+								<Route
+									path={'/future'}
+									element={<UpcomingPage />}
+								/>
 
-							<Route
-								path={'/components'}
-								element={<CalendarPage />}
-							/>
-							<Route
-								path={'/list/:id'}
-								element={<ListPage />}
-							/>
-							<Route
-								path={'/task/:id'}
-								element={<TaskPage />}
-							/>
-						</Routes>
-						{featureFlags.planner && <DailyPlanner />}
-					</div>
+								<Route
+									path={'/components'}
+									element={<CalendarPage />}
+								/>
+								<Route
+									path={'/list/:id'}
+									element={<ListPage />}
+								/>
+								<Route
+									path={'/task/:id'}
+									element={<TaskPage />}
+								/>
+							</Routes>
+							{featureFlags.planner && <DailyPlanner />}
+						</div>
+					</KeyboardNavigationContextProvider>
 				</MemoryRouter>
 			</SnackApplicationProvider>
 		</div>

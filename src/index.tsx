@@ -2,13 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import SnackRouter from './router';
+import { DevSupport } from '@react-buddy/ide-toolbox';
+import { ComponentPreviews, useInitial } from './dev';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement,
 );
 root.render(
 	<React.StrictMode>
-		<SnackRouter />
+		<DevSupport
+			ComponentPreviews={ComponentPreviews}
+			useInitialHook={useInitial}>
+			<SnackRouter />
+		</DevSupport>
 	</React.StrictMode>,
 );
 

@@ -13,6 +13,7 @@ export type NavItem = {
 	value: Tab;
 	label: string;
 	href?: string;
+	shortcut: string;
 };
 
 export type AppNavigation = {};

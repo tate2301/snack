@@ -34,6 +34,8 @@ import StarIcon from '../../../assets/icons/StarIcon';
 import TimeTracker from '../../../features/time-tracking';
 import { iconColors } from '../../../styles/constants';
 import SFSymbol from '../../../assets/icons/SFSymbol';
+import { electronAPI } from '../../../lib/core/electron';
+import Kbd from '../../ui/typography/Kbd';
 
 export default function NavigationSidebar() {
 	const [isExpanded, toggle, expand] = useToggle(true);
@@ -91,7 +93,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					<Projects />
 				</div>
 			</div>
-			<div className="hover:shadow-md absolute bottom-0 left-0 w-full border-t border-surface-8 px-2 py-1 rounded-none">
+			<div className="hover:shadow-md absolute bottom-0 left-0 w-full border-t border-zinc-400/30 px-2 py-1 rounded-none">
 				<NavItem
 					icon={
 						<SFSymbol
@@ -103,6 +105,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					label="New task"
 					value={'create'}
 					action={onCreateTask}
+					shortcut="I"
 				/>
 			</div>
 		</div>
@@ -145,10 +148,13 @@ function NavItem(
 				)}
 
 				<span
-					className={cn('flex gap-3 items-center text-surface-12 font-normal')}>
+					className={cn(
+						'flex gap-3 items-center text-surface-12 font-normal flex-1',
+					)}>
 					{props.icon}
 					{props.label}
 				</span>
+				<Kbd keys={[props.shortcut]} />
 			</p>
 		</Link>
 	);

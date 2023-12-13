@@ -17,6 +17,7 @@ module.exports = {
 				danger: generateScale('tomato'),
 				warning: generateScale('amber'),
 				success: generateScale('green'),
+				alternateSurface: "#F4F5F5"
 			},
 		},
 	},

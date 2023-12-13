@@ -94,10 +94,10 @@ const PageHeader = (props: {
 	return (
 		<motion.header
 			className={cn(
-				'bg-white/10 backdrop-blur sticky w-full top-0 right-0 z-30',
+				'sticky w-full top-0 right-0 z-30 vibrant-container p-0',
 				showBorder && 'border-zinc-400/20 shadow',
 			)}>
-			<nav className="flex sticky top-0 px-2 drag border-b transition-all border-zinc-400/20 shadow-xs items-center py-2 gap-1">
+			<nav className="flex sticky top-0 px-2 drag vibrant-element border-b transition-all border-zinc-400/20 shadow-xs items-center py-2 gap-1">
 				{props.options?.back && <NavigationAction />}
 				<div className="px-2 flex-1 flex gap-2 items-center">
 					<p className="font-bold truncate text-ellipsis pr-8 text-surface-12 headline">

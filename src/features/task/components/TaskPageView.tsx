@@ -12,31 +12,12 @@ import {
 import { AppEntity } from '../../../redux/starred/types';
 import { useAppDispatch, useAppSelector } from '../../../redux/store';
 import { selectTaskById, updateTask } from '../../../redux/tasks';
-import {
-	CalendarDaysIcon,
-	ClockIcon,
-	ExclamationCircleIcon,
-	PlusIcon,
-	UserIcon,
-} from '@heroicons/react/24/outline';
-import ProjectList from '../../../components/forms/select/ProjectsList';
 import Textarea from '../../../components/ui/input/textarea';
 import { TaskChecklist } from './TaskExpandedView';
 import { cn } from '../../../lib/utils';
 import AddDeadline from '../../../components/forms/Deadline';
 import EmojiPicker from '../../../components/forms/EmojiPicker';
 import PriorityList from '../../../components/forms/select/PriorityList';
-import AssigneeList from '../../../components/forms/select/AssigneeList';
-import { MilkdownEditorWrapper } from '../../../components/ui/editor';
-import Datepicker from '../../../components/ui/datepicker';
-import { format } from 'date-fns';
-import {
-	ArrowLongRightIcon,
-	PlayIcon,
-	StopIcon,
-} from '@heroicons/react/20/solid';
-import { PauseIcon } from '@heroicons/react/24/solid';
-import TargetIcon from '../../../assets/icons/TargetIcon';
 import RichTextarea from '../../../components/ui/snack-textarea';
 
 const TaskPageView = (props: { id: string; addPadding?: boolean }) => {

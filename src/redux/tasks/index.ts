@@ -140,3 +140,11 @@ export const selectBacklogTasks = (state: RootState) =>
 			!!task.deadline &&
 			differenceInDays(startOfDay(new Date(task.deadline)), startOfToday()) < 0,
 	);
+
+export const selectUpcomingTasks = (state: RootState) =>
+	state.tasks.items.filter(
+		(task) =>
+			!task.complete &&
+			!!task.deadline &&
+			differenceInDays(startOfDay(new Date(task.deadline)), startOfToday()) > 0,
+	);

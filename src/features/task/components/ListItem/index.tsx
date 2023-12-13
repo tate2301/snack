@@ -1,4 +1,3 @@
-import { FolderIcon, QueueListIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import {
 	differenceInDays,
@@ -7,11 +6,9 @@ import {
 	startOfDay,
 	startOfToday,
 } from 'date-fns';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import PostItNoteIcon from '../../../../assets/icons/PostItNoteIcon';
-import { TaskStatus } from '../TaskListItem';
 import { SnackTaskStatus } from '../../../../redux/tasks/types';
-import CircleProgress from '../../../../components/ui/progress/CircleProgress';
 import { cn } from '../../../../lib/utils';
 
 type DefaultTaskListItemProps = {
@@ -37,7 +34,14 @@ type DefaultTaskListItemProps = {
 
 export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 	return (
-		<div className="flex items-center flex-1 h-full p-0.5 rounded-xl group">
+		<motion.div
+			initial={{ opacity: 0.5, y: 10 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{
+				duration: 0.05,
+				type: 'tween',
+			}}
+			className="flex items-center flex-1 h-full px-2 py-1 rounded-xl group">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-center w-full gap-2">
@@ -105,6 +109,6 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 					</div>
 				</AnimatePresence>
 			</div>
-		</div>
+		</motion.div>
 	);
 }

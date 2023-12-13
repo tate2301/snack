@@ -37,6 +37,13 @@ const initialState: {
 			tasks: [],
 			columns: defaultKanbanBoards,
 		},
+		{
+			id: 'work',
+			name: 'Work',
+			color: 'red',
+			tasks: [],
+			columns: defaultKanbanBoards,
+		},
 	],
 };
 
@@ -132,6 +139,11 @@ export const selectAllLists = (state: RootState) => state.lists.items;
 export const selectListById = (listId: string) => (state: RootState) => {
 	const list = state.lists.items.find((list) => list.id === listId);
 	if (!list) {
+		if (listId === 'work')
+			return {
+				...state.lists.items.find((list) => list.id === 'work'),
+				columns: defaultKanbanBoards,
+			};
 		return {
 			...state.lists.items.find((list) => list.id === 'default'),
 			columns: defaultKanbanBoards,

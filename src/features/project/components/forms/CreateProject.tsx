@@ -124,7 +124,7 @@ function ManageListForm(
 							onClick={toggle}
 							className="flex items-center w-full gap-4 text-surface-11 rounded-lg">
 							<SFSymbol
-								name={'plus.circle.fill'}
+								name={'folder.badge.plus'}
 								color={'#808080'}
 							/>
 						</button>
