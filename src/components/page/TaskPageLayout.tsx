@@ -59,6 +59,8 @@ export default function TaskListPage(props: TaskListPage) {
 			<PageHeader
 				options={{
 					back: false,
+					create: true,
+					more: true,
 				}}
 				title={props.title}
 				actions={

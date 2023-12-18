@@ -10,7 +10,6 @@ import {
 import { cn } from '../../lib/utils';
 import { selectAllLists } from '../../redux/lists';
 import SFSymbol from '../../assets/icons/SFSymbol';
-import Divider from '../../components/ui/divider/Divider';
 import { Simulate } from 'react-dom/test-utils';
 import select = Simulate.select;
 import TaskListPage from '../../components/page/TaskPageLayout';

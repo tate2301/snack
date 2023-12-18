@@ -1,23 +1,24 @@
 import { useState, useEffect, memo } from 'react';
 import { CalendarView } from './types';
 import WeekView from './views/WeekView';
-import CalendarHeader from './CalendarHeader';
 import { AnimatePresence } from 'framer-motion';
 import DayView from './views/DayView';
 import { add, startOfToday } from 'date-fns';
-import useCalendarDates from '../../../lib/hooks/useCalendarDates';
 import { EventCardProps } from './events/EventCard';
-import { generateEventDescription, generateEventTitle, getRandomColorForEvent } from './events/utils';
+import {
+	generateEventDescription,
+	generateEventTitle,
+	getRandomColorForEvent,
+} from './events/utils';
 import { generateUUID } from '../../../lib/functions';
 
 const Calendar = (props: {
 	selectedDate: Date;
-	minimal?: boolean
+	minimal?: boolean;
 	view: CalendarView;
 	week: Date[];
 	selectDate: (date: Date) => void;
 }) => {
-
 	const [events, setEvents] = useState<EventCardProps[]>([]);
 	const updateEvent = (event: EventCardProps) => {
 		setEvents((events) => {
@@ -49,7 +50,6 @@ const Calendar = (props: {
 	return (
 		<div className={'flex-1 h-full w-full flex flex-col'}>
 			<div className="flex flex-col justify-between w-full h-full px-2 pb-0 overflow-hidden rounded-xl border-zinc-400/10">
-
 				<AnimatePresence>
 					{props.view === CalendarView.Day && (
 						<DayView

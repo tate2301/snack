@@ -139,19 +139,19 @@ export default function DetailedTaskListItem(
 										<TaskStatus status={props.status} />
 									</span>
 								</div>
+								<div className="flex items-center gap-4 ">
+									<button className="bg-alternateSurface rounded-xl group px-2 py-1 items-center">
+										<span>00:00:00</span>
+										<span>
+											<SFSymbol
+												name={'play.fill'}
+												color={'#808080'}
+												className="!w-5 !h-5"
+											/>
+										</span>
+									</button>
+								</div>
 							</div>
-						</div>
-						<div className="flex items-center gap-4 ">
-							<button className="bg-alternateSurface rounded-xl group px-2 py-1 items-center">
-								<span>00:00:00</span>
-								<span>
-									<SFSymbol
-										name={'play.fill'}
-										color={'#808080'}
-										className="!w-5 !h-5"
-									/>
-								</span>
-							</button>
 						</div>
 					</div>
 				</AnimatePresence>

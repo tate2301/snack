@@ -135,78 +135,53 @@ function ManageListForm(
 						onSubmit={form.handleSubmit}
 						className="rounded-lg">
 						<>
-							{
-								// Dialog Headers
-							}
-							{isCreateForm && (
-								<div className="mb-4">
+							<div className="mb-4">
+								<div className="flex justify-between w-full gap-2">
+									<button
+										onClick={() => onOpenChangeWithCallback(false)}
+										type={'button'}
+										className="rounded-xl text-base text-danger-11">
+										Cancel
+									</button>
 									<DialogTitle>
-										<p className="text-xl font-semibold text-surface-12">
-											Create a new project
+										<p className="font-semibold text-base text-surface-12">
+											{isCreateForm ? 'Add Project' : 'Edit Project'}
 										</p>
 									</DialogTitle>
-									<DialogDescription>
-										<p className="text-surface-10">
-											Projects are lists of tasks. You can create as many
-											projects as you need.
-										</p>
-									</DialogDescription>
+									<button
+										type={'submit'}
+										onClick={form.submitForm}
+										className="disabled:text-surface-6 text-primary-11 rounded-xl">
+										{isCreateForm && 'Create list'}
+										{!isCreateForm && 'Save changes'}
+									</button>
 								</div>
-							)}
-							{!isCreateForm && (
-								<div className="mb-4">
-									<DialogTitle>
-										<p className="text-xl font-semibold text-surface-12">
-											Edit project
-										</p>
-									</DialogTitle>
-									<DialogDescription>
-										<p className="text-surface-10">
-											Edit your list name, description and color.
-										</p>
-									</DialogDescription>
-								</div>
-							)}
+							</div>
 						</>
-						<div className="flex items-start w-full gap-2 p-2 mb-4 border rounded-xl group border-surface-4">
-							<SelectColor
-								value={form.values.color}
-								onChange={(color) => form.setFieldValue('color', color)}
-							/>
-							<div className="flex flex-col flex-1">
+						<div className="flex flex-col flex-1">
+							<div className={'flex gap-4 items-center mb-4'}>
+								<p className={'w-24 text-right text-surface-10'}>Name:</p>
 								<input
 									ref={ref}
 									name={'title'}
 									{...form.getFieldProps('title')}
 									autoFocus
-									className="p-2 font-semibold bg-transparent outline-none"
+									className="p-2 flex-1 font-semibold bg-transparent border focus:border focus:border-zinc-400/30 focus:shadow-sm rounded-lg border-surface-3"
 									placeholder="Project name"
 								/>
-								<Textarea
+							</div>
+							<div className={'flex gap-4'}>
+								<p className={'w-24 text-right text-surface-10'}>
+									Description:
+								</p>
+								<textarea
 									name={'description'}
 									{...form.getFieldProps('description')}
 									placeholder="Description (optional)"
-									className="p-2 font-semibold bg-transparent outline-none"
+									className="p-2 flex-1 font-semibold bg-transparent border focus:border focus:border-zinc-400/30 focus:shadow-sm rounded-lg border-surface-3 mb-4"
 								/>
 							</div>
 						</div>
-						<DialogFooter>
-							<div className="flex justify-end w-full gap-2">
-								<button
-									onClick={() => onOpenChangeWithCallback(false)}
-									type={'button'}
-									className="px-4 py-2 rounded-xl">
-									Cancel
-								</button>
-								<button
-									type={'submit'}
-									onClick={form.submitForm}
-									className="px-4 py-2 text-white bg-primary-10 rounded-xl">
-									{isCreateForm && 'Create list'}
-									{!isCreateForm && 'Save changes'}
-								</button>
-							</div>
-						</DialogFooter>
 					</Form.Root>
 				</DialogContent>
 			</Dialog>

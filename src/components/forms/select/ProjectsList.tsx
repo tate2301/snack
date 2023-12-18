@@ -8,6 +8,7 @@ import {
 import { useAppSelector } from '../../../redux/store';
 import { selectAllLists } from '../../../redux/lists';
 import { useEffect, useState } from 'react';
+import SFSymbol from '../../../assets/icons/SFSymbol';
 
 const ProjectList = (props: {
 	defaultListId?: string;
@@ -37,11 +38,9 @@ const ProjectList = (props: {
 						value={list.id}
 						className="flex">
 						<p className="flex items-center gap-4">
-							<span
-								style={{
-									borderColor: `var(--${list.color}-10)`,
-								}}
-								className="w-4 h-4 border-2 rounded-md"
+							<SFSymbol
+								name={'folder'}
+								color={'#808080'}
 							/>
 							{list.name}
 						</p>

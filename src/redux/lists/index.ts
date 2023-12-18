@@ -51,11 +51,22 @@ export const listSlice = createSlice({
 	name: 'list',
 	initialState,
 	reducers: {
+		setColumn: (state, action) => {
+			const { taskId, projectId, columnId } = action.payload;
+			console.log({ projectId, columnId, taskId });
+			const project = state.items.find((project) => project.id === projectId);
+			const column = project.columns.find(
+				(column) => column.title === columnId,
+			);
+			column.items = Array.from(new Set<string>([...column.items, taskId]));
+		},
 		addListItem: (state, action) => {
 			state.items.push(action.payload);
 		},
 		moveTaskBetweenColumns: (state, action) => {
 			const { taskId, fromColumnId, toColumnId, projectId } = action.payload;
+
+			if (fromColumnId === toColumnId) return;
 
 			const project = state.items.find((project) => project.id === projectId);
 			if (!project) return;
@@ -63,32 +74,37 @@ export const listSlice = createSlice({
 			if (!project.columns) {
 				project.columns = defaultKanbanBoards;
 			}
+
+			const fromColumn = project.columns.find(
+				(column) => column.title === fromColumnId || column.id === fromColumnId,
+			);
+			const toColumn = project.columns.find(
+				(column) => column.title === toColumnId || column.id === toColumnId,
+			);
+
+			console.log({ fromColumnId, toColumnId });
+
+			toColumn.items.push(taskId);
+			fromColumn.items = Array.from(
+				new Set(fromColumn.items.filter((item) => item.toString() !== taskId)),
+			);
 		},
 		changeIndexOfTaskInColumn: (state, action) => {
-			const { columnId, taskId, newIndex, projectId } = action.payload;
+			let { columnId, taskId, newIndex, oldIndex, projectId } = action.payload;
 
 			const project = state.items.find((project) => project.id === projectId);
-			if (!project) return;
 
-			const taskIndex = project.tasks.indexOf(taskId);
-			if (taskIndex === -1) return;
+			// Find the column
+			const columnIndex = project.columns.findIndex(
+				(column) => column.title === columnId || column.id === columnId,
+			);
 
-			const [removed] = project.tasks.splice(taskIndex, 1);
-			project.tasks.splice(newIndex, 0, removed);
+			if (columnIndex === -1) return;
 
-			return;
-
-			// // Find the column
-			// const column = project.columns.find((column) => column.id === columnId);
-
-			// if (!column) return;
-
-			// // Reorder the tasks
-			// const taskIndex = column.items.indexOf(taskId);
-			// if (taskIndex === -1) return;
-
-			// const [removed] = column.items.splice(taskIndex, 1);
-			// column.items.splice(newIndex, 0, removed);
+			const items = Array.from([...project.columns[columnIndex].items]);
+			items.splice(oldIndex, 1);
+			items.splice(newIndex, 0, taskId);
+			project.columns[columnIndex].items = items;
 		},
 		updateList: (state, action) => {
 			const { id, name, color, icon, description } =
@@ -132,6 +148,7 @@ export const {
 	removeList,
 	moveTaskBetweenColumns,
 	changeIndexOfTaskInColumn,
+	setColumn,
 } = listSlice.actions;
 
 export const selectAllLists = (state: RootState) => state.lists.items;
@@ -139,6 +156,7 @@ export const selectAllLists = (state: RootState) => state.lists.items;
 export const selectListById = (listId: string) => (state: RootState) => {
 	const list = state.lists.items.find((list) => list.id === listId);
 	if (!list) {
+		list.columns = defaultKanbanBoards;
 		if (listId === 'work')
 			return {
 				...state.lists.items.find((list) => list.id === 'work'),
@@ -150,7 +168,12 @@ export const selectListById = (listId: string) => (state: RootState) => {
 		};
 	}
 
-	return { ...list, columns: defaultKanbanBoards };
+	if (!list.columns) {
+		list.columns = defaultKanbanBoards;
+		return { ...list, columns: defaultKanbanBoards };
+	}
+
+	return { ...list };
 };
 
 export const selectTasksByListId = (listId: string) => (state: RootState) => {
@@ -208,7 +231,7 @@ export const selectProjectProgress =
 		return completeTasks.length / project.tasks.length;
 	};
 
-export const selectTasksByColumnInList =
+export const selectTasksForColumnInProject =
 	(projectId: string, columnId: string) => (state: RootState) => {
 		const project = state.lists.items.find(
 			(project) => project.id === projectId,
@@ -216,11 +239,11 @@ export const selectTasksByColumnInList =
 
 		if (!project) return [];
 
-		const tasks = project.tasks.map((item) =>
-			state.tasks.items.find((task) => item === task.id),
-		);
+		const column = project.columns.find((column) => column.title === columnId);
 
-		const tasksInColumn = tasks.filter((task) => task.status === columnId);
+		const tasksInColumn = column.items.map((item) => {
+			return state.tasks.items.find((task) => task.id === item);
+		});
 
 		return tasksInColumn;
 	};

@@ -3,6 +3,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { ZINDEX } from '../../../constants/styles';
 import { cn } from '../../../lib/utils';
+import SFSymbol from '../../../assets/icons/SFSymbol';
 
 const Select = SelectPrimitive.Root;
 
@@ -23,7 +24,11 @@ const SelectTrigger = React.forwardRef<
 		{...props}>
 		{children}
 		<SelectPrimitive.Icon asChild>
-			<ChevronDownIcon className="w-4 h-4 opacity-50" />
+			<SFSymbol
+				name={'chevron.down'}
+				color={'#808080'}
+				className="!w-5 !h-5"
+			/>
 		</SelectPrimitive.Icon>
 	</SelectPrimitive.Trigger>
 ));

@@ -1,4 +1,3 @@
-import NavigationSidebar from '../components/navigation/sidebar/Sidebar';
 import {
 	DndContext,
 	PointerSensor,
@@ -6,8 +5,6 @@ import {
 	useSensors,
 } from '@dnd-kit/core';
 import clsx from 'clsx';
-import CommandBar from '../components/commandbar';
-import CalendarPage from '../features/calendar';
 import { ReactNode, useState } from 'react';
 import { CalendarView } from '../features/calendar/components/types';
 import useCalendarDates from '../lib/hooks/useCalendarDates';
@@ -31,10 +28,7 @@ export default function CalendarLayout(props: {
 		<DndContext
 			onDragEnd={onDragEnd}
 			sensors={sensors}>
-			<div
-				className={clsx(
-					'h-full overflow-y-auto flex-1 bg-white container mx-auto',
-				)}>
+			<div className={clsx('h-full overflow-y-auto flex-1 bg-white')}>
 				{props.children}
 			</div>
 		</DndContext>

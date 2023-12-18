@@ -9,22 +9,22 @@ import {
 	defaultKanbanBoards,
 	removeList,
 	selectListById,
-	selectTasksByColumnInList,
+	selectTasksForColumnInProject,
 	selectTasksByListId,
+	setColumn,
+	moveTaskBetweenColumns,
 } from '../../redux/lists';
-import { ReactNode, useCallback } from 'react';
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/24/solid';
+import { ReactNode, useCallback, useEffect } from 'react';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
 import { FolderIcon } from '@heroicons/react/24/solid';
 import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import useToggle from '../../lib/hooks/useToggle';
 import ProjectOptions from './components/ListOptions';
-import TodoIcon from '../../assets/icons/TodoIcon';
 import TaskExpandedView from '../task/components/TaskExpandedView';
 import { useExpandTaskView } from '../task/components/hooks';
 import { useParams } from 'react-router-dom';
 import PageHeader, { PageType } from '../../components/navigation/Header';
 import { cn } from '../../lib/utils';
-import { Cog6ToothIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Column from '../../components/ui/kanban/Column';
 import KanbanBoard from '../../components/ui/kanban/KanbanContainer';
 import {
@@ -35,7 +35,6 @@ import {
 import { AppEntity } from '../../redux/starred/types';
 import { changeTaskStatus } from '../../redux/tasks';
 import { SnackIcons } from '../../context/EmojiAndIconContext';
-import AddColumn from '../../components/ui/kanban/modals/AddColumn';
 
 const t = (n: number) => n * 1000;
 
@@ -43,8 +42,8 @@ export default function ListPage() {
 	const { id } = useParams();
 	const dispatch = useAppDispatch();
 	const listObject = useAppSelector(selectListById(id));
-	const allTasks = useAppSelector(selectTasksByListId(id));
 	const isStarred = useAppSelector(selectStarredItemById(id));
+	const allTasks = useAppSelector(selectTasksByListId(id));
 
 	const [isCreateTaskFormOpen, toggleCreateTaskForm] = useToggle(false);
 
@@ -55,25 +54,34 @@ export default function ListPage() {
 		taskBeingShownInExpandedView,
 	} = useExpandTaskView();
 
-	const onChangeIndex = useCallback(
-		(taskId: string, idx: number, columnId: string) => {
-			dispatch(
-				changeIndexOfTaskInColumn({
-					columnId: columnId,
-					taskId: taskId,
-					newIndex: idx,
-					projectId: id,
-				}),
-			);
-		},
-		[id],
-	);
-
-	const onChangeBoard = (id: string, newBoard: string, oldBoard: string) => {
+	const onChangeIndex = (
+		taskId: string,
+		idx: number,
+		newIdx: number,
+		columnId: string,
+	) => {
 		dispatch(
-			changeTaskStatus({
-				id,
-				status: newBoard,
+			changeIndexOfTaskInColumn({
+				columnId: columnId,
+				taskId: taskId,
+				newIndex: newIdx,
+				oldIndex: idx,
+				projectId: id,
+			}),
+		);
+	};
+
+	const onChangeBoard = (
+		taskId: string,
+		newBoard: string,
+		oldBoard: string,
+	) => {
+		dispatch(
+			moveTaskBetweenColumns({
+				taskId: taskId,
+				fromColumnId: oldBoard,
+				toColumnId: newBoard,
+				projectId: id,
 			}),
 		);
 	};
@@ -96,6 +104,18 @@ export default function ListPage() {
 			dispatch(removeStarred({ id }));
 		}
 	};
+
+	useEffect(() => {
+		allTasks.map((task) => {
+			dispatch(
+				setColumn({
+					taskId: task.id,
+					projectId: id,
+					columnId: task.status,
+				}),
+			);
+		});
+	}, []);
 
 	return (
 		<CalendarLayout>
@@ -153,91 +173,17 @@ const ProjectColumn = ({
 	projectId: string;
 	onShowExpandedTaskView: (taskId: string) => void;
 }) => {
-	const items = useAppSelector(selectTasksByColumnInList(projectId, id));
+	const items = useAppSelector(selectTasksForColumnInProject(projectId, title));
+	console.log({ items });
+
 	return (
 		<Column
 			title={title}
 			icon={SnackIcons[id]}
-			items={items.map((item) => item.id)}
+			items={items}
 			id={id}
 			projectId={projectId}
 			onExpandTask={onShowExpandedTaskView}
 		/>
-	);
-};
-
-const TasksList = (props: {
-	title: string;
-	icon: ReactNode;
-	tasks: SnackTask[];
-	emptyStateLabel: string;
-	onExpandTask: (id: string) => void;
-}) => {
-	const [isTasksInFolderShowing, toggleShowTasksInFolder] = useToggle(true);
-
-	return (
-		<div className="flex flex-col gap-2">
-			<div
-				onDoubleClick={toggleShowTasksInFolder}
-				className={cn(
-					'flex justify-between text-center items-baseline rounded-xl px-1 py-0.5',
-					isTasksInFolderShowing && 'bg-zinc-900/10',
-				)}>
-				<div className="flex gap-2 items-center">
-					<button
-						onClick={toggleShowTasksInFolder}
-						className="p-2 rounded-xl transition-colors">
-						<ChevronRightIcon
-							className={cn(
-								'w-4 h-4 transition-all duration-200',
-								isTasksInFolderShowing && 'rotate-90',
-							)}
-						/>
-					</button>
-					<FolderIcon className="w-5 h-5" />
-					<input
-						value={props.title}
-						className="flex items-baseline py-0 my-0 gap-2 outline-none bg-transparent font-semibold text-surface-11"
-					/>
-				</div>
-				<div className="flex gap-4 items-center flex-shrink-0">
-					<div className="flex gap-2 px-4 py-2 rounded-full items-center">
-						<PlayIcon className="w-4 h-4" />
-						<p>16:23:09</p>
-					</div>
-				</div>
-			</div>
-			{isTasksInFolderShowing && (
-				<motion.div
-					initial={{ height: 0, opacity: 0 }}
-					animate={{ height: 'auto', opacity: 1 }}>
-					<AnimatePresence initial={false}>
-						{props.tasks.length > 0 ? (
-							props.tasks.map((task) => (
-								<motion.div
-									initial={{
-										opacity: 0,
-									}}
-									animate={{
-										opacity: 1,
-									}}
-									exit={{
-										opacity: 0,
-									}}
-									className="my-2">
-									<TaskListItem
-										key={task.id}
-										onExpandTask={() => props.onExpandTask(task.id)}
-										{...task}
-									/>
-								</motion.div>
-							))
-						) : (
-							<p className="text-surface-10">{props.emptyStateLabel}</p>
-						)}
-					</AnimatePresence>
-				</motion.div>
-			)}
-		</div>
 	);
 };

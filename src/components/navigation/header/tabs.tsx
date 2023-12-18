@@ -59,7 +59,7 @@ const tabs: NavItemType[] = [
 		icon: (
 			<SFSymbol
 				color={iconColors.primary}
-				name={'person'}
+				name={'folder.fill.badge.person.crop'}
 				className="w-6 h-6 text-primary-11"
 			/>
 		),
@@ -72,7 +72,7 @@ const tabs: NavItemType[] = [
 		icon: (
 			<SFSymbol
 				color={iconColors.primary}
-				name={'briefcase'}
+				name={'folder.fill.badge.gearshape'}
 				className="w-6 h-6 text-primary-11"
 			/>
 		),

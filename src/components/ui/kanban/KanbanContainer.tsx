@@ -12,15 +12,11 @@ const KanbanBoard = (props: {
 	projectId: string;
 	onExpandTask: (id: string) => void;
 	onChangeBoard: (id: string, newBoard: string, oldBoard: string) => void;
-	onChangeIndex: (id: string, idx: number, columnId: string) => void;
+	onChangeIndex: (id: string, idx: number, newIdx, columnId: string) => void;
 }) => {
-	const dispatch = useAppDispatch();
-	const project = useAppSelector(selectListById(props.projectId));
 	const allTasksInProject = useAppSelector(
 		selectTasksByListId(props.projectId),
 	);
-	const [items, setItems] = useState(project.tasks);
-	const [activeId, setActiveId] = useState(null);
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: {
@@ -38,10 +34,23 @@ const KanbanBoard = (props: {
 		const { id: overId } = over;
 
 		if (!activeItemId || !overId || activeItemId === overId) return;
+		console.log({ event });
+
+		const toContainerId = !over.data.current
+			? overId.split('-')[1]
+			: over.data.current.sortable.containerId;
+
+		const fromContainerId = active.data.current.sortable.containerId;
+
+		props.onChangeBoard(activeItemId, toContainerId, fromContainerId);
+
+		return;
 
 		if (overId.split('-')[0] !== 'column') {
 			// TODO: Check which column the item thats over is contained in
 			const task = allTasksInProject.find((task) => task.id === overId);
+			console.log({ event, overId });
+
 			props.onChangeBoard(
 				activeItemId,
 				task.status,
@@ -58,14 +67,16 @@ const KanbanBoard = (props: {
 	};
 
 	const onDragEnd = (event) => {
-		const { over } = event;
+		const { over, active } = event;
+		console.log({ over });
 		if (over.data.current) {
 			const newIndex = over.data.current.sortable.index;
+			const oldIndex = active.data.current.sortable.index;
+
 			const containerId = over.data.current.sortable.containerId;
 
-			const { id: itemId } = over;
-
-			props.onChangeIndex(itemId, newIndex, containerId);
+			const { id: itemId } = active;
+			props.onChangeIndex(itemId, oldIndex, newIndex, containerId);
 		}
 	};
 

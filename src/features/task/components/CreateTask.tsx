@@ -1,12 +1,7 @@
 import useToggle from '../../../lib/hooks/useToggle';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-	ArrowUpIcon,
-	HashtagIcon,
-	LinkIcon,
-	PlusIcon,
-} from '@heroicons/react/24/outline';
+import { LinkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Textarea from '../../../components/ui/input/textarea';
 import { useAppDispatch } from '../../../redux/store';
@@ -20,12 +15,11 @@ import { addTask } from '../../../redux/tasks';
 import { useFormik } from 'formik';
 import ProjectList from '../../../components/forms/select/ProjectsList';
 import { addTaskToList } from '../../../redux/lists';
-import Kbd from '../../../components/ui/typography/Kbd';
 import useDisclosure from '../../../lib/hooks/useDisclosure';
-import TagInput from '../../../components/ui/input/TagInput';
 import AddDeadline from '../../../components/forms/Deadline';
 import { cn } from '../../../lib/utils';
 import EmojiPicker from '../../../components/forms/EmojiPicker';
+import Kbd from '../../../components/ui/typography/Kbd';
 
 const CreateTask = (props: {
 	defaultList?: string;
@@ -130,6 +124,8 @@ const CreateTaskForm = (props: {
 		onSubmit: (values) => {
 			onSubmit(values);
 		},
+		validateOnChange: true,
+		// TODO: Add validation schema here
 	});
 
 	const onSubmit = (data: typeof form.values) => {
@@ -212,32 +208,35 @@ const CreateTaskForm = (props: {
 		}
 	}, []);
 
-	// // Effects
-	// useClickOutside(ref, () => {
-	// 	form.submitForm().then(props.toggle);
-	// });
-
 	return (
 		<form
-			className="flex flex-col w-full gap-2 pb-2"
+			className="flex flex-col w-full gap-4 pb-2"
 			ref={formRef}
 			onSubmit={form.handleSubmit}>
-			<div className="flex mb-2 w-fit border border-surfacce-3 rounded-xl">
-				<ProjectList
-					defaultListId={form.values.list}
-					onChange={(val) => form.setFieldValue('list', val)}
-				/>
+			<div className="flex gap-4 w-full justify-between items-center pb-2">
+				<button
+					type={'button'}
+					onClick={props.toggle}
+					className={'py-1 px-0 rounded-lg text-danger-10'}>
+					Cancel
+				</button>
+				<h1 className="font-semibold text-surface-12 text-md">Add Task</h1>
+				<button
+					disabled={!form.isValid}
+					type={'submit'}
+					className={
+						'py-1 px-0 rounded-lg text-primary-11 font-semibold disabled:text-surface-6'
+					}>
+					Create
+				</button>
 			</div>
+
 			<div className={'flex-1 flex items-start w-full mb-1 gap-4'}>
-				{false && (
-					<EmojiPicker
-						onChange={(emoji) => form.setFieldValue('emoji', emoji)}
-					/>
-				)}
 				<div className="flex-1">
 					<Textarea
 						setRef={textAreaRef}
 						rows={1}
+						required
 						placeholder={'Create a new task'}
 						className={
 							'outline-none ring-0 text-surface-12 w-full font-semibold h-fit'
@@ -270,11 +269,19 @@ const CreateTaskForm = (props: {
 			</div>
 
 			<div className={'flex items-center justify-between gap-2 mt-2'}>
-				<div className="flex gap-2 border border-zinc-400/30 hover:shadow-sm rounded-lg">
-					<AddDeadline
-						selectDate={(date) => form.setFieldValue('deadline', date)}
-						selectedDate={form.values.deadline}
-					/>
+				<div className="flex items-center gap-4">
+					<div className="flex w-fit gap-2 bg-alternateSurface rounded-lg p-0.5">
+						<ProjectList
+							defaultListId={form.values.list}
+							onChange={(val) => form.setFieldValue('list', val)}
+						/>
+					</div>
+					<div className="flex w-fit gap-2 bg-alternateSurface rounded-lg">
+						<AddDeadline
+							selectDate={(date) => form.setFieldValue('deadline', date)}
+							selectedDate={form.values.deadline}
+						/>
+					</div>
 				</div>
 				{false && (
 					<button
@@ -286,19 +293,13 @@ const CreateTaskForm = (props: {
 						Add link
 					</button>
 				)}
-				<div className="flex gap-4">
-					<button
-						type={'button'}
-						onClick={props.toggle}
-						className={'py-1 px-3 rounded-lg text-surface-10'}>
-						Cancel
-					</button>
-					<button
-						type={'submit'}
-						className={'py-1 px-3 rounded-lg bg-primary-10 text-white'}>
-						Create task
-					</button>
-				</div>
+			</div>
+			<div className="border-t pt-3 mt-1 flex border-surface-3">
+				<p>
+					<span className="text-surface-10">Press</span>{' '}
+					<Kbd keys={['Shift', 'Enter']} />{' '}
+					<span className="text-surface-10">to insert additional notes.</span>
+				</p>
 			</div>
 		</form>
 	);

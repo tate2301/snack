@@ -1,5 +1,7 @@
 'use client';
-import TaskListItem, { TaskListItemView } from '../../../features/task/components/TaskListItem';
+import TaskListItem, {
+	TaskListItemView,
+} from '../../../features/task/components/TaskListItem';
 import { ReactNode, useContext } from 'react';
 import { EllipsisHorizontalIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {
@@ -8,24 +10,20 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CommandContext } from '../../../context/CommandContext';
-import { useAppSelector } from '../../../redux/store';
-import { selectTaskById } from '../../../redux/tasks';
-import { selectTasksByListId } from '../../../redux/lists';
 import { useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { SnackTask } from '../../../redux/tasks/types';
 
 const Column = (props: {
 	title: string;
-	items: Array<string>;
+	items: Array<SnackTask>;
 	projectId: string;
 	id: string;
 	icon: ReactNode;
 	onExpandTask: (id: string) => void;
 }) => {
 	const { openCreateTask } = useContext(CommandContext);
-	const tasks = useAppSelector(selectTasksByListId(props.projectId));
 	const onAddTask = () => openCreateTask(props.projectId);
-	const columnTasks = tasks.filter((task) => task.status === props.title);
 
 	const { setNodeRef } = useDroppable({
 		id: `column-${props.id}`,
@@ -35,7 +33,7 @@ const Column = (props: {
 		<div ref={setNodeRef}>
 			<SortableContext
 				id={props.id}
-				items={columnTasks.map((task) => task.id)}
+				items={props.items.map((task) => task.id)}
 				strategy={verticalListSortingStrategy}>
 				<div className="w-96 flex-shrink-0 rounded-xl px-2 py-2 bg-surface-3">
 					<div className="flex justify-between px-2">
@@ -52,11 +50,11 @@ const Column = (props: {
 							<EllipsisHorizontalIcon className="w-5 h-5" />
 						</button>
 					</div>
-					{columnTasks.length > 0 && (
+					{props.items.length > 0 && (
 						<div className="flex flex-col gap-1 mt-4 mb-2">
-							{columnTasks.map((task) => (
+							{props.items.map((task) => (
 								<ColumnItem
-									id={task.id}
+									task={task}
 									onExpandTask={props.onExpandTask}
 								/>
 							))}
@@ -75,18 +73,16 @@ const Column = (props: {
 };
 
 export const ColumnItem = (props: {
-	id: string;
+	task: SnackTask;
 	onExpandTask: (id: string) => void;
 }) => {
-	const task = useAppSelector(selectTaskById(props.id));
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({
-			id: props.id,
+			id: props.task.id,
 		});
 
 	const style = {
 		transform: CSS.Translate.toString(transform),
-		transition,
 	};
 
 	return (
@@ -96,11 +92,11 @@ export const ColumnItem = (props: {
 			{...attributes}
 			{...listeners}>
 			<TaskListItem
-				key={task.id}
+				key={props.task.id}
 				view={TaskListItemView.Grid}
-				onSelectTask={() => props.onExpandTask(task.id)}
-				onExpandTask={() => props.onExpandTask(task.id)}
-				{...task}
+				onSelectTask={() => props.onExpandTask(props.task.id)}
+				onExpandTask={() => props.onExpandTask(props.task.id)}
+				{...props.task}
 			/>
 		</div>
 	);

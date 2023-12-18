@@ -30,6 +30,7 @@ type ContextMenuOptions = {
 	sort?: boolean;
 	create?: boolean;
 	back?: boolean;
+	more?: boolean;
 };
 
 export enum PageType {
@@ -110,11 +111,12 @@ const PageHeader = (props: {
 						<CreateTaskButton projectId={props.projectId ?? null} />
 					)}
 					<div className="flex gap-2 items-center">{props.actions}</div>
+					{props.options?.more && <MoreAction />}
+
 					<TimeTracker
 						taskId={'33'}
 						variant={'compact'}
 					/>
-					{props.options?.listingStyle && <ViewStyle />}
 				</div>
 			</nav>
 		</motion.header>
@@ -156,10 +158,13 @@ const NavigationAction = () => {
 	);
 };
 
-const ShareAction = () => {
+const MoreAction = () => {
 	return (
-		<button className="p-1 rounded-lg hover:bg-zinc-900/5 text-surface-10">
-			<ShareIcon className="w-6 h-6" />
+		<button className="p-2 rounded-lg hover:bg-zinc-900/5 text-surface-10">
+			<SFSymbol
+				name={'ellipsis.circle'}
+				color={'#121212'}
+			/>
 		</button>
 	);
 };

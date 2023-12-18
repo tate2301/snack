@@ -45,11 +45,7 @@ export const buttonVariants = {
 
 export default function TimeTracker(props: TimerButtonProps) {
 	const timer = new ClientTimer();
-	const {
-		time: ticker,
-		activateSession,
-		deactivateSession,
-	} = useContext(TimeServiceContext);
+	const { time: ticker, start, stop } = useContext(TimeServiceContext);
 	const { readLogs } = useTimeService();
 
 	const readAllLogs = () => {
@@ -63,11 +59,11 @@ export default function TimeTracker(props: TimerButtonProps) {
 	};
 	const onRun = () => {
 		readAllLogs();
-		activateSession();
+		start();
 	};
 	const onIdle = () => {
 		readAllLogs();
-		deactivateSession();
+		stop();
 	};
 
 	const timeServiceMachineConfig: TimeServiceConfig = {

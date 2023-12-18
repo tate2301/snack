@@ -12,6 +12,7 @@ function SFSymbol({
 	color?: string;
 	height?: string | number;
 	width?: string | number;
+	onClick?: (e) => void;
 }) {
 	const iconSrc = useSFSymbol(name, rest.color);
 	return (

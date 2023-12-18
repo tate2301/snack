@@ -1,19 +1,48 @@
-import { createContext, FC, ReactNode, useEffect, useState } from 'react';
+import {
+	createContext,
+	FC,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { ipcRenderer } from 'electron';
 
 const TimeServiceContext = createContext<{
 	time: number;
-	activateSession: () => void;
-	deactivateSession: () => void;
+	start: () => void;
+	stop: () => void;
+	totalToday: number;
+	tasks: Array<string>;
+	startTrackingTask: (id: string) => void;
+	stopTrackingTask: (id: string) => void;
+	getTimeForTask: (id: string) => number;
 }>({
 	time: 0,
-	activateSession: () => null,
-	deactivateSession: () => null,
+	totalToday: 0,
+	start: () => null,
+	stop: () => null,
+	tasks: [],
+	startTrackingTask: (id: string) => null,
+	stopTrackingTask: (id: string) => null,
+	getTimeForTask: (id: string) => 0,
 });
+
+export const useTimeServiceActions = () => {
+	const {
+		getTimeForTask,
+		startTrackingTask,
+		stopTrackingTask,
+		tasks,
+		totalToday,
+		time,
+	} = useContext(TimeServiceContext);
+};
 
 export const TimeServiceProvider: FC<{ children: ReactNode }> = (props) => {
 	const [time, setTime] = useState<number | null>(0);
 	const [isActive, setIsActive] = useState(false);
+	const [tasks, setTasks] = useState([]);
 
 	const getTicker = () => {
 		ipcRenderer.invoke('request-ticker').then((ticker) => {
@@ -34,12 +63,25 @@ export const TimeServiceProvider: FC<{ children: ReactNode }> = (props) => {
 		return () => clearTimeout(timeout);
 	}, [isActive]);
 
+	const totalToday = time;
+
+	const startTrackingTask = (id: string) => {};
+	const stopTrackingTask = (id: string) => {};
+	const getTimeForTask = (id: string) => {
+		return time;
+	};
+
 	return (
 		<TimeServiceContext.Provider
 			value={{
 				time,
-				activateSession: () => setIsActive(true),
-				deactivateSession: () => setIsActive(false),
+				totalToday,
+				tasks,
+				start: () => setIsActive(true),
+				stop: () => setIsActive(false),
+				startTrackingTask,
+				stopTrackingTask,
+				getTimeForTask,
 			}}>
 			{props.children}
 		</TimeServiceContext.Provider>
