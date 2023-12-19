@@ -1,11 +1,7 @@
 import { DndContext, KeyboardSensor, closestCorners } from '@dnd-kit/core';
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import { selectListById, selectTasksByListId } from '../../../redux/lists';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-
-const findColumn = (id: string) => id.split('-')[1];
 
 const KanbanBoard = (props: {
 	children: ReactNode;
@@ -14,9 +10,6 @@ const KanbanBoard = (props: {
 	onChangeBoard: (id: string, newBoard: string, oldBoard: string) => void;
 	onChangeIndex: (id: string, idx: number, newIdx, columnId: string) => void;
 }) => {
-	const allTasksInProject = useAppSelector(
-		selectTasksByListId(props.projectId),
-	);
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: {
@@ -43,27 +36,6 @@ const KanbanBoard = (props: {
 		const fromContainerId = active.data.current.sortable.containerId;
 
 		props.onChangeBoard(activeItemId, toContainerId, fromContainerId);
-
-		return;
-
-		if (overId.split('-')[0] !== 'column') {
-			// TODO: Check which column the item thats over is contained in
-			const task = allTasksInProject.find((task) => task.id === overId);
-			console.log({ event, overId });
-
-			props.onChangeBoard(
-				activeItemId,
-				task.status,
-				active.data.current.sortable.containerId,
-			);
-			return;
-		}
-
-		props.onChangeBoard(
-			activeItemId,
-			overId.split('-')[1],
-			active.data.current.sortable.containerId,
-		);
 	};
 
 	const onDragEnd = (event) => {

@@ -53,7 +53,6 @@ export const listSlice = createSlice({
 	reducers: {
 		setColumn: (state, action) => {
 			const { taskId, projectId, columnId } = action.payload;
-			console.log({ projectId, columnId, taskId });
 			const project = state.items.find((project) => project.id === projectId);
 			const column = project.columns.find(
 				(column) => column.title === columnId,
@@ -81,8 +80,6 @@ export const listSlice = createSlice({
 			const toColumn = project.columns.find(
 				(column) => column.title === toColumnId || column.id === toColumnId,
 			);
-
-			console.log({ fromColumnId, toColumnId });
 
 			toColumn.items.push(taskId);
 			fromColumn.items = Array.from(

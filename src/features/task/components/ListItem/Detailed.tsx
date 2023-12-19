@@ -1,8 +1,6 @@
-import { FolderIcon, QueueListIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { differenceInDays, format } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import PostItNoteIcon from '../../../../assets/icons/PostItNoteIcon';
 import { TaskStatus } from '../TaskListItem';
 import { SnackTask, SnackTaskStatus } from '../../../../redux/tasks/types';
 import { motion } from 'framer-motion';
@@ -10,9 +8,13 @@ import SFSymbol from '../../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../../styles/constants';
 import Textarea from '../../../../components/ui/input/textarea';
 import { TaskChecklist } from '../TaskExpandedView';
+import ProjectList from '../../../../components/forms/select/ProjectsList';
 
 type DetailedTaskListItemProps = {
 	onCheck: (e) => void;
+	isTrackingTask?: boolean;
+	onStartTrackingTask: () => void;
+	onStopTrackingTask: () => void;
 	isChecked: boolean;
 	emoji?: string;
 	title: string;
@@ -20,6 +22,7 @@ type DetailedTaskListItemProps = {
 	list: {
 		name: string;
 		color: string;
+		id: string;
 	};
 	deadline?: Date;
 	status: SnackTaskStatus;
@@ -33,6 +36,10 @@ type DetailedTaskListItemProps = {
 export default function DetailedTaskListItem(
 	props: DetailedTaskListItemProps & SnackTask,
 ) {
+	const onToggleTrackingTask = () => {
+		if (props.isTrackingTask) props.onStopTrackingTask();
+		if (!props.isTrackingTask) props.onStartTrackingTask();
+	};
 	return (
 		<motion.div
 			initial={{
@@ -51,9 +58,9 @@ export default function DetailedTaskListItem(
 			transition={{
 				type: 'tween',
 				ease: 'easeInOut',
-				duration: 0.1,
+				duration: 0.3,
 			}}
-			className="flex items-center flex-1 h-full rounded-xl bg-white my-4 px-2 py-3 border border-surface-4">
+			className="flex items-center flex-1 h-full rounded-xl bg-white my-4 px-2 py-3 border border-surface-4 shadow-sm">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-start w-full gap-2">
@@ -61,7 +68,7 @@ export default function DetailedTaskListItem(
 							className="flex-shrink-0 rounded-xl relative z-1 mt-2"
 							type="checkbox"
 							onChange={props.onCheck}
-							checked={props.isChecked}
+							checked={props.status === SnackTaskStatus.Complete}
 						/>
 
 						<div className="flex-1 pr-2 space-y-2">
@@ -111,20 +118,29 @@ export default function DetailedTaskListItem(
 							<div className="flex justify-between items-center border-t pt-4 border-alternateSurface">
 								<div className="text-sm text-surface-11 flex items-center gap-4">
 									<span className="flex items-center gap-2 rounded-lg bg-alternateSurface px-2 py-1 font-semibold">
-										<SFSymbol
-											name={'folder'}
-											color={'#808080'}
+										<ProjectList
+											defaultListId={props.list.id}
+											onChange={() => null}
 										/>
-										{props.list.name}
 									</span>
 
-									{props.subtasks.length > 0 && (
+									{props.subtasks?.length > 0 && (
 										<>
 											<span className="flex gap-2 items-center rounded-lg px-2 py-1 bg-alternateSurface font-semibold">
-												<SFSymbol
-													name={'checklist'}
-													color={'#808080'}
-												/>
+												{props.subtasks.filter((s) => !s.complete).length !==
+													0 && (
+													<SFSymbol
+														name={'checklist'}
+														color={'#808080'}
+													/>
+												)}
+												{props.subtasks.filter((s) => !s.complete).length ===
+													0 && (
+													<SFSymbol
+														name={'checklist.checked'}
+														color={'#808080'}
+													/>
+												)}
 												<span>
 													{
 														props.subtasks.filter((subtask) => subtask.complete)
@@ -140,11 +156,13 @@ export default function DetailedTaskListItem(
 									</span>
 								</div>
 								<div className="flex items-center gap-4 ">
-									<button className="bg-alternateSurface rounded-xl group px-2 py-1 items-center">
+									<button
+										onClick={onToggleTrackingTask}
+										className="bg-alternateSurface rounded-xl group px-2 py-1 items-center">
 										<span>00:00:00</span>
 										<span>
 											<SFSymbol
-												name={'play.fill'}
+												name={props.isTrackingTask ? 'pause.fill' : 'play.fill'}
 												color={'#808080'}
 												className="!w-5 !h-5"
 											/>

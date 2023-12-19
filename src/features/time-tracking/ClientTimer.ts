@@ -25,12 +25,12 @@ export default class ClientTimer {
 		ipcRenderer.send(`end-break`);
 	}
 
-	getTime() {
-		return ipcRenderer.send('request-log');
+	async getTime(): Promise<number> {
+		return ipcRenderer.invoke('request-ticker');
 	}
 
-	running() {
-		return this.isRunning;
+	async running() {
+		return await ipcRenderer.invoke('request-is-tracking');
 	}
 
 	id(): string {

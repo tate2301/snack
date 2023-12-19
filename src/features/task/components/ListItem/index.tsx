@@ -49,7 +49,7 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 							className="flex-shrink-0 rounded-xl relative z-1"
 							type="checkbox"
 							onChange={props.onCheck}
-							checked={props.isChecked}
+							checked={props.status === SnackTaskStatus.Complete}
 						/>
 
 						<div className="pr-2">

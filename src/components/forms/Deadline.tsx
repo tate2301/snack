@@ -1,10 +1,8 @@
 import { format, startOfToday } from 'date-fns';
 import useToggle from '../../lib/hooks/useToggle';
 import { cn } from '../../lib/utils';
-import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Datepicker from '../ui/datepicker';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { MinusCircleIcon } from '@heroicons/react/20/solid';
 import SFSymbol from '../../assets/icons/SFSymbol';
 
 function AddDeadline(props: {
@@ -29,7 +27,7 @@ function AddDeadline(props: {
 					/>
 					{props.selectedDate ? (
 						<>
-							{format(props.selectedDate, 'dd MMM yyyy')}
+							{format(props.selectedDate, 'dd MMMM yyyy')}
 							<SFSymbol
 								name={'minus.circle.fill'}
 								onClick={(e) => {

@@ -10,6 +10,7 @@ import { settingsSlice } from './settings';
 import { BaseAppDispatch, BaseRootState } from './types';
 import createSnackStorage from '../lib/core/redux-storage';
 import { starredSlice } from './starred';
+import { timeServiceSlice } from './time-service';
 const { deepParseJson } = require('deep-parse-json');
 
 const remindersReducer = (state = [], action) => {
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
 	settings: settingsSlice.reducer,
 	tasks: tasksSlice.reducer,
 	starred: starredSlice.reducer,
+	timeService: timeServiceSlice.reducer,
 });
 
 export const storeConfiguration = {

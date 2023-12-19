@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../redux/store';
 import {
 	addSubtask,
@@ -38,7 +38,6 @@ const useTaskFunctions = (task: SnackTask) => {
 				updateTask({
 					...task,
 					status,
-					complete: status === SnackTaskStatus.Complete,
 				}),
 			);
 
@@ -113,8 +112,8 @@ const useTaskFunctions = (task: SnackTask) => {
 		});
 	};
 
-	const onTitleChange = (e) => {
-		const value = e.target.value;
+	const onTitleChange = (e, override?) => {
+		const value = override || e.target.value;
 		onUpdateTask({
 			...task,
 			title: value,

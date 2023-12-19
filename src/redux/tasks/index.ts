@@ -3,6 +3,7 @@ import { SnackTask, SnackTaskStatus } from './types';
 import { RootState } from '../store';
 import _ from 'lodash';
 import { differenceInDays, isEqual, startOfDay, startOfToday } from 'date-fns';
+import { generateUUID } from '../../lib/functions';
 
 const initialState: {
 	items: SnackTask[];
@@ -17,6 +18,7 @@ export const tasksSlice = createSlice({
 		addTask: (state, action) => {
 			state.items.push(action.payload);
 		},
+
 		deleteTask: (state, action) => {
 			state.items = state.items.filter((task) => task.id !== action.payload);
 		},
@@ -101,7 +103,6 @@ export const {
 
 /** Selectors */
 export const selectAllTasks = (state: RootState) => {
-	console.log(state.tasks.items);
 	return state.tasks.items.filter((task) => task.trashed !== true);
 };
 

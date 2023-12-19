@@ -3,186 +3,205 @@
 import { BrowserWindow, ipcMain } from 'electron';
 import { TimeEventLogger } from './event-logger';
 import { isEqual, startOfDay, startOfToday } from 'date-fns';
+import TaskTimeTracker from './task-tracker';
 
-type TimeTrackerEvent = 'ticker' | 'action';
+const MS_PER_SECOND = 1000;
+const IDLE_TIME_THRESHOLD = 10 * 60 * MS_PER_SECOND; // 10 minutes
 
 export interface TimeTrackerObserver {
-	update(event: string, data?: any): void;
+	update<T>(event: string, data?: T): void;
 }
 
-class TimeTracker extends TimeEventLogger {
-	timer: NodeJS.Timer | null;
-	isPaused: boolean;
-	isStopped: boolean = true;
-	idleTimeThreshold: number;
-	idleTimer: NodeJS.Timer | null;
-	totalIdleTime: number;
-	totalTrackedTime: number; // Total tracked time in milliseconds
-	idleStartTime?: Date;
+class TimerService {
+	private timer: NodeJS.Timer | null = null;
+	private isPaused: boolean = false;
+	private isStopped: boolean = true;
+	totalTrackedTime: number = 0; // Total tracked time in milliseconds
+	totalTrackedToday: number = 0;
+	startOfToday: Date = startOfToday();
 	trackingStartTime?: Date;
+
 	breakStartTime?: Date;
 
-	private observers: TimeTrackerObserver[];
-	private mainWindow: BrowserWindow | null;
-
-	constructor(mainWindow: BrowserWindow) {
-		super();
-
-		this.timer = null;
-		this.isPaused = false;
-		this.observers = [];
-		this.idleTimeThreshold = 30 * 60 * 1000; // 30 minutes in milliseconds
-		this.idleTimer = null;
-		this.totalIdleTime = 0; // Total idle time in milliseconds
-		this.totalTrackedTime = 0;
-
-		this.mainWindow = mainWindow;
-
-		this.registerIPCListeners();
-
-		// Start monitoring machine lock and idle events
-		this.startMonitoringIdleTime();
-	}
-
-	registerIPCListeners(): void {
-		// Register IPC listener in the main process to receive messages from the renderer process
-		ipcMain.on('request-total-tracked-time', (event) => {
-			event.returnValue = this.getTotalTrackedTime();
-		});
-
-		ipcMain.on('start-tracking', () => {
-			if (!this.isStopped) return;
-			this.startTracking();
-		});
-
-		ipcMain.on('stop-tracking', () => {
-			this.stopTracking();
-		});
-
-		ipcMain.on('resume-tracking', () => {
-			this.resumeTracking();
-		});
-
-		ipcMain.on('start-break', () => {
-			this.startBreak();
-		});
-
-		ipcMain.on('end-break', () => {
-			this.endBreak();
-		});
-
-		// read state from the class
-		ipcMain.handle('request-log', (event) => {
-			return this.getEvents();
-		});
-
-		ipcMain.handle('request-ticker', (event) => {
-			if (this.isStopped) return null;
-			return this.getTotalTrackedTime();
-		});
-
-		ipcMain.on('request-is-tracking', (event) => {
-			event.returnValue = !this.isPaused && this.totalTrackedTime !== 0;
-		});
-
-		ipcMain.on('request-is-paused', (event) => {
-			event.returnValue = this.isPaused;
-		});
-
-		ipcMain.on('request-is-on-break', (event) => {
-			event.returnValue = this.isPaused && this.totalTrackedTime !== 0;
-		});
-	}
-
-	startTracking() {
-		this.notifyObservers('action', 'start');
-		this.trackingStartTime = new Date();
+	start() {
 		this.isStopped = false;
+		this.trackingStartTime = new Date();
 
 		this.timer = setInterval(() => {
 			if (this.isStopped) return;
 			if (!this.isPaused) {
-				// Simulate time tracking by logging the current time
+				this.totalTrackedTime += MS_PER_SECOND; // Increment total tracked time by 1 second
+
+				// check if we are not in a new day, if we are, reset total time tracked today.
 				if (isEqual(startOfDay(this.trackingStartTime!), startOfToday())) {
-					this.totalTrackedTime += 1000; // Increment total tracked time by 1 second
+					this.totalTrackedToday += this.totalTrackedTime;
 				} else {
-					this.totalTrackedTime = 1000; // Increment total tracked time by 1 second
-					this.trackingStartTime = new Date(); // Reset trackingStartTime to the current time
+					this.totalTrackedToday = MS_PER_SECOND;
+					this.startOfToday = startOfToday();
 				}
-				this.notifyObservers('ticker', this.totalTrackedTime);
 			}
-		}, 1000);
+		}, MS_PER_SECOND);
 	}
 
-	private pauseTracking() {
-		if (this.isStopped) return;
-
+	pause() {
 		this.isPaused = true;
-		this.notifyObservers('action', 'pause');
 	}
 
-	stopTracking(): void {
-		if (this.isStopped && this.timer) return;
+	resume() {
+		this.isPaused = false;
+	}
 
+	stop() {
+		// remove the timer interval.
 		if (this.timer) clearInterval(this.timer);
 
 		this.isStopped = true;
 		this.isPaused = false;
+		this.totalTrackedTime = 0;
+	}
 
-		if (this.trackingStartTime) {
-			this.logTrackedTime(
-				this.trackingStartTime.getTime(),
-				new Date().getTime(),
-			);
+	startIfPausedOrStopped() {
+		if (this.isTimerPaused()) {
+			this.resume();
+			return;
 		}
-
-		if (this.breakStartTime) this.endBreak();
-	}
-
-	resumeTracking() {
-		this.isPaused = false;
-		this.notifyObservers('action', 'resume');
-	}
-
-	startBreak() {
-		this.breakStartTime = new Date();
-		this.pauseTracking();
-		this.notifyObservers('action', 'start-break');
-	}
-
-	endBreak() {
-		this.resumeTracking();
-		this.notifyObservers('action', 'end-break');
-
-		if (this.breakStartTime) {
-			this.logBreak(
-				this.breakStartTime.getTime(),
-				new Date().getTime(),
-				'USER_INITIATED',
-			);
+		if (this.isTimerStopped()) {
+			this.start();
+			return;
 		}
+	}
 
-		this.breakStartTime = undefined;
+	isTimerPaused() {
+		return this.isPaused;
+	}
+
+	isTimerStopped() {
+		return this.isStopped;
+	}
+
+	currentDate() {
+		return startOfToday;
+	}
+}
+
+class TimerIPCListeners {
+	constructor(private timeTracker: TimeTracker) {
+		this.registerListeners();
+	}
+
+	private registerSessionListeners() {
+		ipcMain.on('start-session', () => {
+			if (!this.timeTracker.isStopped) return;
+			this.timeTracker.sessionTimer.startSession();
+		});
+
+		ipcMain.on('stop-session', () => {
+			this.timeTracker.sessionTimer.stopSession();
+		});
+
+		ipcMain.on('pause-session', () => {
+			this.timeTracker.sessionTimer.resumeSession();
+		});
+
+		ipcMain.on('resume-session', () => {
+			this.timeTracker.sessionTimer.resumeSession();
+		});
+	}
+
+	private registerTaskListeners() {
+		ipcMain.on('start-task', (event, id) => {
+			this.timeTracker.taskTimer.startTask(id);
+		});
+		ipcMain.on('stop-task', () => {
+			this.timeTracker.taskTimer.stopTask();
+		});
+
+		ipcMain.on('pause-task', () => {
+			this.timeTracker.taskTimer.pauseTask();
+		});
+
+		ipcMain.on('resume-task', () => {
+			this.timeTracker.taskTimer.resumeTask();
+		});
+	}
+
+	registerReadSessionValueHandlers() {
+		ipcMain.handle('request-date', (event) => {
+			return this.timeTracker.currentDate();
+		});
+
+		ipcMain.handle('request-ticker', (event) => {
+			if (this.timeTracker.isStopped()) return null;
+			return this.timeTracker.getTotalWorkingTimeInSession();
+		});
+
+		ipcMain.handle('request-total-today', (event) => {
+			return this.timeTracker.getTotalTrackedToday();
+		});
+
+		ipcMain.handle('request-is-tracking', (event) => {
+			return !this.timeTracker.isPaused() && !this.timeTracker.isStopped();
+		});
+
+		ipcMain.on('request-is-paused', (event) => {
+			event.returnValue = this.timeTracker.isPaused;
+		});
+
+		ipcMain.on('request-is-on-break', (event) => {
+			event.returnValue =
+				this.timeTracker.isPaused() && !this.timeTracker.isStopped();
+		});
+	}
+
+	registerReadTaskValueHandlers() {
+		ipcMain.handle('request-task-total-tracked-time', (event, id) => {
+			return this.timeTracker.getTotalWorkingTimeInSession();
+		});
+	}
+
+	private registerListeners(): void {
+		this.registerSessionListeners();
+		this.registerTaskListeners();
+		this.registerReadSessionValueHandlers();
+		this.registerReadTaskValueHandlers();
+	}
+}
+
+class IdleTimeMonitor {
+	private idleStartTime?: Date;
+	private idleTimer: NodeJS.Timer | null = null;
+	private totalIdleTime: number = 0;
+
+	startIdleTimer(callback: () => void, threshold: number) {
+		this.idleStartTime = new Date();
+		this.idleTimer = setTimeout(callback, threshold);
+	}
+
+	stopIdleTimer() {
+		if (this.idleTimer) clearTimeout(this.idleTimer);
+		if (this.idleStartTime) {
+			this.totalIdleTime += new Date().getTime() - this.idleStartTime.getTime();
+			this.idleStartTime = undefined;
+		}
+	}
+
+	getTotalIdleTime() {
+		return this.totalIdleTime;
 	}
 
 	startMonitoringIdleTime() {
 		const { powerMonitor } = require('electron');
 		powerMonitor.on('lock-screen', () => {
-			this.pauseTracking();
+			this.startIdleTimer(() => {}, IDLE_TIME_THRESHOLD);
 		});
 
 		powerMonitor.on('unlock-screen', () => {
-			this.resumeTracking();
+			this.stopIdleTimer();
 		});
 
 		powerMonitor.on('suspend', () => {
 			this.idleStartTime = new Date();
-			this.startIdleTimer();
-		});
-
-		powerMonitor.on('suspend', () => {
-			this.idleStartTime = new Date();
-			this.startIdleTimer();
+			this.startIdleTimer(() => {}, IDLE_TIME_THRESHOLD);
 		});
 
 		powerMonitor.on('resume', () => {
@@ -194,57 +213,136 @@ class TimeTracker extends TimeEventLogger {
 			}
 		});
 	}
+}
 
-	startIdleTimer() {
-		this.idleStartTime = new Date();
-		this.idleTimer = setTimeout(() => {
-			this.pauseTracking();
-		}, this.idleTimeThreshold);
+class TaskTracker {
+	private taskController?: TaskTimeTracker;
 
-		this.notifyObservers('action', 'start-idle');
+	startTask(id: string) {
+		if (this.taskController) this.taskController = undefined;
+		this.taskController = new TaskTimeTracker(id);
+		this.taskController.startTask();
 	}
 
-	stopIdleTimer() {
-		if (this.idleTimer) clearTimeout(this.idleTimer);
-		this.notifyObservers('action', 'stop-idle');
-		if (this.idleStartTime) {
-			this.logIdleTime(this.idleStartTime.getTime(), new Date().getTime(), 0);
+	pauseTask() {
+		if (this.taskController) this.taskController.startTaskBreak();
+	}
+
+	resumeTask() {
+		if (this.taskController) this.taskController.stopTaskBreak();
+	}
+
+	stopTask() {
+		if (this.taskController) {
+			this.taskController.stopTask();
+			this.taskController = undefined;
 		}
 	}
 
-	getTotalIdleTime() {
-		return this.totalIdleTime;
+	getTotalTaskWorkingTime(): number {
+		if (!this.taskController) return 0;
+		return this.taskController.getTaskTotalTrackedTime();
+	}
+}
+
+class SessionTimer {
+	constructor(private timerService: TimerService) {}
+
+	startSession() {
+		this.timerService.start();
 	}
 
-	getTotalTrackedTime(): number {
-		return this.totalTrackedTime;
+	pauseSession() {
+		this.timerService.pause();
 	}
 
-	getTotalWorkingTime(): number {
-		return this.getTotalTrackedTime() - this.getTotalIdleTime();
+	stopSession(): void {
+		this.timerService.stop();
 	}
 
-	addObserver(observer: any) {
-		this.observers.push(observer);
+	resumeSession() {
+		this.timerService.resume();
+	}
+}
+
+class TaskTimer {
+	constructor(
+		private taskTracker: TaskTracker,
+		private timerService: TimerService,
+	) {}
+
+	startTask(id: string) {
+		this.timerService.startIfPausedOrStopped();
+		this.taskTracker.startTask(id);
 	}
 
-	removeObserver(observer: any) {
-		this.observers = this.observers.filter((obs) => obs !== observer);
+	stopTask() {
+		this.taskTracker.stopTask();
 	}
 
-	notifyObservers(event: TimeTrackerEvent, data?: any): void {
-		this.observers.forEach((observer) => {
-			observer.update(event, data);
-		});
+	pauseTask() {
+		this.taskTracker.pauseTask();
+	}
 
-		// Send to renderer process
-		if (this.mainWindow) {
-			try {
-				this.mainWindow.webContents.send('time-tracker-event', { event, data });
-			} catch (e) {
-				console.log(e);
-			}
-		}
+	resumeTask() {
+		this.taskTracker.resumeTask();
+	}
+
+	totalTimeTracked() {
+		return this.taskTracker.getTotalTaskWorkingTime();
+	}
+}
+
+class TimeTracker extends TimeEventLogger {
+	sessionTimer: SessionTimer;
+	taskTimer: TaskTimer;
+	private mainWindow: BrowserWindow | null;
+
+	constructor(
+		mainWindow: BrowserWindow,
+		private timerService: TimerService,
+		public ipcListeners: TimerIPCListeners | null,
+		private idleTimeMonitor: IdleTimeMonitor,
+		sessionTimer: SessionTimer,
+		taskTimer: TaskTimer,
+	) {
+		super();
+		this.mainWindow = mainWindow;
+
+		this.sessionTimer = sessionTimer;
+		this.taskTimer = taskTimer;
+
+		this.idleTimeMonitor.startMonitoringIdleTime();
+	}
+
+	currentDate() {
+		return this.timerService.currentDate();
+	}
+
+	isPaused() {
+		return this.timerService.isTimerPaused();
+	}
+
+	isStopped() {
+		return this.timerService.isTimerStopped();
+	}
+
+	getTotalWorkingTimeInSession(): number {
+		return (
+			this.timerService.totalTrackedTime -
+			this.idleTimeMonitor.getTotalIdleTime()
+		);
+	}
+
+	getTotalTaskWorkingTime(): number {
+		return this.taskTimer.totalTimeTracked();
+	}
+
+	getTotalTrackedToday(): number {
+		return (
+			this.timerService.totalTrackedToday -
+			this.idleTimeMonitor.getTotalIdleTime()
+		);
 	}
 }
 
@@ -252,8 +350,24 @@ class TimeTracker extends TimeEventLogger {
 let instance: TimeTracker;
 
 function timeTrackerInstance(mainWindow: BrowserWindow) {
+	const timer = new TimerService();
+	const idleTimeMonitor = new IdleTimeMonitor();
+	const taskTracker = new TaskTracker();
+
+	const sessionTimer = new SessionTimer(timer);
+	const taskTimer = new TaskTimer(taskTracker, timer);
+
 	if (!instance) {
-		instance = new TimeTracker(mainWindow);
+		instance = new TimeTracker(
+			mainWindow,
+			timer,
+			null, // Pass null initially
+			idleTimeMonitor,
+			sessionTimer,
+			taskTimer,
+		);
+
+		instance.ipcListeners = new TimerIPCListeners(instance);
 	}
 	return instance;
 }

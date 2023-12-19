@@ -28,9 +28,9 @@ import { parseISO } from 'date-fns';
 import { useAppDispatch } from '../../../redux/store';
 import { addSubtask, deleteSubtask, updateSubtask } from '../../../redux/tasks';
 import { useCallback, useEffect, useRef } from 'react';
-import { iconColors } from '../../../styles/constants';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 import { useKeyboardListeners } from '../../../context/KeyboardNavigationContext';
+import Divider from '../../../components/ui/divider/Divider';
 
 type TaskExpandedViewProps = {
 	isOpen: boolean;
@@ -38,10 +38,6 @@ type TaskExpandedViewProps = {
 } & SnackTask;
 
 const TaskExpandedView = (props: TaskExpandedViewProps) => {
-	const handleOnClose = () => {
-		props.onClose();
-	};
-
 	const {
 		changeStatus,
 		onUpdateTask,
@@ -53,81 +49,91 @@ const TaskExpandedView = (props: TaskExpandedViewProps) => {
 		onDescriptionChange,
 	} = useTaskFunctions(props);
 
+	const titleRef = useRef(props.title);
+
+	const handleOnClose = () => {
+		console.log(titleRef);
+		if (props.title === '') onTitleChange(null, titleRef.current);
+		props.onClose();
+	};
+
+	useEffect(() => {
+		if (!titleRef.current) titleRef.current = props.title;
+	}, [props.title]);
+
 	return (
 		<Modal
+			noPadding
 			isOpen={props.isOpen}
 			onClose={handleOnClose}>
 			<div className="w-full text-base font-normal text-surface-11 max-h-[60vh] overflow-y-auto overflow-x-visible">
-				<div className="pb-1 z-30 sticky top-0 bg-white">
-					<div className="flex items-center justify-between">
-						<div className="flex gap-4">
-							<SelectStatus
-								status={props.status}
-								onChange={changeStatus}
-							/>
-							<ProjectList
-								defaultListId={list.id}
-								onChange={changeList}
-							/>
+				<div className="z-30 sticky top-0 bg-white rounded-2xl">
+					<div className="flex justify-between p-2 border-b border-surface-4">
+						<div className="flex items-start gap-4">
+							<p className="rounded-xl">
+								<SelectStatus
+									status={props.status}
+									onChange={changeStatus}
+								/>
+							</p>
+							<p className="rounded-xl">
+								<ProjectList
+									defaultListId={list.id}
+									onChange={changeList}
+								/>
+							</p>
 						</div>
-						<div className="flex gap-2">
-							<SnackTooltip>
-								<TooltipTrigger>
-									<button
-										onClick={openInPage}
-										className="p-2 hover:bg-surface-3 rounded-xl">
-										<ArrowsExpand className="w-5 h-5" />
-									</button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Open as page</p>
-								</TooltipContent>
-							</SnackTooltip>
-							<SnackTooltip>
-								<TooltipTrigger>
-									<button
-										onClick={handleOnClose}
-										className="p-2 hover:bg-surface-3 rounded-xl">
-										<XMarkIcon className="w-5 h-5" />
-									</button>
-								</TooltipTrigger>
-								<TooltipContent>
-									<p>Close</p>
-								</TooltipContent>
-							</SnackTooltip>
-						</div>
-					</div>
-					<div>
-						<Textarea
-							name={'title'}
-							onChange={onTitleChange}
-							value={props.title}
-							className="p-2 text-xl w-full outline-none ring-0 font-semibold text-surface-12"
-						/>
+						<SnackTooltip>
+							<TooltipTrigger>
+								<button
+									onClick={handleOnClose}
+									className="rounded-xl p-0">
+									<SFSymbol
+										name="xmark.circle.fill"
+										color={'#404040'}
+									/>
+								</button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Close</p>
+							</TooltipContent>
+						</SnackTooltip>
 					</div>
 				</div>
+
 				<div className="p-2">
+					<Textarea
+						name={'title'}
+						onChange={onTitleChange}
+						value={props.title}
+						className="p-2 text-xl w-full outline-none ring-0 font-semibold text-surface-12 my-0"
+					/>
 					<Textarea
 						value={props.description}
 						onChange={onDescriptionChange}
 						name={'description'}
 						placeholder="Add a description"
-						className="w-full p-2 bg-transparent outline-none focus:outline-2 rounded-xl focus:shadow-inner focus:outline-primary-10"
-					/>
-				</div>
-				<div className="flex items-center gap-2 py-4">
-					<AddDeadline
-						selectDate={onDeadlineChanged}
-						selectedDate={
-							typeof props.deadline === 'string'
-								? parseISO(props.deadline)
-								: props.deadline
+						className={
+							'outline-none ring-0 flex-1 text-surface-10 w-full font-semibold p-2 my-0'
 						}
 					/>
 				</div>
+				<div className="flex items-center gap-2 p-4">
+					<p className="rounded-xl bg-surface-4">
+						<AddDeadline
+							selectDate={onDeadlineChanged}
+							selectedDate={
+								typeof props.deadline === 'string'
+									? parseISO(props.deadline)
+									: props.deadline
+							}
+						/>
+					</p>
+				</div>
 
-				<TaskChecklist {...props} />
-				<div className="flex gap-4"></div>
+				<div className="p-4">
+					<TaskChecklist {...props} />
+				</div>
 			</div>
 		</Modal>
 	);
@@ -187,10 +193,10 @@ export const TaskChecklist = (props: SnackTask) => {
 	return (
 		<div className={'py-4'}>
 			<p className="subheadline text-surface-10 mb-2">
-				Checklist ({props.subtasks.length})
+				Checklist ({props.subtasks?.length})
 			</p>
 
-			{props.subtasks.length === 0 && (
+			{props.subtasks?.length === 0 && (
 				<div>
 					<button
 						onClick={onAddChecklist}
@@ -203,9 +209,9 @@ export const TaskChecklist = (props: SnackTask) => {
 					</button>
 				</div>
 			)}
-			{props.subtasks.length !== 0 && (
+			{props.subtasks?.length !== 0 && (
 				<div className="flex flex-col gap-2">
-					{props.subtasks.map((subtask) => (
+					{props.subtasks?.map((subtask) => (
 						<SubTaskItem
 							key={subtask.id}
 							title={subtask.title}

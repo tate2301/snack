@@ -37,7 +37,7 @@ const ProjectOptions = (props: { id: string; onDelete: (e) => void }) => {
 
 			<button
 				onClick={openEditModal}
-				className="hover:bg-zinc-900/10 flex items-center p-1 rounded-lg">
+				className="hover:bg-zinc-900/10 flex items-center p-2 rounded-lg">
 				<SFSymbol
 					name={'square.and.pencil'}
 					color={'#121212'}
@@ -50,7 +50,7 @@ const ProjectOptions = (props: { id: string; onDelete: (e) => void }) => {
 			{props.id !== 'default' && (
 				<button
 					onClick={props.onDelete}
-					className="hover:bg-zinc-900/10 flex items-center p-1 rounded-lg">
+					className="hover:bg-zinc-900/10 flex items-center p-2 rounded-lg">
 					<SFSymbol
 						name={'trash'}
 						color={'#121212'}

@@ -22,8 +22,8 @@ export default function SnackApplicationProvider(props: {
 			id="app-container">
 			<title>Snack ⏲</title>
 			<WindowFocusProvider>
-				<TimeServiceProvider>
-					<Provider store={store}>
+				<Provider store={store}>
+					<TimeServiceProvider>
 						<PersistGate
 							loading={null}
 							persistor={persistor}>
@@ -36,8 +36,8 @@ export default function SnackApplicationProvider(props: {
 								</CommandContextProvider>
 							</ToastProvider>
 						</PersistGate>
-					</Provider>
-				</TimeServiceProvider>
+					</TimeServiceProvider>
+				</Provider>
 			</WindowFocusProvider>
 		</div>
 	);

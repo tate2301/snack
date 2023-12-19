@@ -39,7 +39,6 @@ function createWindow() {
 		visualEffectState: 'followWindow',
 		vibrancy: 'sidebar',
 		backgroundColor: 'rgba(255,255,255,0.5)',
-		transparent: true,
 	});
 
 	/** Window Events */

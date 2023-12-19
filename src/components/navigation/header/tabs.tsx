@@ -68,19 +68,6 @@ const tabs: NavItemType[] = [
 		href: '/list/default',
 		shortcut: 'P',
 	},
-	{
-		icon: (
-			<SFSymbol
-				color={iconColors.primary}
-				name={'folder.fill.badge.gearshape'}
-				className="w-6 h-6 text-primary-11"
-			/>
-		),
-		value: 'work',
-		label: 'Work',
-		href: '/list/work',
-		shortcut: 'W',
-	},
 ];
 
 export default tabs;

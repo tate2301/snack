@@ -18,6 +18,7 @@ export type ModalProps = {
 	description?: string;
 	actionCenter?: React.ReactNode;
 	noPadding?: boolean;
+	className?: string;
 };
 
 export default function Modal({
@@ -28,6 +29,7 @@ export default function Modal({
 	description,
 	actionCenter,
 	noPadding,
+	className,
 }: ModalProps) {
 	return (
 		<Dialog
@@ -46,7 +48,7 @@ export default function Modal({
 					<DialogContent
 						autoFocus={false}
 						className={clsx(
-							'w-auto mx-auto outline-none',
+							'w-auto mx-auto outline-none overflow-hidden',
 							!noPadding && 'p-4 pb-2',
 						)}>
 						{(title || description) && (

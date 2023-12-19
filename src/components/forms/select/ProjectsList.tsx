@@ -7,7 +7,7 @@ import {
 } from '../../ui/select';
 import { useAppSelector } from '../../../redux/store';
 import { selectAllLists } from '../../../redux/lists';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 
 const ProjectList = (props: {
@@ -26,9 +26,12 @@ const ProjectList = (props: {
 		<Select
 			defaultValue={defaultValue}
 			onValueChange={props.onChange}>
-			<SelectTrigger className="min-w-[120px] w-fit text-surface-12 p-2">
+			<SelectTrigger className="min-w-[120px] w-fit !text-surface-12 p-2">
 				<div className="flex gap-4">
-					<SelectValue placeholder={'No list'} />
+					<SelectValue
+						className="text-surface-12"
+						placeholder={'No list'}
+					/>
 				</div>
 			</SelectTrigger>
 			<SelectContent>
@@ -51,4 +54,4 @@ const ProjectList = (props: {
 	);
 };
 
-export default ProjectList;
+export default memo(ProjectList);

@@ -7,7 +7,6 @@ import { removeList, selectTasksByListId } from '../../../redux/lists';
 import { motion } from 'framer-motion';
 import { cn } from '../../../lib/utils';
 import ProjectOptions from './ListOptions';
-import CircleProgress from '../../../components/ui/progress/CircleProgress';
 import { SnackTaskStatus } from '../../../redux/tasks/types';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 

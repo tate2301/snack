@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { SnackTask } from '../../redux/tasks/types';
+import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
 import PageHeader from '../navigation/Header';
 import CalendarLayout from '../../layouts/CalendarLayout';
 import {
@@ -16,6 +16,9 @@ import SFSymbol from '../../assets/icons/SFSymbol';
 import { iconColors } from '../../styles/constants';
 import { AnimatePresence } from 'framer-motion';
 import { useTaskPageLayoutNavigation } from './hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { addTask, deleteTask, selectAllTasks } from '../../redux/tasks';
+import { generateUUID } from '../../lib/functions';
 
 type TaskListPage = {
 	grouping: string;
@@ -34,6 +37,8 @@ type TaskListPage = {
 
 export default function TaskListPage(props: TaskListPage) {
 	const [selectedTask, setSelectedTask] = useState<string>();
+	const allTasks = useAppSelector(selectAllTasks);
+	const dispatch = useAppDispatch();
 
 	useTaskPageLayoutNavigation(props.tasks, selectedTask, setSelectedTask);
 
@@ -44,6 +49,25 @@ export default function TaskListPage(props: TaskListPage) {
 
 	const onSelectTask = (id: string) => {
 		setSelectedTask(id);
+	};
+
+	const onDuplicateTask = () => {
+		const id = generateUUID();
+		dispatch(
+			addTask({
+				...allTasks.find((task) => task.id === selectedTask),
+				id,
+				createdAt: new Date(),
+				complete: false,
+				status: SnackTaskStatus.Todo,
+			}),
+		);
+		setSelectedTask(id);
+	};
+
+	const onArchiveTask = () => {
+		dispatch(deleteTask(selectedTask));
+		setSelectedTask(null);
 	};
 
 	useEffect(() => {
@@ -70,6 +94,7 @@ export default function TaskListPage(props: TaskListPage) {
 								'p-1 rounded-lg flex items-center space-x-2 group transition-all'
 							}>
 							<button
+								onClick={onDuplicateTask}
 								className={cn(
 									'rounded-lg text-surface-11 p-2',
 									selectedTask && 'hover:bg-surface-4',
@@ -82,6 +107,7 @@ export default function TaskListPage(props: TaskListPage) {
 							</button>
 
 							<button
+								onClick={onArchiveTask}
 								className={cn(
 									'rounded-lg text-surface-11 p-2 ',
 									selectedTask && 'hover:bg-surface-4',

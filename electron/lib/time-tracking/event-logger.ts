@@ -40,4 +40,8 @@ export class TimeEventLogger {
 	getEvents(): TimeEvent[] {
 		return this.events;
 	}
+
+	clearLogs() {
+		this.events = [];
+	}
 }

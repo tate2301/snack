@@ -18,7 +18,6 @@ import { addTaskToList } from '../../../redux/lists';
 import useDisclosure from '../../../lib/hooks/useDisclosure';
 import AddDeadline from '../../../components/forms/Deadline';
 import { cn } from '../../../lib/utils';
-import EmojiPicker from '../../../components/forms/EmojiPicker';
 import Kbd from '../../../components/ui/typography/Kbd';
 
 const CreateTask = (props: {

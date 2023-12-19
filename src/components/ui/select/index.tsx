@@ -1,6 +1,6 @@
 import React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import { ZINDEX } from '../../../constants/styles';
 import { cn } from '../../../lib/utils';
 import SFSymbol from '../../../assets/icons/SFSymbol';

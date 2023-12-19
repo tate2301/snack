@@ -1,8 +1,4 @@
-import { MagnifyingGlassIcon, PauseIcon } from '@heroicons/react/24/solid';
-import { cn } from '../../../lib/utils';
-import { CurrencyDollarIcon } from '@heroicons/react/24/solid';
-import ExternalLink from '../../../assets/icons/ExternalLink';
-import ClockInButton from '../../../features/time-tracking/components/StartTimerButton/ClockInButton';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
 const Search = () => {
 	return (

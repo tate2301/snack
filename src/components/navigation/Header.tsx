@@ -1,22 +1,13 @@
 import {
 	ArrowLeftIcon,
 	ListBulletIcon,
-	PlusIcon,
 	ViewColumnsIcon,
 } from '@heroicons/react/24/outline';
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { cn, remToPx } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-	ClockIcon,
-	DocumentIcon,
-	FolderIcon,
-	QueueListIcon,
-} from '@heroicons/react/24/solid';
 import { CommandContext } from '../../context/CommandContext';
-import ShareIcon from '../../assets/icons/ShareIcon';
-import Search from './ControlCenter/Search';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import TimeTracker from '../../features/time-tracking';
 import SFSymbol from '../../assets/icons/SFSymbol';
 import { iconColors } from '../../styles/constants';
