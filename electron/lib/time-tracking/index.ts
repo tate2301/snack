@@ -100,7 +100,7 @@ class TimerIPCListeners {
 		});
 
 		ipcMain.on('pause-session', () => {
-			this.timeTracker.sessionTimer.resumeSession();
+			this.timeTracker.sessionTimer.pauseSession();
 		});
 
 		ipcMain.on('resume-session', () => {
@@ -127,7 +127,7 @@ class TimerIPCListeners {
 
 	registerReadSessionValueHandlers() {
 		ipcMain.handle('request-date', (event) => {
-			return this.timeTracker.currentDate();
+			return this.timeTracker.currentDate().toString();
 		});
 
 		ipcMain.handle('request-ticker', (event) => {

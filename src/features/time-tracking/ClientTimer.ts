@@ -7,22 +7,22 @@ export default class ClientTimer {
 
 	start() {
 		this.isRunning = true;
-		ipcRenderer.send('start-tracking');
+		ipcRenderer.send('start-session');
 	}
 
 	stop() {
 		this.isRunning = false;
-		ipcRenderer.send(`stop-tracking`);
+		ipcRenderer.send(`stop-session`);
 	}
 
 	break() {
 		this.isRunning = false;
-		ipcRenderer.send(`start-break`);
+		ipcRenderer.send(`pause-session`);
 	}
 
 	continue() {
-		this.isRunning = false;
-		ipcRenderer.send(`end-break`);
+		this.isRunning = true;
+		ipcRenderer.send(`resume-session`);
 	}
 
 	async getTime(): Promise<number> {

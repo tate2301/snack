@@ -13,19 +13,10 @@ import {
 	MachineState,
 	TimeServiceActionEnum,
 	TimeServiceConfig,
-	TimeServiceState,
 	useTimeServiceMachine,
 } from '../hooks/useTimeService';
-import { useAppDispatch, useAppSelector } from '../../../redux/store';
-import {
-	logBreak,
-	logIdle,
-	logTrackedTime,
-	selectDay,
-	startNewDay,
-	stopTrackingAllTasks,
-} from '../../../redux/time-service';
-import { isEqual, startOfDay } from 'date-fns';
+import { useAppDispatch } from '../../../redux/store';
+import { isEqual, startOfDay, startOfToday } from 'date-fns';
 import ClientTimer from '../ClientTimer';
 import useToggle from '../../../lib/hooks/useToggle';
 
@@ -185,9 +176,11 @@ const useTrackSession = (
 	 * Get the current date being tracked by the timer service
 	 */
 	const getDate = () => {
-		ipcRenderer.invoke('request-date').then((date) => {
-			setDate(new Date(date));
-		});
+		if (!date || !isEqual(startOfDay(date), startOfToday())) {
+			ipcRenderer.invoke('request-date').then((date) => {
+				setDate(new Date(date));
+			});
+		}
 	};
 
 	useEffect(() => {
