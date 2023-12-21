@@ -1,7 +1,7 @@
 import { MachineState, TimeServiceState } from './hooks/useTimeService';
 
 export type TimerButtonProps = {
-	taskId: string;
+	taskId?: string;
 	sessionId?: string;
 	variant?: 'compact' | 'default';
 };

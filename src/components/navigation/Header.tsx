@@ -8,7 +8,7 @@ import { cn, remToPx } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommandContext } from '../../context/CommandContext';
 import { motion } from 'framer-motion';
-import TimeTracker from '../../features/time-tracking';
+import TimeTracker from '../../../plugins/time-tracking';
 import SFSymbol from '../../assets/icons/SFSymbol';
 import { iconColors } from '../../styles/constants';
 
@@ -103,11 +103,6 @@ const PageHeader = (props: {
 					)}
 					<div className="flex gap-2 items-center">{props.actions}</div>
 					{props.options?.more && <MoreAction />}
-
-					<TimeTracker
-						taskId={'33'}
-						variant={'compact'}
-					/>
 				</div>
 			</nav>
 		</motion.header>
@@ -124,7 +119,7 @@ const CreateTaskButton = (props: { projectId: string }) => {
 	return (
 		<button
 			onClick={onClick}
-			className="hover:bg-zinc-900/5 flex gap-2 items-center rounded-lg p-1.5 text-surface-12 hover:bg-surface-6">
+			className="flex gap-2 items-center rounded-lg p-1.5 text-surface-12 hover:bg-surface-6">
 			<SFSymbol
 				name={'plus.circle.fill'}
 				color={iconColors.primary}

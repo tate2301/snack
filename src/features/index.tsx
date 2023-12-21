@@ -11,7 +11,6 @@ export default function Splash() {
 	const settings = useAppSelector(applicationSettings);
 	const navigate = useNavigate();
 
-
 	const onQuickStart = () => {
 		dispatch(
 			updateSettings({
@@ -28,9 +27,11 @@ export default function Splash() {
 		}
 	}, [navigate, settings.onboarded]);
 
-
 	return (
-		<main className={'h-screen w-screen flex items-center justify-center'}>
+		<main
+			className={
+				'h-screen w-screen flex items-center justify-center top-0 left-0 z-[9999] fixed bg-white'
+			}>
 			<div className="w-full max-w-screen-md">
 				<div className="flex flex-col items-center mb-16">
 					<img

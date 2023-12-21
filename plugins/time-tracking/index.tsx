@@ -1,5 +1,5 @@
 import { TimerButtonProps } from './types';
-import ClientTimer from './ClientTimer';
+import SessionTimerActions from './SessionTimer';
 import { TimeServiceActionEnum, useTimeService } from './hooks/useTimeService';
 import { memo, useContext } from 'react';
 import TimeServiceContext from './context';
@@ -54,4 +54,4 @@ function TimeTracker(props: TimerButtonProps) {
 	);
 }
 
-export default memo(TimeTracker);
+export default TimeTracker;

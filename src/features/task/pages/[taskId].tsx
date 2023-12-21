@@ -26,7 +26,7 @@ import { AppEntity } from '../../../redux/starred/types';
 import { cn } from '../../../lib/utils';
 import StarIcon from '../../../assets/icons/StarIcon';
 import TaskPageView from '../components/TaskPageView';
-import TimeTracker from '../../time-tracking';
+import TimeTracker from '../../../../plugins/time-tracking';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../styles/constants';
 

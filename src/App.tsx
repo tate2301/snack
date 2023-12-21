@@ -11,7 +11,7 @@ import SnackPluginManager, { availablePlugins } from './lib/integrations';
 import CommandContextProvider from './context/CommandContext';
 import { ToastProvider } from './context/ToastProvider';
 import { WindowFocusProvider } from './context/WindowFocusContext';
-import { TimeServiceProvider } from './features/time-tracking/context';
+import { TimeServiceProvider } from '../plugins/time-tracking/context';
 
 export default function SnackApplicationProvider(props: {
 	children: ReactNode;

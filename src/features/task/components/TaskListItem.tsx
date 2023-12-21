@@ -17,12 +17,11 @@ import {
 import { cn } from '../../../lib/utils';
 import useTaskFunctions from './hooks/useTaskFunctions';
 import GridTaskListItem from './ListItem/Grid';
-import DefaultTaskListItem from './ListItem';
-import DetailedTaskListItem from './ListItem/Detailed';
+import DefaultTaskListItem from './ListItem/DefaultTaskListItem';
+import DetailedTaskListItem from './ListItem/DetailedTaskListItem';
 import { useKeyboardListeners } from '../../../context/KeyboardNavigationContext';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../styles/constants';
-import { useTimeServiceActions } from '../../time-tracking/context';
 
 export enum TaskListItemView {
 	Grid = 'Grid',
@@ -46,15 +45,6 @@ export default function TaskListItem(
 	const { changeStatus } = useTaskFunctions(props);
 	const [isChecked] = useToggle(props.status === SnackTaskStatus.Complete);
 	const { registerListeners, unregisterListeners } = useKeyboardListeners();
-	const {
-		startTrackingTask,
-		stopTrackingTask,
-		tasks,
-		getTimeForTask,
-		timeServiceState,
-		time,
-		isRunning,
-	} = useTimeServiceActions();
 
 	const deadline = useMemo(
 		() => props.deadline && new Date(props.deadline),
@@ -72,21 +62,6 @@ export default function TaskListItem(
 
 		return;
 	};
-
-	const onStartTrackingTask = () => {
-		startTrackingTask(props.id);
-	};
-
-	const onStopTrackingTask = () => {
-		stopTrackingTask(props.id);
-	};
-
-	const isTrackingTask = useMemo(
-		() => isRunning && tasks.includes(props.id),
-		[],
-	);
-
-	const trackedTime = useMemo(() => getTimeForTask(props.id), [time, props.id]);
 
 	const collapseListener = useCallback((e: KeyboardEvent) => {
 		props.onCollapseTask && props.onCollapseTask();
@@ -108,7 +83,7 @@ export default function TaskListItem(
 			<div
 				onDoubleClick={props.onExpandTask}
 				className={clsx(
-					'group p-1',
+					'group px-1',
 					props.view === TaskListItemView.Grid ? 'rounded-xl' : 'rounded',
 				)}>
 				{props.view === TaskListItemView.Grid && (
@@ -126,9 +101,6 @@ export default function TaskListItem(
 								deadline={deadline}
 								list={{ ...list }}
 								onCheck={onCheck}
-								onStartTrackingTask={onStartTrackingTask}
-								onStopTrackingTask={onStopTrackingTask}
-								isTrackingTask={isTrackingTask}
 							/>
 						) : (
 							<DefaultTaskListItem

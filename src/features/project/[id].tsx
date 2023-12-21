@@ -1,9 +1,6 @@
 'use client';
 import CalendarLayout from '../../layouts/CalendarLayout';
-import { AnimatePresence, motion } from 'framer-motion';
-import TaskListItem from '../task/components/TaskListItem';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
-import { PlayIcon } from '@heroicons/react/20/solid';
 import {
 	changeIndexOfTaskInColumn,
 	defaultKanbanBoards,
@@ -14,17 +11,14 @@ import {
 	setColumn,
 	moveTaskBetweenColumns,
 } from '../../redux/lists';
-import { ReactNode, useCallback, useEffect } from 'react';
-import { ChevronRightIcon } from '@heroicons/react/24/solid';
-import { FolderIcon } from '@heroicons/react/24/solid';
-import { SnackTask, SnackTaskStatus } from '../../redux/tasks/types';
+import { useEffect } from 'react';
+import { SnackTaskStatus } from '../../redux/tasks/types';
 import useToggle from '../../lib/hooks/useToggle';
 import ProjectOptions from './components/ListOptions';
 import TaskExpandedView from '../task/components/TaskExpandedView';
 import { useExpandTaskView } from '../task/components/hooks';
 import { useParams } from 'react-router-dom';
 import PageHeader, { PageType } from '../../components/navigation/Header';
-import { cn } from '../../lib/utils';
 import Column from '../../components/ui/kanban/Column';
 import KanbanBoard from '../../components/ui/kanban/KanbanContainer';
 import {
@@ -33,8 +27,8 @@ import {
 	selectStarredItemById,
 } from '../../redux/starred';
 import { AppEntity } from '../../redux/starred/types';
-import { changeTaskStatus } from '../../redux/tasks';
 import { SnackIcons } from '../../context/EmojiAndIconContext';
+import { changeTaskStatus } from '../../redux/tasks';
 
 const t = (n: number) => n * 1000;
 
@@ -76,6 +70,7 @@ export default function ListPage() {
 		newBoard: string,
 		oldBoard: string,
 	) => {
+		dispatch(changeTaskStatus({ id: taskId, status: newBoard }));
 		dispatch(
 			moveTaskBetweenColumns({
 				taskId: taskId,
@@ -104,18 +99,6 @@ export default function ListPage() {
 			dispatch(removeStarred({ id }));
 		}
 	};
-
-	useEffect(() => {
-		allTasks.map((task) => {
-			dispatch(
-				setColumn({
-					taskId: task.id,
-					projectId: id,
-					columnId: task.status,
-				}),
-			);
-		});
-	}, []);
 
 	return (
 		<CalendarLayout>

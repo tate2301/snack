@@ -67,23 +67,37 @@ export const listSlice = createSlice({
 
 			if (fromColumnId === toColumnId) return;
 
-			const project = state.items.find((project) => project.id === projectId);
+			const projectIndex = state.items.findIndex(
+				(project) => project.id === projectId,
+			);
+			const project = state.items[projectIndex];
 			if (!project) return;
 
 			if (!project.columns) {
 				project.columns = defaultKanbanBoards;
 			}
 
-			const fromColumn = project.columns.find(
+			const fromColumn = project.columns.findIndex(
 				(column) => column.title === fromColumnId || column.id === fromColumnId,
 			);
-			const toColumn = project.columns.find(
+			const toColumn = project.columns.findIndex(
 				(column) => column.title === toColumnId || column.id === toColumnId,
 			);
 
-			toColumn.items.push(taskId);
-			fromColumn.items = Array.from(
-				new Set(fromColumn.items.filter((item) => item.toString() !== taskId)),
+			console.log({
+				fromColumnId,
+				columns: project.columns[fromColumn].items.map((item) =>
+					item.toString(),
+				),
+			});
+
+			project.columns[toColumn].items.push(taskId);
+			project.columns[fromColumn].items = Array.from(
+				new Set(
+					project.columns[fromColumn].items.filter(
+						(item) => item.toString() !== taskId,
+					),
+				),
 			);
 		},
 		changeIndexOfTaskInColumn: (state, action) => {

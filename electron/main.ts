@@ -4,7 +4,7 @@ import installExtension, {
 	REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import CustomMenu from './lib/Menu';
-import initTimeTracker from './lib/time-tracking/Timer';
+import initTimeTracker from './lib/time-tracking/init';
 import { getSfSymbolAsNativeImage } from 'electron-sfsymbols';
 
 const windowStateKeeper = require('electron-window-state');
@@ -32,6 +32,10 @@ function createWindow() {
 			height: 40,
 		},
 		titleBarStyle: 'hidden',
+		trafficLightPosition: {
+			x: 13,
+			y: 13,
+		},
 		maximizable: true,
 		icon: './logo512.png',
 		show: false,

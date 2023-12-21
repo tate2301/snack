@@ -7,7 +7,6 @@ import {
 } from '../types';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import clsx from 'clsx';
-import ExclusionTab from '../../ui/ExlusionTab';
 import { useAppSelector } from '../../../redux/store';
 import { selectAllLists as selectAllLists } from '../../../redux/lists';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -22,19 +21,14 @@ import {
 } from '../../../redux/starred';
 import { AppEntity, Starred } from '../../../redux/starred/types';
 import { UserGroupIcon, FolderIcon } from '@heroicons/react/20/solid';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { SnackList } from '../../../redux/lists/types';
 import InProgressIcon from '../../../assets/icons/InProgressIcon';
-import { PlusCircleIcon } from '@heroicons/react/24/solid';
 import { CommandContext } from '../../../context/CommandContext';
-import Search from '../ControlCenter/Search';
 import useWindowFocus from '../../../lib/hooks/useWindowFocus';
 import { cn } from '../../../lib/utils';
 import StarIcon from '../../../assets/icons/StarIcon';
-import TimeTracker from '../../../features/time-tracking';
-import { iconColors } from '../../../styles/constants';
 import SFSymbol from '../../../assets/icons/SFSymbol';
-import { electronAPI } from '../../../lib/core/electron';
 import Kbd from '../../ui/typography/Kbd';
 
 export default function NavigationSidebar() {
@@ -45,10 +39,18 @@ export default function NavigationSidebar() {
 		<div
 			className={cn(
 				'overflow-y-hidden w-64 justify-between h-full transition-all bg-white/20',
-				'flex-shrink-0 flex-grow-0 flex flex-col z-40 border-r border-zinc-400/30 shadow-sm',
+				'flex-shrink-0 flex-grow-0 flex flex-col z-40 border-r border-zinc-400/30 shadow-sm drag',
 				!isWindowFocused && 'opacity-60',
 			)}>
-			<div className="flex flex-col h-full pt-12">
+			<div className="py-[12px] px-4 gap-4 flex items-center justify-end">
+				<SFSymbol
+					name="sidebar.left"
+					color={'#606060'}
+					className="!w-7 !h-7"
+				/>
+			</div>
+
+			<div className="flex flex-col h-full ">
 				<SidebarNavigation
 					isExpanded={isExpanded}
 					toggle={toggle}
@@ -69,7 +71,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 	return (
 		<div className="sticky flex flex-col flex-1 h-full overflow-y-auto gap-8">
 			<div className="flex flex-col gap-4 shadow-xs px-1 mt-4">
-				<div className="flex flex-col w-full gap-2 px-2">
+				<div className="flex flex-col w-full gap-2 px-2 no-drag">
 					<div className={'space-y-1 font-semibold'}>
 						{tabs.map((tab: NavItemType) => (
 							<div key={tab.value}>
@@ -84,7 +86,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-col px-3">
+			<div className="flex flex-col px-3 no-drag">
 				<div className="flex justify-between items-center">
 					<p className="subheadline text-surface-9 px-2">Boards</p>
 					<ManageListForm action={ManageListFormAction.Create} />
@@ -93,7 +95,7 @@ function SidebarNavigation(props: AppNavigation & SidebarToggleProps) {
 					<Projects />
 				</div>
 			</div>
-			<div className="hover:shadow-md absolute bottom-0 left-0 w-full border-t border-zinc-400/30 px-2 py-1 rounded-none">
+			<div className="hover:shadow-md absolute no-drag bottom-0 left-0 w-full border-t border-zinc-400/30 px-2 py-1 rounded-none">
 				<NavItem
 					icon={
 						<SFSymbol

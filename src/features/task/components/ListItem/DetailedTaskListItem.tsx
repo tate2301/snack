@@ -12,9 +12,6 @@ import ProjectList from '../../../../components/forms/select/ProjectsList';
 
 type DetailedTaskListItemProps = {
 	onCheck: (e) => void;
-	isTrackingTask?: boolean;
-	onStartTrackingTask: () => void;
-	onStopTrackingTask: () => void;
 	isChecked: boolean;
 	emoji?: string;
 	title: string;
@@ -36,10 +33,6 @@ type DetailedTaskListItemProps = {
 export default function DetailedTaskListItem(
 	props: DetailedTaskListItemProps & SnackTask,
 ) {
-	const onToggleTrackingTask = () => {
-		if (props.isTrackingTask) props.onStopTrackingTask();
-		if (!props.isTrackingTask) props.onStartTrackingTask();
-	};
 	return (
 		<motion.div
 			initial={{
@@ -151,23 +144,9 @@ export default function DetailedTaskListItem(
 											</span>
 										</>
 									)}
-									<span className="flex items-center gap-2 rounded-lg bg-alternateSurface px-2 py-1 font-semibold">
+									<span className="flex items-center gap-2 rounded-lg bg-alternateSurface px-3 py-2 font-semibold">
 										<TaskStatus status={props.status} />
 									</span>
-								</div>
-								<div className="flex items-center gap-4 ">
-									<button
-										onClick={onToggleTrackingTask}
-										className="bg-alternateSurface rounded-xl group px-2 py-1 items-center">
-										<span>00:00:00</span>
-										<span>
-											<SFSymbol
-												name={props.isTrackingTask ? 'pause.fill' : 'play.fill'}
-												color={'#808080'}
-												className="!w-5 !h-5"
-											/>
-										</span>
-									</button>
 								</div>
 							</div>
 						</div>
