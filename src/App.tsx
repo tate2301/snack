@@ -7,11 +7,11 @@ import store, { persistor, useAppSelector } from './redux/store';
 import { applicationSettings } from './redux/settings';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'sonner';
-import SnackPluginManager, { availablePlugins } from './lib/integrations';
+import SnackPluginManager, { availablePlugins } from './plugins';
 import CommandContextProvider from './context/CommandContext';
 import { ToastProvider } from './context/ToastProvider';
 import { WindowFocusProvider } from './context/WindowFocusContext';
-import { TimeServiceProvider } from '../plugins/time-tracking/context';
+import { TimeServiceProvider } from './plugins/integrations/time-tracking/context';
 
 export default function SnackApplicationProvider(props: {
 	children: ReactNode;

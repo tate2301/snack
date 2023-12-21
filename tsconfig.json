@@ -16,5 +16,5 @@
 		"noEmit": true,
 		"jsx": "react-jsx"
 	},
-	"include": ["src", "electron/electron-src", "plugins/time-tracking"]
+	"include": ["src", "electron/electron-src", "src/plugins/integrations/time-tracking"]
 }

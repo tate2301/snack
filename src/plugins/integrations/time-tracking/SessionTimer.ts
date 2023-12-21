@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { generateUUID } from '../../src/lib/functions';
+import { generateUUID } from '../../../lib/functions';
 import { ipcRenderer } from 'electron';
 import { TimeServiceActionEnum } from './hooks/useTimeService';
 

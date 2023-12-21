@@ -1,19 +1,23 @@
 import { startOfToday } from 'date-fns';
-import useToggle from '../../../../lib/hooks/useToggle';
+import useToggle from '../../../../../lib/hooks/useToggle';
 import { PlayIcon, StopIcon } from '@heroicons/react/20/solid';
-import { cn } from '../../../../lib/utils';
+import { cn } from '../../../../../lib/utils';
 import { useEffect, useState } from 'react';
 import { setInterval } from 'timers';
-import { CurrencyDollarIcon, EllipsisHorizontalIcon, PauseIcon } from '@heroicons/react/24/solid';
-import ExternalLink from '../../../../assets/icons/ExternalLink';
+import {
+	CurrencyDollarIcon,
+	EllipsisHorizontalIcon,
+	PauseIcon,
+} from '@heroicons/react/24/solid';
+import ExternalLink from '../../../../../assets/icons/ExternalLink';
 
 export default function ClockInButton() {
 	const today = startOfToday();
 	const [isRunning, toggle] = useToggle(false);
-	const [isBillingEnabled, setIsBillingEnabled] = useState(false)
+	const [isBillingEnabled, setIsBillingEnabled] = useState(false);
 	const [session, setSession] = useState<{
-		link?: string
-	}>({})
+		link?: string;
+	}>({});
 	const [secondsFromStart, setSecondsFromStart] = useState(0);
 	const [timerId, setTimerId] = useState(null);
 	const hours = Math.floor(secondsFromStart / 3600);
@@ -43,17 +47,23 @@ export default function ClockInButton() {
 			<div
 				className={cn(
 					'rounded-lg flex space-x-2 text-sm',
-					isRunning ? 'bg-danger-10 text-surface-12 py-1.5 border-surface-10' : 'bg-surface-1 py-1.5 px-3 shadow-sm shadow-surface-2 rounded-lg border border-surface-4 text-surface-12',
+					isRunning
+						? 'bg-danger-10 text-surface-12 py-1.5 border-surface-10'
+						: 'bg-surface-1 py-1.5 px-3 shadow-sm shadow-surface-2 rounded-lg border border-surface-4 text-surface-12',
 				)}>
 				{!isRunning && (
-					<button className={"text-surface-12 px-2 py-0"} onClick={toggle}>
+					<button
+						className={'text-surface-12 px-2 py-0'}
+						onClick={toggle}>
 						<PlayIcon className={'w-5 h-5'} />
-						{seconds > 0 ? "Continue session" : "Clock in"}
+						{seconds > 0 ? 'Continue session' : 'Clock in'}
 					</button>
 				)}
 				{isRunning && (
-					<p className={"text-white py-0 flex items-center gap-2 font-medium"}>
-						<button onClick={toggle} className={"p-0 px-2 text-white"}>
+					<p className={'text-white py-0 flex items-center gap-2 font-medium'}>
+						<button
+							onClick={toggle}
+							className={'p-0 px-2 text-white'}>
 							<PauseIcon className="w-5 h-5" />
 						</button>
 
@@ -61,12 +71,12 @@ export default function ClockInButton() {
 							{hours}hr {minutes}min
 						</span>
 
-						<span className={"flex items-center gap-1"}>
-							{isBillingEnabled && <CurrencyDollarIcon className={"w-5 h-5"} />}
+						<span className={'flex items-center gap-1'}>
+							{isBillingEnabled && <CurrencyDollarIcon className={'w-5 h-5'} />}
 						</span>
 
-						<button className={"text-white pr-2 p-0"}>
-							<EllipsisHorizontalIcon className={"w-5 h-5"} />
+						<button className={'text-white pr-2 p-0'}>
+							<EllipsisHorizontalIcon className={'w-5 h-5'} />
 						</button>
 					</p>
 				)}

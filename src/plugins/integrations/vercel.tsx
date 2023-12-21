@@ -1,7 +1,7 @@
 // src/lib/integrations/VercelPlugin.ts
 
 import React from 'react';
-import { PluginInterface, PluginPermissions } from '../../types';
+import { PluginInterface, PluginPermissions } from '../types';
 
 export default class VercelPlugin implements PluginInterface {
 	permissions: PluginPermissions = {

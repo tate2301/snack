@@ -3,7 +3,7 @@ import React from 'react';
 import path from 'path';
 import fs from 'fs';
 import { Plugin, PluginInterface } from './types';
-import { userDataPath } from '../core/redux-storage';
+import { userDataPath } from '../lib/core/redux-storage';
 import { availablePlugins } from '.';
 import { PluginContextProvider } from './context/PluginContext';
 
@@ -11,7 +11,7 @@ class PluginManager {
 	private plugins: { [key: string]: PluginInterface } = {};
 
 	async registerPlugin(data: Plugin) {
-		const pluginModule = await import(`./plugins/${data.name}`);
+		const pluginModule = await import(`./integrations/${data.name}`);
 		const plugin = new pluginModule.default();
 		this.plugins[plugin.constructor.name] = plugin;
 	}

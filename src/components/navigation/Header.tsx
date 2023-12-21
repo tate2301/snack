@@ -8,7 +8,7 @@ import { cn, remToPx } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommandContext } from '../../context/CommandContext';
 import { motion } from 'framer-motion';
-import TimeTracker from '../../../plugins/time-tracking';
+import TimeTracker from '../../plugins/integrations/time-tracking';
 import SFSymbol from '../../assets/icons/SFSymbol';
 import { iconColors } from '../../styles/constants';
 

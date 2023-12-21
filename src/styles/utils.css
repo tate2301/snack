@@ -127,3 +127,7 @@ progress::-webkit-progress-value {
 	background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value for transparency */
 	padding: 20px;
 }
+
+* {
+	@apply outline-0 ring-0;
+}

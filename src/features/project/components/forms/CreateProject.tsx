@@ -152,7 +152,7 @@ function ManageListForm(
 										type={'submit'}
 										onClick={form.submitForm}
 										className="disabled:text-surface-6 text-primary-11 rounded-xl">
-										{isCreateForm && 'Create list'}
+										{isCreateForm && 'Confirm'}
 										{!isCreateForm && 'Save changes'}
 									</button>
 								</div>

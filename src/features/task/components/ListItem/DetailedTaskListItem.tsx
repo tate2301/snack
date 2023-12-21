@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { differenceInDays, format } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import { TaskStatus } from '../TaskListItem';
+import { DeadlineBadge, TaskStatus } from '../TaskListItem';
 import { SnackTask, SnackTaskStatus } from '../../../../redux/tasks/types';
 import { motion } from 'framer-motion';
 import SFSymbol from '../../../../assets/icons/SFSymbol';
@@ -53,39 +53,19 @@ export default function DetailedTaskListItem(
 				ease: 'easeInOut',
 				duration: 0.3,
 			}}
-			className="flex items-center flex-1 h-full rounded-xl bg-white my-4 px-2 py-3 border border-surface-4 shadow-sm">
+			className="flex items-center flex-1 h-full rounded-xl bg-white my-4 px-2 py-3">
 			<div className="flex-1 h-full">
 				<AnimatePresence>
 					<div className="flex items-start w-full gap-2">
 						<input
-							className="flex-shrink-0 rounded-xl relative z-1 mt-2"
+							className="flex-shrink-0 rounded-xl relative z-1 !mt-0.5"
 							type="checkbox"
 							onChange={props.onCheck}
 							checked={props.status === SnackTaskStatus.Complete}
 						/>
 
-						<div className="flex-1 pr-2 space-y-2">
-							<div className="flex items-center">
-								{props.deadline &&
-									props.status !== SnackTaskStatus.Complete && (
-										<>
-											<p
-												className={clsx(
-													'py-1 rounded-lg px-2 flex-shrink-0 text-sm mr-2 flex items-center font-semibold space-x-2',
-													differenceInDays(props.deadline, new Date()) <= 0
-														? 'text-danger-10 bg-danger-4'
-														: 'text-surface-11 bg-alternateSurface',
-												)}>
-												<SFSymbol
-													name={'bell'}
-													className={'!w-5 !h-5'}
-													color={iconColors.danger}
-												/>
-												<span>{format(props.deadline, 'MMM d')}</span>
-											</p>
-										</>
-									)}
-
+						<div className="flex-1 pr-2">
+							<div className="flex items-center space-x-2">
 								<Textarea
 									className={clsx(
 										'line-clamp-1 pr-4 w-full outline-none font-semibold text-surface-12',
@@ -93,6 +73,14 @@ export default function DetailedTaskListItem(
 									value={props.title}
 									name={'title'}
 								/>
+								{props.deadline &&
+									props.status !== SnackTaskStatus.Complete && (
+										<DeadlineBadge
+											deadline={props.deadline}
+											status={props.status}
+											id={props.id}
+										/>
+									)}
 							</div>
 
 							<div>
@@ -119,7 +107,7 @@ export default function DetailedTaskListItem(
 
 									{props.subtasks?.length > 0 && (
 										<>
-											<span className="flex gap-2 items-center rounded-lg px-2 py-1 bg-alternateSurface font-semibold">
+											<span className="flex gap-2 items-center rounded-lg p-2 bg-alternateSurface font-semibold">
 												{props.subtasks.filter((s) => !s.complete).length !==
 													0 && (
 													<SFSymbol

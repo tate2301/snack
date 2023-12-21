@@ -242,6 +242,7 @@ export default function TaskListPage(props: TaskListPage) {
 																onExpandTask={() => onNavigate(task.id)}
 																onCollapseTask={() => setSelectedTask(null)}
 																isSelected={task.id === selectedTask}
+																selectedTask={selectedTask}
 																onSelectTask={(isFocused: boolean) =>
 																	onSelectTask(isFocused && task.id)
 																}
@@ -270,6 +271,7 @@ export default function TaskListPage(props: TaskListPage) {
 												onSelectTask={(isFocused: boolean) =>
 													onSelectTask(isFocused && task.id)
 												}
+												selectedTask={selectedTask}
 												{...task}
 											/>
 										</div>

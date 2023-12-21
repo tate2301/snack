@@ -1,9 +1,9 @@
 import { TimeTrackerProps } from '../types';
 import { TimeServiceActionEnum } from '../hooks/useTimeService';
 import { AnimatePresence, motion } from 'framer-motion';
-import { cn } from '../../../src/lib/utils';
-import SFSymbol from '../../../src/assets/icons/SFSymbol';
-import { iconColors } from '../../../src/styles/constants';
+import { cn } from '../../../../lib/utils';
+import SFSymbol from '../../../../assets/icons/SFSymbol';
+import { iconColors } from '../../../../styles/constants';
 
 export default function DefaultTimeTracker(props: TimeTrackerProps) {
 	return (

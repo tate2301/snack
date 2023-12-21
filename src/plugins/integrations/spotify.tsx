@@ -1,9 +1,9 @@
 // src/lib/integrations/VercelPlugin.ts
 
 import React from 'react';
-import { PluginInterface, PluginPermissions } from '../../types';
+import { PluginInterface, PluginPermissions } from '../types';
 
-export default class BillingPlugin implements PluginInterface {
+export default class SpotifyPlugin implements PluginInterface {
 	permissions: PluginPermissions = {
 		canAccessSettings: true,
 	};

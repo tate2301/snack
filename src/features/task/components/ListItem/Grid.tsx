@@ -17,7 +17,7 @@ type GridTaskListItemProps = {
 
 export default function GridTaskListItem(props: GridTaskListItemProps) {
 	return (
-		<div className="h-full px-2 py-2 rounded-xl bg-surface-1 shadow">
+		<div className="h-full px-2 py-2 rounded-xl bg-surface-1 shadow flex-1">
 			{props.description && (
 				<PostItNoteIcon className="w-5 h-5 text-surface-8" />
 			)}

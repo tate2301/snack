@@ -12,6 +12,7 @@ import { SnackTaskStatus } from '../../../../redux/tasks/types';
 import { cn } from '../../../../lib/utils';
 import SFSymbol from '../../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../../styles/constants';
+import { DeadlineBadge } from '../TaskListItem';
 
 type DefaultTaskListItemProps = {
 	onCheck: (e) => void;
@@ -86,23 +87,14 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 							checked={props.status === SnackTaskStatus.Complete}
 						/>
 
-						<div className="flex items-center pr-2 flex-1">
-							<p className="flex-shrink-0">
-								{props.deadline &&
-									props.status !== SnackTaskStatus.Complete && (
-										<>
-											<span
-												className={clsx(
-													'py-0.5 rounded px-1 text-sm mr-1',
-													differenceInDays(props.deadline, new Date()) <= 0
-														? 'text-danger-11 bg-danger-4'
-														: 'text-surface-11 bg-surface-4',
-												)}>
-												{format(props.deadline, 'MMM d')}
-											</span>
-										</>
-									)}
-							</p>
+						<div className="flex items-center pr-2 flex-1 space-x-2">
+							{props.deadline && props.status !== SnackTaskStatus.Complete && (
+								<DeadlineBadge
+									deadline={props.deadline}
+									status={props.status}
+									id={props.id}
+								/>
+							)}
 
 							<div className={'max-w-full pr-2'}>
 								<p
@@ -136,15 +128,6 @@ export default function DefaultTaskListItem(props: DefaultTaskListItemProps) {
 									)}
 								</AnimatePresence>
 							</div>
-						</div>
-
-						<div className="flex gap-2">
-							<button>
-								<SFSymbol
-									name={'pin'}
-									color={iconColors.labelTertiary}
-								/>
-							</button>
 						</div>
 					</div>
 				</AnimatePresence>

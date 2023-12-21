@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import SFSymbol from '../../../src/assets/icons/SFSymbol';
+import SFSymbol from '../../../../assets/icons/SFSymbol';
 import { ipcRenderer } from 'electron';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';

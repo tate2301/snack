@@ -22,6 +22,8 @@ import DetailedTaskListItem from './ListItem/DetailedTaskListItem';
 import { useKeyboardListeners } from '../../../context/KeyboardNavigationContext';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../styles/constants';
+import { motion } from 'framer-motion';
+import { differenceInDays, format, sub } from 'date-fns';
 
 export enum TaskListItemView {
 	Grid = 'Grid',
@@ -37,6 +39,7 @@ export default function TaskListItem(
 		onSelectTask?: (isFocused: boolean) => void;
 		view?: TaskListItemView;
 		isSelected?: boolean;
+		selectedTask?: string;
 	},
 ) {
 	const taskRef = useRef<HTMLDivElement>();
@@ -78,13 +81,24 @@ export default function TaskListItem(
 		return () => unregisterListeners(listeners);
 	}, []);
 
+	const reduceOpacity = props.selectedTask
+		? props.selectedTask !== props.id
+		: false;
+
+	console.log({
+		reduceOpacity,
+		selectedTask: props.selectedTask,
+		id: props.id,
+	});
+
 	return (
 		<div ref={taskRef}>
 			<div
 				onDoubleClick={props.onExpandTask}
 				className={clsx(
-					'group px-1',
+					'group px-1 transition-all flex items-start',
 					props.view === TaskListItemView.Grid ? 'rounded-xl' : 'rounded',
+					reduceOpacity && 'opacity-20 hover:opacity-100',
 				)}>
 				{props.view === TaskListItemView.Grid && (
 					<GridTaskListItem
@@ -112,6 +126,22 @@ export default function TaskListItem(
 							/>
 						))}
 				</AnimatePresence>
+				{props.view !== TaskListItemView.Grid && (
+					<div className={cn('flex gap-2', props.isSelected ? 'py-6' : 'py-1')}>
+						<motion.button
+							transition={{ ease: 'easeIn', type: 'tween', duration: 0.1 }}
+							layout="position">
+							<SFSymbol
+								name={props.isSelected ? 'pin.fill' : 'pin'}
+								color={
+									props.isSelected
+										? iconColors.yellow
+										: iconColors.labelTertiary
+								}
+							/>
+						</motion.button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -213,3 +243,43 @@ export function TaskStatus(props: { status: SnackTaskStatus }) {
 		</p>
 	);
 }
+
+export const DeadlineBadge = (props: {
+	deadline?: Date;
+	status: SnackTaskStatus;
+	id: string;
+}) => {
+	const deadlineHasPassed =
+		props.deadline && props.status !== SnackTaskStatus.Complete
+			? differenceInDays(new Date(), props.deadline) > 1
+			: false;
+	return (
+		<p className="flex-shrink-0">
+			{props.deadline && props.status !== SnackTaskStatus.Complete && (
+				<>
+					<motion.span
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ type: 'tween', ease: 'easeOut', duration: 0.3 }}
+						className={clsx(
+							'py-0.5 font-semibold rounded px-1 flex gap-1 items-center text-sm mr-1',
+							deadlineHasPassed
+								? 'text-danger-11 bg-danger-4'
+								: 'text-surface-12 bg-surface-6',
+						)}>
+						<SFSymbol
+							name={
+								deadlineHasPassed ? 'clock.badge.exclamationmark.fill' : 'alarm'
+							}
+							className="!w-5 !h-5"
+							color={
+								deadlineHasPassed ? iconColors.danger : iconColors.labelPrimary
+							}
+						/>
+						{format(props.deadline, 'MMM d')}
+					</motion.span>
+				</>
+			)}
+		</p>
+	);
+};

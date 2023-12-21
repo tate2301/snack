@@ -11,8 +11,8 @@ import TargetIcon from '../../../../assets/icons/TargetIcon';
 import { cn } from '../../../../lib/utils';
 import { useMemo, useState } from 'react';
 import { groupTasksByStatus } from '../../../../lib/core/tasks';
-import TimeTracker from '../../../../../plugins/time-tracking';
-import ClockInButton from '../../../../../plugins/time-tracking/components/StartTimerButton/ClockInButton';
+import TimeTracker from '../../../../plugins/integrations/time-tracking';
+import ClockInButton from '../../../../plugins/integrations/time-tracking/components/StartTimerButton/ClockInButton';
 import SFSymbol from '../../../../assets/icons/SFSymbol';
 import TaskListPage from '../../../../components/page/TaskPageLayout';
 

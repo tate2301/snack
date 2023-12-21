@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import SFSymbol from '../../../../../assets/icons/SFSymbol';
-import { useTimeServiceActions } from '../../../../../../plugins/time-tracking/context';
+import { useTimeServiceActions } from '../../../../../plugins/integrations/time-tracking/context';
 import { cn } from '../../../../../lib/utils';
 import { iconColors } from '../../../../../styles/constants';
 

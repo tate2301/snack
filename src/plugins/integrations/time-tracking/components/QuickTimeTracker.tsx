@@ -1,12 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { TimeTrackerProps } from '../types';
 import { TimeServiceActionEnum } from '../hooks/useTimeService';
-import { cn } from '../../../src/lib/utils';
-import SFSymbol from '../../../src/assets/icons/SFSymbol';
+import { cn } from '../../../../lib/utils';
+import SFSymbol from '../../../../assets/icons/SFSymbol';
 import { buttonVariants } from '../index';
 import { PlayIcon } from '@heroicons/react/24/solid';
 import { useTimeServiceActions } from '../context';
-import { iconColors } from '../../../src/styles/constants';
+import { iconColors } from '../../../../styles/constants';
 
 export default function QuickTimeTracker(props: TimeTrackerProps) {
 	const { taskQueue, totalToday } = useTimeServiceActions();

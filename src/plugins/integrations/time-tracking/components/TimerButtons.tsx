@@ -1,11 +1,11 @@
-import TimerIcon from '../../../assets/icons/Timer';
+import TimerIcon from '../../../../assets/icons/Timer';
 import { PauseIcon, PlayIcon } from '@heroicons/react/24/solid';
 import { StopIcon } from '@heroicons/react/20/solid';
 import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
-import ArrowsExpand from '../../../assets/icons/ArrowsExpand';
-import { iconColors } from '../../../styles/constants';
-import SFSymbol from '../../../assets/icons/SFSymbol';
+import ArrowsExpand from '../../../../assets/icons/ArrowsExpand';
+import { iconColors } from '../../../../styles/constants';
+import SFSymbol from '../../../../assets/icons/SFSymbol';
 
 type TimerButtonProps = {
 	onClick: () => void;
