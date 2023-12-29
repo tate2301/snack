@@ -3,6 +3,7 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	useMemo,
 	useState,
 } from 'react';
 
@@ -19,25 +20,42 @@ type KeyboardNavigationContextType = {
 
 export const KeyboardNavigationContext =
 	createContext<KeyboardNavigationContextType>({
-		registerListeners: () => false,
+		registerListeners: (evt) => {
+			return true;
+		},
 		unregisterListeners: () => {},
 		listeners: [],
 	});
 
 export const useKeyboardListeners = () => {
-	const { registerListeners, unregisterListeners } = useContext(
+	const { registerListeners, unregisterListeners, listeners } = useContext(
 		KeyboardNavigationContext,
 	);
 
 	return {
 		registerListeners,
 		unregisterListeners,
+		listeners,
 	};
+};
+
+export const useKeyboardShortcuts = (shortcuts: Array<Listener>) => {
+	const { registerListeners, unregisterListeners } = useKeyboardListeners();
+
+	const registeredShortcuts = useMemo(() => shortcuts, [shortcuts]);
+
+	useEffect(() => {
+		registerListeners(registeredShortcuts);
+		return () => unregisterListeners(registeredShortcuts);
+	}, [registeredShortcuts]);
 };
 
 export default function KeyboardNavigationContextProvider({ children }) {
 	const [listeners, setListeners] = useState<
 		Map<string, (e: KeyboardEvent) => void>
+	>(new Map());
+	const [registeredEvents, setRegisteredEvents] = useState<
+		Map<string, boolean>
 	>(new Map());
 
 	const registerListeners = useCallback((newListeners: Listener[]) => {
@@ -47,8 +65,13 @@ export default function KeyboardNavigationContextProvider({ children }) {
 					listener.callback(event);
 				}
 			};
-			window.addEventListener('keydown', callback);
+
 			listeners.set(listener.key, callback);
+			window.addEventListener('keydown', callback);
+			setRegisteredEvents((events) => {
+				events.set(listener.key, true);
+				return events;
+			});
 		});
 		setListeners(new Map(listeners));
 
@@ -61,6 +84,10 @@ export default function KeyboardNavigationContextProvider({ children }) {
 			if (callback) {
 				window.removeEventListener('keydown', callback);
 				listeners.delete(listener.key);
+				setRegisteredEvents((events) => {
+					events.set(listener.key, false);
+					return events;
+				});
 			}
 		});
 		setListeners(new Map(listeners));
@@ -75,13 +102,7 @@ export default function KeyboardNavigationContextProvider({ children }) {
 		})),
 	};
 
-	useEffect(() => {
-		return () => {
-			listeners.forEach((callback, key) => {
-				window.removeEventListener('keydown', callback);
-			});
-		};
-	}, [listeners]);
+	console.log({ listeners, registeredEvents });
 
 	return (
 		<KeyboardNavigationContext.Provider value={value}>

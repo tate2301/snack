@@ -26,6 +26,7 @@ type TaskListPage = {
 	tasks: {
 		[key: string]: SnackTask[];
 	};
+	pinned?: SnackTask[];
 	HeaderActions: ReactNode;
 	title?: string;
 	documentTitle: string;
@@ -84,7 +85,6 @@ export default function TaskListPage(props: TaskListPage) {
 				options={{
 					back: false,
 					create: true,
-					more: true,
 				}}
 				title={props.title}
 				actions={
@@ -124,6 +124,27 @@ export default function TaskListPage(props: TaskListPage) {
 				}
 			/>
 			<div className=" flex-1 h-full items-start overflow-y-auto mt-2">
+				{props.pinned && (
+					<div className="p-4">
+						<AnimatePresence>
+							{props.pinned.map((task) => (
+								<div key={task.id}>
+									<TaskListItem
+										onExpandTask={() => onNavigate(task.id)}
+										onCollapseTask={() => setSelectedTask(null)}
+										isSelected={task.id === selectedTask}
+										onSelectTask={(isFocused: boolean) =>
+											onSelectTask(isFocused && task.id)
+										}
+										selectedTask={selectedTask}
+										{...task}
+									/>
+								</div>
+							))}
+						</AnimatePresence>
+					</div>
+				)}
+
 				{!props.isEmpty && (
 					<div className="flex flex-1 flex-col pb-2 space-y-12">
 						{props.grouping !== 'all' &&

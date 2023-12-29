@@ -22,19 +22,27 @@ export default function HomePage() {
 	const allTasks = useAppSelector((state) => selectAllTasks(state));
 	const allProjects = useAppSelector(selectAllLists);
 
+	const pinnedTasks = allTasks.filter((task) => task.pinned);
+	const unpinnedTasks = useMemo(
+		() => allTasks.filter((task) => !task.pinned),
+		[allTasks],
+	);
+
 	const groupedTasks: { [key: string]: SnackTask[] } = useMemo(() => {
 		if (grouping === 'day' || grouping === 'month')
-			return groupTasksByPeriod(allTasks.reverse(), grouping);
-		if (grouping === 'status') return groupTasksByStatus(allTasks.reverse());
+			return groupTasksByPeriod(unpinnedTasks.reverse(), grouping);
+		if (grouping === 'status')
+			return groupTasksByStatus(unpinnedTasks.reverse());
 		if (grouping === 'project')
-			return groupTasksByProject(allTasks.reverse(), allProjects);
+			return groupTasksByProject(unpinnedTasks.reverse(), allProjects);
 
-		return { all: allTasks };
-	}, [allTasks]);
+		return { all: unpinnedTasks };
+	}, [unpinnedTasks]);
 
 	return (
 		<TaskListPage
 			tasks={groupedTasks}
+			pinned={pinnedTasks}
 			groups={groups}
 			grouping={grouping}
 			setGrouping={setGrouping}

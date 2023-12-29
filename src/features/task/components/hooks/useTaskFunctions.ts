@@ -4,6 +4,8 @@ import {
 	addSubtask,
 	deleteSubtask,
 	deleteTask,
+	pinTask,
+	unpinTask,
 	updateSubtask,
 	updateTask,
 } from '../../../../redux/tasks';
@@ -25,14 +27,14 @@ const useTaskFunctions = (task: SnackTask) => {
 	const navigate = useNavigate();
 
 	const openInPage = () => navigate(`/task/${task.id}`);
-
 	const list = useAppSelector(selectListByTaskId(task.id));
+	const taskRef = useRef(task);
 
 	const onUpdateTask = (task: SnackTask) => {
 		dispatch(updateTask(task));
 	};
 
-	const changeStatus = useCallback(
+	const onStatusChange = useCallback(
 		(status: SnackTaskStatus) => {
 			dispatch(
 				updateTask({
@@ -80,6 +82,14 @@ const useTaskFunctions = (task: SnackTask) => {
 		[task],
 	);
 
+	const onToggleTaskPinned = useCallback(() => {
+		if (task.pinned) {
+			dispatch(unpinTask(task));
+		} else {
+			dispatch(pinTask(task));
+		}
+	}, [task]);
+
 	const onUpdateSubTask = useCallback(
 		(subtask: SnackSubtask) => {
 			dispatch(
@@ -113,7 +123,8 @@ const useTaskFunctions = (task: SnackTask) => {
 	};
 
 	const onTitleChange = (e, override?) => {
-		const value = override || e.target.value;
+		let value = e.target.value;
+		if (!value) taskRef.current.title;
 		onUpdateTask({
 			...task,
 			title: value,
@@ -124,6 +135,10 @@ const useTaskFunctions = (task: SnackTask) => {
 		onUpdateTask({
 			...task,
 			deadline: date,
+			status:
+				task.status === SnackTaskStatus.Complete
+					? SnackTaskStatus.InProgress
+					: task.status,
 		});
 	};
 
@@ -134,7 +149,7 @@ const useTaskFunctions = (task: SnackTask) => {
 	}, [task]);
 
 	return {
-		changeStatus,
+		onStatusChange,
 		changeList,
 		onAddSubTask,
 		onUpdateSubTask,
@@ -145,6 +160,7 @@ const useTaskFunctions = (task: SnackTask) => {
 		onTitleChange,
 		onDescriptionChange,
 		onDeleteTask,
+		onToggleTaskPinned,
 		list,
 	};
 };

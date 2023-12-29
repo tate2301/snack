@@ -1,18 +1,21 @@
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import Splash from './features';
 import HomePage from './features/inbox';
 import SnackApplicationProvider from './App';
-import TrashPage from './features/task/pages/silenced';
 import ListPage from './features/project/[id]';
-import TaskPage from './features/task/pages/[taskId]';
 import TodayPage from './features/task/pages/today';
 import SilencedPage from './features/task/pages/silenced';
 import CalendarPage from './features/calendar';
 import NavigationSidebar from './components/navigation/sidebar/Sidebar';
 import { DailyPlanner } from './layouts/CalendarLayout';
 import { featureFlags } from './lib/core/config';
-import KeyboardNavigationContextProvider from './context/KeyboardNavigationContext';
+import KeyboardNavigationContextProvider, {
+	useKeyboardShortcuts,
+} from './context/KeyboardNavigationContext';
 import UpcomingPage from './features/task/pages/upcoming';
+import tabs from './components/navigation/header/tabs';
+import { stopAllPropagation } from './lib/utils';
+import { useMemo } from 'react';
 
 const SnackRouter = () => {
 	return (
@@ -56,10 +59,6 @@ const SnackRouter = () => {
 									path={'/list/:id'}
 									element={<ListPage />}
 								/>
-								<Route
-									path={'/task/:id'}
-									element={<TaskPage />}
-								/>
 							</Routes>
 							{featureFlags.planner && <DailyPlanner />}
 						</div>
@@ -68,6 +67,33 @@ const SnackRouter = () => {
 			</SnackApplicationProvider>
 		</div>
 	);
+};
+
+const NavigationShortcutsProvider = () => {
+	const navigate = useNavigate();
+	const navigateListener = (event: KeyboardEvent) => {
+		const page = tabs.find((tab) => tab.shortcut.toLowerCase() === event.key);
+		console.log({ page, key: event.key });
+		if (!page) return;
+		if (event.metaKey) {
+			stopAllPropagation(event);
+			navigate(page.href);
+			return;
+		}
+	};
+
+	const shortcuts = useMemo(
+		() =>
+			tabs.map((tab) => ({
+				key: tab.shortcut.toLowerCase(),
+				callback: navigateListener,
+			})),
+		[],
+	);
+
+	useKeyboardShortcuts(shortcuts);
+
+	return <></>;
 };
 
 export default SnackRouter;

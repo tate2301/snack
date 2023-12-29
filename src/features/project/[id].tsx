@@ -156,7 +156,7 @@ const ProjectColumn = ({
 	projectId: string;
 	onShowExpandedTaskView: (taskId: string) => void;
 }) => {
-	const items = useAppSelector(selectTasksForColumnInProject(projectId, title));
+	const items = useAppSelector(selectTasksForColumnInProject(projectId, id));
 	console.log({ items });
 
 	return (

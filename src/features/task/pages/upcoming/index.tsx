@@ -10,19 +10,11 @@ import TaskListPage from '../../../../components/page/TaskPageLayout';
 import SFSymbol from '../../../../assets/icons/SFSymbol';
 
 export default function UpcomingPage() {
-	const [grouping, setGrouping] = useState<string>('day');
+	const [grouping, setGrouping] = useState<string>('all');
 
 	const upcomingTasks = useAppSelector((state) => selectUpcomingTasks(state));
 
-	const groupedTasks = useMemo(
-		() =>
-			grouping === 'all'
-				? { all: upcomingTasks }
-				: groupTasksByPeriod(upcomingTasks, 'day'),
-		[upcomingTasks],
-	);
-
-	console.log({ tasks: groupedTasks });
+	const groupedTasks = useMemo(() => ({ all: upcomingTasks }), [upcomingTasks]);
 
 	return (
 		<TaskListPage
@@ -33,7 +25,7 @@ export default function UpcomingPage() {
 					  }
 					: groupedTasks
 			}
-			groups={['day', 'all']}
+			groups={['all']}
 			grouping={grouping}
 			setGrouping={setGrouping}
 			documentTitle="Upcoming"
@@ -50,18 +42,6 @@ export default function UpcomingPage() {
 							onClick={() => setGrouping('all')}>
 							<SFSymbol
 								name={'checklist.unchecked'}
-								color={'#121212'}
-								className="w-6 h-6"
-							/>
-						</button>
-						<button
-							className={cn(
-								'rounded-lg px-2 py-1 text-surface-9',
-								grouping === 'day' && 'bg-surface-6 text-surface-12',
-							)}
-							onClick={() => setGrouping('day')}>
-							<SFSymbol
-								name={'calendar'}
 								color={'#121212'}
 								className="w-6 h-6"
 							/>

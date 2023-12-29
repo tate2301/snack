@@ -7,19 +7,6 @@ const tabs: NavItemType[] = [
 		icon: (
 			<SFSymbol
 				color={iconColors.primary}
-				name={'sun.max'}
-				className="w-6 h-6 text-primary-11"
-			/>
-		),
-		value: 'today',
-		label: 'Today',
-		href: '/today',
-		shortcut: 'T',
-	},
-	{
-		icon: (
-			<SFSymbol
-				color={iconColors.primary}
 				name={'checkmark.circle.fill'}
 				className="w-6 h-6 text-primary-11"
 			/>
@@ -27,8 +14,22 @@ const tabs: NavItemType[] = [
 		value: 'inbox',
 		label: 'Inbox',
 		href: '/home',
-		shortcut: 'A',
+		shortcut: '1',
 	},
+	{
+		icon: (
+			<SFSymbol
+				color={iconColors.primary}
+				name={'sun.max'}
+				className="w-6 h-6 text-primary-11"
+			/>
+		),
+		value: 'today',
+		label: 'Today',
+		href: '/today',
+		shortcut: '2',
+	},
+
 	{
 		icon: (
 			<SFSymbol
@@ -40,7 +41,7 @@ const tabs: NavItemType[] = [
 		value: 'future',
 		label: 'Upcoming',
 		href: '/future',
-		shortcut: 'U',
+		shortcut: '3',
 	},
 	{
 		icon: (
@@ -53,7 +54,7 @@ const tabs: NavItemType[] = [
 		value: 'backlog',
 		label: 'Backlog',
 		href: '/silenced',
-		shortcut: 'B',
+		shortcut: '4',
 	},
 	{
 		icon: (
@@ -66,7 +67,7 @@ const tabs: NavItemType[] = [
 		value: 'personal',
 		label: 'Personal',
 		href: '/list/default',
-		shortcut: 'P',
+		shortcut: '5',
 	},
 ];
 

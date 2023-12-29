@@ -47,6 +47,7 @@ export type SnackTask = {
 	};
 	category?: SnackTaskCategory;
 	sessions?: Array<SnackTaskSession>;
+	pinned?: boolean;
 };
 
 export type SnackSubtask = {

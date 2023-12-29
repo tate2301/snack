@@ -146,7 +146,13 @@ const CreateTaskForm = (props: {
 		};
 
 		dispatch(addTask(task));
-		dispatch(addTaskToList({ listId: data.list, taskId: task.id }));
+		dispatch(
+			addTaskToList({
+				listId: data.list,
+				taskId: task.id,
+				columnId: SnackTaskStatus.Todo,
+			}),
+		);
 		form.resetForm();
 		props.toggle();
 	};

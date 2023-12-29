@@ -45,3 +45,10 @@ export const formatTime = (time: Date) =>
 	}).format(time);
 
 export const getRandomColorForEvent = () => 'purple';
+
+export const stopAllPropagation = (evt: KeyboardEvent) => {
+	evt.preventDefault();
+	evt.stopPropagation();
+	evt.cancelBubble = true;
+	evt.stopImmediatePropagation();
+};

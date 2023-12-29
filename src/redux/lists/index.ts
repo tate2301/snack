@@ -133,11 +133,12 @@ export const listSlice = createSlice({
 			state.items = state.items.filter((list) => list.id !== id);
 		},
 		addTaskToList: (state, action) => {
-			const { listId, taskId } = action.payload;
+			const { listId, taskId, columnId } = action.payload;
 			const list = state.items.find((list) => list.id === listId);
 			if (!list) return;
 
-			list.tasks.push(taskId);
+			const column = list.columns.findIndex((column) => column.id === columnId);
+			list.columns[column].items.push(taskId);
 		},
 		removeTaskFromList: (state, action) => {
 			const { listId, taskId } = action.payload;

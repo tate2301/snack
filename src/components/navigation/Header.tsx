@@ -3,14 +3,25 @@ import {
 	ListBulletIcon,
 	ViewColumnsIcon,
 } from '@heroicons/react/24/outline';
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import { cn, remToPx } from '../../lib/utils';
+import {
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
+import { cn, remToPx, stopAllPropagation } from '../../lib/utils';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CommandContext } from '../../context/CommandContext';
 import { motion } from 'framer-motion';
 import TimeTracker from '../../plugins/integrations/time-tracking';
 import SFSymbol from '../../assets/icons/SFSymbol';
 import { iconColors } from '../../styles/constants';
+import {
+	useKeyboardListeners,
+	useKeyboardShortcuts,
+} from '../../context/KeyboardNavigationContext';
 
 type ContextMenuOptions = {
 	search?: boolean;
@@ -111,10 +122,27 @@ const PageHeader = (props: {
 
 const CreateTaskButton = (props: { projectId: string }) => {
 	const { openCreateTask } = useContext(CommandContext);
+	const { registerListeners, unregisterListeners } = useKeyboardListeners();
 
 	const onClick = () => {
 		openCreateTask(props.projectId);
 	};
+
+	const addTaskListener = useCallback((evt: KeyboardEvent) => {
+		// If user presses shift + enter in title field, lets add a description field
+		if (evt.metaKey) {
+			stopAllPropagation(evt);
+			onClick();
+			return;
+		}
+	}, []);
+
+	const listeners = useMemo(
+		() => [{ key: 'n', callback: addTaskListener }],
+		[addTaskListener],
+	);
+
+	useKeyboardShortcuts(listeners);
 
 	return (
 		<button

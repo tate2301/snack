@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
+import { ReactNode, useCallback, useMemo, useRef } from 'react';
 import useToggle from '../../../lib/hooks/useToggle';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
@@ -19,11 +19,12 @@ import useTaskFunctions from './hooks/useTaskFunctions';
 import GridTaskListItem from './ListItem/Grid';
 import DefaultTaskListItem from './ListItem/DefaultTaskListItem';
 import DetailedTaskListItem from './ListItem/DetailedTaskListItem';
-import { useKeyboardListeners } from '../../../context/KeyboardNavigationContext';
+import { useKeyboardShortcuts } from '../../../context/KeyboardNavigationContext';
 import SFSymbol from '../../../assets/icons/SFSymbol';
 import { iconColors } from '../../../styles/constants';
 import { motion } from 'framer-motion';
-import { differenceInDays, format, sub } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
+import AddDeadline from '../../../components/forms/Deadline';
 
 export enum TaskListItemView {
 	Grid = 'Grid',
@@ -45,9 +46,11 @@ export default function TaskListItem(
 	const taskRef = useRef<HTMLDivElement>();
 	const list = useAppSelector(selectListByTaskId(props.id));
 	const projectProgress = useAppSelector(selectProjectProgress(list.id));
-	const { changeStatus } = useTaskFunctions(props);
+	const { onStatusChange } = useTaskFunctions(props);
 	const [isChecked] = useToggle(props.status === SnackTaskStatus.Complete);
-	const { registerListeners, unregisterListeners } = useKeyboardListeners();
+	const reduceOpacity = props.selectedTask
+		? props.selectedTask !== props.id
+		: false;
 
 	const deadline = useMemo(
 		() => props.deadline && new Date(props.deadline),
@@ -59,7 +62,7 @@ export default function TaskListItem(
 		e.stopPropagation();
 		e.nativeEvent.stopImmediatePropagation();
 
-		changeStatus(
+		onStatusChange(
 			!isChecked ? SnackTaskStatus.Complete : SnackTaskStatus.InProgress,
 		);
 
@@ -72,24 +75,10 @@ export default function TaskListItem(
 
 	const listeners = useMemo(
 		() => [{ key: 'Escape', callback: collapseListener }],
-		[],
+		[collapseListener],
 	);
 
-	useEffect(() => {
-		registerListeners(listeners);
-
-		return () => unregisterListeners(listeners);
-	}, []);
-
-	const reduceOpacity = props.selectedTask
-		? props.selectedTask !== props.id
-		: false;
-
-	console.log({
-		reduceOpacity,
-		selectedTask: props.selectedTask,
-		id: props.id,
-	});
+	useKeyboardShortcuts(listeners);
 
 	return (
 		<div ref={taskRef}>
@@ -115,6 +104,13 @@ export default function TaskListItem(
 								deadline={deadline}
 								list={{ ...list }}
 								onCheck={onCheck}
+								quickActions={
+									<QuickActions
+										{...props}
+										deadline={deadline}
+										isSelected={props.isSelected}
+									/>
+								}
 							/>
 						) : (
 							<DefaultTaskListItem
@@ -123,29 +119,52 @@ export default function TaskListItem(
 								deadline={deadline}
 								list={{ ...list, progress: projectProgress }}
 								onCheck={onCheck}
+								quickActions={
+									<QuickActions
+										{...props}
+										deadline={deadline}
+									/>
+								}
 							/>
 						))}
 				</AnimatePresence>
-				{props.view !== TaskListItemView.Grid && (
-					<div className={cn('flex gap-2', props.isSelected ? 'py-6' : 'py-1')}>
-						<motion.button
-							transition={{ ease: 'easeIn', type: 'tween', duration: 0.1 }}
-							layout="position">
-							<SFSymbol
-								name={props.isSelected ? 'pin.fill' : 'pin'}
-								color={
-									props.isSelected
-										? iconColors.yellow
-										: iconColors.labelTertiary
-								}
-							/>
-						</motion.button>
-					</div>
-				)}
 			</div>
 		</div>
 	);
 }
+
+const QuickActions = (
+	props: SnackTask & {
+		isSelected?: boolean;
+	},
+) => {
+	const { onToggleTaskPinned } = useTaskFunctions(props);
+	return (
+		<div className={cn('flex flex-shrink-0 gap-2')}>
+			{props.isSelected && (
+				<DeadlineBadge
+					deadline={props.deadline}
+					status={props.status}
+					id={props.id}
+					task={props}
+				/>
+			)}
+			<motion.button
+				onClick={onToggleTaskPinned}
+				transition={{ ease: 'easeIn', type: 'tween', duration: 0.1 }}
+				layout="position">
+				<SFSymbol
+					name={props.pinned ? 'pin.fill' : 'pin'}
+					color={
+						props.isSelected || props.pinned
+							? iconColors.yellow
+							: iconColors.labelTertiary
+					}
+				/>
+			</motion.button>
+		</div>
+	);
+};
 
 export const TaskDropdownOptions = (props: SnackTask) => {
 	const dispatch = useAppDispatch();
@@ -248,38 +267,61 @@ export const DeadlineBadge = (props: {
 	deadline?: Date;
 	status: SnackTaskStatus;
 	id: string;
+	task: SnackTask;
 }) => {
 	const deadlineHasPassed =
 		props.deadline && props.status !== SnackTaskStatus.Complete
 			? differenceInDays(new Date(), props.deadline) > 1
 			: false;
+	const { onDeadlineChanged } = useTaskFunctions(props.task);
+
 	return (
 		<p className="flex-shrink-0">
-			{props.deadline && props.status !== SnackTaskStatus.Complete && (
-				<>
+			<>
+				<AddDeadline
+					selectedDate={props.deadline}
+					selectDate={onDeadlineChanged}>
 					<motion.span
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ type: 'tween', ease: 'easeOut', duration: 0.3 }}
 						className={clsx(
-							'py-0.5 font-semibold rounded px-1 flex gap-1 items-center text-sm mr-1',
+							'py-1 font-semibold rounded px-2 flex gap-1 items-center text-sm mr-1',
 							deadlineHasPassed
 								? 'text-danger-11 bg-danger-4'
 								: 'text-surface-12 bg-surface-6',
 						)}>
-						<SFSymbol
-							name={
-								deadlineHasPassed ? 'clock.badge.exclamationmark.fill' : 'alarm'
-							}
-							className="!w-5 !h-5"
-							color={
-								deadlineHasPassed ? iconColors.danger : iconColors.labelPrimary
-							}
-						/>
-						{format(props.deadline, 'MMM d')}
+						{props.status !== SnackTaskStatus.Complete && props.deadline && (
+							<>
+								<SFSymbol
+									name={
+										deadlineHasPassed
+											? 'clock.badge.exclamationmark.fill'
+											: 'alarm'
+									}
+									className="!w-5 !h-5"
+									color={
+										deadlineHasPassed
+											? iconColors.danger
+											: iconColors.labelPrimary
+									}
+								/>
+								{format(props.deadline, 'MMM d')}
+							</>
+						)}
+						{(props.status === SnackTaskStatus.Complete || !props.deadline) && (
+							<>
+								<SFSymbol
+									name={'calendar'}
+									className="!w-5 !h-5"
+									color={iconColors.labelPrimary}
+								/>
+								Add deadline
+							</>
+						)}
 					</motion.span>
-				</>
-			)}
+				</AddDeadline>
+			</>
 		</p>
 	);
 };

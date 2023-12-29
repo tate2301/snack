@@ -29,7 +29,7 @@ import useWindowFocus from '../../../lib/hooks/useWindowFocus';
 import { cn } from '../../../lib/utils';
 import StarIcon from '../../../assets/icons/StarIcon';
 import SFSymbol from '../../../assets/icons/SFSymbol';
-import Kbd from '../../ui/typography/Kbd';
+import Kbd, { Keys } from '../../ui/typography/Kbd';
 
 export default function NavigationSidebar() {
 	const [isExpanded, toggle, expand] = useToggle(true);
@@ -156,7 +156,7 @@ function NavItem(
 					{props.icon}
 					{props.label}
 				</span>
-				<Kbd keys={[props.shortcut]} />
+				<Kbd keys={[Keys.Meta, props.shortcut]} />
 			</p>
 		</Link>
 	);

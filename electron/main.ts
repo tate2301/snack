@@ -1,4 +1,11 @@
-import { app, BrowserWindow, ipcMain, Menu, nativeImage } from 'electron';
+import {
+	app,
+	BrowserWindow,
+	ipcMain,
+	Menu,
+	nativeImage,
+	nativeTheme,
+} from 'electron';
 import * as path from 'path';
 import installExtension, {
 	REACT_DEVELOPER_TOOLS,
@@ -108,6 +115,7 @@ function createWindow() {
 	//TODO: update to Menu.setApplicationMenu(menu);
 
 	initTimeTracker(win);
+	nativeTheme.themeSource = 'system';
 }
 
 app.whenReady().then(() => {

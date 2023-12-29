@@ -76,7 +76,6 @@ export const useTaskPageLayoutNavigation = (
 
 	useEffect(() => {
 		if (selectedTask) {
-			console.log('registering');
 			registerListeners(listeners);
 			return () => unregisterListeners(listeners); // Unregister listeners on cleanup
 		}

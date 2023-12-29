@@ -51,6 +51,16 @@ export const tasksSlice = createSlice({
 				existingTask.emoji = emoji;
 			}
 		},
+		pinTask: (state, action) => {
+			const { id } = action.payload;
+			const existingTask = state.items.find((task) => task.id === id);
+			existingTask.pinned = true;
+		},
+		unpinTask: (state, action) => {
+			const { id } = action.payload;
+			const existingTask = state.items.find((task) => task.id === id);
+			existingTask.pinned = false;
+		},
 		addSubtask: (state, action) => {
 			const { id, subtask } = action.payload;
 			const existingTask = state.items.find((task) => task.id === id);
@@ -99,6 +109,8 @@ export const {
 	deleteSubtask,
 	updateSubtask,
 	changeTaskStatus,
+	pinTask,
+	unpinTask,
 } = tasksSlice.actions;
 
 /** Selectors */
