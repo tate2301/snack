@@ -43,11 +43,13 @@ export default function NavigationSidebar() {
 				!isWindowFocused && 'opacity-60',
 			)}>
 			<div className="py-[12px] px-4 gap-4 flex items-center justify-end">
-				<SFSymbol
-					name="sidebar.left"
-					color={'#606060'}
-					className="!w-7 !h-7"
-				/>
+				{false && (
+					<SFSymbol
+						name="sidebar.left"
+						color={'#606060'}
+						className="!w-7 !h-7"
+					/>
+				)}
 			</div>
 
 			<div className="flex flex-col h-full ">
