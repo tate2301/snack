@@ -1,5 +1,4 @@
->> Meant to run on MacOS only.
-Not much to write here yet
+> Meant to run on MacOS only.
 
 To start, run
 ```bash
